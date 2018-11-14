@@ -1,8 +1,8 @@
 {
-  "name": "pc-nrfconnect-programmer",
-  "version": "1.0.0",
+  "name": "pc-nrfconnect-dtm",
+  "version": "0.0.1",
   "description": "Program a Nordic SoC with HEX files from nRF Connect",
-  "displayName": "Programmer",
+  "displayName": "DTM",
   "repository": {
     "type": "git",
     "url": "https://github.com/NordicSemiconductor/pc-nrfconnect-programmer.git"

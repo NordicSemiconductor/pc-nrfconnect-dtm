@@ -35,14 +35,8 @@
  */
 
 import React from 'react';
-import { logger } from 'nrfconnect/core';
-import ControlPanel from './lib/components/ControlPanel';
 import AppMainView from './lib/containers/appMainView';
-import { openFile } from './lib/actions/fileActions';
-import { openDevice } from './lib/actions/targetActions';
-import { loadSettings } from './lib/actions/settingsActions';
 import appReducer from './lib/reducers';
-import logJprogVersion from './lib/util/logJprogVersion';
 import './resources/css/index.less';
 
 export default {
@@ -52,28 +46,10 @@ export default {
             serialport: true,
             jlink: true,
         },
-
-        deviceSetup: {
-            needSerialport: true,
-        },
     },
 
     onInit: dispatch => {
-        dispatch(loadSettings());
-        document.body.ondragover = event => {
-            const ev = event;
-            ev.dataTransfer.dropEffect = 'copy';
-            ev.preventDefault();
-        };
-
-        document.body.ondrop = event => {
-            Array.from(event.dataTransfer.files).forEach(i => {
-                dispatch(openFile(i.path));
-            });
-            event.preventDefault();
-        };
-
-        logJprogVersion();
+        console.log('init');
     },
 
     decorateMainView: MainView => () => (
@@ -83,9 +59,7 @@ export default {
     ),
 
     decorateSidePanel: SidePanel => () => (
-        <SidePanel cssClass="side-panel">
-            <ControlPanel />
-        </SidePanel>
+        <SidePanel cssClass="side-panel" />
     ),
 
     reduceApp: appReducer,
@@ -95,12 +69,10 @@ export default {
 
         switch (action.type) {
             case 'DEVICE_SETUP_COMPLETE': {
-                dispatch(openDevice(action.device));
                 break;
             }
 
             case 'DEVICE_DESELECTED': {
-                logger.info('Target device closed.');
                 break;
             }
 

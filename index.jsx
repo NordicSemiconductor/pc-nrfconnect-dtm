@@ -71,7 +71,6 @@ export default {
         switch (action.type) {
             case 'DEVICE_SELECTED': {
                 console.log(action.device);
-                dispatch(deviceActions.deviceAddAction());
                 break;
             }
 

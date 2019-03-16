@@ -38,14 +38,13 @@ import React from 'react';
 import AppMainView from './lib/containers/appMainView';
 import * as deviceActions from './lib/actions/deviceActions';
 import appReducer from './lib/reducers';
+import { logger } from 'nrfconnect/core';
 import './resources/css/index.less';
 
 export default {
     config: {
         selectorTraits: {
-            nordicUsb: true,
             serialport: true,
-            jlink: true,
         },
     },
 
@@ -70,7 +69,8 @@ export default {
 
         switch (action.type) {
             case 'DEVICE_SELECTED': {
-                console.log(action.device);
+                logger.info('Device selected');
+                dispatch(deviceActions.selectDevice(action.device.serialport.comName));
                 break;
             }
 

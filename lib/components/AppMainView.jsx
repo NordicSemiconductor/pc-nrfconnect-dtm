@@ -35,15 +35,36 @@
  */
 
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { logger } from 'nrfconnect/core';
+import { DTM } from 'nrf-dtm-js';
 
-const AppMainView = () => (
-    <div className="app-main-view">
-
-    </div>
-);
+const AppMainView = ({
+    dtm,
+}) => {
+    const testSetup = () => {
+        logger.info('Test setup');
+    };
+    const testEnd = () => {
+        logger.info('Test end');
+    };
+    return (
+        <div className="app-main-view">
+            <Button
+                onClick = {testSetup}
+            >
+                Test setup
+            </Button>
+            <Button>Test end</Button>
+            <Button>Transmitter test</Button>
+            <Button>Receiver test</Button>
+        </div>
+    )
+};
 
 AppMainView.propTypes = {
+    dtm: PropTypes.object.isRequired,
 };
 
 export default AppMainView;

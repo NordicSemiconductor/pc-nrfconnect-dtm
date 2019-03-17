@@ -43,28 +43,62 @@ import { DTM } from 'nrf-dtm-js';
 const AppMainView = ({
     dtm,
 }) => {
-    const testSetup = () => {
+    const testSetup = async () => {
         logger.info('Test setup');
+        const cmd = dtm.createSetupCMD();
+        logger.info('Command: ', Buffer(cmd));
+        const response = await dtm.sendCMD(cmd);
+        logger.info('Response: ', response);
     };
-    const testEnd = () => {
+    const testEnd = async () => {
         logger.info('Test end');
+        const cmd = dtm.createEndCMD();
+        logger.info('Command: ', Buffer(cmd));
+        const response = await dtm.sendCMD(cmd);
+        logger.info('Response: ', response);
+    };
+    const transmitterTest = async () => {
+        logger.info('Transmitter test');
+        const cmd = dtm.createTransmitterCMD();
+        logger.info('Command: ', Buffer(cmd));
+        const response = await dtm.sendCMD(cmd);
+        logger.info('Response: ', response);
+    };
+    const receiverTest = async () => {
+        logger.info('Recever test');
+        const cmd = dtm.createReceiverCMD();
+        logger.info('Command: ', Buffer(cmd));
+        const response = await dtm.sendCMD(cmd);
+        logger.info('Response: ', response);
     };
     return (
         <div className="app-main-view">
             <Button
-                onClick = {testSetup}
+                onClick = { testSetup }
             >
                 Test setup
             </Button>
-            <Button>Test end</Button>
-            <Button>Transmitter test</Button>
-            <Button>Receiver test</Button>
+            <Button
+                onClick = { testEnd }
+            >
+                Test end
+            </Button>
+            <Button
+                onClick = { transmitterTest }
+            >
+                Transmitter test
+            </Button>
+            <Button
+                onClick = { receiverTest }
+            >
+                Receiver test
+            </Button>
         </div>
     )
 };
 
 AppMainView.propTypes = {
-    dtm: PropTypes.object.isRequired,
+    dtm: PropTypes.object,
 };
 
 export default AppMainView;

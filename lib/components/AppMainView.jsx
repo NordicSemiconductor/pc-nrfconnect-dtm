@@ -38,67 +38,67 @@ import React from 'react';
 import { Button, FormGroup, ControlLabel, FormControl, InputGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
+import { DTM_FREQUENCY } from 'nrf-dtm-js';
 
 class AppMainView extends React.Component {
     constructor(props) {
         super(props);
-        const { dtm } = this.props;
         this.state = {
             frequency: 2402
         };
-
-        this.testSetup.bind(this);
-        this.testEnd.bind(this);
-        this.transmitterTest.bind(this);
-        this.receiverTest.bind(this);
     }
-
-    async testSetup () {
-        logger.info('Test setup');
-        const cmd = dtm.createSetupCMD();
-        logger.info('Command: ', Buffer(cmd));
-        const response = await dtm.sendCMD(cmd);
-        logger.info('Response: ', response);
-    };
-
-    async testEnd () {
-        logger.info('Test end');
-        const cmd = dtm.createEndCMD();
-        logger.info('Command: ', Buffer(cmd));
-        const response = await dtm.sendCMD(cmd);
-        logger.info('Response: ', response);
-    };
-
-    async transmitterTest() {
-        logger.info('Transmitter test');
-        const cmd = dtm.createTransmitterCMD();
-        logger.info('Command: ', Buffer(cmd));
-        const response = await dtm.sendCMD(cmd);
-        logger.info('Response: ', response);
-    };
-
-    async receiverTest() {
-        logger.info('Recever test');
-        const cmd = dtm.createReceiverCMD();
-        logger.info('Command: ', Buffer(cmd));
-        const response = await dtm.sendCMD(cmd);
-        logger.info('Response: ', response);
-    };
 
     onFrequencyChange(event) {
         this.setState({ frequency: event.target.value });
     };
 
     render() {
+        console.log(this.props);
+        const { dtm } = this.props;
+        const testSetup = async () => {
+            logger.info('Test setup');
+            const cmd = dtm.createSetupCMD();
+            logger.info('Command: ', Buffer(cmd));
+            const response = await dtm.sendCMD(cmd);
+            logger.info('Response: ', response);
+        };
+
+        const testEnd = async () => {
+            logger.info('Test end');
+            const cmd = dtm.createEndCMD();
+            logger.info('Command: ', Buffer(cmd));
+            const response = await dtm.sendCMD(cmd);
+            logger.info('Response: ', response);
+            const count = response.readUIntBE(0, 2) - Buffer.from([0x80, 0x00]).readUIntBE(0, 2)
+            console.log(count);
+            logger.info(`Packet count: ${count}`);
+        };
+
+        const transmitterTest = async () => {
+            logger.info('Transmitter test');
+            const cmd = dtm.createTransmitterCMD(DTM_FREQUENCY(this.state.frequency));
+            logger.info('Command: ', Buffer(cmd));
+            const response = await dtm.sendCMD(cmd);
+            logger.info('Response: ', response);
+        };
+
+        const receiverTest = async () => {
+            logger.info('Recever test');
+            const cmd = dtm.createReceiverCMD(DTM_FREQUENCY(this.state.frequency));
+            logger.info('Command: ', Buffer(cmd));
+            const response = await dtm.sendCMD(cmd);
+            logger.info('Response: ', response);
+        };
+
         return (
             <div className="app-main-view">
                 <Button
-                    onClick = { this.testSetup }
+                    onClick = { testSetup }
                 >
                     Test setup
                 </Button>
                 <Button
-                    onClick = { this.testEnd }
+                    onClick = { testEnd }
                 >
                     Test end
                 </Button>
@@ -111,12 +111,12 @@ class AppMainView extends React.Component {
                 </FormGroup>
 
                 <Button
-                    onClick = { this.transmitterTest }
+                    onClick = { transmitterTest }
                 >
                     Transmitter test
                 </Button>
                 <Button
-                    onClick = { this.receiverTest }
+                    onClick = { receiverTest }
                 >
                     Receiver test
                 </Button>

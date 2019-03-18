@@ -35,66 +35,94 @@
  */
 
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, FormGroup, ControlLabel, FormControl, InputGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
-import { DTM } from 'nrf-dtm-js';
 
-const AppMainView = ({
-    dtm,
-}) => {
-    const testSetup = async () => {
+class AppMainView extends React.Component {
+    constructor(props) {
+        super(props);
+        const { dtm } = this.props;
+        this.state = {
+            frequency: 2402
+        };
+
+        this.testSetup.bind(this);
+        this.testEnd.bind(this);
+        this.transmitterTest.bind(this);
+        this.receiverTest.bind(this);
+    }
+
+    async testSetup () {
         logger.info('Test setup');
         const cmd = dtm.createSetupCMD();
         logger.info('Command: ', Buffer(cmd));
         const response = await dtm.sendCMD(cmd);
         logger.info('Response: ', response);
     };
-    const testEnd = async () => {
+
+    async testEnd () {
         logger.info('Test end');
         const cmd = dtm.createEndCMD();
         logger.info('Command: ', Buffer(cmd));
         const response = await dtm.sendCMD(cmd);
         logger.info('Response: ', response);
     };
-    const transmitterTest = async () => {
+
+    async transmitterTest() {
         logger.info('Transmitter test');
         const cmd = dtm.createTransmitterCMD();
         logger.info('Command: ', Buffer(cmd));
         const response = await dtm.sendCMD(cmd);
         logger.info('Response: ', response);
     };
-    const receiverTest = async () => {
+
+    async receiverTest() {
         logger.info('Recever test');
         const cmd = dtm.createReceiverCMD();
         logger.info('Command: ', Buffer(cmd));
         const response = await dtm.sendCMD(cmd);
         logger.info('Response: ', response);
     };
-    return (
-        <div className="app-main-view">
-            <Button
-                onClick = { testSetup }
-            >
-                Test setup
-            </Button>
-            <Button
-                onClick = { testEnd }
-            >
-                Test end
-            </Button>
-            <Button
-                onClick = { transmitterTest }
-            >
-                Transmitter test
-            </Button>
-            <Button
-                onClick = { receiverTest }
-            >
-                Receiver test
-            </Button>
-        </div>
-    )
+
+    onFrequencyChange(event) {
+        this.setState({ frequency: event.target.value });
+    };
+
+    render() {
+        return (
+            <div className="app-main-view">
+                <Button
+                    onClick = { this.testSetup }
+                >
+                    Test setup
+                </Button>
+                <Button
+                    onClick = { this.testEnd }
+                >
+                    Test end
+                </Button>
+
+                <FormGroup>
+                    <ControlLabel>Frequency (2402 - 2480):</ControlLabel>
+                    <InputGroup>
+                        <FormControl value={ this.state.frequency } onChange={ this.onFrequencyChange.bind(this) } />
+                    </InputGroup>
+                </FormGroup>
+
+                <Button
+                    onClick = { this.transmitterTest }
+                >
+                    Transmitter test
+                </Button>
+                <Button
+                    onClick = { this.receiverTest }
+                >
+                    Receiver test
+                </Button>
+            </div>
+        );
+    }
 };
 
 AppMainView.propTypes = {

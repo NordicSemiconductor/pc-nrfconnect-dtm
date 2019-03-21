@@ -40,7 +40,7 @@
     "react-bootstrap-slider": "2.1.4",
     "electron-store": "^1.2.0",
     "immutable": "^4.0.0-rc.12",
-    "nrf-dtm-js": "git+https://github.com/chunfantasy/nrf-dtm-js.git"
+    "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js.git"
   },
   "bundledDependencies": [
     "electron-store"

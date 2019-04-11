@@ -34,30 +34,36 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record, List } from 'immutable';
-import * as deviceActions from '../actions/deviceActions';
+import React from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
-const InitialState = new Record({
-    serialNumber: undefined,
-    dtm: undefined,
-});
+import * as SettingsActions from '../actions/settingsActions';
 
-export default function target(state = new InitialState(), action) {
-    //logger.info("deviceReducer")
-    //logger.info(`${action.type}`)
-    switch (action.type) {
-        case 'DEVICE_SELECTED':
-            return state
-                .set('serialNumber', action.device.serialNumber);
-
-        case 'DEVICE_DESELECTED':
-            return new InitialState();
-
-        case deviceActions.DTM_INIT_ACTION:
-            return state
-                .set('dtm', action.dtm);
-
-        default:
+class ToggleTestModeView extends React.Component {
+    constructor(props) {
+        super(props);
     }
-    return state;
-}
+    selectionButton(type, text) {
+        return <Button onClick={() => this.props.onButtonClicked(type)} active={this.props.selected===type}>{text}</Button>
+    }
+
+    render() {
+        logger.info("Render toggle buttons")
+        logger.info(`selected prop ${this.props.selected}`)
+        return (
+            <div className="app-toggle-mode-view">
+            <ButtonGroup>
+                {this.selectionButton(SettingsActions.DTM_TEST_MODE_BUTTON.transmitter, "Transmitter")}
+                {this.selectionButton(SettingsActions.DTM_TEST_MODE_BUTTON.receiver, "Receiver")}
+            </ButtonGroup>
+            </div>
+        );
+    }
+};
+
+ToggleTestModeView.propTypes = {
+    selected: PropTypes.number.isRequired,
+};
+
+export default ToggleTestModeView;

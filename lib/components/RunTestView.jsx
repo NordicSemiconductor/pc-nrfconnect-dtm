@@ -34,30 +34,46 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record, List } from 'immutable';
-import * as deviceActions from '../actions/deviceActions';
+import React from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
-const InitialState = new Record({
-    serialNumber: undefined,
-    dtm: undefined,
-});
+import * as TestActions from '../actions/testActions';
 
-export default function target(state = new InitialState(), action) {
-    //logger.info("deviceReducer")
-    //logger.info(`${action.type}`)
-    switch (action.type) {
-        case 'DEVICE_SELECTED':
-            return state
-                .set('serialNumber', action.device.serialNumber);
-
-        case 'DEVICE_DESELECTED':
-            return new InitialState();
-
-        case deviceActions.DTM_INIT_ACTION:
-            return state
-                .set('dtm', action.dtm);
-
-        default:
+class RunTestView extends React.Component {
+    constructor(props) {
+        super(props);
     }
-    return state;
-}
+
+    startTests() {
+        this.props.startTests(this.props.dtm, this.props.settings)
+    }
+    endTests() {
+        this.props.endTests(this.props.dtm)
+    }
+
+
+    render() {
+        let eventButtonPlaceholder;
+        if (this.props.testingState === TestActions.TEST_STATES.idle) {
+            eventButtonPlaceholder = <Button onClick={() => this.startTests()}>Start Tests</Button>
+        } else {
+            if(this.props.testingState === TestActions.TEST_STATES.running){
+                eventButtonPlaceholder = <Button onClick={() => this.endTests()}>Stop Tests</Button>
+            } else {
+                eventButtonPlaceholder = <Button onClick={() => this.endTests()} disabled={true}>Stop Tests</Button>
+            }
+
+        }
+        return (
+            <div className="app-run-tests-btn-view">
+                {eventButtonPlaceholder}
+            </div>
+        );
+    }
+};
+
+RunTestView.propTypes = {
+};
+
+export default RunTestView;

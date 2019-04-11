@@ -34,30 +34,38 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record, List } from 'immutable';
-import * as deviceActions from '../actions/deviceActions';
+import React from 'react';
+import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
-const InitialState = new Record({
-    serialNumber: undefined,
-    dtm: undefined,
-});
+import * as SettingsActions from '../actions/settingsActions';
 
-export default function target(state = new InitialState(), action) {
-    //logger.info("deviceReducer")
-    //logger.info(`${action.type}`)
-    switch (action.type) {
-        case 'DEVICE_SELECTED':
-            return state
-                .set('serialNumber', action.device.serialNumber);
-
-        case 'DEVICE_DESELECTED':
-            return new InitialState();
-
-        case deviceActions.DTM_INIT_ACTION:
-            return state
-                .set('dtm', action.dtm);
-
-        default:
+class SingleChannelView extends React.Component {
+    constructor(props) {
+        super(props);
     }
-    return state;
-}
+
+    eventToChannelNumber(evt) {
+        return Math.max(0, Math.min( 39, evt.target.value));
+    }
+
+    render() {
+        logger.info(`Rendering.. ${this.props.channel}`)
+        return (
+            <div className="app-single-channel-view">
+            <form>
+            <FormGroup controlId="formControlsSelect">
+              <ControlLabel>Channel</ControlLabel>
+              <FormControl onChange={(evt) => this.props.onChannelChanged(this.eventToChannelNumber(evt))} componentClass="input" value={this.props.channel} min={0} max={39} type="number" bsSize="sm" />
+            </FormGroup>
+            </form>
+            </div>
+        );
+    }
+};
+
+SingleChannelView.propTypes = {
+    channel: PropTypes.number.isRequired,
+};
+
+export default SingleChannelView;

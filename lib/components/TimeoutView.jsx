@@ -35,47 +35,59 @@
  */
 
 import React from 'react';
-import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
+import { ControlLabel, FormControl, FormGroup, Panel, Checkbox } from 'react-bootstrap';
+import ReactBootstrapSlider from 'react-bootstrap-slider';
 import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
 import * as SettingsActions from '../actions/settingsActions';
+import * as Constants from '../utils/constants';
+import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js';
 
-class SweepChannelView extends React.Component {
+class TransmitSetupView extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            enableTimeout: this.props.timeout !== 0,
+            timeoutValue: this.props.timeout === 0? 1000: this.props.timeout,
+        }
+    }
+    toggleTimeout() {
+        if (this.state.enableTimeout) {
+            this.props.onTimeoutChanged(0);
+        } else {
+            this.props.onTimeoutChanged(this.state.timeoutValue);
+        }
+
+        this.setState((prevState, props) => {
+            return {enableTimeout: !prevState.enableTimeout};
+        });
     }
 
-    eventToChannelNumber(evt) {
-        return Math.max(0, Math.min( 39, evt.target.value));
+    updateTimeout(time) {
+        this.props.onTimeoutChanged(time);
+        this.setState((prevState, props) => {
+            return {timeoutValue: time};
+        });
     }
 
     render() {
         return (
-            <div className="app-single-channel-view">
-            <form>
-            <FormGroup controlId="formChannelLowSelect">
-              <ControlLabel>Channel Low</ControlLabel>
-              <FormControl onChange={(evt) => this.props.onChannelLowChanged(this.eventToChannelNumber(evt))} componentClass="input" value={this.props.channelLow} min={0} max={39} type="number" bsSize="sm" />
-            </FormGroup>
-            <FormGroup controlId="formChannelHighSelect">
-              <ControlLabel>Channel High</ControlLabel>
-              <FormControl onChange={(evt) => this.props.onChannelHighChanged(this.eventToChannelNumber(evt))} componentClass="input" value={this.props.channelHigh} min={0} max={39} type="number" bsSize="sm" />
-            </FormGroup>
-
-            <FormGroup controlId="formSweepTimeSelect">
-              <ControlLabel>Sweep time (ms)</ControlLabel>
-              <FormControl onChange={evt => this.props.onSweepTimeChanged(evt.target.value)} componentClass="input" value={this.props.sweepTime}  min={20} step={10} type="number" bsSize="sm" />
-            </FormGroup>
-            </form>
+            <div className="app-timeout-setup-view">
+                <Checkbox checked={this.state.enableTimeout} onClick={() => this.toggleTimeout()}>Enable test timeout</Checkbox>
+                <Panel collapsible
+                expanded={this.state.enableTimeout}>
+                    <FormGroup controlId="formTimeoutSelect">
+                      <ControlLabel>Timeout (ms)</ControlLabel>
+                      <FormControl onChange={evt => this.updateTimeout(evt.target.value)}
+                      componentClass="input" value={this.state.timeoutValue}  min={20} step={10} type="number" bsSize="sm" />
+                    </FormGroup>
+                </Panel>
             </div>
         );
     }
 };
 
-SweepChannelView.propTypes = {
-    channelLow: PropTypes.number.isRequired,
-    channelHigh: PropTypes.number.isRequired,
-    sweepTime: PropTypes.number.isRequired,
+TransmitSetupView.propTypes = {
 };
 
-export default SweepChannelView;
+export default TransmitSetupView;

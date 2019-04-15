@@ -34,22 +34,53 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
-import SweepChannelView from '../components/SweepChannelView';
+import React from 'react';
+import { Button, FormGroup, ControlLabel, FormControl, InputGroup, Dropdown, SplitButton } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { logger } from 'nrfconnect/core';
+//import { DTM_FREQUENCY, DTM_PKT } from 'nrf-dtm-js';
+import { DTM } from 'nrf-dtm-js';
 import * as SettingsActions from '../actions/settingsActions';
+import ToggleTestModeView from '../containers/toggleTestModeView';
+import ChannelView from '../containers/channelView';
+import RunTestView from '../containers/runTestView';
+import TransmitSetupView from '../containers/transmitSetupView';
+import TimeoutView from '../containers/timeoutView';
+
+class AppSidePanelView extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let transmitSetupView;
+        if (this.props.selectedTestMode === SettingsActions.DTM_TEST_MODE_BUTTON.transmitter) {
+            transmitSetupView = <TransmitSetupView />
+        }
+        return (
+            <div className={this.props.cssClass}>
+
+                <RunTestView />
+                <br />
+                <ToggleTestModeView />
+                <TimeoutView />
+
+                <ChannelView />
+                {transmitSetupView}
 
 
-export default connect(
-    (state, props) => ({
-        ...props,
-        channelLow: state.app.settings.lowChannel,
-        channelHigh: state.app.settings.highChannel,
-        sweepTime: state.app.settings.sweepTime,
-    }),
-    (dispatch, props) => ({
-        ...props,
-        onChannelLowChanged: channel => dispatch(SettingsActions.lowChannelChanged(channel)),
-        onChannelHighChanged: channel => dispatch(SettingsActions.highChannelChanged(channel)),
-        onSweepTimeChanged: time => dispatch(SettingsActions.sweepTimeChanged(time)),
-    }),
-)(SweepChannelView);
+
+
+
+
+            </div>
+        );
+    }
+};
+
+AppSidePanelView.propTypes = {
+    dtm: PropTypes.object,
+    selectedTestMode: PropTypes.number.isRequired,
+};
+
+export default AppSidePanelView;

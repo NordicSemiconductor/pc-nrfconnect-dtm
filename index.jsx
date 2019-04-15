@@ -36,6 +36,7 @@
 
 import React from 'react';
 import AppMainView from './lib/containers/appMainView';
+import AppSidePanelView from './lib/containers/appSidePanelView';
 import * as deviceActions from './lib/actions/deviceActions';
 import appReducer from './lib/reducers';
 import { logger } from 'nrfconnect/core';
@@ -59,7 +60,9 @@ export default {
     ),
 
     decorateSidePanel: SidePanel => () => (
-        <SidePanel cssClass="side-panel" />
+        <SidePanel>
+        <AppSidePanelView cssClass="side-panel" />
+        </SidePanel>
     ),
 
     reduceApp: appReducer,

@@ -49,8 +49,6 @@ class ToggleTestModeView extends React.Component {
     }
 
     render() {
-        logger.info("Render toggle buttons")
-        logger.info(`selected prop ${this.props.selected}`)
         return (
             <div className="app-toggle-mode-view">
             <ButtonGroup>

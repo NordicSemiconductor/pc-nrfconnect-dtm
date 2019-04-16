@@ -53,8 +53,6 @@ class AppMainView extends React.Component {
     constructor(props) {
         super(props);
         const { dtm } = this.props;
-        logger.info("dtm")
-        logger.info(`Dtm ${DTM.DTM_PKT.PAYLOAD_PRBS9}`)
 
     }
 

@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2017, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,54 +34,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@import './controPanel.less';
-@import './appMainView.less';
-@import './appIcons.less';
+import { connect } from 'react-redux';
+import OtherSettingsView from '../components/OtherSettingsView';
+import * as SettingsActions from '../actions/settingsActions';
 
-.main-view, .side-panel {
-    padding: 10px 15px;
-}
 
-.core-main-layout > div:nth-child(2) {
-    overflow-y: visible;
-}
-
-.app-main-view {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    flex-direction: column;
-    padding: 0px;
-}
-
-.control-panel > div:nth-child(1) {
-    height: 100%;
-
-    button {
-        display: block;
-        width: 100%;
-        text-align: left;
-
-        span.glyphicon {
-            margin-right: 15px;
-        }
-    }
-}
-
-.button-group-view {
-    .btn-group-vertical {
-        width: 100%;
-    }
-}
-
-.btn:not(.btn-primary) .glyphicon {
-    color: #0080c0;
-}
-.btn:not(.core-btn):not(.btn-xs):not(.transparent) .glyphicon {
-    margin-right: 15px;
-}
-
-.panel-body {
-    padding: 15px;
-    background-color: #f5f5f5;
-}
+export default connect(
+    (state, props) => ({
+        ...props,
+        phy: state.app.settings.phy,
+        modulation: state.app.settings.modulationMode,
+        boardType: state.app.device.board,
+    }),
+    (dispatch, props) => ({
+        ...props,
+        onPhyUpdated: value => dispatch(SettingsActions.phyChanged(value)),
+        onModulationUpdated: value => dispatch(SettingsActions.modulationChanged(value)),
+    }),
+)(OtherSettingsView);

@@ -56,12 +56,12 @@ class RunTestView extends React.Component {
     render() {
         let eventButtonPlaceholder;
         if (this.props.testingState === TestActions.TEST_STATES.idle) {
-            eventButtonPlaceholder = <Button onClick={() => this.startTests()}>Start Tests</Button>
+            eventButtonPlaceholder = <Button onClick={() => this.startTests()}>Start</Button>
         } else {
             if(this.props.testingState === TestActions.TEST_STATES.running){
-                eventButtonPlaceholder = <Button onClick={() => this.endTests()}>Stop Tests</Button>
+                eventButtonPlaceholder = <Button onClick={() => this.endTests()}>Stop</Button>
             } else {
-                eventButtonPlaceholder = <Button onClick={() => this.endTests()} disabled={true}>Stop Tests</Button>
+                eventButtonPlaceholder = <Button onClick={() => this.endTests()} disabled={true}>Stop</Button>
             }
 
         }

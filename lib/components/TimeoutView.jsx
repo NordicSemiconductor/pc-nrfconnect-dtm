@@ -36,7 +36,6 @@
 
 import React from 'react';
 import { ControlLabel, FormControl, FormGroup, Panel, Checkbox } from 'react-bootstrap';
-import ReactBootstrapSlider from 'react-bootstrap-slider';
 import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
 import * as SettingsActions from '../actions/settingsActions';
@@ -49,6 +48,7 @@ class TransmitSetupView extends React.Component {
         this.state = {
             enableTimeout: this.props.timeout !== 0,
             timeoutValue: this.props.timeout === 0? 1000: this.props.timeout,
+            open: true,
         }
     }
     toggleTimeout() {
@@ -70,16 +70,25 @@ class TransmitSetupView extends React.Component {
         });
     }
 
+    togglePanel() {
+        this.setState((prevState, props) => {
+            return {open: !prevState.open};
+        });
+    }
+
     render() {
         return (
             <div className="app-timeout-setup-view">
-                <Checkbox checked={this.state.enableTimeout} onClick={() => this.toggleTimeout()}>Enable test timeout</Checkbox>
                 <Panel collapsible
-                expanded={this.state.enableTimeout}>
+                expanded={this.state.open}
+                header='Timeout settings'
+                onSelect={() => this.togglePanel()}>
+                    <Checkbox checked={this.state.enableTimeout} onClick={() => this.toggleTimeout()}>Enable</Checkbox>
                     <FormGroup controlId="formTimeoutSelect">
                       <ControlLabel>Timeout (ms)</ControlLabel>
                       <FormControl onChange={evt => this.updateTimeout(evt.target.value)}
-                      componentClass="input" value={this.state.timeoutValue}  min={20} step={10} type="number" bsSize="sm" />
+                      componentClass="input" value={this.state.timeoutValue}  min={20} step={10} type="number" bsSize="sm"
+                      disabled={!this.state.enableTimeout}/>
                     </FormGroup>
                 </Panel>
             </div>

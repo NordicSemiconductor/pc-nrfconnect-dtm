@@ -73,7 +73,7 @@ export default {
         switch (action.type) {
             case 'DEVICE_SELECTED': {
                 logger.info('Device selected');
-                dispatch(deviceActions.selectDevice(action.device.serialport.comName));
+                dispatch(deviceActions.selectDevice(action.device.serialport.comName, action.device.boardVersion));
                 break;
             }
 
@@ -85,5 +85,13 @@ export default {
         }
 
         next(action);
-    },
+    },/*
+    config: {
+            deviceSetup: {
+                jprog: {
+
+                },
+                needSerialport: false,
+            },
+    },*/
 };

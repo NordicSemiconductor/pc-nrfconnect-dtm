@@ -37,7 +37,6 @@
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { logger } from 'nrfconnect/core';
 import * as SettingsActions from '../actions/settingsActions';
 
 class ToggleChannelModeView extends React.Component {
@@ -45,20 +44,21 @@ class ToggleChannelModeView extends React.Component {
         super(props);
     }
     selectionButton(type, text) {
-        return <Button onClick={() => this.props.onButtonClicked(type)} active={this.props.selected===type}>{text}</Button>
+        return <Button onClick={() => this.props.onButtonClicked(type)}
+            active={this.props.selected === type}>{text}</Button>;
     }
 
     render() {
         return (
             <div className="app-toggle-mode-view">
-            <ButtonGroup>
-                {this.selectionButton(SettingsActions.DTM_CHANNEL_MODE.single, "Single Channel")}
-                {this.selectionButton(SettingsActions.DTM_CHANNEL_MODE.sweep, "Sweep")}
-            </ButtonGroup>
+                <ButtonGroup>
+                    {this.selectionButton(SettingsActions.DTM_CHANNEL_MODE.single, 'Single')}
+                    {this.selectionButton(SettingsActions.DTM_CHANNEL_MODE.sweep, 'Sweep')}
+                </ButtonGroup>
             </div>
         );
     }
-};
+}
 
 ToggleChannelModeView.propTypes = {
     selected: PropTypes.number.isRequired,

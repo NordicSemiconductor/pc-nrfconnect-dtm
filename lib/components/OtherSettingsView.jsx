@@ -35,118 +35,93 @@
  */
 
 import React from 'react';
-import { ControlLabel, FormControl, FormGroup, Panel, MenuItem, DropdownButton } from 'react-bootstrap';
-import Slider from 'react-rangeslider';
-import 'react-rangeslider/lib/index.css';
+import { Panel, DropdownButton, MenuItem } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
 import * as SettingsActions from '../actions/settingsActions';
 import { fromPCA } from '../utils/boards';
-import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js';
+import { DTM, DTM_PHY_STRING, DTM_MODULATION_STRING } from 'nrf-dtm-js';
 
-class TransmitSetupView extends React.Component {
+class OtherSettingsView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             open:true,
         }
     }
+
     togglePanel() {
         this.setState((prevState, props) => {
             return {open: !prevState.open};
         });
     }
-    packetTypeView() {
-        let items = Object.keys(DTM.DTM_PKT).map((keyname, idx) => (
+
+    phyTypeView() {
+        const compatibility = fromPCA(this.props.boardType);
+        let items = Object.keys(compatibility.phy).map((keyname, idx) => (
                 <MenuItem
-                eventKey={idx}
-                onSelect={evt => this.props.bitpatternUpdated(evt)}>
-                    {DTM_PKT_STRING[idx]}
+                eventKey={keyname}
+                onSelect={evt => this.props.onPhyUpdated(compatibility.phy[evt])}>
+                    {DTM_PHY_STRING[compatibility.phy[keyname]]}
                 </MenuItem>
             )
         );
         return (
             <div>
-                <label>Transmit packet type</label><br />
+                <label>PHY</label><br />
                 <DropdownButton
 
-                    title={DTM_PKT_STRING[this.props.pkgType]}
-                    id={`dropdown-variants-packet-type`}
+                    title={DTM_PHY_STRING[this.props.phy]}
+                    id={`dropdown-variants-phy-type`}
                     >
                     {items}
                 </DropdownButton>
             </div>
         );
     }
-    packetLengthView() {
-        const lengthChanged = evt => {
-            const length = Math.min(255, Math.max(0, evt.target.value));
-            this.props.lengthUpdated(length);
-        }
+
+    modulationTypeView() {
+        let items = Object.keys(DTM_MODULATION_STRING).map((keyname, idx) => (
+                <MenuItem
+                eventKey={keyname}
+                onSelect={evt => this.props.onModulationUpdated(evt)}>
+                    {DTM_MODULATION_STRING[keyname]}
+                </MenuItem>
+            )
+        );
         return (
             <div>
-                <FormGroup controlId="formPacketLength">
-                  <ControlLabel>Packet length (bytes)</ControlLabel>
-                  <FormControl
-                    onChange={lengthChanged}
-                    disabled={this.props.pkgType === DTM.DTM_PKT.PAYLOAD_VENDOR}
-                    componentClass="input" value={this.props.packetLength}
-                    min={1}
-                    max={255}
-                    step={1}
-                    type="number"
-                    bsSize="sm"
-                  />
-                </FormGroup>
+                <label>Modulation Index</label><br />
+                <DropdownButton
+
+                    title={DTM_MODULATION_STRING[this.props.modulation]}
+                    id={`dropdown-variants-phy-type`}
+                    >
+                    {items}
+                </DropdownButton>
             </div>
         );
+
     }
 
-    txPowerView() {
-        const compatibility = fromPCA(this.props.boardType);
-        const maxDbmRangeValue = compatibility.txPower.length - 1;
-
-        const label = {};
-        label[0] = `${compatibility.txPower[0]} dBm`;
-        label[maxDbmRangeValue] = `${compatibility.txPower[maxDbmRangeValue]} dBm`;
-        return (
-            <div>
-            <label>TX Power</label><br />
-            <Slider
-                value={this.props.txPowerIdx}
-                onChange={value => this.props.txPowerUpdated(value)}
-                max={maxDbmRangeValue}
-                min={0}
-                labels={label}
-                disabled={null}
-                format={i => `${compatibility.txPower[i]} dBm`}
-            />
-            </div>
-        );
-    }
-
-// tooltip=
     render() {
+
         return (
-            <div className="app-transmit-setup-view">
-            <Panel collapsible
-            expanded={this.state.open}
-            header='Transmitter settings'
-            onSelect={() => this.togglePanel()}>
-            {this.txPowerView()}
-            <br /><br />
-            {this.packetTypeView()}
-            <br />
-            {this.packetLengthView()}
+            <div>
 
-
-            </Panel>
+                <Panel collapsible
+                expanded={this.state.open}
+                header='Other settings'
+                onSelect={() => this.togglePanel()}>
+                {this.phyTypeView()}
+                {this.modulationTypeView()}
+                </Panel>
             </div>
         );
     }
 };
 
-TransmitSetupView.propTypes = {
+OtherSettingsView.propTypes = {
 };
 
-export default TransmitSetupView;
+export default OtherSettingsView;

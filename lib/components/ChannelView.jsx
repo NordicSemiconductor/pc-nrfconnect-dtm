@@ -36,7 +36,8 @@
 
 import React from 'react';
 import { FormControl, FormGroup, ControlLabel, Panel  } from 'react-bootstrap';
-import ReactBootstrapSlider from 'react-bootstrap-slider';
+import Slider from 'react-rangeslider';
+import 'react-rangeslider/lib/index.css';
 import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
 import * as SettingsActions from '../actions/settingsActions';
@@ -50,39 +51,26 @@ class ChannelView extends React.Component {
         }
     }
 
-    eventToChannelNumber(evt) {
-        logger.info(`Event ${evt.target.value}`)
-        return Math.max(0, Math.min( 39, evt.target.value));
-    }
-
     multiChannelView() {
-
-/*
-        return (
-            <div>
-            <FormGroup controlId="formChannelLowSelect">
-              <ControlLabel>Channel Low</ControlLabel>
-              <FormControl onChange={(evt) => this.props.onChannelLowChanged(this.eventToChannelNumber(evt))}
-              componentClass="input" value={this.props.channelLow} min={0} max={39} type="number" bsSize="sm" />
-            </FormGroup>
-            <FormGroup controlId="formChannelHighSelect">
-              <ControlLabel>Channel High</ControlLabel>
-              <FormControl onChange={(evt) => this.props.onChannelHighChanged(this.eventToChannelNumber(evt))}
-              componentClass="input" value={this.props.channelHigh} min={0} max={39} type="number" bsSize="sm" />
-            </FormGroup>
-            </div>
-        )*/
         return (
             <div className="app-multi-channel-view">
 
-            <label>Channel</label><br />
-            <ReactBootstrapSlider
-                value={[this.props.channel]}
-                slideStop={event => this.props.onChannelChanged(this.eventToChannelNumber(event))}
+            <label>Channel Low</label><br />
+            <Slider
+                value={this.props.channelLow}
+                onChange={value => this.props.onChannelLowChanged(Math.min(value, this.props.channelHigh))}
                 max={39}
                 min={0}
-                ticks={[0, 39]}
-                ticks_labels={['0', '39']}
+                labels={{0:'0', 39:'39'}}
+                disabled={null}
+            />
+            <label>Channel High</label><br />
+            <Slider
+                value={this.props.channelHigh}
+                onChange={value => this.props.onChannelHighChanged(Math.max(value, this.props.channelLow))}
+                max={39}
+                min={0}
+                labels={{0:'0', 39:'39'}}
                 disabled={null}
             />
             <form>
@@ -99,27 +87,15 @@ class ChannelView extends React.Component {
     }
 
     singleChannelView() {
-        /*return (
-            <div className="app-single-channel-view">
-            <form>
-            <FormGroup controlId="formControlsSelect">
-              <ControlLabel>Channel</ControlLabel>
-              <FormControl onChange={(evt) => this.props.onChannelChanged(this.eventToChannelNumber(evt))}
-              componentClass="input" value={this.props.channel} min={0} max={39} type="number" bsSize="sm" />
-            </FormGroup>
-            </form>
-            </div>
-        );*/
         return (
             <div>
             <label>Channel</label><br />
-            <ReactBootstrapSlider
+            <Slider
                 value={this.props.channel}
-                slideStop={event => this.props.onChannelChanged(this.eventToChannelNumber(event))}
+                onChange={value => this.props.onChannelChanged(value)}
                 max={39}
                 min={0}
-                ticks={[0, 39]}
-                ticks_labels={['0', '39']}
+                labels={{0:'0', 39:'39'}}
                 disabled={null}
             />
             </div>
@@ -145,7 +121,7 @@ class ChannelView extends React.Component {
 
                 <Panel collapsible
                 expanded={this.state.open}
-                header='Select channels'
+                header='Channel settings'
                 onSelect={() => this.togglePanel()}>
                 <ToggleChannelModeView />
                 {view}

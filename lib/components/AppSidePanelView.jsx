@@ -46,6 +46,7 @@ import ChannelView from '../containers/channelView';
 import RunTestView from '../containers/runTestView';
 import TransmitSetupView from '../containers/transmitSetupView';
 import TimeoutView from '../containers/timeoutView';
+import OtherSettingsView from '../containers/otherSettingsView';
 
 class AppSidePanelView extends React.Component {
     constructor(props) {
@@ -63,10 +64,12 @@ class AppSidePanelView extends React.Component {
                 <RunTestView />
                 <br />
                 <ToggleTestModeView />
-                <TimeoutView />
+
 
                 <ChannelView />
                 {transmitSetupView}
+                <OtherSettingsView />
+                <TimeoutView />
 
 
 

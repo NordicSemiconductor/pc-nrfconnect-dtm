@@ -35,12 +35,8 @@
  */
 
 import React from 'react';
-import { Button, FormGroup, ControlLabel, FormControl, InputGroup, Dropdown, SplitButton } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { logger } from 'nrfconnect/core';
-//import { DTM_FREQUENCY, DTM_PKT } from 'nrf-dtm-js';
-import { DTM } from 'nrf-dtm-js';
-import * as SettingsActions from '../actions/settingsActions';
+import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 import ToggleTestModeView from '../containers/toggleTestModeView';
 import ChannelView from '../containers/channelView';
 import RunTestView from '../containers/runTestView';
@@ -48,41 +44,20 @@ import TransmitSetupView from '../containers/transmitSetupView';
 import TimeoutView from '../containers/timeoutView';
 import OtherSettingsView from '../containers/otherSettingsView';
 
-class AppSidePanelView extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let transmitSetupView;
-        if (this.props.selectedTestMode === SettingsActions.DTM_TEST_MODE_BUTTON.transmitter) {
-            transmitSetupView = <TransmitSetupView />
-        }
-        return (
-            <div className={this.props.cssClass}>
-
-                <RunTestView />
-                <br />
-                <ToggleTestModeView />
-
-
-                <ChannelView />
-                {transmitSetupView}
-                <OtherSettingsView />
-                <TimeoutView />
-
-
-
-
-
-
-            </div>
-        );
-    }
-};
+const AppSidePanelView = ({ cssClass, selectedTestMode }) => (
+    <div className={cssClass}>
+        <RunTestView />
+        <br />
+        <ToggleTestModeView />
+        <ChannelView />
+        { selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && <TransmitSetupView /> }
+        <OtherSettingsView />
+        <TimeoutView />
+    </div>
+);
 
 AppSidePanelView.propTypes = {
-    dtm: PropTypes.object,
+    cssClass: PropTypes.string.isRequired,
     selectedTestMode: PropTypes.number.isRequired,
 };
 

@@ -35,11 +35,12 @@
  */
 
 import React from 'react';
+import path from 'path';
+import { logger, getAppDir } from 'nrfconnect/core';
 import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
-import * as deviceActions from './lib/actions/deviceActions';
+import { selectDevice } from './lib/actions/deviceActions';
 import appReducer from './lib/reducers';
-import { logger } from 'nrfconnect/core';
 import './resources/css/index.less';
 
 export default {
@@ -47,10 +48,15 @@ export default {
         selectorTraits: {
             serialport: true,
         },
-    },
-
-    onInit: dispatch => {
-        console.log('init');
+        deviceSetup: {
+            jprog: {
+                nrf52: {
+                    fw: path.resolve(getAppDir(), 'firmware/direct-test-mode-pca10040.hex'),
+                    // fwVersion: 'rssi-fw-1.0.0',
+                    // fwIdAddress: 0x2000,
+                },
+            },
+        },
     },
 
     decorateMainView: MainView => () => (
@@ -61,7 +67,7 @@ export default {
 
     decorateSidePanel: SidePanel => () => (
         <SidePanel>
-        <AppSidePanelView cssClass="side-panel" />
+            <AppSidePanelView cssClass="side-panel" />
         </SidePanel>
     ),
 
@@ -69,29 +75,22 @@ export default {
 
     middleware: store => next => action => {
         const { dispatch } = store;
+        const { type, device } = action;
+        const { serialport, boardVersion } = device;
 
-        switch (action.type) {
-            case 'DEVICE_SELECTED': {
+        switch (type) {
+            case 'DEVICE_SELECTED':
                 logger.info('Device selected');
-                dispatch(deviceActions.selectDevice(action.device.serialport.comName, action.device.boardVersion));
+                dispatch(selectDevice(serialport.comName, boardVersion));
                 break;
-            }
 
-            case 'DEVICE_DESELECTED': {
+            case 'DEVICE_DESELECTED':
+                // no specific close, since all commands sent will open and close the serialport
                 break;
-            }
 
             default:
         }
 
         next(action);
-    },/*
-    config: {
-            deviceSetup: {
-                jprog: {
-
-                },
-                needSerialport: false,
-            },
-    },*/
+    },
 };

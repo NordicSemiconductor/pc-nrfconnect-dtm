@@ -39,7 +39,7 @@
   "dependencies": {
     "electron-store": "^3.2.0",
     "immutable": "^4.0.0-rc.12",
-    "nrf-dtm-js": "git+https://github.com/mathiasap/nrf-dtm-js.git#dtm-wip",
+    "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js",
     "react-rangeslider": "^2.2.0"
   },
   "bundledDependencies": [

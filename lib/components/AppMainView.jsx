@@ -35,53 +35,13 @@
  */
 
 import React from 'react';
-import { Button, FormGroup, ControlLabel, FormControl, InputGroup, Dropdown, SplitButton } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import { logger } from 'nrfconnect/core';
-//import { DTM_FREQUENCY, DTM_PKT } from 'nrf-dtm-js';
-import { DTM } from 'nrf-dtm-js';
-import * as SettingsActions from '../actions/settingsActions';
-import ToggleTestModeView from '../containers/toggleTestModeView';
+// import PropTypes from 'prop-types';
 
-/*import SingleChannelView from '../containers/singleChannelView';
-import SweepChannelView from '../containers/sweepChannelView';*/
-import ChannelView from '../containers/channelView';
-
-import RunTestView from '../containers/runTestView';
-
-class AppMainView extends React.Component {
-    constructor(props) {
-        super(props);
-        const { dtm } = this.props;
-
-    }
-
-
-    render() {
-
-        let channelModePlaceholder;
-        /*if (this.props.channelMode === SettingsActions.DTM_CHANNEL_MODE.single) {
-            channelModePlaceholder = <SingleChannelView />
-        } else {
-            channelModePlaceholder = <SweepChannelView />
-        }*/
-
-
-
-        return (
-            <div className="app-main-view">
-
-
-
-
-            </div>
-        );
-    }
-};
+const AppMainView = () => (
+    <div className="app-main-view" />
+);
 
 AppMainView.propTypes = {
-    dtm: PropTypes.object,
-    selectedTestMode: PropTypes.number.isRequired,
 };
 
 export default AppMainView;

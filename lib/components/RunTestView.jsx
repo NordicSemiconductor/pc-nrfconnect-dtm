@@ -35,63 +35,45 @@
  */
 
 import React from 'react';
-import AppMainView from './lib/containers/appMainView';
-import AppSidePanelView from './lib/containers/appSidePanelView';
-import * as deviceActions from './lib/actions/deviceActions';
-import appReducer from './lib/reducers';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
-import './resources/css/index.less';
+import * as TestActions from '../actions/testActions';
 
-export default {
-    config: {
-        selectorTraits: {
-            serialport: true,
-        },
-    },
+class RunTestView extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
-    onInit: dispatch => {
-        console.log('init');
-    },
+    startTests() {
+        this.props.startTests(this.props.dtm, this.props.settings)
+    }
+    endTests() {
+        this.props.endTests(this.props.dtm)
+    }
 
-    decorateMainView: MainView => () => (
-        <MainView cssClass="main-view">
-            <AppMainView />
-        </MainView>
-    ),
 
-    decorateSidePanel: SidePanel => () => (
-        <SidePanel>
-        <AppSidePanelView cssClass="side-panel" />
-        </SidePanel>
-    ),
-
-    reduceApp: appReducer,
-
-    middleware: store => next => action => {
-        const { dispatch } = store;
-
-        switch (action.type) {
-            case 'DEVICE_SELECTED': {
-                logger.info('Device selected');
-                dispatch(deviceActions.selectDevice(action.device.serialport.comName, action.device.boardVersion));
-                break;
+    render() {
+        let eventButtonPlaceholder;
+        if (this.props.testingState === TestActions.TEST_STATES.idle) {
+            eventButtonPlaceholder = <Button onClick={() => this.startTests()}>Start</Button>
+        } else {
+            if(this.props.testingState === TestActions.TEST_STATES.running){
+                eventButtonPlaceholder = <Button onClick={() => this.endTests()}>Stop</Button>
+            } else {
+                eventButtonPlaceholder = <Button onClick={() => this.endTests()} disabled={true}>Stop</Button>
             }
 
-            case 'DEVICE_DESELECTED': {
-                break;
-            }
-
-            default:
         }
-
-        next(action);
-    },/*
-    config: {
-            deviceSetup: {
-                jprog: {
-
-                },
-                needSerialport: false,
-            },
-    },*/
+        return (
+            <div className="app-run-tests-btn-view">
+                {eventButtonPlaceholder}
+            </div>
+        );
+    }
 };
+
+RunTestView.propTypes = {
+};
+
+export default RunTestView;

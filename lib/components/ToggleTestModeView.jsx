@@ -35,63 +35,33 @@
  */
 
 import React from 'react';
-import AppMainView from './lib/containers/appMainView';
-import AppSidePanelView from './lib/containers/appSidePanelView';
-import * as deviceActions from './lib/actions/deviceActions';
-import appReducer from './lib/reducers';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
-import './resources/css/index.less';
+import * as SettingsActions from '../actions/settingsActions';
 
-export default {
-    config: {
-        selectorTraits: {
-            serialport: true,
-        },
-    },
+class ToggleTestModeView extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    selectionButton(type, text) {
+        return <Button onClick={() => this.props.onButtonClicked(type)} active={this.props.selected===type}>{text}</Button>
+    }
 
-    onInit: dispatch => {
-        console.log('init');
-    },
-
-    decorateMainView: MainView => () => (
-        <MainView cssClass="main-view">
-            <AppMainView />
-        </MainView>
-    ),
-
-    decorateSidePanel: SidePanel => () => (
-        <SidePanel>
-        <AppSidePanelView cssClass="side-panel" />
-        </SidePanel>
-    ),
-
-    reduceApp: appReducer,
-
-    middleware: store => next => action => {
-        const { dispatch } = store;
-
-        switch (action.type) {
-            case 'DEVICE_SELECTED': {
-                logger.info('Device selected');
-                dispatch(deviceActions.selectDevice(action.device.serialport.comName, action.device.boardVersion));
-                break;
-            }
-
-            case 'DEVICE_DESELECTED': {
-                break;
-            }
-
-            default:
-        }
-
-        next(action);
-    },/*
-    config: {
-            deviceSetup: {
-                jprog: {
-
-                },
-                needSerialport: false,
-            },
-    },*/
+    render() {
+        return (
+            <div className="app-toggle-mode-view">
+            <ButtonGroup>
+                {this.selectionButton(SettingsActions.DTM_TEST_MODE_BUTTON.transmitter, "Transmitter")}
+                {this.selectionButton(SettingsActions.DTM_TEST_MODE_BUTTON.receiver, "Receiver")}
+            </ButtonGroup>
+            </div>
+        );
+    }
 };
+
+ToggleTestModeView.propTypes = {
+    selected: PropTypes.number.isRequired,
+};
+
+export default ToggleTestModeView;

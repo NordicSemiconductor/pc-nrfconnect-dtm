@@ -34,64 +34,21 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import AppMainView from './lib/containers/appMainView';
-import AppSidePanelView from './lib/containers/appSidePanelView';
-import * as deviceActions from './lib/actions/deviceActions';
-import appReducer from './lib/reducers';
-import { logger } from 'nrfconnect/core';
-import './resources/css/index.less';
+import { connect } from 'react-redux';
+import OtherSettingsView from '../components/OtherSettingsView';
+import * as SettingsActions from '../actions/settingsActions';
 
-export default {
-    config: {
-        selectorTraits: {
-            serialport: true,
-        },
-    },
 
-    onInit: dispatch => {
-        console.log('init');
-    },
-
-    decorateMainView: MainView => () => (
-        <MainView cssClass="main-view">
-            <AppMainView />
-        </MainView>
-    ),
-
-    decorateSidePanel: SidePanel => () => (
-        <SidePanel>
-        <AppSidePanelView cssClass="side-panel" />
-        </SidePanel>
-    ),
-
-    reduceApp: appReducer,
-
-    middleware: store => next => action => {
-        const { dispatch } = store;
-
-        switch (action.type) {
-            case 'DEVICE_SELECTED': {
-                logger.info('Device selected');
-                dispatch(deviceActions.selectDevice(action.device.serialport.comName, action.device.boardVersion));
-                break;
-            }
-
-            case 'DEVICE_DESELECTED': {
-                break;
-            }
-
-            default:
-        }
-
-        next(action);
-    },/*
-    config: {
-            deviceSetup: {
-                jprog: {
-
-                },
-                needSerialport: false,
-            },
-    },*/
-};
+export default connect(
+    (state, props) => ({
+        ...props,
+        phy: state.app.settings.phy,
+        modulation: state.app.settings.modulationMode,
+        boardType: state.app.device.board,
+    }),
+    (dispatch, props) => ({
+        ...props,
+        onPhyUpdated: value => dispatch(SettingsActions.phyChanged(value)),
+        onModulationUpdated: value => dispatch(SettingsActions.modulationChanged(value)),
+    }),
+)(OtherSettingsView);

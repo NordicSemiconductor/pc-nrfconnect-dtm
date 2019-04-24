@@ -35,53 +35,68 @@
  */
 
 import React from 'react';
-import { Button, FormGroup, ControlLabel, FormControl, InputGroup, Dropdown, SplitButton } from 'react-bootstrap';
+import { ControlLabel, FormControl, FormGroup, Panel, Checkbox } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
-//import { DTM_FREQUENCY, DTM_PKT } from 'nrf-dtm-js';
-import { DTM } from 'nrf-dtm-js';
 import * as SettingsActions from '../actions/settingsActions';
-import ToggleTestModeView from '../containers/toggleTestModeView';
+import * as Constants from '../utils/constants';
+import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js';
 
-/*import SingleChannelView from '../containers/singleChannelView';
-import SweepChannelView from '../containers/sweepChannelView';*/
-import ChannelView from '../containers/channelView';
-
-import RunTestView from '../containers/runTestView';
-
-class AppMainView extends React.Component {
+class TransmitSetupView extends React.Component {
     constructor(props) {
         super(props);
-        const { dtm } = this.props;
+        this.state = {
+            enableTimeout: this.props.timeout !== 0,
+            timeoutValue: this.props.timeout === 0? 1000: this.props.timeout,
+            open: true,
+        }
+    }
+    toggleTimeout() {
+        if (this.state.enableTimeout) {
+            this.props.onTimeoutChanged(0);
+        } else {
+            this.props.onTimeoutChanged(this.state.timeoutValue);
+        }
 
+        this.setState((prevState, props) => {
+            return {enableTimeout: !prevState.enableTimeout};
+        });
     }
 
+    updateTimeout(time) {
+        this.props.onTimeoutChanged(time);
+        this.setState((prevState, props) => {
+            return {timeoutValue: time};
+        });
+    }
+
+    togglePanel() {
+        this.setState((prevState, props) => {
+            return {open: !prevState.open};
+        });
+    }
 
     render() {
-
-        let channelModePlaceholder;
-        /*if (this.props.channelMode === SettingsActions.DTM_CHANNEL_MODE.single) {
-            channelModePlaceholder = <SingleChannelView />
-        } else {
-            channelModePlaceholder = <SweepChannelView />
-        }*/
-
-
-
         return (
-            <div className="app-main-view">
-
-
-
-
+            <div className="app-timeout-setup-view">
+                <Panel collapsible
+                expanded={this.state.open}
+                header='Timeout settings'
+                onSelect={() => this.togglePanel()}>
+                    <Checkbox checked={this.state.enableTimeout} onClick={() => this.toggleTimeout()}>Enable</Checkbox>
+                    <FormGroup controlId="formTimeoutSelect">
+                      <ControlLabel>Timeout (ms)</ControlLabel>
+                      <FormControl onChange={evt => this.updateTimeout(evt.target.value)}
+                      componentClass="input" value={this.state.timeoutValue}  min={20} step={10} type="number" bsSize="sm"
+                      disabled={!this.state.enableTimeout}/>
+                    </FormGroup>
+                </Panel>
             </div>
         );
     }
 };
 
-AppMainView.propTypes = {
-    dtm: PropTypes.object,
-    selectedTestMode: PropTypes.number.isRequired,
+TransmitSetupView.propTypes = {
 };
 
-export default AppMainView;
+export default TransmitSetupView;

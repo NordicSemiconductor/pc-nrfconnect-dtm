@@ -39,29 +39,33 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import * as SettingsActions from '../actions/settingsActions';
 
-class ToggleChannelModeView extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    selectionButton(type, text) {
-        return <Button onClick={() => this.props.onButtonClicked(type)}
-            active={this.props.selected === type}>{text}</Button>;
-    }
+const ToggleChannelModeView = ({
+    selected,
+    onButtonClicked,
+    }) => {
+    const selectionButton = (type, text) => (
+        <Button
+            onClick={() => onButtonClicked(type)}
+            active={selected === type}
+        >
+            {text}
+        </Button>
+    );
 
-    render() {
-        return (
-            <div className="app-toggle-mode-view">
-                <ButtonGroup>
-                    {this.selectionButton(SettingsActions.DTM_CHANNEL_MODE.single, 'Single')}
-                    {this.selectionButton(SettingsActions.DTM_CHANNEL_MODE.sweep, 'Sweep')}
-                </ButtonGroup>
-            </div>
-        );
-    }
-}
+    return (
+        <div className="app-toggle-mode-view">
+            <ButtonGroup>
+                {selectionButton(SettingsActions.DTM_CHANNEL_MODE.single, 'Single')}
+                {selectionButton(SettingsActions.DTM_CHANNEL_MODE.sweep, 'Sweep')}
+            </ButtonGroup>
+        </div>
+    );
+};
+
 
 ToggleChannelModeView.propTypes = {
     selected: PropTypes.number.isRequired,
+    onButtonClicked: PropTypes.func.isRequired,
 };
 
 export default ToggleChannelModeView;

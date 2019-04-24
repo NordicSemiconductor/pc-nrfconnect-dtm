@@ -40,40 +40,39 @@ import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
 import * as TestActions from '../actions/testActions';
 
-class RunTestView extends React.Component {
-    constructor(props) {
-        super(props);
+const RunTestView = ({
+        startTests,
+        endTests,
+        testingState,
+    }) => {
+
+    const start = () => {
+        startTests();
+    }
+    const end = () => {
+        endTests();
     }
 
-    startTests() {
-        this.props.startTests(this.props.dtm, this.props.settings)
-    }
-    endTests() {
-        this.props.endTests(this.props.dtm)
-    }
-
-
-    render() {
-        let eventButtonPlaceholder;
-        if (this.props.testingState === TestActions.TEST_STATES.idle) {
-            eventButtonPlaceholder = <Button onClick={() => this.startTests()}>Start</Button>
-        } else {
-            if(this.props.testingState === TestActions.TEST_STATES.running){
-                eventButtonPlaceholder = <Button onClick={() => this.endTests()}>Stop</Button>
-            } else {
-                eventButtonPlaceholder = <Button onClick={() => this.endTests()} disabled={true}>Stop</Button>
+    return (
+        <div className="app-run-tests-btn">
+            {testingState === TestActions.TEST_STATES.idle &&
+            <Button onClick={() => start()}>Start</Button>
             }
+            {testingState === TestActions.TEST_STATES.running &&
+            <Button onClick={() => end()}>Stop</Button>
+            }
+            {testingState === TestActions.TEST_STATES.stopping &&
+            <Button disabled={true}>Stop</Button>
+            }
+        </div>
+    );
+}
 
-        }
-        return (
-            <div className="app-run-tests-btn-view">
-                {eventButtonPlaceholder}
-            </div>
-        );
-    }
-};
 
 RunTestView.propTypes = {
+    startTests: PropTypes.func.isRequired,
+    endTests: PropTypes.func.isRequired,
+    testingState: PropTypes.number.isRequired,
 };
 
 export default RunTestView;

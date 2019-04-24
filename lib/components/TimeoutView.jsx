@@ -34,69 +34,72 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ControlLabel, FormControl, FormGroup, Panel, Checkbox } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { logger } from 'nrfconnect/core';
-import * as SettingsActions from '../actions/settingsActions';
-import * as Constants from '../utils/constants';
-import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js';
 
-class TransmitSetupView extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            enableTimeout: this.props.timeout !== 0,
-            timeoutValue: this.props.timeout === 0? 1000: this.props.timeout,
-            open: true,
-        }
-    }
-    toggleTimeout() {
-        if (this.state.enableTimeout) {
-            this.props.onTimeoutChanged(0);
+const TimeoutSetupView = ({
+        timeout,
+        onTimeoutChanged,
+    }) => {
+    const [enableTimeout, setEnableTimeout] = useState(timeout !== 0);
+    const [timeoutValue, setTimeoutValue] = useState(timeout === 0 ? 1000 : timeout);
+    const [open, setOpen] = useState(true);
+
+    const toggleTimeout = () => {
+        if (enableTimeout) {
+            onTimeoutChanged(0);
         } else {
-            this.props.onTimeoutChanged(this.state.timeoutValue);
+            onTimeoutChanged(timeoutValue);
         }
+        setEnableTimeout(!enableTimeout);
+    };
 
-        this.setState((prevState, props) => {
-            return {enableTimeout: !prevState.enableTimeout};
-        });
-    }
+    const updateTimeout = time => {
+        onTimeoutChanged(time);
+        setTimeoutValue(time);
+    };
 
-    updateTimeout(time) {
-        this.props.onTimeoutChanged(time);
-        this.setState((prevState, props) => {
-            return {timeoutValue: time};
-        });
-    }
+    return (
+        <div className="app-sidepanel-component-view">
+            <Panel
+                collapsible
+                expanded={open}
+                header="Timeout settings"
+                onSelect={() => setOpen(!open)}
+            >
+                <Checkbox
+                    checked={enableTimeout}
+                    onClick={() => toggleTimeout()}
+                >
+                    Enable
+                </Checkbox>
 
-    togglePanel() {
-        this.setState((prevState, props) => {
-            return {open: !prevState.open};
-        });
-    }
-
-    render() {
-        return (
-            <div className="app-timeout-setup-view">
-                <Panel collapsible
-                expanded={this.state.open}
-                header='Timeout settings'
-                onSelect={() => this.togglePanel()}>
-                    <Checkbox checked={this.state.enableTimeout} onClick={() => this.toggleTimeout()}>Enable</Checkbox>
-                    <FormGroup controlId="formTimeoutSelect">
-                      <ControlLabel>Timeout (ms)</ControlLabel>
-                      <FormControl onChange={evt => this.updateTimeout(evt.target.value)}
-                      componentClass="input" value={this.state.timeoutValue}  min={20} step={10} type="number" bsSize="sm"
-                      disabled={!this.state.enableTimeout}/>
-                    </FormGroup>
-                </Panel>
-            </div>
-        );
-    }
+                <FormGroup
+                    controlId="formTimeoutSelect"
+                >
+                    <ControlLabel>
+                        Timeout (ms)
+                    </ControlLabel>
+                    <FormControl
+                        onChange={evt => updateTimeout(evt.target.value)}
+                        componentClass="input"
+                        value={timeoutValue}
+                        min={20}
+                        step={10}
+                        type="number"
+                        bsSize="sm"
+                        disabled={!enableTimeout}
+                    />
+                </FormGroup>
+            </Panel>
+        </div>
+    );
 };
 
-TransmitSetupView.propTypes = {
-};
+TimeoutSetupView.propTypes = {
+    timeout: PropTypes.number.isRequired,
+    onTimeoutChanged: PropTypes.func.isRequired,
 
-export default TransmitSetupView;
+};
+export default TimeoutSetupView;

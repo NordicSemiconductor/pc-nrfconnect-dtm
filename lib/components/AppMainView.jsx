@@ -35,10 +35,13 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
-
+import ChartView from '../containers/chartView';
+//import PropTypes from 'prop-types';
+//
 const AppMainView = () => (
-    <div className="app-main-view" />
+    <div className="app-main-view">
+        <ChartView />
+    </div>
 );
 
 AppMainView.propTypes = {

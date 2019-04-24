@@ -34,7 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Panel, DropdownButton, MenuItem } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
@@ -42,86 +42,82 @@ import * as SettingsActions from '../actions/settingsActions';
 import { fromPCA } from '../utils/boards';
 import { DTM, DTM_PHY_STRING, DTM_MODULATION_STRING } from 'nrf-dtm-js';
 
-class OtherSettingsView extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            open:true,
-        }
-    }
+const phyTypeView = (boardType, phy, onPhyUpdated) => {
+    const compatibility = fromPCA(boardType);
+    let items = Object.keys(compatibility.phy).map((keyname, idx) => (
+            <MenuItem
+            eventKey={keyname}
+            onSelect={evt => onPhyUpdated(compatibility.phy[evt])}>
+                {DTM_PHY_STRING[compatibility.phy[keyname]]}
+            </MenuItem>
+        )
+    );
+    return (
+        <div>
+            <label>PHY</label><br />
+            <DropdownButton
 
-    togglePanel() {
-        this.setState((prevState, props) => {
-            return {open: !prevState.open};
-        });
-    }
+                title={DTM_PHY_STRING[phy]}
+                id={`dropdown-variants-phy-type`}
+                >
+                {items}
+            </DropdownButton>
+        </div>
+    );
+}
 
-    phyTypeView() {
-        const compatibility = fromPCA(this.props.boardType);
-        let items = Object.keys(compatibility.phy).map((keyname, idx) => (
-                <MenuItem
-                eventKey={keyname}
-                onSelect={evt => this.props.onPhyUpdated(compatibility.phy[evt])}>
-                    {DTM_PHY_STRING[compatibility.phy[keyname]]}
-                </MenuItem>
-            )
-        );
-        return (
-            <div>
-                <label>PHY</label><br />
-                <DropdownButton
+const modulationTypeView = (onModulationUpdated, modulation) => {
+    let items = Object.keys(DTM_MODULATION_STRING).map((keyname, idx) => (
+            <MenuItem
+            eventKey={keyname}
+            onSelect={evt => onModulationUpdated(evt)}>
+                {DTM_MODULATION_STRING[keyname]}
+            </MenuItem>
+        )
+    );
+    return (
+        <div>
+            <label>Modulation Index</label><br />
+            <DropdownButton
 
-                    title={DTM_PHY_STRING[this.props.phy]}
-                    id={`dropdown-variants-phy-type`}
-                    >
-                    {items}
-                </DropdownButton>
-            </div>
-        );
-    }
+                title={DTM_MODULATION_STRING[modulation]}
+                id={`dropdown-variants-phy-type`}
+                >
+                {items}
+            </DropdownButton>
+        </div>
+    );
+}
 
-    modulationTypeView() {
-        let items = Object.keys(DTM_MODULATION_STRING).map((keyname, idx) => (
-                <MenuItem
-                eventKey={keyname}
-                onSelect={evt => this.props.onModulationUpdated(evt)}>
-                    {DTM_MODULATION_STRING[keyname]}
-                </MenuItem>
-            )
-        );
-        return (
-            <div>
-                <label>Modulation Index</label><br />
-                <DropdownButton
 
-                    title={DTM_MODULATION_STRING[this.props.modulation]}
-                    id={`dropdown-variants-phy-type`}
-                    >
-                    {items}
-                </DropdownButton>
-            </div>
-        );
+const OtherSettingsView = ({
+    onModulationUpdated,
+    modulation,
+    boardType,
+    phy,
+    onPhyUpdated,
+    }) => {
+    const [open, setOpen] = useState(true);
+    return (
+        <div>
+            <Panel collapsible
+            expanded={open}
+            header='Other settings'
+            onSelect={() => setOpen(!open)}>
+            {phyTypeView(boardType, phy, onPhyUpdated)}
+            {modulationTypeView(onModulationUpdated, modulation)}
+            </Panel>
+        </div>
+    );
+}
 
-    }
-
-    render() {
-
-        return (
-            <div>
-
-                <Panel collapsible
-                expanded={this.state.open}
-                header='Other settings'
-                onSelect={() => this.togglePanel()}>
-                {this.phyTypeView()}
-                {this.modulationTypeView()}
-                </Panel>
-            </div>
-        );
-    }
-};
 
 OtherSettingsView.propTypes = {
+    onModulationUpdated: PropTypes.func.isRequired,
+    modulation: PropTypes.number.isRequired,
+    boardType: PropTypes.number.isRequired,
+    phy: PropTypes.number.isRequired,
+    onPhyUpdated: PropTypes.func.isRequired,
 };
 
 export default OtherSettingsView;

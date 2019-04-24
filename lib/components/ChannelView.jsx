@@ -34,7 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { FormControl, FormGroup, ControlLabel, Panel  } from 'react-bootstrap';
 import Slider from 'react-rangeslider';
 import 'react-rangeslider/lib/index.css';
@@ -43,99 +43,77 @@ import { logger } from 'nrfconnect/core';
 import * as SettingsActions from '../actions/settingsActions';
 import ToggleChannelModeView from '../containers/toggleChannelModeView';
 
-class ChannelView extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            open:true,
-        }
-    }
+const ChannelSlider = (label, currentValue, changedFunc) => (
+    <div>
+        <label>{label}</label><br />
+        <Slider
+            value={currentValue}
+            onChange={value => changedFunc(value)}
+            max={39}
+            min={0}
+            labels={{0:'0', 39:'39'}}
+            disabled={null}
+        />
+    </div>
+);
 
-    multiChannelView() {
-        return (
-            <div className="app-multi-channel-view">
+const SweepTime = (value, changedFunc) => (
+    <form>
+    <FormGroup controlId="formSweepTimeSelect">
+      <ControlLabel>Sweep time (ms)</ControlLabel>
+      <FormControl onChange={evt => changedFunc(evt.target.value)}
+      componentClass="input" value={value}  min={20} step={10} type="number" bsSize="sm" />
+    </FormGroup>
+    </form>
+);
 
-            <label>Channel Low</label><br />
-            <Slider
-                value={this.props.channelLow}
-                onChange={value => this.props.onChannelLowChanged(Math.min(value, this.props.channelHigh))}
-                max={39}
-                min={0}
-                labels={{0:'0', 39:'39'}}
-                disabled={null}
-            />
-            <label>Channel High</label><br />
-            <Slider
-                value={this.props.channelHigh}
-                onChange={value => this.props.onChannelHighChanged(Math.max(value, this.props.channelLow))}
-                max={39}
-                min={0}
-                labels={{0:'0', 39:'39'}}
-                disabled={null}
-            />
-            <form>
+const ChannelView = ({
+        channel,
+        channelMode,
+        channelLow,
+        channelHigh,
+        sweepTime,
+        onChannelChanged,
+        onChannelLowChanged,
+        onChannelHighChanged,
+        onSweepTimeChanged,
+    }) => {
+    const [open, setOpen] = useState(true);
 
-
-            <FormGroup controlId="formSweepTimeSelect">
-              <ControlLabel>Sweep time (ms)</ControlLabel>
-              <FormControl onChange={evt => this.props.onSweepTimeChanged(evt.target.value)}
-              componentClass="input" value={this.props.sweepTime}  min={20} step={10} type="number" bsSize="sm" />
-            </FormGroup>
-            </form>
-            </div>
-        );
-    }
-
-    singleChannelView() {
-        return (
-            <div>
-            <label>Channel</label><br />
-            <Slider
-                value={this.props.channel}
-                onChange={value => this.props.onChannelChanged(value)}
-                max={39}
-                min={0}
-                labels={{0:'0', 39:'39'}}
-                disabled={null}
-            />
-            </div>
-        )
-    }
-
-    togglePanel() {
-        this.setState((prevState, props) => {
-            return {open: !prevState.open};
-        });
-    }
-
-    render() {
-        let view;
-        if (SettingsActions.DTM_CHANNEL_MODE.single === this.props.channelMode) {
-            view = this.singleChannelView();
-        } else {
-            view = this.multiChannelView();
-        }
-
-        return (
-            <div>
-
-                <Panel collapsible
-                expanded={this.state.open}
-                header='Channel settings'
-                onSelect={() => this.togglePanel()}>
+    return (
+        <div className="app-sidepanel-component-view">
+            <Panel collapsible
+            expanded={open}
+            header='Channel settings'
+            onSelect={() => setOpen(!open)}>
                 <ToggleChannelModeView />
-                {view}
-                </Panel>
-            </div>
-        );
-    }
-};
+                {channelMode === SettingsActions.DTM_CHANNEL_MODE.single &&
+                ChannelSlider('Channel', channel, onChannelChanged)
+                }
+                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
+                ChannelSlider('Channel Low', channelLow, onChannelLowChanged)
+                }
+                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
+                ChannelSlider('Channel High', channelHigh, onChannelHighChanged)
+                }
+                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
+                SweepTime(sweepTime, onSweepTimeChanged)
+                }
+            </Panel>
+        </div>
+    );
+}
 
 ChannelView.propTypes = {
+    channelMode: PropTypes.number.isRequired,
     channel: PropTypes.number.isRequired,
     channelLow: PropTypes.number.isRequired,
     channelHigh: PropTypes.number.isRequired,
     sweepTime: PropTypes.number.isRequired,
+    onChannelChanged: PropTypes.func.isRequired,
+    onChannelLowChanged: PropTypes.func.isRequired,
+    onChannelHighChanged: PropTypes.func.isRequired,
+    onSweepTimeChanged: PropTypes.func.isRequired,
 };
 
 export default ChannelView;

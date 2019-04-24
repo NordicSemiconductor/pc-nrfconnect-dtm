@@ -39,7 +39,7 @@ import path from 'path';
 import { logger, getAppDir } from 'nrfconnect/core';
 import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
-import { selectDevice } from './lib/actions/deviceActions';
+import { selectDevice } from './lib/actions/testActions';
 import appReducer from './lib/reducers';
 import './resources/css/index.less';
 
@@ -76,10 +76,11 @@ export default {
     middleware: store => next => action => {
         const { dispatch } = store;
         const { type, device } = action;
-        const { serialport, boardVersion } = device;
+
 
         switch (type) {
             case 'DEVICE_SELECTED':
+                const { serialport, boardVersion } = device;
                 logger.info('Device selected');
                 dispatch(selectDevice(serialport.comName, boardVersion));
                 break;

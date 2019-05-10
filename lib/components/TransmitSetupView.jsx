@@ -37,7 +37,7 @@
 import React, { useState } from 'react';
 import { ControlLabel, FormControl, FormGroup, Panel, MenuItem, DropdownButton } from 'react-bootstrap';
 import Slider from 'react-rangeslider';
-import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js';
+import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
 import PropTypes from 'prop-types';
 
 import 'react-rangeslider/lib/index.css';

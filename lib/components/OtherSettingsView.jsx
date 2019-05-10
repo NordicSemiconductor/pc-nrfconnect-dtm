@@ -40,7 +40,7 @@ import PropTypes from 'prop-types';
 import { logger } from 'nrfconnect/core';
 import * as SettingsActions from '../actions/settingsActions';
 import { fromPCA } from '../utils/boards';
-import { DTM, DTM_PHY_STRING, DTM_MODULATION_STRING } from 'nrf-dtm-js';
+import { DTM, DTM_PHY_STRING, DTM_MODULATION_STRING } from 'nrf-dtm-js/src/DTM.js';
 
 const phyTypeView = (boardType, phy, onPhyUpdated) => {
     const compatibility = fromPCA(boardType);

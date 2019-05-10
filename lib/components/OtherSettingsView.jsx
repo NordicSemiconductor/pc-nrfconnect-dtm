@@ -99,13 +99,17 @@ const OtherSettingsView = ({
     }) => {
     const [open, setOpen] = useState(true);
     return (
-        <div>
+        <div className="app-sidepanel-panel">
             <Panel collapsible
             expanded={open}
             header='Other settings'
             onSelect={() => setOpen(!open)}>
-            {phyTypeView(boardType, phy, onPhyUpdated)}
-            {modulationTypeView(onModulationUpdated, modulation)}
+            <div className="app-sidepanel-component-inputbox">
+                {phyTypeView(boardType, phy, onPhyUpdated)}
+            </div>
+            <div className="app-sidepanel-component-inputbox">
+                {modulationTypeView(onModulationUpdated, modulation)}
+            </div>
             </Panel>
         </div>
     );
@@ -115,7 +119,7 @@ const OtherSettingsView = ({
 OtherSettingsView.propTypes = {
     onModulationUpdated: PropTypes.func.isRequired,
     modulation: PropTypes.number.isRequired,
-    boardType: PropTypes.number.isRequired,
+    boardType: PropTypes.string.isRequired,
     phy: PropTypes.number.isRequired,
     onPhyUpdated: PropTypes.func.isRequired,
 };

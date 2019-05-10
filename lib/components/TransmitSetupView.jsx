@@ -97,12 +97,11 @@ const txPowerView = (boardType, txPowerIdx, txPowerUpdated) => {
     const maxDbmRangeValue = compatibility.txPower.length - 1;
 
     const label = {};
-    label[0] = `${compatibility.txPower[0]} dBm`;
-    label[maxDbmRangeValue] = `${compatibility.txPower[maxDbmRangeValue]} dBm`;
+    label[0] = `${compatibility.txPower[0]}`;
+    label[maxDbmRangeValue] = `${compatibility.txPower[maxDbmRangeValue]}`;
     return (
-        <div>
-            <label htmlFor="txPower">TX Power</label>
-            <br />
+        <div className="app-sidepanel-component-slider">
+            <label htmlFor="txPower">TX Power (dBm)</label>
             <Slider
                 value={txPowerIdx}
                 onChange={value => txPowerUpdated(value)}
@@ -127,18 +126,21 @@ const TransmitSetupView = ({
 }) => {
     const [open, setOpen] = useState(true);
     return (
-        <div className="app-sidepanel-component-view">
+        <div className="app-sidepanel-panel">
             <Panel
                 collapsible
                 expanded={open}
                 header="Transmitter settings"
                 onSelect={() => setOpen(!open)}
             >
+
                 {txPowerView(boardType, txPowerIdx, txPowerUpdated)}
-                <br /><br />
+                <div className="app-sidepanel-component-inputbox">
                 {packetTypeView(bitpatternUpdated, pkgType)}
-                <br />
+                </div>
+                <div className="app-sidepanel-component-inputbox">
                 {packetLengthView(packetLength, lengthUpdated, pkgType)}
+                </div>
             </Panel>
         </div>
     );

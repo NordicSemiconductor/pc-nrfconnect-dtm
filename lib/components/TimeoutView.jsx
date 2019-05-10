@@ -61,7 +61,7 @@ const TimeoutSetupView = ({
     };
 
     return (
-        <div className="app-sidepanel-component-view">
+        <div className="app-sidepanel-panel">
             <Panel
                 collapsible
                 expanded={open}

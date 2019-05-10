@@ -81,24 +81,30 @@ const ChannelView = ({
     const [open, setOpen] = useState(true);
 
     return (
-        <div className="app-sidepanel-component-view">
+        <div className="app-sidepanel-panel">
             <Panel collapsible
             expanded={open}
             header='Channel settings'
             onSelect={() => setOpen(!open)}>
+            <div className="app-sidepanel-component-inputbox">
                 <ToggleChannelModeView />
+                </div>
+
                 {channelMode === SettingsActions.DTM_CHANNEL_MODE.single &&
-                ChannelSlider('Channel', channel, onChannelChanged)
+                <div className="app-sidepanel-component-slider">{ChannelSlider('Channel', channel, onChannelChanged)}</div>
                 }
                 {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
-                ChannelSlider('Channel Low', channelLow, onChannelLowChanged)
+                <div className="app-sidepanel-component-slider">{ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}</div>
                 }
                 {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
-                ChannelSlider('Channel High', channelHigh, onChannelHighChanged)
+                <div className="app-sidepanel-component-slider">{ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}</div>
                 }
+
+                <div className="app-sidepanel-component-inputbox">
                 {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
                 SweepTime(sweepTime, onSweepTimeChanged)
                 }
+                </div>
             </Panel>
         </div>
     );

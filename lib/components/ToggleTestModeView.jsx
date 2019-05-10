@@ -50,7 +50,7 @@ const ToggleTestModeView = ({
     );
 
     return (
-        <div className="app-toggle-mode-view">
+        <div className="app-sidepanel-panel">
             <ButtonGroup>
                 {selectionButton(SettingsActions.DTM_TEST_MODE_BUTTON.transmitter, 'Transmitter')}
                 {selectionButton(SettingsActions.DTM_TEST_MODE_BUTTON.receiver, 'Receiver')}

@@ -54,7 +54,7 @@ const RunTestView = ({
     }
 
     return (
-        <div className="app-run-tests-btn">
+        <div className="app-sidepanel-panel">
             {testingState === TestActions.TEST_STATES.idle &&
             <Button onClick={() => start()}>Start</Button>
             }

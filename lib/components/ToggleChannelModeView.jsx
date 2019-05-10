@@ -53,7 +53,7 @@ const ToggleChannelModeView = ({
     );
 
     return (
-        <div className="app-toggle-mode-view">
+        <div className="app-sidepanel-panel">
             <ButtonGroup>
                 {selectionButton(SettingsActions.DTM_CHANNEL_MODE.single, 'Single')}
                 {selectionButton(SettingsActions.DTM_CHANNEL_MODE.sweep, 'Sweep')}

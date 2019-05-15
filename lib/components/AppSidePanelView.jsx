@@ -34,7 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { useState } from 'react';
+// eslint-disable-next-line import/no-unresolved
+import React from 'react';
 import PropTypes from 'prop-types';
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 import ToggleTestModeView from '../containers/toggleTestModeView';
@@ -44,8 +45,7 @@ import TransmitSetupView from '../containers/transmitSetupView';
 import TimeoutView from '../containers/timeoutView';
 import OtherSettingsView from '../containers/otherSettingsView';
 
-const AppSidePanelView = ({ cssClass, selectedTestMode }) => {
-    return(
+const AppSidePanelView = ({ cssClass, selectedTestMode }) => (
     <div className={cssClass}>
         <RunTestView />
         <br />
@@ -55,7 +55,7 @@ const AppSidePanelView = ({ cssClass, selectedTestMode }) => {
         <OtherSettingsView />
         <TimeoutView />
     </div>
-)};
+);
 
 AppSidePanelView.propTypes = {
     cssClass: PropTypes.string.isRequired,

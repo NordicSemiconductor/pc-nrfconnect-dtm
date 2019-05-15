@@ -34,6 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import path from 'path';
 import { logger, getAppDir } from 'nrfconnect/core';
@@ -52,8 +53,12 @@ export default {
             jprog: {
                 nrf52: {
                     fw: path.resolve(getAppDir(), 'firmware/direct-test-mode-pca10040.hex'),
-                    // fwVersion: 'rssi-fw-1.0.0',
-                    // fwIdAddress: 0x2000,
+                },
+                pca10040: {
+                    fw: path.resolve(getAppDir(), 'firmware/direct-test-mode-pca10040.hex'),
+                },
+                pca10056: {
+                    fw: path.resolve(getAppDir(), 'firmware/direct-test-mode-pca10056.hex'),
                 },
             },
         },
@@ -77,13 +82,13 @@ export default {
         const { dispatch } = store;
         const { type, device } = action;
 
-
         switch (type) {
-            case 'DEVICE_SELECTED':
+            case 'DEVICE_SELECTED': {
                 const { serialport, boardVersion } = device;
                 logger.info('Device selected');
                 dispatch(selectDevice(serialport.comName, boardVersion));
                 break;
+            }
 
             case 'DEVICE_DESELECTED':
                 // no specific close, since all commands sent will open and close the serialport

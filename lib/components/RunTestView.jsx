@@ -34,40 +34,28 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// eslint-disable-next-line import/no-unresolved
 import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { logger } from 'nrfconnect/core';
-import * as TestActions from '../actions/testActions';
+import { TEST_STATES } from '../actions/testActions';
+
+const { idle, stopping } = TEST_STATES;
 
 const RunTestView = ({
         startTests,
         endTests,
         testingState,
-    }) => {
-
-    const start = () => {
-        startTests();
-    }
-    const end = () => {
-        endTests();
-    }
-
-    return (
+    }) => (
         <div className="app-sidepanel-panel">
-            {testingState === TestActions.TEST_STATES.idle &&
-            <Button onClick={() => start()}>Start</Button>
+            {testingState === idle &&
+            <Button onClick={startTests}>Start</Button>
             }
-            {testingState === TestActions.TEST_STATES.running &&
-            <Button onClick={() => end()}>Stop</Button>
-            }
-            {testingState === TestActions.TEST_STATES.stopping &&
-            <Button disabled={true}>Stop</Button>
+            {testingState !== idle &&
+            <Button disabled={testingState === stopping} onClick={endTests}>Stop</Button>
             }
         </div>
     );
-}
-
 
 RunTestView.propTypes = {
     startTests: PropTypes.func.isRequired,

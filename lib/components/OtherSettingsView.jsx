@@ -34,60 +34,65 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// eslint-disable-next-line import/no-unresolved
 import React, { useState } from 'react';
 import { Panel, DropdownButton, MenuItem } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { logger } from 'nrfconnect/core';
-import * as SettingsActions from '../actions/settingsActions';
+import { DTM_PHY_STRING, DTM_MODULATION_STRING } from 'nrf-dtm-js/src/DTM.js';
 import { fromPCA } from '../utils/boards';
-import { DTM, DTM_PHY_STRING, DTM_MODULATION_STRING } from 'nrf-dtm-js/src/DTM.js';
 
 const phyTypeView = (boardType, phy, onPhyUpdated) => {
     const compatibility = fromPCA(boardType);
-    let items = Object.keys(compatibility.phy).map((keyname, idx) => (
-            <MenuItem
+    const items = Object.keys(compatibility.phy).map(keyname => (
+        <MenuItem
             eventKey={keyname}
-            onSelect={evt => onPhyUpdated(compatibility.phy[evt])}>
-                {DTM_PHY_STRING[compatibility.phy[keyname]]}
-            </MenuItem>
-        )
+            onSelect={evt => onPhyUpdated(compatibility.phy[evt])}
+        >
+            {DTM_PHY_STRING[compatibility.phy[keyname]]}
+        </MenuItem>
+        ),
     );
     return (
         <div>
-            <label>PHY</label><br />
+            <label htmlFor="PHYLabel">PHY</label>
             <DropdownButton
 
                 title={DTM_PHY_STRING[phy]}
-                id={`dropdown-variants-phy-type`}
-                >
+                id={'dropdown-variants-phy-type'}
+            >
                 {items}
             </DropdownButton>
         </div>
     );
-}
+};
 
 const modulationTypeView = (onModulationUpdated, modulation) => {
-    let items = Object.keys(DTM_MODULATION_STRING).map((keyname, idx) => (
-            <MenuItem
+    const items = Object.keys(DTM_MODULATION_STRING).map(keyname => (
+        <MenuItem
             eventKey={keyname}
-            onSelect={evt => onModulationUpdated(evt)}>
-                {DTM_MODULATION_STRING[keyname]}
-            </MenuItem>
-        )
+            onSelect={evt => onModulationUpdated(evt)}
+        >
+            {DTM_MODULATION_STRING[keyname]}
+        </MenuItem>
+        ),
     );
     return (
         <div>
-            <label>Modulation Index</label><br />
+            <label
+                htmlFor="modulationIndexLabel"
+            >
+            Modulation Index
+            </label>
             <DropdownButton
 
                 title={DTM_MODULATION_STRING[modulation]}
-                id={`dropdown-variants-phy-type`}
-                >
+                id={'dropdown-variants-phy-type'}
+            >
                 {items}
             </DropdownButton>
         </div>
     );
-}
+};
 
 
 const OtherSettingsView = ({
@@ -99,21 +104,25 @@ const OtherSettingsView = ({
     }) => {
     const [open, setOpen] = useState(true);
     return (
-        <div className="app-sidepanel-panel">
-            <Panel collapsible
-            expanded={open}
-            header='Other settings'
-            onSelect={() => setOpen(!open)}>
-            <div className="app-sidepanel-component-inputbox">
-                {phyTypeView(boardType, phy, onPhyUpdated)}
-            </div>
-            <div className="app-sidepanel-component-inputbox">
-                {modulationTypeView(onModulationUpdated, modulation)}
-            </div>
+        <div
+            className="app-sidepanel-panel"
+        >
+            <Panel
+                collapsible
+                expanded={open}
+                header="Other settings"
+                onSelect={() => setOpen(!open)}
+            >
+                <div className="app-sidepanel-component-inputbox">
+                    {phyTypeView(boardType, phy, onPhyUpdated)}
+                </div>
+                <div className="app-sidepanel-component-inputbox">
+                    {modulationTypeView(onModulationUpdated, modulation)}
+                </div>
             </Panel>
         </div>
     );
-}
+};
 
 
 OtherSettingsView.propTypes = {

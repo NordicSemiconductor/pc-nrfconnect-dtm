@@ -34,17 +34,14 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import ChartView from '../containers/chartView';
-//import PropTypes from 'prop-types';
-//
+
 const AppMainView = () => (
     <div className="app-main-view">
         <ChartView />
     </div>
 );
-
-AppMainView.propTypes = {
-};
 
 export default AppMainView;

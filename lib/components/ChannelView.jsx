@@ -34,24 +34,24 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// eslint-disable-next-line import/no-unresolved
 import React, { useState } from 'react';
-import { FormControl, FormGroup, ControlLabel, Panel  } from 'react-bootstrap';
+import { FormControl, FormGroup, ControlLabel, Panel } from 'react-bootstrap';
 import Slider from 'react-rangeslider';
 import 'react-rangeslider/lib/index.css';
 import PropTypes from 'prop-types';
-import { logger } from 'nrfconnect/core';
 import * as SettingsActions from '../actions/settingsActions';
 import ToggleChannelModeView from '../containers/toggleChannelModeView';
 
 const ChannelSlider = (label, currentValue, changedFunc) => (
     <div>
-        <label>{label}</label><br />
+        <label htmlFor={`ChannelSlider-${label}-label`}>{label}</label>
         <Slider
             value={currentValue}
             onChange={value => changedFunc(value)}
             max={39}
             min={0}
-            labels={{0:'0', 39:'39'}}
+            labels={{ 0: '0', 39: '39' }}
             disabled={null}
         />
     </div>
@@ -59,11 +59,20 @@ const ChannelSlider = (label, currentValue, changedFunc) => (
 
 const SweepTime = (value, changedFunc) => (
     <form>
-    <FormGroup controlId="formSweepTimeSelect">
-      <ControlLabel>Sweep time (ms)</ControlLabel>
-      <FormControl onChange={evt => changedFunc(evt.target.value)}
-      componentClass="input" value={value}  min={20} step={10} type="number" bsSize="sm" />
-    </FormGroup>
+        <FormGroup
+            controlId="formSweepTimeSelect"
+        >
+            <ControlLabel>Sweep time (ms)</ControlLabel>
+            <FormControl
+                onChange={evt => changedFunc(evt.target.value)}
+                componentClass="input"
+                value={value}
+                min={20}
+                step={10}
+                type="number"
+                bsSize="sm"
+            />
+        </FormGroup>
     </form>
 );
 
@@ -81,34 +90,38 @@ const ChannelView = ({
     const [open, setOpen] = useState(true);
 
     return (
-        <div className="app-sidepanel-panel">
-            <Panel collapsible
-            expanded={open}
-            header='Channel settings'
-            onSelect={() => setOpen(!open)}>
-            <div className="app-sidepanel-component-inputbox">
-                <ToggleChannelModeView />
+        <div
+            className="app-sidepanel-panel"
+        >
+            <Panel
+                collapsible
+                expanded={open}
+                header="Channel settings"
+                onSelect={() => setOpen(!open)}
+            >
+                <div className="app-sidepanel-component-inputbox">
+                    <ToggleChannelModeView />
                 </div>
 
                 {channelMode === SettingsActions.DTM_CHANNEL_MODE.single &&
-                <div className="app-sidepanel-component-slider">{ChannelSlider('Channel', channel, onChannelChanged)}</div>
+                    <div className="app-sidepanel-component-slider">{ChannelSlider('Channel', channel, onChannelChanged)}</div>
                 }
                 {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
-                <div className="app-sidepanel-component-slider">{ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}</div>
+                    <div className="app-sidepanel-component-slider">{ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}</div>
                 }
                 {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
-                <div className="app-sidepanel-component-slider">{ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}</div>
+                    <div className="app-sidepanel-component-slider">{ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}</div>
                 }
 
                 <div className="app-sidepanel-component-inputbox">
-                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
+                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
                 SweepTime(sweepTime, onSweepTimeChanged)
                 }
                 </div>
             </Panel>
         </div>
     );
-}
+};
 
 ChannelView.propTypes = {
     channelMode: PropTypes.number.isRequired,

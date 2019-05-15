@@ -34,6 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// eslint-disable-next-line import/no-unresolved
 import React, { useState } from 'react';
 import { ControlLabel, FormControl, FormGroup, Panel, MenuItem, DropdownButton } from 'react-bootstrap';
 import Slider from 'react-rangeslider';
@@ -133,13 +134,12 @@ const TransmitSetupView = ({
                 header="Transmitter settings"
                 onSelect={() => setOpen(!open)}
             >
-
                 {txPowerView(boardType, txPowerIdx, txPowerUpdated)}
                 <div className="app-sidepanel-component-inputbox">
-                {packetTypeView(bitpatternUpdated, pkgType)}
+                    {packetTypeView(bitpatternUpdated, pkgType)}
                 </div>
                 <div className="app-sidepanel-component-inputbox">
-                {packetLengthView(packetLength, lengthUpdated, pkgType)}
+                    {packetLengthView(packetLength, lengthUpdated, pkgType)}
                 </div>
             </Panel>
         </div>

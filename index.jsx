@@ -48,17 +48,19 @@ export default {
     config: {
         selectorTraits: {
             serialport: true,
+            jlink: true,
         },
         deviceSetup: {
             jprog: {
-                nrf52: {
-                    fw: path.resolve(getAppDir(), 'firmware/direct-test-mode-pca10040.hex'),
-                },
                 pca10040: {
-                    fw: path.resolve(getAppDir(), 'firmware/direct-test-mode-pca10040.hex'),
+                    fw: path.resolve(getAppDir(), 'firmware/direct_test_mode_pca10040.hex'),
+                    fwVersion: 'dtm-fw-1.0.0',
+                    fwIdAddress: 0x6000,
                 },
                 pca10056: {
-                    fw: path.resolve(getAppDir(), 'firmware/direct-test-mode-pca10056.hex'),
+                    fw: path.resolve(getAppDir(), 'firmware/direct_test_mode_pca10056.hex'),
+                    fwVersion: 'dtm-fw-1.0.0',
+                    fwIdAddress: 0x6000,
                 },
             },
         },

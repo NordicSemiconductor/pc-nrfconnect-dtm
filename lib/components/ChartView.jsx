@@ -1,38 +1,50 @@
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Line } from 'react-chartjs-2';
-
+import { Bar } from 'react-chartjs-2';
 import * as TestActions from '../actions/testActions';
+import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
+import { dbmValues } from '../utils/constants';
 
-const chartData = (current, history, activations) => {
+const chartColors = {
+    inactive: 'rgba(255,99,132,0.2)',
+    active: 'rgba(110,205,172,0.5)',
+};
+
+const chartDataTransmit = (currentChannel, txPower) => {
+    const active = Array.from(Array(40), () => 0);
+    active[currentChannel] = txPower;
+
     const datasets = [];
-    if (current !== undefined) {
+    if (currentChannel !== undefined) {
         datasets.push({
-            label: 'Current active channel',
-            data: current,
-            backgroundColor: [
-                'rgba(102, 255, 255, 0.5)',
-            ],
-            borderColor: [
-                'rgba(102, 255, 255, 1)',
-            ],
+            label: 'Active transmission power',
+            data: active,
+            backgroundColor: chartColors.active,
+            borderColor: chartColors.active,
             borderWidth: 1,
+            hoverBackgroundColor: chartColors.active,
+            hoverBorderColor: chartColors.active,
         });
     }
+    const channelLabels = Array.from(Array(40), (_, x) => x);
+    return {
+        labels: channelLabels,
+        datasets,
+    };
+};
 
+const chartDataReceive = history => {
+    const datasets = [];
     if (history !== undefined) {
         datasets.push({
             label: 'Received packets',
-            fillColor: 'rgba(220,220,220,0.2)',
-            strokeColor: 'rgba(220,220,220,1)',
-            pointColor: 'rgba(220,220,220,1)',
-            pointStrokeColor: '#fff',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(220,220,220,1)',
             data: history,
-            pointBorderColor: activations,
-            pointBackgroundColor: activations,
+            backgroundColor: chartColors.active,
+            borderColor: chartColors.active,
+            borderWidth: 1,
+            hoverBackgroundColor: chartColors.active,
+            hoverBorderColor: chartColors.active,
         });
     }
 
@@ -43,31 +55,88 @@ const chartData = (current, history, activations) => {
     };
 };
 
-const options = {
-    scaleShowGridLines: true,
-    scaleGridLineColor: 'rgba(10,100,100,.05)',
-    scaleGridLineWidth: 1,
-    scaleShowHorizontalLines: true,
-    scaleShowVerticalLines: true,
-    bezierCurve: true,
-    bezierCurveTension: 0.4,
-    pointDot: true,
-    pointDotRadius: 4,
-    pointDotStrokeWidth: 1,
-    pointHitDetectionRadius: 20,
-    datasetStroke: true,
-    datasetStrokeWidth: 2,
-    datasetFill: true,
+const getOptions = selectedTestMode => {
+    const options = {
+        scaleShowGridLines: true,
+        scaleGridLineColor: 'rgba(10,100,100,.05)',
+        scaleGridLineWidth: 1,
+        scaleShowHorizontalLines: true,
+        scaleShowVerticalLines: true,
+        bezierCurve: true,
+        bezierCurveTension: 0.4,
+        pointDot: true,
+        pointDotRadius: 4,
+        pointDotStrokeWidth: 1,
+        pointHitDetectionRadius: 20,
+        datasetStroke: true,
+        datasetStrokeWidth: 2,
+        datasetFill: true,
+    };
+
+    if (selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter) {
+        options.animation = false;
+        options.scales = {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 13,
+                    suggestedMin: undefined,
+                    suggestedMax: undefined,
+                    stepSize: 1,
+                    callback: value => `${dbmValues[value]} dbm`,
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Strength (dbm)',
+                },
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Channel',
+                },
+            }],
+        };
+    } else {
+        options.animation = null;
+        options.scales = {
+            yAxes: [{
+                ticks: {
+                    min: undefined,
+                    max: undefined,
+                    suggestedMin: 0,
+                    suggestedMax: 10,
+                    stepSize: undefined,
+                    callback: value => value,
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Received packets',
+                },
+            }],
+
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Channel',
+                },
+            }],
+        };
+    }
+    return options;
 };
 
 let receiveValueHistory = new Array(40).fill(0);
 const receiveValueHistoryTicks = new Array(40).fill(0);
 
 const ChartView = ({
+    selectedTestMode,
     currentChannel,
     lastChannel,
     lastReceived,
     testingState,
+    txPower,
 }) => {
     receiveValueHistory = [...receiveValueHistory];
     const activationColors = new Array(40).fill('#000000');
@@ -103,9 +172,12 @@ const ChartView = ({
 
     if (testingState === TestActions.TEST_STATES.idle) {
         return (
-            <Line
-                data={chartData(undefined, lastReceived, new Array(40).fill('#000000'))}
-                options={options}
+            <Bar
+                data={(selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter &&
+                    chartDataTransmit(undefined, txPower)) ||
+                (selectedTestMode === DTM_TEST_MODE_BUTTON.receiver &&
+                    chartDataReceive(lastReceived))}
+                options={getOptions(selectedTestMode)}
                 width="600"
                 height="250"
             />
@@ -113,9 +185,12 @@ const ChartView = ({
     }
 
     return (
-        <Line
-            data={chartData(currentChannelData, receiveValueHistory, activationColors)}
-            options={options}
+        <Bar
+            data={(selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter &&
+                chartDataTransmit(currentChannel, txPower)) ||
+                (selectedTestMode === DTM_TEST_MODE_BUTTON.receiver &&
+                    chartDataReceive(lastReceived))}
+            options={getOptions(selectedTestMode)}
             width="600"
             height="250"
         />
@@ -127,5 +202,7 @@ ChartView.propTypes = {
     lastReceived: PropTypes.arrayOf(PropTypes.number).isRequired,
     testingState: PropTypes.number.isRequired,
     currentChannel: PropTypes.number.isRequired,
+    selectedTestMode: PropTypes.number.isRequired,
+    txPower: PropTypes.number.isRequired,
 };
 export default ChartView;

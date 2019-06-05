@@ -38,10 +38,15 @@
 import React, { useState } from 'react';
 import { ControlLabel, FormControl, FormGroup, Panel, Checkbox } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { TEST_STATES } from '../actions/testActions';
+
+const { idle } = TEST_STATES;
+
 
 const TimeoutSetupView = ({
         timeout,
         onTimeoutChanged,
+        testingState,
     }) => {
     const [enableTimeout, setEnableTimeout] = useState(timeout !== 0);
     const [timeoutValue, setTimeoutValue] = useState(timeout === 0 ? 1000 : timeout);
@@ -72,6 +77,7 @@ const TimeoutSetupView = ({
                 <Checkbox
                     checked={enableTimeout}
                     onClick={() => toggleTimeout()}
+                    disabled={testingState !== idle}
                 >
                     Enable
                 </Checkbox>
@@ -90,7 +96,7 @@ const TimeoutSetupView = ({
                         step={10}
                         type="number"
                         bsSize="sm"
-                        disabled={!enableTimeout}
+                        disabled={!enableTimeout || testingState !== idle}
                     />
                 </FormGroup>
             </Panel>
@@ -101,6 +107,7 @@ const TimeoutSetupView = ({
 TimeoutSetupView.propTypes = {
     timeout: PropTypes.number.isRequired,
     onTimeoutChanged: PropTypes.func.isRequired,
+    testingState: PropTypes.number.isRequired,
 
 };
 export default TimeoutSetupView;

@@ -39,6 +39,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { TEST_STATES } from '../actions/testActions';
+import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 
 const { idle, stopping } = TEST_STATES;
 
@@ -46,21 +47,33 @@ const RunTestView = ({
         startTests,
         endTests,
         testingState,
-    }) => (
+        testMode,
+        board,
+    }) => {
+    let testModeStr;
+    if (testMode === DTM_TEST_MODE_BUTTON.transmitter) {
+        testModeStr = 'transmitter';
+    } else {
+        testModeStr = 'receiver';
+    }
+    return (
         <div className="app-sidepanel-panel">
             {testingState === idle &&
-            <Button onClick={startTests}>Start</Button>
+            <Button disabled={board === null} onClick={startTests}>{`Start ${testModeStr} test`}</Button>
             }
             {testingState !== idle &&
-            <Button disabled={testingState === stopping} onClick={endTests}>Stop</Button>
+            <Button disabled={testingState === stopping || board === null} onClick={endTests}>{`Stop ${testModeStr} test`}</Button>
             }
         </div>
     );
+};
 
 RunTestView.propTypes = {
     startTests: PropTypes.func.isRequired,
     endTests: PropTypes.func.isRequired,
     testingState: PropTypes.number.isRequired,
+    testMode: PropTypes.number.isRequired,
+    board: PropTypes.string.isRequired,
 };
 
 export default RunTestView;

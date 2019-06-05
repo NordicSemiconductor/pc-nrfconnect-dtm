@@ -42,39 +42,9 @@ import 'react-rangeslider/lib/index.css';
 import PropTypes from 'prop-types';
 import * as SettingsActions from '../actions/settingsActions';
 import ToggleChannelModeView from '../containers/toggleChannelModeView';
+import { TEST_STATES } from '../actions/testActions';
 
-const ChannelSlider = (label, currentValue, changedFunc) => (
-    <div>
-        <label htmlFor={`ChannelSlider-${label}-label`}>{label}</label>
-        <Slider
-            value={currentValue}
-            onChange={value => changedFunc(value)}
-            max={39}
-            min={0}
-            labels={{ 0: '0', 39: '39' }}
-            disabled={null}
-        />
-    </div>
-);
-
-const SweepTime = (value, changedFunc) => (
-    <form>
-        <FormGroup
-            controlId="formSweepTimeSelect"
-        >
-            <ControlLabel>Sweep time (ms)</ControlLabel>
-            <FormControl
-                onChange={evt => changedFunc(evt.target.value)}
-                componentClass="input"
-                value={value}
-                min={20}
-                step={10}
-                type="number"
-                bsSize="sm"
-            />
-        </FormGroup>
-    </form>
-);
+const { idle } = TEST_STATES;
 
 const ChannelView = ({
         channel,
@@ -86,8 +56,48 @@ const ChannelView = ({
         onChannelLowChanged,
         onChannelHighChanged,
         onSweepTimeChanged,
+        testingState,
     }) => {
     const [open, setOpen] = useState(true);
+
+    const ChannelSlider = (label, currentValue, changedFunc) => (
+        <div>
+            <label htmlFor={`ChannelSlider-${label}-label`}>{`${label} [${currentValue}]`}</label>
+            <Slider
+                value={currentValue}
+                onChange={value => {
+                    if (testingState === idle) {
+                        changedFunc(value);
+                    } else {
+                        changedFunc(currentValue);
+                    }
+                }}
+                max={39}
+                min={0}
+                labels={{ 0: '0', 39: '39' }}
+            />
+        </div>
+    );
+
+    const SweepTime = (value, changedFunc) => (
+        <form>
+            <FormGroup
+                controlId="formSweepTimeSelect"
+            >
+                <ControlLabel>Sweep delay (ms)</ControlLabel>
+                <FormControl
+                    onChange={evt => changedFunc(evt.target.value)}
+                    componentClass="input"
+                    value={value}
+                    min={20}
+                    step={10}
+                    type="number"
+                    bsSize="sm"
+                    disabled={testingState !== idle}
+                />
+            </FormGroup>
+        </form>
+    );
 
     return (
         <div
@@ -100,7 +110,7 @@ const ChannelView = ({
                 onSelect={() => setOpen(!open)}
             >
                 <div className="app-sidepanel-component-inputbox">
-                    <ToggleChannelModeView />
+                    <ToggleChannelModeView testingState={testingState} />
                 </div>
 
                 {channelMode === SettingsActions.DTM_CHANNEL_MODE.single &&
@@ -133,6 +143,7 @@ ChannelView.propTypes = {
     onChannelLowChanged: PropTypes.func.isRequired,
     onChannelHighChanged: PropTypes.func.isRequired,
     onSweepTimeChanged: PropTypes.func.isRequired,
+    testingState: PropTypes.number.isRequired,
 };
 
 export default ChannelView;

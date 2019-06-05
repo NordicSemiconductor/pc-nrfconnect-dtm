@@ -37,12 +37,14 @@
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import path from 'path';
-import { logger, getAppDir } from 'nrfconnect/core';
+import { logger, getAppDir, startWatchingDevices, stopWatchingDevices } from 'nrfconnect/core';
 import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
-import { selectDevice } from './lib/actions/testActions';
+import { selectDevice, deselectDevice } from './lib/actions/testActions';
 import appReducer from './lib/reducers';
 import './resources/css/index.less';
+import { compatiblePCAs } from './lib/utils/constants';
+import { setIncompatibleWarning, clearIncompatibleWarning, clearAllWarnings } from './lib/actions/warningActions';
 
 export default {
     config: {
@@ -83,17 +85,32 @@ export default {
     middleware: store => next => action => {
         const { dispatch } = store;
         const { type, device } = action;
-
         switch (type) {
             case 'DEVICE_SELECTED': {
-                const { serialport, boardVersion } = device;
-                logger.info('Device selected');
+                const { serialNumber } = device;
+                dispatch(clearAllWarnings());
+                logger.info(`Validating firmware for device with s/n ${serialNumber}`);
+                break;
+            }
+
+            case 'DEVICE_SETUP_COMPLETE': {
+                const { serialport, boardVersion, serialNumber } = device;
+                logger.info('Device selected successfully');
+                dispatch(stopWatchingDevices());
                 dispatch(selectDevice(serialport.comName, boardVersion));
+                if (compatiblePCAs.indexOf(boardVersion) >= 0) {
+                    dispatch(clearIncompatibleWarning());
+                } else {
+                    dispatch(setIncompatibleWarning(`The device with serial number \
+                        ${serialNumber} is not compatible with this application.`));
+                }
                 break;
             }
 
             case 'DEVICE_DESELECTED':
-                // no specific close, since all commands sent will open and close the serialport
+                dispatch(deselectDevice());
+                dispatch(startWatchingDevices());
+                dispatch(clearAllWarnings());
                 break;
 
             default:

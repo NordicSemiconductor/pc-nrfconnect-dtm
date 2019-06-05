@@ -33,19 +33,32 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+// eslint-disable-next-line import/no-unresolved
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Alert, Glyphicon } from 'react-bootstrap';
 
-import { combineReducers } from 'redux';
+const warningIcon = <Glyphicon glyph="exclamation-sign" className="warning-sign" />;
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+const combineWarnings = warnings => (
+    warnings.filter(str => str.length !== 0).map((s, index) => (
+        <Alert bsStyle="danger" key={`warning-${index + 1}`}>
+            <span>{warningIcon}</span>{s}
+        </Alert>
+    )));
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+const WarningView = ({
+    compatibleDeviceWarning,
+    communicationError,
+}) => (
+    <div className="warning-view">
+        {combineWarnings([compatibleDeviceWarning, communicationError])}
+    </div>
+);
 
-export default rootReducer;
+WarningView.propTypes = {
+    compatibleDeviceWarning: PropTypes.string.isRequired,
+    communicationError: PropTypes.string.isRequired,
+};
+
+export default WarningView;

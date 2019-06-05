@@ -39,17 +39,24 @@ import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import * as SettingsActions from '../actions/settingsActions';
+import { TEST_STATES } from '../actions/testActions';
+
+const { idle } = TEST_STATES;
 
 const ToggleTestModeView = ({
     selected,
     onButtonClicked,
+    testingState,
     }) => {
     const selectionButton = (type, text) => (
-        <Button onClick={() => onButtonClicked(type)} active={selected === type}>
+        <Button
+            onClick={() => onButtonClicked(type)}
+            active={selected === type}
+            disabled={testingState !== idle}
+        >
             {text}
         </Button>
     );
-
     return (
         <div className="app-sidepanel-panel">
             <ButtonGroup>
@@ -63,6 +70,7 @@ const ToggleTestModeView = ({
 ToggleTestModeView.propTypes = {
     selected: PropTypes.number.isRequired,
     onButtonClicked: PropTypes.func.isRequired,
+    testingState: PropTypes.number.isRequired,
 };
 
 export default ToggleTestModeView;

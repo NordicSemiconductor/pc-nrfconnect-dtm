@@ -38,10 +38,14 @@
 import React, { useState } from 'react';
 import { Panel, DropdownButton, MenuItem } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { DTM_PHY_STRING, DTM_MODULATION_STRING } from 'nrf-dtm-js/src/DTM.js';
+import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
 import { fromPCA } from '../utils/boards';
+import { TEST_STATES } from '../actions/testActions';
 
-const phyTypeView = (boardType, phy, onPhyUpdated) => {
+const { idle } = TEST_STATES;
+
+
+const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
     const compatibility = fromPCA(boardType);
     const items = Object.keys(compatibility.phy).map(keyname => (
         <MenuItem
@@ -54,53 +58,29 @@ const phyTypeView = (boardType, phy, onPhyUpdated) => {
     );
     return (
         <div>
-            <label htmlFor="PHYLabel">PHY</label>
+            <label
+                htmlFor="PHYLabel"
+            >
+                Physical layer
+            </label>
+            <br />
             <DropdownButton
 
                 title={DTM_PHY_STRING[phy]}
                 id={'dropdown-variants-phy-type'}
+                disabled={testingState !== idle}
             >
                 {items}
             </DropdownButton>
         </div>
     );
 };
-
-const modulationTypeView = (onModulationUpdated, modulation) => {
-    const items = Object.keys(DTM_MODULATION_STRING).map(keyname => (
-        <MenuItem
-            eventKey={keyname}
-            onSelect={evt => onModulationUpdated(evt)}
-        >
-            {DTM_MODULATION_STRING[keyname]}
-        </MenuItem>
-        ),
-    );
-    return (
-        <div>
-            <label
-                htmlFor="modulationIndexLabel"
-            >
-            Modulation Index
-            </label>
-            <DropdownButton
-
-                title={DTM_MODULATION_STRING[modulation]}
-                id={'dropdown-variants-phy-type'}
-            >
-                {items}
-            </DropdownButton>
-        </div>
-    );
-};
-
 
 const OtherSettingsView = ({
-    onModulationUpdated,
-    modulation,
     boardType,
     phy,
     onPhyUpdated,
+    testingState,
     }) => {
     const [open, setOpen] = useState(true);
     return (
@@ -114,23 +94,18 @@ const OtherSettingsView = ({
                 onSelect={() => setOpen(!open)}
             >
                 <div className="app-sidepanel-component-inputbox">
-                    {phyTypeView(boardType, phy, onPhyUpdated)}
-                </div>
-                <div className="app-sidepanel-component-inputbox">
-                    {modulationTypeView(onModulationUpdated, modulation)}
+                    {phyTypeView(boardType, phy, onPhyUpdated, testingState)}
                 </div>
             </Panel>
         </div>
     );
 };
 
-
 OtherSettingsView.propTypes = {
-    onModulationUpdated: PropTypes.func.isRequired,
-    modulation: PropTypes.number.isRequired,
     boardType: PropTypes.string.isRequired,
     phy: PropTypes.number.isRequired,
     onPhyUpdated: PropTypes.func.isRequired,
+    testingState: PropTypes.number.isRequired,
 };
 
 export default OtherSettingsView;

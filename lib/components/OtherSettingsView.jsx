@@ -39,9 +39,9 @@
 
 import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
 import PropTypes from 'prop-types';
-// eslint-disable-next-line import/no-unresolved
 import React, { useState } from 'react';
-import { DropdownButton, MenuItem, Panel } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 import { TEST_STATES } from '../actions/testActions';
 import { fromPCA } from '../utils/boards';
@@ -52,12 +52,12 @@ const { idle } = TEST_STATES;
 const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
     const compatibility = fromPCA(boardType);
     const items = Object.keys(compatibility.phy).map(keyname => (
-        <MenuItem
+        <Dropdown.Item
             eventKey={keyname}
             onSelect={evt => onPhyUpdated(compatibility.phy[evt])}
         >
             {DTM_PHY_STRING[compatibility.phy[keyname]]}
-        </MenuItem>
+        </Dropdown.Item>
     ));
     return (
         <div>
@@ -65,13 +65,13 @@ const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
                 Physical layer
             </label>
             <br />
-            <DropdownButton
+            <Dropdown.Toggle
                 title={DTM_PHY_STRING[phy]}
                 id="dropdown-variants-phy-type"
                 disabled={testingState !== idle}
             >
                 {items}
-            </DropdownButton>
+            </Dropdown.Toggle>
         </div>
     );
 };
@@ -87,7 +87,7 @@ const OtherSettingsView = ({
         <div
             className="app-sidepanel-panel"
         >
-            <Panel
+            <Card
                 collapsible
                 expanded={open}
                 header="Other settings"
@@ -96,7 +96,7 @@ const OtherSettingsView = ({
                 <div className="app-sidepanel-component-inputbox">
                     {phyTypeView(boardType, phy, onPhyUpdated, testingState)}
                 </div>
-            </Panel>
+            </Card>
         </div>
     );
 };

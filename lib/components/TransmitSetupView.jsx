@@ -42,14 +42,11 @@ import 'react-rangeslider/lib/index.css';
 import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import {
-    ControlLabel,
-    DropdownButton,
-    FormControl,
-    FormGroup,
-    MenuItem,
-    Panel,
-} from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
+import Dropdown from 'react-bootstrap/Dropdown';
+import FormControl from 'react-bootstrap/FormControl';
+import FormGroup from 'react-bootstrap/FormGroup';
+import FormLabel from 'react-bootstrap/FormLabel';
 import Slider from 'react-rangeslider';
 
 import { TEST_STATES } from '../actions/testActions';
@@ -59,24 +56,24 @@ const { idle } = TEST_STATES;
 
 const packetTypeView = (bitpatternUpdated, pkgType, testingState) => {
     const items = Object.keys(DTM.DTM_PKT).map((keyname, idx) => (
-        <MenuItem
+        <Dropdown.Item
             eventKey={idx}
             onSelect={evt => bitpatternUpdated(evt)}
         >
             {DTM_PKT_STRING[idx]}
-        </MenuItem>
+        </Dropdown.Item>
     ));
     return (
         <div>
             <label htmlFor="transmitPacketType">Transmit packet type</label>
             <br />
-            <DropdownButton
+            <Dropdown.Toggle
                 title={DTM_PKT_STRING[pkgType]}
                 id="dropdown-variants-packet-type"
                 disabled={testingState !== idle}
             >
                 {items}
-            </DropdownButton>
+            </Dropdown.Toggle>
         </div>
     );
 };
@@ -89,7 +86,7 @@ const packetLengthView = (currentLength, changedFunc, pkgType, testingState) => 
     return (
         <div>
             <FormGroup controlId="formPacketLength">
-                <ControlLabel>Packet length (bytes)</ControlLabel>
+                <FormLabel>Packet length (bytes)</FormLabel>
                 <FormControl
                     onChange={lengthChanged}
                     disabled={pkgType === DTM.DTM_PKT.PAYLOAD_VENDOR || testingState !== idle}
@@ -148,7 +145,7 @@ const TransmitSetupView = ({
     const [open, setOpen] = useState(true);
     return (
         <div className="app-sidepanel-panel">
-            <Panel
+            <Card
                 collapsible
                 expanded={open}
                 header="Transmitter settings"
@@ -161,7 +158,7 @@ const TransmitSetupView = ({
                 <div className="app-sidepanel-component-inputbox">
                     {packetLengthView(packetLength, lengthUpdated, pkgType, testingState)}
                 </div>
-            </Panel>
+            </Card>
         </div>
     );
 };

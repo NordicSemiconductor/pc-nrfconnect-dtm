@@ -35,15 +35,12 @@
  */
 
 import PropTypes from 'prop-types';
-// eslint-disable-next-line import/no-unresolved
 import React, { useState } from 'react';
-import {
-    Checkbox,
-    ControlLabel,
-    FormControl,
-    FormGroup,
-    Panel,
-} from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
+import FormCheck from 'react-bootstrap/FormCheck';
+import FormControl from 'react-bootstrap/FormControl';
+import FormGroup from 'react-bootstrap/FormGroup';
+import FormLabel from 'react-bootstrap/FormLabel';
 
 import { TEST_STATES } from '../actions/testActions';
 
@@ -75,26 +72,25 @@ const TimeoutSetupView = ({
 
     return (
         <div className="app-sidepanel-panel">
-            <Panel
+            <Card
                 collapsible
                 expanded={open}
                 header="Timeout settings"
                 onSelect={() => setOpen(!open)}
             >
-                <Checkbox
+                <FormCheck
                     checked={enableTimeout}
                     onClick={() => toggleTimeout()}
                     disabled={testingState !== idle}
-                >
-                    Enable
-                </Checkbox>
+                    label="Enable"
+                />
 
                 <FormGroup
                     controlId="formTimeoutSelect"
                 >
-                    <ControlLabel>
+                    <FormLabel>
                         Timeout (ms)
-                    </ControlLabel>
+                    </FormLabel>
                     <FormControl
                         onChange={evt => updateTimeout(evt.target.value)}
                         componentClass="input"
@@ -106,7 +102,7 @@ const TimeoutSetupView = ({
                         disabled={!enableTimeout || testingState !== idle}
                     />
                 </FormGroup>
-            </Panel>
+            </Card>
         </div>
     );
 };

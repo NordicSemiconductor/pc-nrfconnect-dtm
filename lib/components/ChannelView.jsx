@@ -41,12 +41,10 @@ import 'react-rangeslider/lib/index.css';
 
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import {
-    ControlLabel,
-    FormControl,
-    FormGroup,
-    Panel,
-} from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
+import FormControl from 'react-bootstrap/FormControl';
+import FormGroup from 'react-bootstrap/FormGroup';
+import FormLabel from 'react-bootstrap/FormLabel';
 import Slider from 'react-rangeslider';
 
 import * as SettingsActions from '../actions/settingsActions';
@@ -95,7 +93,7 @@ const ChannelView = ({
             <FormGroup
                 controlId="formSweepTimeSelect"
             >
-                <ControlLabel>Sweep delay (ms)</ControlLabel>
+                <FormLabel>Sweep delay (ms)</FormLabel>
                 <FormControl
                     onChange={evt => changedFunc(evt.target.value)}
                     componentClass="input"
@@ -114,7 +112,7 @@ const ChannelView = ({
         <div
             className="app-sidepanel-panel"
         >
-            <Panel
+            <Card
                 collapsible
                 expanded={open}
                 header="Channel settings"
@@ -139,7 +137,7 @@ const ChannelView = ({
                 && SweepTime(sweepTime, onSweepTimeChanged)
                     }
                 </div>
-            </Panel>
+            </Card>
         </div>
     );
 };

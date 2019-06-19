@@ -237,8 +237,13 @@ ChartView.propTypes = {
     lastChannel: PropTypes.objectOf(PropTypes.number).isRequired,
     lastReceived: PropTypes.arrayOf(PropTypes.number).isRequired,
     testingState: PropTypes.number.isRequired,
-    currentChannel: PropTypes.number.isRequired,
+    currentChannel: PropTypes.number,
     selectedTestMode: PropTypes.number.isRequired,
     txPower: PropTypes.number.isRequired,
 };
+
+ChartView.defaultProps = {
+    currentChannel: 0,
+};
+
 export default ChartView;

@@ -74,7 +74,11 @@ RunTestView.propTypes = {
     endTests: PropTypes.func.isRequired,
     testingState: PropTypes.number.isRequired,
     testMode: PropTypes.number.isRequired,
-    board: PropTypes.string.isRequired,
+    board: PropTypes.string,
+};
+
+RunTestView.defaultProps = {
+    board: '',
 };
 
 export default RunTestView;

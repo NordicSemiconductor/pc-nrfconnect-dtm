@@ -34,17 +34,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React from 'react';
+import './resources/css/index.scss';
+
 import path from 'path';
-import { logger, getAppDir, startWatchingDevices, stopWatchingDevices } from 'nrfconnect/core';
+
+import { getAppDir, logger, startWatchingDevices, stopWatchingDevices } from 'nrfconnect/core';
+import React from 'react';
+
+import { deselectDevice, selectDevice } from './lib/actions/testActions';
+import { clearAllWarnings, clearIncompatibleWarning, setIncompatibleWarning } from './lib/actions/warningActions';
 import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
-import { selectDevice, deselectDevice } from './lib/actions/testActions';
 import appReducer from './lib/reducers';
-import './resources/css/index.less';
 import { compatiblePCAs } from './lib/utils/constants';
-import { setIncompatibleWarning, clearIncompatibleWarning, clearAllWarnings } from './lib/actions/warningActions';
 
 export default {
     config: {

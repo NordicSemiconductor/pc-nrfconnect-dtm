@@ -34,20 +34,27 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-unresolved
 import React, { useState } from 'react';
-import { ControlLabel, FormControl, FormGroup, Panel, Checkbox } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import {
+    Checkbox,
+    ControlLabel,
+    FormControl,
+    FormGroup,
+    Panel,
+} from 'react-bootstrap';
+
 import { TEST_STATES } from '../actions/testActions';
 
 const { idle } = TEST_STATES;
 
 
 const TimeoutSetupView = ({
-        timeout,
-        onTimeoutChanged,
-        testingState,
-    }) => {
+    timeout,
+    onTimeoutChanged,
+    testingState,
+}) => {
     const [enableTimeout, setEnableTimeout] = useState(timeout !== 0);
     const [timeoutValue, setTimeoutValue] = useState(timeout === 0 ? 1000 : timeout);
     const [open, setOpen] = useState(true);

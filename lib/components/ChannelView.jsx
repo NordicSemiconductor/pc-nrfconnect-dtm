@@ -34,35 +34,46 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React, { useState } from 'react';
-import { FormControl, FormGroup, ControlLabel, Panel } from 'react-bootstrap';
-import Slider from 'react-rangeslider';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/label-has-for */
+
 import 'react-rangeslider/lib/index.css';
+
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import {
+    ControlLabel,
+    FormControl,
+    FormGroup,
+    Panel,
+} from 'react-bootstrap';
+import Slider from 'react-rangeslider';
+
 import * as SettingsActions from '../actions/settingsActions';
-import ToggleChannelModeView from '../containers/toggleChannelModeView';
 import { TEST_STATES } from '../actions/testActions';
+import ToggleChannelModeView from '../containers/toggleChannelModeView';
 
 const { idle } = TEST_STATES;
 
 const ChannelView = ({
-        channel,
-        channelMode,
-        channelLow,
-        channelHigh,
-        sweepTime,
-        onChannelChanged,
-        onChannelLowChanged,
-        onChannelHighChanged,
-        onSweepTimeChanged,
-        testingState,
-    }) => {
+    channel,
+    channelMode,
+    channelLow,
+    channelHigh,
+    sweepTime,
+    onChannelChanged,
+    onChannelLowChanged,
+    onChannelHighChanged,
+    onSweepTimeChanged,
+    testingState,
+}) => {
     const [open, setOpen] = useState(true);
 
     const ChannelSlider = (label, currentValue, changedFunc) => (
         <div>
-            <label htmlFor={`ChannelSlider-${label}-label`}>{`${label} [${currentValue}]`}</label>
+            <label htmlFor={`ChannelSlider-${label}-label`}>
+                {`${label} [${currentValue}]`}
+            </label>
             <Slider
                 value={currentValue}
                 onChange={value => {
@@ -113,20 +124,20 @@ const ChannelView = ({
                     <ToggleChannelModeView testingState={testingState} />
                 </div>
 
-                {channelMode === SettingsActions.DTM_CHANNEL_MODE.single &&
-                    <div className="app-sidepanel-component-slider">{ChannelSlider('Channel', channel, onChannelChanged)}</div>
+                {channelMode === SettingsActions.DTM_CHANNEL_MODE.single
+                    && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel', channel, onChannelChanged)}</div>
                 }
-                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
-                    <div className="app-sidepanel-component-slider">{ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}</div>
+                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+                    && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}</div>
                 }
-                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
-                    <div className="app-sidepanel-component-slider">{ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}</div>
+                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+                    && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}</div>
                 }
 
                 <div className="app-sidepanel-component-inputbox">
-                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
-                SweepTime(sweepTime, onSweepTimeChanged)
-                }
+                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+                && SweepTime(sweepTime, onSweepTimeChanged)
+                    }
                 </div>
             </Panel>
         </div>

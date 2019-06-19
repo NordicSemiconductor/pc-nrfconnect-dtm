@@ -38,7 +38,12 @@ import './resources/css/index.scss';
 
 import path from 'path';
 
-import { getAppDir, logger, startWatchingDevices, stopWatchingDevices } from 'nrfconnect/core';
+import {
+    getAppDir,
+    logger,
+    startWatchingDevices,
+    stopWatchingDevices,
+} from 'nrfconnect/core';
 import React from 'react';
 
 import { deselectDevice, selectDevice } from './lib/actions/testActions';

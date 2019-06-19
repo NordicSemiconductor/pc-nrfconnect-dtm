@@ -47,7 +47,7 @@ const ToggleChannelModeView = ({
     selected,
     onButtonClicked,
     testingState,
-    }) => {
+}) => {
     const selectionButton = (type, text) => (
         <Button
             onClick={() => onButtonClicked(type)}

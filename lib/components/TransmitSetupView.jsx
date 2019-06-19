@@ -34,16 +34,26 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React, { useState } from 'react';
-import { ControlLabel, FormControl, FormGroup, Panel, MenuItem, DropdownButton } from 'react-bootstrap';
-import Slider from 'react-rangeslider';
-import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
-import PropTypes from 'prop-types';
+/* eslint-disable jsx-a11y/label-has-for */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 
 import 'react-rangeslider/lib/index.css';
-import { fromPCA } from '../utils/boards';
+
+import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import {
+    ControlLabel,
+    DropdownButton,
+    FormControl,
+    FormGroup,
+    MenuItem,
+    Panel,
+} from 'react-bootstrap';
+import Slider from 'react-rangeslider';
+
 import { TEST_STATES } from '../actions/testActions';
+import { fromPCA } from '../utils/boards';
 
 const { idle } = TEST_STATES;
 
@@ -55,15 +65,14 @@ const packetTypeView = (bitpatternUpdated, pkgType, testingState) => {
         >
             {DTM_PKT_STRING[idx]}
         </MenuItem>
-        ),
-    );
+    ));
     return (
         <div>
-            <label htmlFor={'transmitPacketType'}>Transmit packet type</label>
+            <label htmlFor="transmitPacketType">Transmit packet type</label>
             <br />
             <DropdownButton
                 title={DTM_PKT_STRING[pkgType]}
-                id={'dropdown-variants-packet-type'}
+                id="dropdown-variants-packet-type"
                 disabled={testingState !== idle}
             >
                 {items}

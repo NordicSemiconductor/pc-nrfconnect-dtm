@@ -34,13 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/label-has-for */
+
+import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
+import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-unresolved
 import React, { useState } from 'react';
-import { Panel, DropdownButton, MenuItem } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
-import { fromPCA } from '../utils/boards';
+import { DropdownButton, MenuItem, Panel } from 'react-bootstrap';
+
 import { TEST_STATES } from '../actions/testActions';
+import { fromPCA } from '../utils/boards';
 
 const { idle } = TEST_STATES;
 
@@ -54,20 +58,16 @@ const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
         >
             {DTM_PHY_STRING[compatibility.phy[keyname]]}
         </MenuItem>
-        ),
-    );
+    ));
     return (
         <div>
-            <label
-                htmlFor="PHYLabel"
-            >
+            <label htmlFor="PHYLabel">
                 Physical layer
             </label>
             <br />
             <DropdownButton
-
                 title={DTM_PHY_STRING[phy]}
-                id={'dropdown-variants-phy-type'}
+                id="dropdown-variants-phy-type"
                 disabled={testingState !== idle}
             >
                 {items}
@@ -81,7 +81,7 @@ const OtherSettingsView = ({
     phy,
     onPhyUpdated,
     testingState,
-    }) => {
+}) => {
     const [open, setOpen] = useState(true);
     return (
         <div

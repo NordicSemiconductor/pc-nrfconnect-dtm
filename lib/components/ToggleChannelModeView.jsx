@@ -70,7 +70,7 @@ const ToggleChannelModeView = ({
 
 
 ToggleChannelModeView.propTypes = {
-    selected: PropTypes.number.isRequired,
+    selected: PropTypes.string.isRequired,
     onButtonClicked: PropTypes.func.isRequired,
     testingState: PropTypes.number.isRequired,
 };

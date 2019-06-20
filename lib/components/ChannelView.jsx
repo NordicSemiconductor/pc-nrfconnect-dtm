@@ -101,7 +101,7 @@ const ChannelView = ({
                     min={20}
                     step={10}
                     type="number"
-                    bsSize="sm"
+                    size="sm"
                     disabled={testingState !== idle}
                 />
             </FormGroup>
@@ -113,8 +113,8 @@ const ChannelView = ({
             className="app-sidepanel-panel"
         >
             <Card
-                collapsible
-                expanded={open}
+                collapsible="true"
+                expanded={open.toString()}
                 header="Channel settings"
                 onSelect={() => setOpen(!open)}
             >
@@ -134,7 +134,7 @@ const ChannelView = ({
 
                 <div className="app-sidepanel-component-inputbox">
                     {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-                && SweepTime(sweepTime, onSweepTimeChanged)
+                        && SweepTime(sweepTime, onSweepTimeChanged)
                     }
                 </div>
             </Card>
@@ -143,7 +143,7 @@ const ChannelView = ({
 };
 
 ChannelView.propTypes = {
-    channelMode: PropTypes.number.isRequired,
+    channelMode: PropTypes.string.isRequired,
     channel: PropTypes.number.isRequired,
     channelLow: PropTypes.number.isRequired,
     channelHigh: PropTypes.number.isRequired,

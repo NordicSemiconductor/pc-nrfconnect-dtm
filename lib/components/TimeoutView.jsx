@@ -73,13 +73,13 @@ const TimeoutSetupView = ({
     return (
         <div className="app-sidepanel-panel">
             <Card
-                collapsible
-                expanded={open}
+                collapsible="true"
+                expanded={open.toString()}
                 header="Timeout settings"
                 onSelect={() => setOpen(!open)}
             >
                 <FormCheck
-                    checked={enableTimeout}
+                    defaultChecked={enableTimeout}
                     onClick={() => toggleTimeout()}
                     disabled={testingState !== idle}
                     label="Enable"
@@ -93,12 +93,12 @@ const TimeoutSetupView = ({
                     </FormLabel>
                     <FormControl
                         onChange={evt => updateTimeout(evt.target.value)}
-                        componentClass="input"
+                        componentclass="input"
                         value={timeoutValue}
                         min={20}
                         step={10}
                         type="number"
-                        bsSize="sm"
+                        size="sm"
                         disabled={!enableTimeout || testingState !== idle}
                     />
                 </FormGroup>

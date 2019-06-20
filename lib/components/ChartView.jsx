@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import * as TestActions from '../actions/testActions';
+
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
+import * as TestActions from '../actions/testActions';
 import { dbmValues } from '../utils/constants';
 
 const chartColors = {
@@ -214,8 +214,8 @@ const ChartView = ({
                 || (selectedTestMode === DTM_TEST_MODE_BUTTON.receiver
                     && chartDataReceive(lastReceived))}
                 options={getOptions(selectedTestMode)}
-                width="600"
-                height="250"
+                width={600}
+                height={250}
             />
         );
     }
@@ -227,8 +227,8 @@ const ChartView = ({
                 || (selectedTestMode === DTM_TEST_MODE_BUTTON.receiver
                     && chartDataReceive(lastReceived))}
             options={getOptions(selectedTestMode)}
-            width="600"
-            height="250"
+            width={600}
+            height={250}
         />
     );
 };

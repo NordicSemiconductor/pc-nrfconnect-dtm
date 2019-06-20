@@ -88,8 +88,8 @@ const OtherSettingsView = ({
             className="app-sidepanel-panel"
         >
             <Card
-                collapsible
-                expanded={open}
+                collapsible="true"
+                expanded={open.toString()}
                 header="Other settings"
                 onSelect={() => setOpen(!open)}
             >
@@ -102,10 +102,14 @@ const OtherSettingsView = ({
 };
 
 OtherSettingsView.propTypes = {
-    boardType: PropTypes.string.isRequired,
+    boardType: PropTypes.string,
     phy: PropTypes.number.isRequired,
     onPhyUpdated: PropTypes.func.isRequired,
     testingState: PropTypes.number.isRequired,
+};
+
+OtherSettingsView.defaultProps = {
+    boardType: '',
 };
 
 export default OtherSettingsView;

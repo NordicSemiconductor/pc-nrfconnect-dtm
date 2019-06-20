@@ -59,6 +59,7 @@ const packetTypeView = (bitpatternUpdated, pkgType, testingState) => {
         <Dropdown.Item
             eventKey={idx}
             onSelect={evt => bitpatternUpdated(evt)}
+            key={keyname}
         >
             {DTM_PKT_STRING[idx]}
         </Dropdown.Item>
@@ -90,13 +91,13 @@ const packetLengthView = (currentLength, changedFunc, pkgType, testingState) => 
                 <FormControl
                     onChange={lengthChanged}
                     disabled={pkgType === DTM.DTM_PKT.PAYLOAD_VENDOR || testingState !== idle}
-                    componentClass="input"
+                    componentclass="input"
                     value={currentLength}
                     min={1}
                     max={255}
                     step={1}
                     type="number"
-                    bsSize="sm"
+                    size="sm"
                 />
             </FormGroup>
         </div>
@@ -146,8 +147,8 @@ const TransmitSetupView = ({
     return (
         <div className="app-sidepanel-panel">
             <Card
-                collapsible
-                expanded={open}
+                collapsible="true"
+                expanded={open.toString()}
                 header="Transmitter settings"
                 onSelect={() => setOpen(!open)}
             >
@@ -170,8 +171,12 @@ TransmitSetupView.propTypes = {
     bitpatternUpdated: PropTypes.func.isRequired,
     txPowerUpdated: PropTypes.func.isRequired,
     txPowerIdx: PropTypes.number.isRequired,
-    boardType: PropTypes.number.isRequired,
+    boardType: PropTypes.number,
     testingState: PropTypes.number.isRequired,
+};
+
+TransmitSetupView.defaultProps = {
+    boardType: '',
 };
 
 export default TransmitSetupView;

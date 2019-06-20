@@ -42,6 +42,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 import { TEST_STATES } from '../actions/testActions';
 import { fromPCA } from '../utils/boards';
@@ -60,19 +61,20 @@ const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
         </Dropdown.Item>
     ));
     return (
-        <div>
-            <label htmlFor="PHYLabel">
+        <Card>
+            <Card.Header>
                 Physical layer
-            </label>
-            <br />
-            <Dropdown.Toggle
-                title={DTM_PHY_STRING[phy]}
-                id="dropdown-variants-phy-type"
-                disabled={testingState !== idle}
-            >
-                {items}
-            </Dropdown.Toggle>
-        </div>
+            </Card.Header>
+            <Card.Body>
+                <DropdownButton
+                    title={DTM_PHY_STRING[phy]}
+                    id="dropdown-variants-phy-type"
+                    disabled={testingState !== idle}
+                >
+                    {items}
+                </DropdownButton>
+            </Card.Body>
+        </Card>
     );
 };
 
@@ -90,12 +92,16 @@ const OtherSettingsView = ({
             <Card
                 collapsible="true"
                 expanded={open.toString()}
-                header="Other settings"
                 onSelect={() => setOpen(!open)}
             >
-                <div className="app-sidepanel-component-inputbox">
-                    {phyTypeView(boardType, phy, onPhyUpdated, testingState)}
-                </div>
+                <Card.Header>
+                    Other settings
+                </Card.Header>
+                <Card.Body>
+                    <div className="app-sidepanel-component-inputbox">
+                        {phyTypeView(boardType, phy, onPhyUpdated, testingState)}
+                    </div>
+                </Card.Body>
             </Card>
         </div>
     );

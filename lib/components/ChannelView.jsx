@@ -115,28 +115,32 @@ const ChannelView = ({
             <Card
                 collapsible="true"
                 expanded={open.toString()}
-                header="Channel settings"
                 onSelect={() => setOpen(!open)}
             >
-                <div className="app-sidepanel-component-inputbox">
-                    <ToggleChannelModeView testingState={testingState} />
-                </div>
+                <Card.Header>
+                    Channel settings
+                </Card.Header>
+                <Card.Body>
+                    <div className="app-sidepanel-component-inputbox">
+                        <ToggleChannelModeView testingState={testingState} />
+                    </div>
 
-                {channelMode === SettingsActions.DTM_CHANNEL_MODE.single
-                    && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel', channel, onChannelChanged)}</div>
-                }
-                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-                    && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}</div>
-                }
-                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-                    && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}</div>
-                }
-
-                <div className="app-sidepanel-component-inputbox">
-                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-                        && SweepTime(sweepTime, onSweepTimeChanged)
+                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.single
+                        && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel', channel, onChannelChanged)}</div>
                     }
-                </div>
+                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+                        && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}</div>
+                    }
+                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+                        && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}</div>
+                    }
+
+                    <div className="app-sidepanel-component-inputbox">
+                        {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+                            && SweepTime(sweepTime, onSweepTimeChanged)
+                        }
+                    </div>
+                </Card.Body>
             </Card>
         </div>
     );

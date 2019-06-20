@@ -75,33 +75,37 @@ const TimeoutSetupView = ({
             <Card
                 collapsible="true"
                 expanded={open.toString()}
-                header="Timeout settings"
                 onSelect={() => setOpen(!open)}
             >
-                <FormCheck
-                    defaultChecked={enableTimeout}
-                    onClick={() => toggleTimeout()}
-                    disabled={testingState !== idle}
-                    label="Enable"
-                />
-
-                <FormGroup
-                    controlId="formTimeoutSelect"
-                >
-                    <FormLabel>
-                        Timeout (ms)
-                    </FormLabel>
-                    <FormControl
-                        onChange={evt => updateTimeout(evt.target.value)}
-                        componentclass="input"
-                        value={timeoutValue}
-                        min={20}
-                        step={10}
-                        type="number"
-                        size="sm"
-                        disabled={!enableTimeout || testingState !== idle}
+                <Card.Header>
+                    Timeout settings
+                </Card.Header>
+                <Card.Body>
+                    <FormCheck
+                        defaultChecked={enableTimeout}
+                        onClick={() => toggleTimeout()}
+                        disabled={testingState !== idle}
+                        label="Enable"
                     />
-                </FormGroup>
+
+                    <FormGroup
+                        controlId="formTimeoutSelect"
+                    >
+                        <FormLabel>
+                            Timeout (ms)
+                        </FormLabel>
+                        <FormControl
+                            onChange={evt => updateTimeout(evt.target.value)}
+                            componentclass="input"
+                            value={timeoutValue}
+                            min={20}
+                            step={10}
+                            type="number"
+                            size="sm"
+                            disabled={!enableTimeout || testingState !== idle}
+                        />
+                    </FormGroup>
+                </Card.Body>
             </Card>
         </div>
     );

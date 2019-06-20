@@ -44,6 +44,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import FormControl from 'react-bootstrap/FormControl';
 import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
@@ -68,13 +69,13 @@ const packetTypeView = (bitpatternUpdated, pkgType, testingState) => {
         <div>
             <label htmlFor="transmitPacketType">Transmit packet type</label>
             <br />
-            <Dropdown.Toggle
+            <DropdownButton
                 title={DTM_PKT_STRING[pkgType]}
                 id="dropdown-variants-packet-type"
                 disabled={testingState !== idle}
             >
                 {items}
-            </Dropdown.Toggle>
+            </DropdownButton>
         </div>
     );
 };
@@ -149,16 +150,20 @@ const TransmitSetupView = ({
             <Card
                 collapsible="true"
                 expanded={open.toString()}
-                header="Transmitter settings"
                 onSelect={() => setOpen(!open)}
             >
-                {txPowerView(boardType, txPowerIdx, txPowerUpdated, testingState)}
-                <div className="app-sidepanel-component-inputbox">
-                    {packetTypeView(bitpatternUpdated, pkgType, testingState)}
-                </div>
-                <div className="app-sidepanel-component-inputbox">
-                    {packetLengthView(packetLength, lengthUpdated, pkgType, testingState)}
-                </div>
+                <Card.Header>
+                    Transmitter settings
+                </Card.Header>
+                <Card.Body>
+                    {txPowerView(boardType, txPowerIdx, txPowerUpdated, testingState)}
+                    <div className="app-sidepanel-component-inputbox">
+                        {packetTypeView(bitpatternUpdated, pkgType, testingState)}
+                    </div>
+                    <div className="app-sidepanel-component-inputbox">
+                        {packetLengthView(packetLength, lengthUpdated, pkgType, testingState)}
+                    </div>
+                </Card.Body>
             </Card>
         </div>
     );
@@ -167,7 +172,7 @@ const TransmitSetupView = ({
 TransmitSetupView.propTypes = {
     packetLength: PropTypes.number.isRequired,
     lengthUpdated: PropTypes.func.isRequired,
-    pkgType: PropTypes.number.isRequired,
+    pkgType: PropTypes.string.isRequired,
     bitpatternUpdated: PropTypes.func.isRequired,
     txPowerUpdated: PropTypes.func.isRequired,
     txPowerIdx: PropTypes.number.isRequired,

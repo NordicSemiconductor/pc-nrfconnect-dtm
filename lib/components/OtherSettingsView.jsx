@@ -34,15 +34,14 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable jsx-a11y/label-has-for */
-
 import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import FormGroup from 'react-bootstrap/FormGroup';
+import FormLabel from 'react-bootstrap/FormLabel';
 
 import { TEST_STATES } from '../actions/testActions';
 import { fromPCA } from '../utils/boards';
@@ -61,20 +60,18 @@ const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
         </Dropdown.Item>
     ));
     return (
-        <Card>
-            <Card.Header>
+        <FormGroup controlId="formTimeoutSelect">
+            <FormLabel>
                 Physical layer
-            </Card.Header>
-            <Card.Body>
-                <DropdownButton
-                    title={DTM_PHY_STRING[phy]}
-                    id="dropdown-variants-phy-type"
-                    disabled={testingState !== idle}
-                >
-                    {items}
-                </DropdownButton>
-            </Card.Body>
-        </Card>
+            </FormLabel>
+            <DropdownButton
+                title={DTM_PHY_STRING[phy]}
+                id="dropdown-variants-phy-type"
+                disabled={testingState !== idle}
+            >
+                {items}
+            </DropdownButton>
+        </FormGroup>
     );
 };
 

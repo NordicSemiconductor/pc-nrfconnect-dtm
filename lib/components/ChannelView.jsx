@@ -34,35 +34,44 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React, { useState } from 'react';
-import { FormControl, FormGroup, ControlLabel, Panel } from 'react-bootstrap';
-import Slider from 'react-rangeslider';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/label-has-for */
+
 import 'react-rangeslider/lib/index.css';
+
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import FormControl from 'react-bootstrap/FormControl';
+import FormGroup from 'react-bootstrap/FormGroup';
+import FormLabel from 'react-bootstrap/FormLabel';
+import Slider from 'react-rangeslider';
+
 import * as SettingsActions from '../actions/settingsActions';
-import ToggleChannelModeView from '../containers/toggleChannelModeView';
 import { TEST_STATES } from '../actions/testActions';
+import ToggleChannelModeView from '../containers/toggleChannelModeView';
 
 const { idle } = TEST_STATES;
 
 const ChannelView = ({
-        channel,
-        channelMode,
-        channelLow,
-        channelHigh,
-        sweepTime,
-        onChannelChanged,
-        onChannelLowChanged,
-        onChannelHighChanged,
-        onSweepTimeChanged,
-        testingState,
-    }) => {
+    channel,
+    channelMode,
+    channelLow,
+    channelHigh,
+    sweepTime,
+    onChannelChanged,
+    onChannelLowChanged,
+    onChannelHighChanged,
+    onSweepTimeChanged,
+    testingState,
+}) => {
     const [open, setOpen] = useState(true);
 
     const ChannelSlider = (label, currentValue, changedFunc) => (
         <div>
-            <label htmlFor={`ChannelSlider-${label}-label`}>{`${label} [${currentValue}]`}</label>
+            <FormLabel>
+                {`${label} [${currentValue}]`}
+            </FormLabel>
             <Slider
                 value={currentValue}
                 onChange={value => {
@@ -84,7 +93,7 @@ const ChannelView = ({
             <FormGroup
                 controlId="formSweepTimeSelect"
             >
-                <ControlLabel>Sweep delay (ms)</ControlLabel>
+                <FormLabel>Sweep delay (ms)</FormLabel>
                 <FormControl
                     onChange={evt => changedFunc(evt.target.value)}
                     componentClass="input"
@@ -92,7 +101,7 @@ const ChannelView = ({
                     min={20}
                     step={10}
                     type="number"
-                    bsSize="sm"
+                    size="sm"
                     disabled={testingState !== idle}
                 />
             </FormGroup>
@@ -103,38 +112,42 @@ const ChannelView = ({
         <div
             className="app-sidepanel-panel"
         >
-            <Panel
-                collapsible
-                expanded={open}
-                header="Channel settings"
+            <Card
+                collapsible="true"
+                expanded={open.toString()}
                 onSelect={() => setOpen(!open)}
             >
-                <div className="app-sidepanel-component-inputbox">
-                    <ToggleChannelModeView testingState={testingState} />
-                </div>
+                <Card.Header>
+                    Channel settings
+                </Card.Header>
+                <Card.Body>
+                    <div className="app-sidepanel-component-inputbox">
+                        <ToggleChannelModeView testingState={testingState} />
+                    </div>
 
-                {channelMode === SettingsActions.DTM_CHANNEL_MODE.single &&
-                    <div className="app-sidepanel-component-slider">{ChannelSlider('Channel', channel, onChannelChanged)}</div>
-                }
-                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
-                    <div className="app-sidepanel-component-slider">{ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}</div>
-                }
-                {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
-                    <div className="app-sidepanel-component-slider">{ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}</div>
-                }
+                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.single
+                        && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel', channel, onChannelChanged)}</div>
+                    }
+                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+                        && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}</div>
+                    }
+                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+                        && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}</div>
+                    }
 
-                <div className="app-sidepanel-component-inputbox">
-                    {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep &&
-                SweepTime(sweepTime, onSweepTimeChanged)
-                }
-                </div>
-            </Panel>
+                    <div className="app-sidepanel-component-inputbox">
+                        {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+                            && SweepTime(sweepTime, onSweepTimeChanged)
+                        }
+                    </div>
+                </Card.Body>
+            </Card>
         </div>
     );
 };
 
 ChannelView.propTypes = {
-    channelMode: PropTypes.number.isRequired,
+    channelMode: PropTypes.string.isRequired,
     channel: PropTypes.number.isRequired,
     channelLow: PropTypes.number.isRequired,
     channelHigh: PropTypes.number.isRequired,

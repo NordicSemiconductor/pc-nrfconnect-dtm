@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 /* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
@@ -35,10 +36,9 @@
  */
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Alert, Glyphicon } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert';
 
-const warningIcon = <Glyphicon glyph="exclamation-sign" className="warning-sign" />;
+const warningIcon = <span className="mdi mdi-sign warning-sign" />;
 
 const combineWarnings = warnings => (
     warnings.filter(str => str.length !== 0).map((s, index) => (

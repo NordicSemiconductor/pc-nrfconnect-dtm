@@ -47,9 +47,10 @@ const ToggleChannelModeView = ({
     selected,
     onButtonClicked,
     testingState,
-    }) => {
+}) => {
     const selectionButton = (type, text) => (
         <Button
+            variant="light"
             onClick={() => onButtonClicked(type)}
             active={selected === type}
             disabled={testingState !== idle}
@@ -70,7 +71,7 @@ const ToggleChannelModeView = ({
 
 
 ToggleChannelModeView.propTypes = {
-    selected: PropTypes.number.isRequired,
+    selected: PropTypes.string.isRequired,
     onButtonClicked: PropTypes.func.isRequired,
     testingState: PropTypes.number.isRequired,
 };

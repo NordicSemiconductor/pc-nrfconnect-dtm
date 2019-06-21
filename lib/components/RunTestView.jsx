@@ -34,22 +34,23 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import { TEST_STATES } from '../actions/testActions';
+
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
+import { TEST_STATES } from '../actions/testActions';
 
 const { idle, stopping } = TEST_STATES;
 
 const RunTestView = ({
-        startTests,
-        endTests,
-        testingState,
-        testMode,
-        board,
-    }) => {
+    startTests,
+    endTests,
+    testingState,
+    testMode,
+    board,
+}) => {
     let testModeStr;
     if (testMode === DTM_TEST_MODE_BUTTON.transmitter) {
         testModeStr = 'transmitter';
@@ -58,11 +59,11 @@ const RunTestView = ({
     }
     return (
         <div className="app-sidepanel-panel">
-            {testingState === idle &&
-            <Button disabled={board === null} onClick={startTests}>{`Start ${testModeStr} test`}</Button>
+            {testingState === idle
+                && <Button variant="light" disabled={board === null} onClick={startTests}>{`Start ${testModeStr} test`}</Button>
             }
-            {testingState !== idle &&
-            <Button disabled={testingState === stopping || board === null} onClick={endTests}>{`Stop ${testModeStr} test`}</Button>
+            {testingState !== idle
+                && <Button variant="light" disabled={testingState === stopping || board === null} onClick={endTests}>{`Stop ${testModeStr} test`}</Button>
             }
         </div>
     );
@@ -73,7 +74,11 @@ RunTestView.propTypes = {
     endTests: PropTypes.func.isRequired,
     testingState: PropTypes.number.isRequired,
     testMode: PropTypes.number.isRequired,
-    board: PropTypes.string.isRequired,
+    board: PropTypes.string,
+};
+
+RunTestView.defaultProps = {
+    board: '',
 };
 
 export default RunTestView;

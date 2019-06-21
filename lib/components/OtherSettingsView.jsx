@@ -34,13 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React, { useState } from 'react';
-import { Panel, DropdownButton, MenuItem } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
-import { fromPCA } from '../utils/boards';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import FormGroup from 'react-bootstrap/FormGroup';
+import FormLabel from 'react-bootstrap/FormLabel';
+
 import { TEST_STATES } from '../actions/testActions';
+import { fromPCA } from '../utils/boards';
 
 const { idle } = TEST_STATES;
 
@@ -48,31 +52,27 @@ const { idle } = TEST_STATES;
 const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
     const compatibility = fromPCA(boardType);
     const items = Object.keys(compatibility.phy).map(keyname => (
-        <MenuItem
+        <Dropdown.Item
             eventKey={keyname}
             onSelect={evt => onPhyUpdated(compatibility.phy[evt])}
         >
             {DTM_PHY_STRING[compatibility.phy[keyname]]}
-        </MenuItem>
-        ),
-    );
+        </Dropdown.Item>
+    ));
     return (
-        <div>
-            <label
-                htmlFor="PHYLabel"
-            >
+        <FormGroup controlId="formTimeoutSelect">
+            <FormLabel>
                 Physical layer
-            </label>
-            <br />
+            </FormLabel>
             <DropdownButton
-
+                variant="light"
                 title={DTM_PHY_STRING[phy]}
-                id={'dropdown-variants-phy-type'}
+                id="dropdown-variants-phy-type"
                 disabled={testingState !== idle}
             >
                 {items}
             </DropdownButton>
-        </div>
+        </FormGroup>
     );
 };
 
@@ -81,31 +81,39 @@ const OtherSettingsView = ({
     phy,
     onPhyUpdated,
     testingState,
-    }) => {
+}) => {
     const [open, setOpen] = useState(true);
     return (
         <div
             className="app-sidepanel-panel"
         >
-            <Panel
-                collapsible
-                expanded={open}
-                header="Other settings"
+            <Card
+                collapsible="true"
+                expanded={open.toString()}
                 onSelect={() => setOpen(!open)}
             >
-                <div className="app-sidepanel-component-inputbox">
-                    {phyTypeView(boardType, phy, onPhyUpdated, testingState)}
-                </div>
-            </Panel>
+                <Card.Header>
+                    Other settings
+                </Card.Header>
+                <Card.Body>
+                    <div className="app-sidepanel-component-inputbox">
+                        {phyTypeView(boardType, phy, onPhyUpdated, testingState)}
+                    </div>
+                </Card.Body>
+            </Card>
         </div>
     );
 };
 
 OtherSettingsView.propTypes = {
-    boardType: PropTypes.string.isRequired,
+    boardType: PropTypes.string,
     phy: PropTypes.number.isRequired,
     onPhyUpdated: PropTypes.func.isRequired,
     testingState: PropTypes.number.isRequired,
+};
+
+OtherSettingsView.defaultProps = {
+    boardType: '',
 };
 
 export default OtherSettingsView;

@@ -34,20 +34,24 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React, { useState } from 'react';
-import { ControlLabel, FormControl, FormGroup, Panel, Checkbox } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import FormCheck from 'react-bootstrap/FormCheck';
+import FormControl from 'react-bootstrap/FormControl';
+import FormGroup from 'react-bootstrap/FormGroup';
+import FormLabel from 'react-bootstrap/FormLabel';
+
 import { TEST_STATES } from '../actions/testActions';
 
 const { idle } = TEST_STATES;
 
 
 const TimeoutSetupView = ({
-        timeout,
-        onTimeoutChanged,
-        testingState,
-    }) => {
+    timeout,
+    onTimeoutChanged,
+    testingState,
+}) => {
     const [enableTimeout, setEnableTimeout] = useState(timeout !== 0);
     const [timeoutValue, setTimeoutValue] = useState(timeout === 0 ? 1000 : timeout);
     const [open, setOpen] = useState(true);
@@ -68,38 +72,43 @@ const TimeoutSetupView = ({
 
     return (
         <div className="app-sidepanel-panel">
-            <Panel
-                collapsible
-                expanded={open}
-                header="Timeout settings"
+            <Card
+                collapsible="true"
+                expanded={open.toString()}
                 onSelect={() => setOpen(!open)}
             >
-                <Checkbox
-                    checked={enableTimeout}
-                    onClick={() => toggleTimeout()}
-                    disabled={testingState !== idle}
-                >
-                    Enable
-                </Checkbox>
+                <Card.Header>
+                    Timeout settings
+                </Card.Header>
+                <Card.Body>
+                    <FormGroup controlId="timeoutEnableCheckbox">
+                        <FormCheck
+                            defaultChecked={enableTimeout}
+                            onClick={() => toggleTimeout()}
+                            disabled={testingState !== idle}
+                            label="Enable"
+                        />
+                    </FormGroup>
 
-                <FormGroup
-                    controlId="formTimeoutSelect"
-                >
-                    <ControlLabel>
-                        Timeout (ms)
-                    </ControlLabel>
-                    <FormControl
-                        onChange={evt => updateTimeout(evt.target.value)}
-                        componentClass="input"
-                        value={timeoutValue}
-                        min={20}
-                        step={10}
-                        type="number"
-                        bsSize="sm"
-                        disabled={!enableTimeout || testingState !== idle}
-                    />
-                </FormGroup>
-            </Panel>
+                    <FormGroup
+                        controlId="formTimeoutSelect"
+                    >
+                        <FormLabel>
+                            Timeout (ms)
+                        </FormLabel>
+                        <FormControl
+                            onChange={evt => updateTimeout(evt.target.value)}
+                            componentclass="input"
+                            value={timeoutValue}
+                            min={20}
+                            step={10}
+                            type="number"
+                            size="sm"
+                            disabled={!enableTimeout || testingState !== idle}
+                        />
+                    </FormGroup>
+                </Card.Body>
+            </Card>
         </div>
     );
 };

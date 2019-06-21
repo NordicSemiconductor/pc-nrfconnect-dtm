@@ -50,6 +50,7 @@ const ToggleChannelModeView = ({
 }) => {
     const selectionButton = (type, text) => (
         <Button
+            variant="light"
             onClick={() => onButtonClicked(type)}
             active={selected === type}
             disabled={testingState !== idle}

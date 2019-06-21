@@ -71,6 +71,7 @@ const packetTypeView = (bitpatternUpdated, pkgType, testingState) => {
                 Transmit packet type
             </FormLabel>
             <DropdownButton
+                variant="light"
                 title={DTM_PKT_STRING[pkgType]}
                 id="dropdown-variants-packet-type"
                 disabled={testingState !== idle}

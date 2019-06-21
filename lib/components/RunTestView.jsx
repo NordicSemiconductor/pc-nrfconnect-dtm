@@ -60,10 +60,10 @@ const RunTestView = ({
     return (
         <div className="app-sidepanel-panel">
             {testingState === idle
-                && <Button disabled={board === null} onClick={startTests}>{`Start ${testModeStr} test`}</Button>
+                && <Button variant="light" disabled={board === null} onClick={startTests}>{`Start ${testModeStr} test`}</Button>
             }
             {testingState !== idle
-                && <Button disabled={testingState === stopping || board === null} onClick={endTests}>{`Stop ${testModeStr} test`}</Button>
+                && <Button variant="light" disabled={testingState === stopping || board === null} onClick={endTests}>{`Stop ${testModeStr} test`}</Button>
             }
         </div>
     );

@@ -65,6 +65,7 @@ const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
                 Physical layer
             </FormLabel>
             <DropdownButton
+                variant="light"
                 title={DTM_PHY_STRING[phy]}
                 id="dropdown-variants-phy-type"
                 disabled={testingState !== idle}

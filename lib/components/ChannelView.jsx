@@ -69,9 +69,9 @@ const ChannelView = ({
 
     const ChannelSlider = (label, currentValue, changedFunc) => (
         <div>
-            <label htmlFor={`ChannelSlider-${label}-label`}>
+            <FormLabel>
                 {`${label} [${currentValue}]`}
-            </label>
+            </FormLabel>
             <Slider
                 value={currentValue}
                 onChange={value => {

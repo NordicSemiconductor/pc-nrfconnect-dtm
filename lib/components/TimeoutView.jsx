@@ -81,12 +81,14 @@ const TimeoutSetupView = ({
                     Timeout settings
                 </Card.Header>
                 <Card.Body>
-                    <FormCheck
-                        defaultChecked={enableTimeout}
-                        onClick={() => toggleTimeout()}
-                        disabled={testingState !== idle}
-                        label="Enable"
-                    />
+                    <FormGroup controlId="timeoutEnableCheckbox">
+                        <FormCheck
+                            defaultChecked={enableTimeout}
+                            onClick={() => toggleTimeout()}
+                            disabled={testingState !== idle}
+                            label="Enable"
+                        />
+                    </FormGroup>
 
                     <FormGroup
                         controlId="formTimeoutSelect"

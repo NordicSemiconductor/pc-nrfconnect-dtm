@@ -67,8 +67,9 @@ const packetTypeView = (bitpatternUpdated, pkgType, testingState) => {
     ));
     return (
         <div>
-            <label htmlFor="transmitPacketType">Transmit packet type</label>
-            <br />
+            <FormLabel>
+                Transmit packet type
+            </FormLabel>
             <DropdownButton
                 title={DTM_PKT_STRING[pkgType]}
                 id="dropdown-variants-packet-type"
@@ -114,7 +115,9 @@ const txPowerView = (boardType, txPowerIdx, txPowerUpdated, testingState) => {
     label[maxDbmRangeValue] = `${compatibility.txPower[maxDbmRangeValue]}`;
     return (
         <div className="app-sidepanel-component-slider">
-            <label htmlFor="txPower">{`TX Power [${compatibility.txPower[txPowerIdx]} dBm]`}</label>
+            <FormLabel>
+                {`TX Power [${compatibility.txPower[txPowerIdx]} dBm]`}
+            </FormLabel>
             <Slider
                 value={txPowerIdx}
                 onChange={value => {

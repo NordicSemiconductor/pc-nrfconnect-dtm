@@ -34,18 +34,32 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+// eslint-disable-next-line import/no-unresolved
+import React from 'react';
+import PropTypes from 'prop-types';
+import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
+import ToggleTestModeView from '../containers/toggleTestModeView';
+import ChannelView from '../containers/channelView';
+import RunTestView from '../containers/runTestView';
+import TransmitSetupView from '../containers/transmitSetupView';
+import TimeoutView from '../containers/timeoutView';
+import OtherSettingsView from '../containers/otherSettingsView';
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+const AppSidePanelView = ({ cssClass, selectedTestMode }) => (
+    <div className={cssClass}>
+        <RunTestView />
+        <br />
+        <ToggleTestModeView />
+        <ChannelView />
+        { selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && <TransmitSetupView /> }
+        <OtherSettingsView />
+        <TimeoutView />
+    </div>
+);
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+AppSidePanelView.propTypes = {
+    cssClass: PropTypes.string.isRequired,
+    selectedTestMode: PropTypes.number.isRequired,
+};
 
-export default rootReducer;
+export default AppSidePanelView;

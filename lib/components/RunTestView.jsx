@@ -34,18 +34,51 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+import PropTypes from 'prop-types';
+// eslint-disable-next-line import/no-unresolved
+import React from 'react';
+import { Button } from 'react-bootstrap';
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
+import { TEST_STATES } from '../actions/testActions';
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+const { idle, stopping } = TEST_STATES;
 
-export default rootReducer;
+const RunTestView = ({
+    startTests,
+    endTests,
+    testingState,
+    testMode,
+    board,
+}) => {
+    let testModeStr;
+    if (testMode === DTM_TEST_MODE_BUTTON.transmitter) {
+        testModeStr = 'transmitter';
+    } else {
+        testModeStr = 'receiver';
+    }
+    return (
+        <div className="app-sidepanel-panel">
+            {testingState === idle
+                && <Button variant="light" disabled={board === null} onClick={startTests}>{`Start ${testModeStr} test`}</Button>
+            }
+            {testingState !== idle
+                && <Button variant="light" disabled={testingState === stopping || board === null} onClick={endTests}>{`Stop ${testModeStr} test`}</Button>
+            }
+        </div>
+    );
+};
+
+RunTestView.propTypes = {
+    startTests: PropTypes.func.isRequired,
+    endTests: PropTypes.func.isRequired,
+    testingState: PropTypes.number.isRequired,
+    testMode: PropTypes.number.isRequired,
+    board: PropTypes.string,
+};
+
+RunTestView.defaultProps = {
+    board: '',
+};
+
+export default RunTestView;

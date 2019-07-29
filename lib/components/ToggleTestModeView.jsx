@@ -34,18 +34,44 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+// eslint-disable-next-line import/no-unresolved
+import React from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import * as SettingsActions from '../actions/settingsActions';
+import { TEST_STATES } from '../actions/testActions';
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+const { idle } = TEST_STATES;
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+const ToggleTestModeView = ({
+    selected,
+    onButtonClicked,
+    testingState,
+}) => {
+    const selectionButton = (type, text) => (
+        <Button
+            variant="light"
+            onClick={() => onButtonClicked(type)}
+            active={selected === type}
+            disabled={testingState !== idle}
+        >
+            {text}
+        </Button>
+    );
+    return (
+        <div className="app-sidepanel-panel">
+            <ButtonGroup>
+                {selectionButton(SettingsActions.DTM_TEST_MODE_BUTTON.transmitter, 'Transmitter')}
+                {selectionButton(SettingsActions.DTM_TEST_MODE_BUTTON.receiver, 'Receiver')}
+            </ButtonGroup>
+        </div>
+    );
+};
 
-export default rootReducer;
+ToggleTestModeView.propTypes = {
+    selected: PropTypes.number.isRequired,
+    onButtonClicked: PropTypes.func.isRequired,
+    testingState: PropTypes.number.isRequired,
+};
+
+export default ToggleTestModeView;

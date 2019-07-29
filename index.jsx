@@ -34,23 +34,45 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import './resources/css/index.scss';
+
+import path from 'path';
+
+import {
+    getAppDir,
+    logger,
+    startWatchingDevices,
+    stopWatchingDevices,
+} from 'nrfconnect/core';
 import React from 'react';
+
+import { deselectDevice, selectDevice } from './lib/actions/testActions';
+import { clearAllWarnings, clearIncompatibleWarning, setIncompatibleWarning } from './lib/actions/warningActions';
 import AppMainView from './lib/containers/appMainView';
-import * as deviceActions from './lib/actions/deviceActions';
+import AppSidePanelView from './lib/containers/appSidePanelView';
 import appReducer from './lib/reducers';
-import './resources/css/index.less';
+import { compatiblePCAs } from './lib/utils/constants';
 
 export default {
     config: {
         selectorTraits: {
-            nordicUsb: true,
             serialport: true,
             jlink: true,
         },
-    },
-
-    onInit: dispatch => {
-        console.log('init');
+        deviceSetup: {
+            jprog: {
+                pca10040: {
+                    fw: path.resolve(getAppDir(), 'firmware/direct_test_mode_pca10040.hex'),
+                    fwVersion: 'dtm-fw-1.0.0',
+                    fwIdAddress: 0x6000,
+                },
+                pca10056: {
+                    fw: path.resolve(getAppDir(), 'firmware/direct_test_mode_pca10056.hex'),
+                    fwVersion: 'dtm-fw-1.0.0',
+                    fwIdAddress: 0x6000,
+                },
+            },
+        },
     },
 
     decorateMainView: MainView => () => (
@@ -60,23 +82,43 @@ export default {
     ),
 
     decorateSidePanel: SidePanel => () => (
-        <SidePanel cssClass="side-panel" />
+        <SidePanel>
+            <AppSidePanelView cssClass="side-panel" />
+        </SidePanel>
     ),
 
     reduceApp: appReducer,
 
     middleware: store => next => action => {
         const { dispatch } = store;
-
-        switch (action.type) {
+        const { type, device } = action;
+        switch (type) {
             case 'DEVICE_SELECTED': {
-                console.log(action.device);
+                const { serialNumber } = device;
+                dispatch(clearAllWarnings());
+                logger.info(`Validating firmware for device with s/n ${serialNumber}`);
                 break;
             }
 
-            case 'DEVICE_DESELECTED': {
+            case 'DEVICE_SETUP_COMPLETE': {
+                const { serialport, boardVersion, serialNumber } = device;
+                logger.info('Device selected successfully');
+                dispatch(stopWatchingDevices());
+                dispatch(selectDevice(serialport.comName, boardVersion));
+                if (compatiblePCAs.indexOf(boardVersion) >= 0) {
+                    dispatch(clearIncompatibleWarning());
+                } else {
+                    dispatch(setIncompatibleWarning(`The device with serial number \
+                        ${serialNumber} is not compatible with this application.`));
+                }
                 break;
             }
+
+            case 'DEVICE_DESELECTED':
+                dispatch(deselectDevice());
+                dispatch(startWatchingDevices());
+                dispatch(clearAllWarnings());
+                break;
 
             default:
         }

@@ -87,6 +87,11 @@ export default {
         </SidePanel>
     ),
 
+    mapDeviceSelectorState: (state, props) => ({
+        portIndicatorStatus: (state.app.device.serialNumber !== null) ? 'on' : 'off',
+        ...props,
+    }),
+
     reduceApp: appReducer,
 
     middleware: store => next => action => {

@@ -37,15 +37,12 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 
-import 'react-rangeslider/lib/index.css';
-
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
-import FormControl from 'react-bootstrap/FormControl';
-import FormGroup from 'react-bootstrap/FormGroup';
-import FormLabel from 'react-bootstrap/FormLabel';
+import Form from 'react-bootstrap/Form';
 import Slider from 'react-rangeslider';
+import 'react-rangeslider/lib/index.css';
 
 import * as SettingsActions from '../actions/settingsActions';
 import { TEST_STATES } from '../actions/testActions';
@@ -69,9 +66,9 @@ const ChannelView = ({
 
     const ChannelSlider = (label, currentValue, changedFunc) => (
         <div>
-            <FormLabel>
+            <Form.Label>
                 {`${label} [${currentValue}]`}
-            </FormLabel>
+            </Form.Label>
             <Slider
                 value={currentValue}
                 onChange={value => {
@@ -88,25 +85,9 @@ const ChannelView = ({
         </div>
     );
 
-    const SweepTime = (value, changedFunc) => (
-        <form>
-            <FormGroup
-                controlId="formSweepTimeSelect"
-            >
-                <FormLabel>Sweep delay (ms)</FormLabel>
-                <FormControl
-                    onChange={evt => changedFunc(evt.target.value)}
-                    componentClass="input"
-                    value={value}
-                    min={20}
-                    step={10}
-                    type="number"
-                    size="sm"
-                    disabled={testingState !== idle}
-                />
-            </FormGroup>
-        </form>
-    );
+    const delayLabel = channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+        ? 'Sweep delay'
+        : 'Update period';
 
     return (
         <div
@@ -136,9 +117,23 @@ const ChannelView = ({
                     }
 
                     <div className="app-sidepanel-component-inputbox">
-                        {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-                            && SweepTime(sweepTime, onSweepTimeChanged)
-                        }
+                        <Form>
+                            <Form.Group
+                                controlId="formSweepTimeSelect"
+                            >
+                                <Form.Label>{delayLabel} (ms)</Form.Label>
+                                <Form.Control
+                                    onChange={evt => onSweepTimeChanged(Number(evt.target.value))}
+                                    as="input"
+                                    value={sweepTime}
+                                    min={20}
+                                    step={10}
+                                    type="number"
+                                    size="sm"
+                                    disabled={testingState !== idle}
+                                />
+                            </Form.Group>
+                        </Form>
                     </div>
                 </Card.Body>
             </Card>

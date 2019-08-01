@@ -49,20 +49,19 @@ const chartColors = {
 
 const chartDataTransmit = (currentChannel, txPower) => {
     const active = Array.from(Array(40), () => 0);
-    active[currentChannel] = txPower;
-
-    const datasets = [];
     if (currentChannel !== undefined) {
-        datasets.push({
-            label: 'Active transmission power',
-            data: active,
-            backgroundColor: chartColors.active,
-            borderColor: chartColors.active,
-            borderWidth: 1,
-            hoverBackgroundColor: chartColors.active,
-            hoverBorderColor: chartColors.active,
-        });
+        active[currentChannel] = txPower;
     }
+
+    const datasets = [{
+        label: 'Active transmission power',
+        data: active,
+        backgroundColor: chartColors.active,
+        borderColor: chartColors.active,
+        borderWidth: 1,
+        hoverBackgroundColor: chartColors.active,
+        hoverBorderColor: chartColors.active,
+    }];
     const channelLabels = Array.from(Array(40), (_, x) => x);
     return {
         labels: channelLabels,
@@ -107,6 +106,7 @@ const getOptions = selectedTestMode => {
         datasetStroke: true,
         datasetStrokeWidth: 2,
         datasetFill: true,
+        maintainAspectRatio: false,
     };
 
     if (selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter) {

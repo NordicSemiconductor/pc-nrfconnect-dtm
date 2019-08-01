@@ -180,7 +180,7 @@ TransmitSetupView.propTypes = {
     bitpatternUpdated: PropTypes.func.isRequired,
     txPowerUpdated: PropTypes.func.isRequired,
     txPowerIdx: PropTypes.number.isRequired,
-    boardType: PropTypes.number,
+    boardType: PropTypes.string,
     testingState: PropTypes.number.isRequired,
 };
 

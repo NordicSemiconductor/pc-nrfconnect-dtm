@@ -37,6 +37,8 @@
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import PropTypes from 'prop-types';
+import Accordion from 'react-bootstrap/Accordion';
+
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 import ToggleTestModeView from '../containers/toggleTestModeView';
 import ChannelView from '../containers/channelView';
@@ -45,20 +47,20 @@ import TransmitSetupView from '../containers/transmitSetupView';
 import TimeoutView from '../containers/timeoutView';
 import OtherSettingsView from '../containers/otherSettingsView';
 
-const AppSidePanelView = ({ cssClass, selectedTestMode }) => (
-    <div className={cssClass}>
+const AppSidePanelView = ({ selectedTestMode }) => (
+    <>
         <RunTestView />
-        <br />
         <ToggleTestModeView />
         <ChannelView />
         { selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && <TransmitSetupView /> }
-        <OtherSettingsView />
-        <TimeoutView />
-    </div>
+        <Accordion>
+            <OtherSettingsView />
+            <TimeoutView />
+        </Accordion>
+    </>
 );
 
 AppSidePanelView.propTypes = {
-    cssClass: PropTypes.string.isRequired,
     selectedTestMode: PropTypes.number.isRequired,
 };
 

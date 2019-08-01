@@ -42,7 +42,7 @@ const warningIcon = <span className="mdi mdi-sign warning-sign" />;
 
 const combineWarnings = warnings => (
     warnings.filter(str => str.length !== 0).map((s, index) => (
-        <Alert bsStyle="danger" key={`warning-${index + 1}`}>
+        <Alert variant="danger" key={`warning-${index + 1}`}>
             <span>{warningIcon}</span>{s}
         </Alert>
     )));

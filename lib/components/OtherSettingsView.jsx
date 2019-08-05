@@ -44,13 +44,9 @@ import Form from 'react-bootstrap/Form';
 import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
 
-import { TEST_STATES } from '../actions/testActions';
 import { fromPCA } from '../utils/boards';
 
-const { idle } = TEST_STATES;
-
-
-const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
+const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
     const compatibility = fromPCA(boardType);
     const items = Object.keys(compatibility.phy).map(keyname => (
         <Dropdown.Item
@@ -70,7 +66,7 @@ const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
                 variant="light"
                 title={DTM_PHY_STRING[phy]}
                 id="dropdown-variants-phy-type"
-                disabled={testingState !== idle}
+                disabled={isRunning}
             >
                 {items}
             </DropdownButton>
@@ -82,7 +78,7 @@ const OtherSettingsView = ({
     boardType,
     phy,
     onPhyUpdated,
-    testingState,
+    isRunning,
 }) => {
     const [open, setOpen] = useState(true);
     return (
@@ -102,7 +98,7 @@ const OtherSettingsView = ({
                 <Accordion.Collapse eventKey="1">
                     <Card.Body>
                         <div className="app-sidepanel-component-inputbox">
-                            {phyTypeView(boardType, phy, onPhyUpdated, testingState)}
+                            {phyTypeView(boardType, phy, onPhyUpdated, isRunning)}
                         </div>
                     </Card.Body>
                 </Accordion.Collapse>
@@ -115,7 +111,7 @@ OtherSettingsView.propTypes = {
     boardType: PropTypes.string,
     phy: PropTypes.number.isRequired,
     onPhyUpdated: PropTypes.func.isRequired,
-    testingState: PropTypes.number.isRequired,
+    isRunning: PropTypes.bool.isRequired,
 };
 
 OtherSettingsView.defaultProps = {

@@ -52,7 +52,7 @@ import Slider from 'react-rangeslider';
 
 import { fromPCA } from '../utils/boards';
 
-const packetTypeView = (bitpatternUpdated, pkgType, running) => {
+const packetTypeView = (bitpatternUpdated, pkgType, isRunning) => {
     const items = Object.keys(DTM.DTM_PKT).map((keyname, idx) => (
         <Dropdown.Item
             eventKey={idx}
@@ -71,7 +71,7 @@ const packetTypeView = (bitpatternUpdated, pkgType, running) => {
                 variant="light"
                 title={DTM_PKT_STRING[pkgType]}
                 id="dropdown-variants-packet-type"
-                disabled={running}
+                disabled={isRunning}
             >
                 {items}
             </DropdownButton>
@@ -79,7 +79,7 @@ const packetTypeView = (bitpatternUpdated, pkgType, running) => {
     );
 };
 
-const packetLengthView = (currentLength, changedFunc, pkgType, running) => {
+const packetLengthView = (currentLength, changedFunc, pkgType, isRunning) => {
     const lengthChanged = evt => {
         const length = Math.min(255, Math.max(0, evt.target.value));
         changedFunc(length);
@@ -90,7 +90,7 @@ const packetLengthView = (currentLength, changedFunc, pkgType, running) => {
                 <FormLabel>Packet length (bytes)</FormLabel>
                 <FormControl
                     onChange={lengthChanged}
-                    disabled={pkgType === DTM.DTM_PKT.PAYLOAD_VENDOR || running}
+                    disabled={pkgType === DTM.DTM_PKT.PAYLOAD_VENDOR || isRunning}
                     componentclass="input"
                     value={currentLength}
                     min={1}
@@ -104,7 +104,7 @@ const packetLengthView = (currentLength, changedFunc, pkgType, running) => {
     );
 };
 
-const txPowerView = (boardType, txPowerIdx, txPowerUpdated, running) => {
+const txPowerView = (boardType, txPowerIdx, txPowerUpdated, isRunning) => {
     const compatibility = fromPCA(boardType);
     const maxDbmRangeValue = compatibility.txPower.length - 1;
 
@@ -119,7 +119,7 @@ const txPowerView = (boardType, txPowerIdx, txPowerUpdated, running) => {
             <Slider
                 value={txPowerIdx}
                 onChange={value => {
-                    if (!running) {
+                    if (!isRunning) {
                         return txPowerUpdated(value);
                     }
                     return txPowerUpdated(txPowerIdx);
@@ -128,7 +128,7 @@ const txPowerView = (boardType, txPowerIdx, txPowerUpdated, running) => {
                 max={maxDbmRangeValue}
                 min={0}
                 labels={label}
-                disabled={running}
+                disabled={isRunning}
                 format={i => `${compatibility.txPower[i]} dBm`}
             />
         </div>
@@ -143,7 +143,7 @@ const TransmitSetupView = ({
     txPowerUpdated,
     txPowerIdx,
     boardType,
-    running,
+    isRunning,
 }) => {
     const [open, setOpen] = useState(true);
     return (
@@ -157,12 +157,12 @@ const TransmitSetupView = ({
                     Transmitter settings
                 </Card.Header>
                 <Card.Body>
-                    {txPowerView(boardType, txPowerIdx, txPowerUpdated, running)}
+                    {txPowerView(boardType, txPowerIdx, txPowerUpdated, isRunning)}
                     <div className="app-sidepanel-component-inputbox">
-                        {packetTypeView(bitpatternUpdated, pkgType, running)}
+                        {packetTypeView(bitpatternUpdated, pkgType, isRunning)}
                     </div>
                     <div className="app-sidepanel-component-inputbox">
-                        {packetLengthView(packetLength, lengthUpdated, pkgType, running)}
+                        {packetLengthView(packetLength, lengthUpdated, pkgType, isRunning)}
                     </div>
                 </Card.Body>
             </Card>
@@ -178,7 +178,7 @@ TransmitSetupView.propTypes = {
     txPowerUpdated: PropTypes.func.isRequired,
     txPowerIdx: PropTypes.number.isRequired,
     boardType: PropTypes.string,
-    running: PropTypes.bool.isRequired,
+    isRunning: PropTypes.bool.isRequired,
 };
 
 TransmitSetupView.defaultProps = {

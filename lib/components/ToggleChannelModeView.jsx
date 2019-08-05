@@ -43,14 +43,14 @@ import * as SettingsActions from '../actions/settingsActions';
 const ToggleChannelModeView = ({
     selected,
     onButtonClicked,
-    running,
+    isRunning,
 }) => {
     const selectionButton = (type, text) => (
         <Button
             variant="light"
             onClick={() => onButtonClicked(type)}
             active={selected === type}
-            disabled={running}
+            disabled={isRunning}
         >
             {text}
         </Button>
@@ -70,7 +70,7 @@ const ToggleChannelModeView = ({
 ToggleChannelModeView.propTypes = {
     selected: PropTypes.string.isRequired,
     onButtonClicked: PropTypes.func.isRequired,
-    running: PropTypes.bool.isRequired,
+    isRunning: PropTypes.bool.isRequired,
 };
 
 export default ToggleChannelModeView;

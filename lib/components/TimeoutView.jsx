@@ -44,7 +44,7 @@ import Button from 'react-bootstrap/Button';
 const TimeoutSetupView = ({
     timeout,
     onTimeoutChanged,
-    running,
+    isRunning,
 }) => {
     const [enableTimeout, setEnableTimeout] = useState(timeout !== 0);
     const [timeoutValue, setTimeoutValue] = useState(timeout === 0 ? 1000 : timeout);
@@ -82,7 +82,7 @@ const TimeoutSetupView = ({
                             <Form.Check
                                 defaultChecked={enableTimeout}
                                 onClick={() => toggleTimeout()}
-                                disabled={running}
+                                disabled={isRunning}
                                 label="Enable"
                             />
                         </Form.Group>
@@ -96,7 +96,7 @@ const TimeoutSetupView = ({
                                 step={10}
                                 type="number"
                                 size="sm"
-                                disabled={!enableTimeout || running}
+                                disabled={!enableTimeout || isRunning}
                             />
                         </Form.Group>
                     </Card.Body>
@@ -109,7 +109,7 @@ const TimeoutSetupView = ({
 TimeoutSetupView.propTypes = {
     timeout: PropTypes.number.isRequired,
     onTimeoutChanged: PropTypes.func.isRequired,
-    running: PropTypes.bool.isRequired,
+    isRunning: PropTypes.bool.isRequired,
 
 };
 export default TimeoutSetupView;

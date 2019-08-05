@@ -41,15 +41,10 @@ import Form from 'react-bootstrap/Form';
 import Accordion from 'react-bootstrap/Accordion';
 import Button from 'react-bootstrap/Button';
 
-import { TEST_STATES } from '../actions/testActions';
-
-const { idle } = TEST_STATES;
-
-
 const TimeoutSetupView = ({
     timeout,
     onTimeoutChanged,
-    testingState,
+    running,
 }) => {
     const [enableTimeout, setEnableTimeout] = useState(timeout !== 0);
     const [timeoutValue, setTimeoutValue] = useState(timeout === 0 ? 1000 : timeout);
@@ -87,7 +82,7 @@ const TimeoutSetupView = ({
                             <Form.Check
                                 defaultChecked={enableTimeout}
                                 onClick={() => toggleTimeout()}
-                                disabled={testingState !== idle}
+                                disabled={running}
                                 label="Enable"
                             />
                         </Form.Group>
@@ -101,7 +96,7 @@ const TimeoutSetupView = ({
                                 step={10}
                                 type="number"
                                 size="sm"
-                                disabled={!enableTimeout || testingState !== idle}
+                                disabled={!enableTimeout || running}
                             />
                         </Form.Group>
                     </Card.Body>
@@ -114,7 +109,7 @@ const TimeoutSetupView = ({
 TimeoutSetupView.propTypes = {
     timeout: PropTypes.number.isRequired,
     onTimeoutChanged: PropTypes.func.isRequired,
-    testingState: PropTypes.number.isRequired,
+    running: PropTypes.bool.isRequired,
 
 };
 export default TimeoutSetupView;

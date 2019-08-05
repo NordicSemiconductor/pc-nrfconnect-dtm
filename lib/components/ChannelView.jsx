@@ -45,10 +45,7 @@ import Slider from 'react-rangeslider';
 import 'react-rangeslider/lib/index.css';
 
 import * as SettingsActions from '../actions/settingsActions';
-import { TEST_STATES } from '../actions/testActions';
 import ToggleChannelModeView from '../containers/toggleChannelModeView';
-
-const { idle } = TEST_STATES;
 
 const ChannelView = ({
     channel,
@@ -60,7 +57,7 @@ const ChannelView = ({
     onChannelLowChanged,
     onChannelHighChanged,
     onSweepTimeChanged,
-    testingState,
+    running,
 }) => {
     const [open, setOpen] = useState(true);
 
@@ -71,13 +68,7 @@ const ChannelView = ({
             </Form.Label>
             <Slider
                 value={currentValue}
-                onChange={value => {
-                    if (testingState === idle) {
-                        changedFunc(value);
-                    } else {
-                        changedFunc(currentValue);
-                    }
-                }}
+                onChange={value => changedFunc(running ? currentValue : value)}
                 max={39}
                 min={0}
                 labels={{ 0: '0', 39: '39' }}
@@ -103,7 +94,7 @@ const ChannelView = ({
                 </Card.Header>
                 <Card.Body>
                     <div className="app-sidepanel-component-inputbox">
-                        <ToggleChannelModeView testingState={testingState} />
+                        <ToggleChannelModeView running={running} />
                     </div>
 
                     {channelMode === SettingsActions.DTM_CHANNEL_MODE.single
@@ -130,7 +121,7 @@ const ChannelView = ({
                                     step={10}
                                     type="number"
                                     size="sm"
-                                    disabled={testingState !== idle}
+                                    disabled={running}
                                 />
                             </Form.Group>
                         </Form>
@@ -151,7 +142,7 @@ ChannelView.propTypes = {
     onChannelLowChanged: PropTypes.func.isRequired,
     onChannelHighChanged: PropTypes.func.isRequired,
     onSweepTimeChanged: PropTypes.func.isRequired,
-    testingState: PropTypes.number.isRequired,
+    running: PropTypes.bool.isRequired,
 };
 
 export default ChannelView;

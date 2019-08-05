@@ -39,7 +39,6 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
-import * as TestActions from '../actions/testActions';
 import { dbmValues } from '../utils/constants';
 
 const chartColors = {
@@ -171,7 +170,7 @@ const ChartView = ({
     currentChannel,
     lastChannel,
     lastReceived,
-    testingState,
+    running,
     txPower,
 }) => {
     receiveValueHistory = [...receiveValueHistory];
@@ -206,7 +205,7 @@ const ChartView = ({
         receivedChannelData[lastChannel.channel] = lastChannel.received;
     }
 
-    if (testingState === TestActions.TEST_STATES.idle) {
+    if (!running) {
         return (
             <Bar
                 data={(selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter
@@ -236,7 +235,7 @@ const ChartView = ({
 ChartView.propTypes = {
     lastChannel: PropTypes.objectOf(PropTypes.number).isRequired,
     lastReceived: PropTypes.arrayOf(PropTypes.number).isRequired,
-    testingState: PropTypes.number.isRequired,
+    running: PropTypes.bool.isRequired,
     currentChannel: PropTypes.number,
     selectedTestMode: PropTypes.number.isRequired,
     txPower: PropTypes.number.isRequired,

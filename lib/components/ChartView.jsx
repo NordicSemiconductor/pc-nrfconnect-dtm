@@ -170,7 +170,7 @@ const ChartView = ({
     currentChannel,
     lastChannel,
     lastReceived,
-    running,
+    isRunning,
     txPower,
 }) => {
     receiveValueHistory = [...receiveValueHistory];
@@ -205,7 +205,7 @@ const ChartView = ({
         receivedChannelData[lastChannel.channel] = lastChannel.received;
     }
 
-    if (!running) {
+    if (!isRunning) {
         return (
             <Bar
                 data={(selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter
@@ -235,7 +235,7 @@ const ChartView = ({
 ChartView.propTypes = {
     lastChannel: PropTypes.objectOf(PropTypes.number).isRequired,
     lastReceived: PropTypes.arrayOf(PropTypes.number).isRequired,
-    running: PropTypes.bool.isRequired,
+    isRunning: PropTypes.bool.isRequired,
     currentChannel: PropTypes.number,
     selectedTestMode: PropTypes.number.isRequired,
     txPower: PropTypes.number.isRequired,

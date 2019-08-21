@@ -1,8 +1,10 @@
-node_modules/
-dist/
-jest.json
-package-lock.json
-.idea/
-.vscode/
 .DS_Store
 .eslintrc
+.idea
+*.db
+dist
+jest.json
+log.txt
+node_modules
+npm-debug.log
+package-lock.json

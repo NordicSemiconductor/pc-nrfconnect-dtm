@@ -37,20 +37,14 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
-import FormCheck from 'react-bootstrap/FormCheck';
-import FormControl from 'react-bootstrap/FormControl';
-import FormGroup from 'react-bootstrap/FormGroup';
-import FormLabel from 'react-bootstrap/FormLabel';
-
-import { TEST_STATES } from '../actions/testActions';
-
-const { idle } = TEST_STATES;
-
+import Form from 'react-bootstrap/Form';
+import Accordion from 'react-bootstrap/Accordion';
+import Button from 'react-bootstrap/Button';
 
 const TimeoutSetupView = ({
     timeout,
     onTimeoutChanged,
-    testingState,
+    isRunning,
 }) => {
     const [enableTimeout, setEnableTimeout] = useState(timeout !== 0);
     const [timeoutValue, setTimeoutValue] = useState(timeout === 0 ? 1000 : timeout);
@@ -78,36 +72,35 @@ const TimeoutSetupView = ({
                 onSelect={() => setOpen(!open)}
             >
                 <Card.Header>
-                    Timeout settings
+                    <Accordion.Toggle as={Button} variant="link" eventKey="2">
+                        Timeout settings
+                    </Accordion.Toggle>
                 </Card.Header>
-                <Card.Body>
-                    <FormGroup controlId="timeoutEnableCheckbox">
-                        <FormCheck
-                            defaultChecked={enableTimeout}
-                            onClick={() => toggleTimeout()}
-                            disabled={testingState !== idle}
-                            label="Enable"
-                        />
-                    </FormGroup>
-
-                    <FormGroup
-                        controlId="formTimeoutSelect"
-                    >
-                        <FormLabel>
-                            Timeout (ms)
-                        </FormLabel>
-                        <FormControl
-                            onChange={evt => updateTimeout(evt.target.value)}
-                            componentclass="input"
-                            value={timeoutValue}
-                            min={20}
-                            step={10}
-                            type="number"
-                            size="sm"
-                            disabled={!enableTimeout || testingState !== idle}
-                        />
-                    </FormGroup>
-                </Card.Body>
+                <Accordion.Collapse eventKey="2">
+                    <Card.Body>
+                        <Form.Group controlId="timeoutEnableCheckbox">
+                            <Form.Check
+                                defaultChecked={enableTimeout}
+                                onClick={() => toggleTimeout()}
+                                disabled={isRunning}
+                                label="Enable"
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formTimeoutSelect">
+                            <Form.Label>Timeout (ms)</Form.Label>
+                            <Form.Control
+                                onChange={evt => updateTimeout(evt.target.value)}
+                                componentclass="input"
+                                value={timeoutValue}
+                                min={20}
+                                step={10}
+                                type="number"
+                                size="sm"
+                                disabled={!enableTimeout || isRunning}
+                            />
+                        </Form.Group>
+                    </Card.Body>
+                </Accordion.Collapse>
             </Card>
         </div>
     );
@@ -116,7 +109,7 @@ const TimeoutSetupView = ({
 TimeoutSetupView.propTypes = {
     timeout: PropTypes.number.isRequired,
     onTimeoutChanged: PropTypes.func.isRequired,
-    testingState: PropTypes.number.isRequired,
+    isRunning: PropTypes.bool.isRequired,
 
 };
 export default TimeoutSetupView;

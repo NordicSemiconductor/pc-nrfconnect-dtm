@@ -37,21 +37,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 
-import 'react-rangeslider/lib/index.css';
-
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
-import FormControl from 'react-bootstrap/FormControl';
-import FormGroup from 'react-bootstrap/FormGroup';
-import FormLabel from 'react-bootstrap/FormLabel';
+import Form from 'react-bootstrap/Form';
 import Slider from 'react-rangeslider';
+import 'react-rangeslider/lib/index.css';
 
 import * as SettingsActions from '../actions/settingsActions';
-import { TEST_STATES } from '../actions/testActions';
 import ToggleChannelModeView from '../containers/toggleChannelModeView';
-
-const { idle } = TEST_STATES;
 
 const ChannelView = ({
     channel,
@@ -63,24 +57,18 @@ const ChannelView = ({
     onChannelLowChanged,
     onChannelHighChanged,
     onSweepTimeChanged,
-    testingState,
+    isRunning,
 }) => {
     const [open, setOpen] = useState(true);
 
     const ChannelSlider = (label, currentValue, changedFunc) => (
         <div>
-            <FormLabel>
+            <Form.Label>
                 {`${label} [${currentValue}]`}
-            </FormLabel>
+            </Form.Label>
             <Slider
                 value={currentValue}
-                onChange={value => {
-                    if (testingState === idle) {
-                        changedFunc(value);
-                    } else {
-                        changedFunc(currentValue);
-                    }
-                }}
+                onChange={value => changedFunc(isRunning ? currentValue : value)}
                 max={39}
                 min={0}
                 labels={{ 0: '0', 39: '39' }}
@@ -88,25 +76,9 @@ const ChannelView = ({
         </div>
     );
 
-    const SweepTime = (value, changedFunc) => (
-        <form>
-            <FormGroup
-                controlId="formSweepTimeSelect"
-            >
-                <FormLabel>Sweep delay (ms)</FormLabel>
-                <FormControl
-                    onChange={evt => changedFunc(evt.target.value)}
-                    componentClass="input"
-                    value={value}
-                    min={20}
-                    step={10}
-                    type="number"
-                    size="sm"
-                    disabled={testingState !== idle}
-                />
-            </FormGroup>
-        </form>
-    );
+    const delayLabel = channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+        ? 'Sweep delay'
+        : 'Update period';
 
     return (
         <div
@@ -122,7 +94,7 @@ const ChannelView = ({
                 </Card.Header>
                 <Card.Body>
                     <div className="app-sidepanel-component-inputbox">
-                        <ToggleChannelModeView testingState={testingState} />
+                        <ToggleChannelModeView isRunning={isRunning} />
                     </div>
 
                     {channelMode === SettingsActions.DTM_CHANNEL_MODE.single
@@ -136,9 +108,23 @@ const ChannelView = ({
                     }
 
                     <div className="app-sidepanel-component-inputbox">
-                        {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-                            && SweepTime(sweepTime, onSweepTimeChanged)
-                        }
+                        <Form>
+                            <Form.Group
+                                controlId="formSweepTimeSelect"
+                            >
+                                <Form.Label>{delayLabel} (ms)</Form.Label>
+                                <Form.Control
+                                    onChange={evt => onSweepTimeChanged(Number(evt.target.value))}
+                                    as="input"
+                                    value={sweepTime}
+                                    min={20}
+                                    step={10}
+                                    type="number"
+                                    size="sm"
+                                    disabled={isRunning}
+                                />
+                            </Form.Group>
+                        </Form>
                     </div>
                 </Card.Body>
             </Card>
@@ -156,7 +142,7 @@ ChannelView.propTypes = {
     onChannelLowChanged: PropTypes.func.isRequired,
     onChannelHighChanged: PropTypes.func.isRequired,
     onSweepTimeChanged: PropTypes.func.isRequired,
-    testingState: PropTypes.number.isRequired,
+    isRunning: PropTypes.bool.isRequired,
 };
 
 export default ChannelView;

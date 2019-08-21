@@ -35,50 +35,30 @@
  */
 
 import PropTypes from 'prop-types';
-// eslint-disable-next-line import/no-unresolved
 import React from 'react';
-import { Button } from 'react-bootstrap';
-
-import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
-import { TEST_STATES } from '../actions/testActions';
-
-const { idle, stopping } = TEST_STATES;
+import Button from 'react-bootstrap/Button';
 
 const RunTestView = ({
-    startTests,
-    endTests,
-    testingState,
-    testMode,
-    board,
-}) => {
-    let testModeStr;
-    if (testMode === DTM_TEST_MODE_BUTTON.transmitter) {
-        testModeStr = 'transmitter';
-    } else {
-        testModeStr = 'receiver';
-    }
-    return (
-        <div className="app-sidepanel-panel">
-            {testingState === idle
-                && <Button variant="light" disabled={board === null} onClick={startTests}>{`Start ${testModeStr} test`}</Button>
-            }
-            {testingState !== idle
-                && <Button variant="light" disabled={testingState === stopping || board === null} onClick={endTests}>{`Stop ${testModeStr} test`}</Button>
-            }
-        </div>
-    );
-};
+    disabled,
+    onClick,
+    label,
+}) => (
+    <div className="app-sidepanel-panel">
+        <Button
+            variant="primary"
+            size="lg"
+            disabled={disabled}
+            onClick={onClick}
+        >
+            {label}
+        </Button>
+    </div>
+);
 
 RunTestView.propTypes = {
-    startTests: PropTypes.func.isRequired,
-    endTests: PropTypes.func.isRequired,
-    testingState: PropTypes.number.isRequired,
-    testMode: PropTypes.number.isRequired,
-    board: PropTypes.string,
-};
-
-RunTestView.defaultProps = {
-    board: '',
+    label: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired,
 };
 
 export default RunTestView;

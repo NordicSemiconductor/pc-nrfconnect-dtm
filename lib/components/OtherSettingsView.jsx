@@ -40,19 +40,17 @@ import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import FormGroup from 'react-bootstrap/FormGroup';
-import FormLabel from 'react-bootstrap/FormLabel';
+import Form from 'react-bootstrap/Form';
+import Accordion from 'react-bootstrap/Accordion';
+import Button from 'react-bootstrap/Button';
 
-import { TEST_STATES } from '../actions/testActions';
 import { fromPCA } from '../utils/boards';
 
-const { idle } = TEST_STATES;
-
-
-const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
+const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
     const compatibility = fromPCA(boardType);
     const items = Object.keys(compatibility.phy).map(keyname => (
         <Dropdown.Item
+            key={keyname}
             eventKey={keyname}
             onSelect={evt => onPhyUpdated(compatibility.phy[evt])}
         >
@@ -60,19 +58,19 @@ const phyTypeView = (boardType, phy, onPhyUpdated, testingState) => {
         </Dropdown.Item>
     ));
     return (
-        <FormGroup controlId="formTimeoutSelect">
-            <FormLabel>
+        <Form.Group controlId="formTimeoutSelect">
+            <Form.Label>
                 Physical layer
-            </FormLabel>
+            </Form.Label>
             <DropdownButton
                 variant="light"
                 title={DTM_PHY_STRING[phy]}
                 id="dropdown-variants-phy-type"
-                disabled={testingState !== idle}
+                disabled={isRunning}
             >
                 {items}
             </DropdownButton>
-        </FormGroup>
+        </Form.Group>
     );
 };
 
@@ -80,7 +78,7 @@ const OtherSettingsView = ({
     boardType,
     phy,
     onPhyUpdated,
-    testingState,
+    isRunning,
 }) => {
     const [open, setOpen] = useState(true);
     return (
@@ -93,13 +91,17 @@ const OtherSettingsView = ({
                 onSelect={() => setOpen(!open)}
             >
                 <Card.Header>
-                    Other settings
+                    <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                        Other settings
+                    </Accordion.Toggle>
                 </Card.Header>
-                <Card.Body>
-                    <div className="app-sidepanel-component-inputbox">
-                        {phyTypeView(boardType, phy, onPhyUpdated, testingState)}
-                    </div>
-                </Card.Body>
+                <Accordion.Collapse eventKey="1">
+                    <Card.Body>
+                        <div className="app-sidepanel-component-inputbox">
+                            {phyTypeView(boardType, phy, onPhyUpdated, isRunning)}
+                        </div>
+                    </Card.Body>
+                </Accordion.Collapse>
             </Card>
         </div>
     );
@@ -109,7 +111,7 @@ OtherSettingsView.propTypes = {
     boardType: PropTypes.string,
     phy: PropTypes.number.isRequired,
     onPhyUpdated: PropTypes.func.isRequired,
-    testingState: PropTypes.number.isRequired,
+    isRunning: PropTypes.bool.isRequired,
 };
 
 OtherSettingsView.defaultProps = {

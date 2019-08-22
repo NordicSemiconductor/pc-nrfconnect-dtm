@@ -38,6 +38,7 @@ import './resources/css/index.scss';
 
 import path from 'path';
 
+import electron from 'electron';
 import {
     getAppDir,
     logger,
@@ -87,6 +88,15 @@ export default {
         </SidePanel>
     ),
 
+    decorateNavMenu: NavMenu => ({ ...restProps }) => (
+        <NavMenu
+            {...restProps}
+            menuItems={[
+                { id: 0, text: 'Select another device', iconClass: '' },
+            ]}
+        />
+    ),
+
     mapDeviceSelectorState: (state, props) => ({
         portIndicatorStatus: (state.app.device.serialNumber !== null) ? 'on' : 'off',
         ...props,
@@ -96,7 +106,7 @@ export default {
 
     middleware: store => next => action => {
         const { dispatch } = store;
-        const { type, device } = action;
+        const { type, device, id } = action;
         switch (type) {
             case 'DEVICE_SELECTED': {
                 const { serialNumber } = device;
@@ -119,11 +129,26 @@ export default {
                 break;
             }
 
-            case 'DEVICE_DESELECTED':
+            case 'DEVICE_DESELECTED': {
                 dispatch(deselectDevice());
                 dispatch(startWatchingDevices());
                 dispatch(clearAllWarnings());
                 break;
+            }
+
+            case 'NAV_MENU_ITEM_SELECTED': {
+                if (id === 0) {
+                    electron.ipcRenderer.send(
+                        'open-app',
+                        {
+                            displayName: electron.remote.getCurrentWindow().getTitle().split('-').pop(),
+                            path: window.location.search.split('=').pop(),
+                            iconPath: path.join(window.location.search.split('=').pop(), '/resources/icon.png'),
+                        },
+                    );
+                }
+                break;
+            }
 
             default:
         }

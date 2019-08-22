@@ -46,6 +46,7 @@ import {
     stopWatchingDevices,
 } from 'nrfconnect/core';
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
 import { deselectDevice, selectDevice } from './lib/actions/testActions';
 import { clearAllWarnings, clearIncompatibleWarning, setIncompatibleWarning } from './lib/actions/warningActions';
@@ -88,13 +89,27 @@ export default {
         </SidePanel>
     ),
 
-    decorateNavMenu: NavMenu => ({ ...restProps }) => (
-        <NavMenu
-            {...restProps}
-            menuItems={[
-                { id: 0, text: 'Select another device', iconClass: '' },
-            ]}
-        />
+    decorateNavMenu: () => () => (
+        <div className="nav-menu-wrap">
+            <Button
+                className="core-btn"
+                variant="primary"
+                onClick={() => {
+                    const displayName = electron.remote.getCurrentWindow().getTitle().split('-').pop();
+                    const appPath = window.location.search.split('=').pop();
+                    electron.ipcRenderer.send(
+                        'open-app',
+                        {
+                            displayName,
+                            path: appPath,
+                            iconPath: path.join(appPath, '/resources/icon.png'),
+                        },
+                    );
+                }}
+            >
+                Select another device
+            </Button>
+        </div>
     ),
 
     mapDeviceSelectorState: (state, props) => ({
@@ -106,7 +121,7 @@ export default {
 
     middleware: store => next => action => {
         const { dispatch } = store;
-        const { type, device, id } = action;
+        const { type, device } = action;
         switch (type) {
             case 'DEVICE_SELECTED': {
                 const { serialNumber } = device;
@@ -133,20 +148,6 @@ export default {
                 dispatch(deselectDevice());
                 dispatch(startWatchingDevices());
                 dispatch(clearAllWarnings());
-                break;
-            }
-
-            case 'NAV_MENU_ITEM_SELECTED': {
-                if (id === 0) {
-                    electron.ipcRenderer.send(
-                        'open-app',
-                        {
-                            displayName: electron.remote.getCurrentWindow().getTitle().split('-').pop(),
-                            path: window.location.search.split('=').pop(),
-                            iconPath: path.join(window.location.search.split('=').pop(), '/resources/icon.png'),
-                        },
-                    );
-                }
                 break;
             }
 

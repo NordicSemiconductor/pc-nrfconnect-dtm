@@ -39,49 +39,73 @@
 
 import 'react-rangeslider/lib/index.css';
 
+import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import FormControl from 'react-bootstrap/FormControl';
+import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
-import Slider from 'react-rangeslider';
 
-import { fromPCA } from '../utils/boards';
-
-const txPowerView = (boardType, txPowerIdx, txPowerUpdated, isRunning) => {
-    const compatibility = fromPCA(boardType);
-    const maxDbmRangeValue = compatibility.txPower.length - 1;
-
-    const label = {};
-    label[0] = `${compatibility.txPower[0]}`;
-    label[maxDbmRangeValue] = `${compatibility.txPower[maxDbmRangeValue]}`;
+const packetTypeView = (bitpatternUpdated, pkgType, isRunning) => {
+    const items = Object.keys(DTM.DTM_PKT).map((keyname, idx) => (
+        <Dropdown.Item
+            eventKey={idx}
+            onSelect={evt => bitpatternUpdated(evt)}
+            key={keyname}
+        >
+            {DTM_PKT_STRING[idx]}
+        </Dropdown.Item>
+    ));
     return (
-        <div className="app-sidepanel-component-slider">
+        <div>
             <FormLabel>
-                {`TX Power [${compatibility.txPower[txPowerIdx]} dBm]`}
+                Packet type
             </FormLabel>
-            <Slider
-                value={txPowerIdx}
-                onChange={value => {
-                    if (!isRunning) {
-                        return txPowerUpdated(value);
-                    }
-                    return txPowerUpdated(txPowerIdx);
-                }
-                }
-                max={maxDbmRangeValue}
-                min={0}
-                labels={label}
+            <DropdownButton
+                variant="light"
+                title={DTM_PKT_STRING[pkgType]}
+                id="dropdown-variants-packet-type"
                 disabled={isRunning}
-                format={i => `${compatibility.txPower[i]} dBm`}
-            />
+            >
+                {items}
+            </DropdownButton>
         </div>
     );
 };
 
-const TransmitSetupView = ({
-    txPowerUpdated,
-    txPowerIdx,
-    boardType,
+const packetLengthView = (currentLength, changedFunc, pkgType, isRunning) => {
+    const lengthChanged = evt => {
+        const length = Math.min(255, Math.max(0, evt.target.value));
+        changedFunc(length);
+    };
+    return (
+        <div>
+            <FormGroup controlId="formPacketLength">
+                <FormLabel>Packet length (bytes)</FormLabel>
+                <FormControl
+                    onChange={lengthChanged}
+                    disabled={pkgType === DTM.DTM_PKT.PAYLOAD_VENDOR || isRunning}
+                    componentclass="input"
+                    value={currentLength}
+                    min={1}
+                    max={255}
+                    step={1}
+                    type="number"
+                    size="sm"
+                />
+            </FormGroup>
+        </div>
+    );
+};
+
+const PacketView = ({
+    packetLength,
+    lengthUpdated,
+    pkgType,
+    bitpatternUpdated,
     isRunning,
 }) => {
     const [open, setOpen] = useState(true);
@@ -93,25 +117,30 @@ const TransmitSetupView = ({
                 onSelect={() => setOpen(!open)}
             >
                 <Card.Header>
-                    Transmitter settings
+                    Packet settings
                 </Card.Header>
                 <Card.Body>
-                    {txPowerView(boardType, txPowerIdx, txPowerUpdated, isRunning)}
+                    <div className="app-sidepanel-component-inputbox">
+                        {packetTypeView(bitpatternUpdated, pkgType, isRunning)}
+                    </div>
+                    <div className="app-sidepanel-component-inputbox">
+                        {packetLengthView(packetLength, lengthUpdated, pkgType, isRunning)}
+                    </div>
                 </Card.Body>
             </Card>
         </div>
     );
 };
 
-TransmitSetupView.propTypes = {
-    txPowerUpdated: PropTypes.func.isRequired,
-    txPowerIdx: PropTypes.number.isRequired,
-    boardType: PropTypes.string,
+PacketView.propTypes = {
+    packetLength: PropTypes.number.isRequired,
+    lengthUpdated: PropTypes.func.isRequired,
+    pkgType: PropTypes.string.isRequired,
+    bitpatternUpdated: PropTypes.func.isRequired,
     isRunning: PropTypes.bool.isRequired,
 };
 
-TransmitSetupView.defaultProps = {
-    boardType: '',
+PacketView.defaultProps = {
 };
 
-export default TransmitSetupView;
+export default PacketView;

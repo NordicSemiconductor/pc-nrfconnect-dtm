@@ -39,7 +39,7 @@
     "chart.js": "^2.8.0",
     "react-chartjs-2": "^2.7.6",
     "react-rangeslider": "^2.2.0",
-    "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js"
+    "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js#feature/add-receiver-packet-type"
   },
   "dependencies": {
     "electron-store": "^3.2.0"

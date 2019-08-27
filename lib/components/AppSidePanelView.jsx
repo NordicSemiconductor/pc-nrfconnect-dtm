@@ -44,6 +44,7 @@ import ToggleTestModeView from '../containers/toggleTestModeView';
 import ChannelView from '../containers/channelView';
 import RunTestView from '../containers/runTestView';
 import TransmitSetupView from '../containers/transmitSetupView';
+import PacketView from '../containers/packetView';
 import TimeoutView from '../containers/timeoutView';
 import OtherSettingsView from '../containers/otherSettingsView';
 
@@ -54,6 +55,7 @@ const AppSidePanelView = ({ selectedTestMode }) => (
         <ChannelView />
         { selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && <TransmitSetupView /> }
         <Accordion>
+            <PacketView />
             <OtherSettingsView />
             <TimeoutView />
         </Accordion>

@@ -41,13 +41,19 @@ import { Bar } from 'react-chartjs-2';
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 import { dbmValues } from '../utils/constants';
 
+const channel37 = 37;
+const channel38 = 38;
+const channel39 = 39;
+const channel38Value = 12;
+const channelTotal = 40;
+
 const chartColors = {
     inactive: 'rgba(255,99,132,0.2)',
     active: 'rgba(110,205,172,0.5)',
 };
 
 const chartDataTransmit = (currentChannel, txPower) => {
-    const active = Array.from(Array(40), () => 0);
+    const active = Array.from(Array(channelTotal), () => 0);
     if (currentChannel !== undefined) {
         active[currentChannel] = txPower;
     }
@@ -61,10 +67,10 @@ const chartDataTransmit = (currentChannel, txPower) => {
         hoverBackgroundColor: chartColors.active,
         hoverBorderColor: chartColors.active,
     }];
-    const channelLabels = Array.from(Array(37), (_, x) => x);
-    channelLabels.unshift(37);
-    channelLabels.splice(12, 0, 38);
-    channelLabels.push(39);
+    const channelLabels = Array.from(Array(channel37), (_, x) => x);
+    channelLabels.unshift(channel37);
+    channelLabels.splice(channel38Value, 0, channel38);
+    channelLabels.push(channel39);
     return {
         labels: channelLabels,
         datasets,
@@ -85,10 +91,10 @@ const chartDataReceive = history => {
         });
     }
 
-    const channelLabels = Array.from(Array(37), (_, x) => x);
-    channelLabels.unshift(37);
-    channelLabels.splice(12, 0, 38);
-    channelLabels.push(39);
+    const channelLabels = Array.from(Array(channel37), (_, x) => x);
+    channelLabels.unshift(channel37);
+    channelLabels.splice(channel38Value, 0, channel38);
+    channelLabels.push(channel39);
     return {
         labels: channelLabels,
         datasets,
@@ -168,8 +174,8 @@ const getOptions = selectedTestMode => {
     return options;
 };
 
-let receiveValueHistory = new Array(40).fill(0);
-const receiveValueHistoryTicks = new Array(40).fill(0);
+let receiveValueHistory = new Array(channelTotal).fill(0);
+const receiveValueHistoryTicks = new Array(channelTotal).fill(0);
 
 const ChartView = ({
     selectedTestMode,
@@ -180,7 +186,7 @@ const ChartView = ({
     txPower,
 }) => {
     receiveValueHistory = [...receiveValueHistory];
-    const activationColors = new Array(40).fill('#000000');
+    const activationColors = new Array(channelTotal).fill('#000000');
     receiveValueHistoryTicks.forEach((value, idx) => {
         if (value > 60) {
             receiveValueHistory[idx] = 0;
@@ -201,12 +207,12 @@ const ChartView = ({
     }
 
 
-    const currentChannelData = new Array(40).fill(0);
+    const currentChannelData = new Array(channelTotal).fill(0);
     if (currentChannel !== undefined) {
         currentChannelData[currentChannel] = Math.max(1, Math.max(...receiveValueHistory));
     }
 
-    const receivedChannelData = new Array(40).fill(0);
+    const receivedChannelData = new Array(channelTotal).fill(0);
     if (lastChannel.channel !== undefined) {
         receivedChannelData[lastChannel.channel] = lastChannel.received;
     }

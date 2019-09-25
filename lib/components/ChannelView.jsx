@@ -62,16 +62,22 @@ const ChannelView = ({
     const [open, setOpen] = useState(true);
 
     const channelFromValue = value => {
-        if (value === 0) {
-            return 37;
+        const channel37 = 37;
+        const channel38 = 38;
+        const channel37Value = 0;
+        const channel38Value = 12;
+        const channel39Value = 39;
+
+        if (value === channel37Value) {
+            return channel37;
         }
-        if (value >= 1 && value <= 11) {
+        if (value > channel37Value && value < channel38Value) {
             return value - 1;
         }
-        if (value === 12) {
-            return 38;
+        if (value === channel38Value) {
+            return channel38;
         }
-        if (value >= 13 && value <= 38) {
+        if (value > channel38Value && value < channel39Value) {
             return value - 2;
         }
         return value;

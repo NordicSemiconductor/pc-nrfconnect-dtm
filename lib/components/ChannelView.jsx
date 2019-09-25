@@ -61,20 +61,37 @@ const ChannelView = ({
 }) => {
     const [open, setOpen] = useState(true);
 
+    const channelFromValue = value => {
+        if (value === 0) {
+            return 37;
+        }
+        if (value >= 1 && value <= 11) {
+            return value - 1;
+        }
+        if (value === 12) {
+            return 38;
+        }
+        if (value >= 13 && value <= 38) {
+            return value - 2;
+        }
+        return value;
+    };
+
     const ChannelSlider = (label, currentValue, changedFunc) => (
         <div>
             <Form.Label>
-                {`${label} [${currentValue}]`}
+                {`${label} [${channelFromValue(currentValue)}]`}
             </Form.Label>
             <Slider
                 value={currentValue}
                 onChange={value => changedFunc(isRunning ? currentValue : value)}
                 max={39}
                 min={0}
-                labels={{ 0: '0', 39: '39' }}
+                format={channelFromValue}
             />
         </div>
     );
+
 
     const delayLabel = channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
         ? 'Sweep delay'
@@ -98,13 +115,25 @@ const ChannelView = ({
                     </div>
 
                     {channelMode === SettingsActions.DTM_CHANNEL_MODE.single
-                        && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel', channel, onChannelChanged)}</div>
+                        && (
+                            <div className="app-sidepanel-component-slider">
+                                {ChannelSlider('Channel', channel, onChannelChanged)}
+                            </div>
+                        )
                     }
                     {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-                        && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}</div>
+                        && (
+                            <div className="app-sidepanel-component-slider">
+                                {ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}
+                            </div>
+                        )
                     }
                     {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-                        && <div className="app-sidepanel-component-slider">{ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}</div>
+                        && (
+                            <div className="app-sidepanel-component-slider">
+                                {ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}
+                            </div>
+                        )
                     }
 
                     <div className="app-sidepanel-component-inputbox">

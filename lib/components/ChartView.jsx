@@ -61,7 +61,10 @@ const chartDataTransmit = (currentChannel, txPower) => {
         hoverBackgroundColor: chartColors.active,
         hoverBorderColor: chartColors.active,
     }];
-    const channelLabels = Array.from(Array(40), (_, x) => x);
+    const channelLabels = Array.from(Array(37), (_, x) => x);
+    channelLabels.unshift(37);
+    channelLabels.splice(12, 0, 38);
+    channelLabels.push(39);
     return {
         labels: channelLabels,
         datasets,
@@ -82,7 +85,10 @@ const chartDataReceive = history => {
         });
     }
 
-    const channelLabels = Array.from(Array(40), (_, x) => x);
+    const channelLabels = Array.from(Array(37), (_, x) => x);
+    channelLabels.unshift(37);
+    channelLabels.splice(12, 0, 38);
+    channelLabels.push(39);
     return {
         labels: channelLabels,
         datasets,

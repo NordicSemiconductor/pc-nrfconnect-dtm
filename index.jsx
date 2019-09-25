@@ -47,7 +47,11 @@ import {
 import React from 'react';
 
 import { deselectDevice, selectDevice } from './lib/actions/testActions';
-import { clearAllWarnings, clearIncompatibleWarning, setIncompatibleWarning } from './lib/actions/warningActions';
+import {
+    clearAllWarnings,
+    clearIncompatibleWarning,
+    setIncompatibleWarning,
+} from './lib/actions/warningActions';
 import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
 import appReducer from './lib/reducers';

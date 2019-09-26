@@ -37,15 +37,17 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 
+import 'react-rangeslider/lib/index.css';
+
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Slider from 'react-rangeslider';
-import 'react-rangeslider/lib/index.css';
 
 import * as SettingsActions from '../actions/settingsActions';
 import ToggleChannelModeView from '../containers/toggleChannelModeView';
+import { bleChannels } from '../utils/constants';
 
 const ChannelView = ({
     channel,
@@ -61,39 +63,17 @@ const ChannelView = ({
 }) => {
     const [open, setOpen] = useState(true);
 
-    const channelFromValue = value => {
-        const channel37 = 37;
-        const channel38 = 38;
-        const channel37Value = 0;
-        const channel38Value = 12;
-        const channel39Value = 39;
-
-        if (value === channel37Value) {
-            return channel37;
-        }
-        if (value > channel37Value && value < channel38Value) {
-            return value - 1;
-        }
-        if (value === channel38Value) {
-            return channel38;
-        }
-        if (value > channel38Value && value < channel39Value) {
-            return value - 2;
-        }
-        return value;
-    };
-
     const ChannelSlider = (label, currentValue, changedFunc) => (
         <div>
             <Form.Label>
-                {`${label} [${channelFromValue(currentValue)}]`}
+                {`${label} [${bleChannels[currentValue]}]`}
             </Form.Label>
             <Slider
                 value={currentValue}
                 onChange={value => changedFunc(isRunning ? currentValue : value)}
                 max={39}
                 min={0}
-                format={channelFromValue}
+                format={value => bleChannels[value]}
             />
         </div>
     );

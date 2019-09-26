@@ -39,13 +39,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
-import { dbmValues } from '../utils/constants';
-
-const channel37 = 37;
-const channel38 = 38;
-const channel39 = 39;
-const channel38Value = 12;
-const channelTotal = 40;
+import { dbmValues, channelTotal, bleChannels } from '../utils/constants';
 
 const chartColors = {
     inactive: 'rgba(255,99,132,0.2)',
@@ -67,12 +61,13 @@ const chartDataTransmit = (currentChannel, txPower) => {
         hoverBackgroundColor: chartColors.active,
         hoverBorderColor: chartColors.active,
     }];
-    const channelLabels = Array.from(Array(channel37), (_, x) => x);
-    channelLabels.unshift(channel37);
-    channelLabels.splice(channel38Value, 0, channel38);
-    channelLabels.push(channel39);
+
+    const bleChannelsUpdated = bleChannels.map(
+        (channel, index) => `${channel} | ${2402 + index * 2} MHz`,
+    );
+
     return {
-        labels: channelLabels,
+        labels: bleChannelsUpdated,
         datasets,
     };
 };
@@ -91,12 +86,12 @@ const chartDataReceive = history => {
         });
     }
 
-    const channelLabels = Array.from(Array(channel37), (_, x) => x);
-    channelLabels.unshift(channel37);
-    channelLabels.splice(channel38Value, 0, channel38);
-    channelLabels.push(channel39);
+    const bleChannelsUpdated = bleChannels.map(
+        (channel, index) => `${channel} | ${2402 + index * 2} MHz`,
+    );
+
     return {
-        labels: channelLabels,
+        labels: bleChannelsUpdated,
         datasets,
     };
 };
@@ -141,7 +136,7 @@ const getOptions = selectedTestMode => {
             xAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'Channel',
+                    labelString: 'Channel | Frequency',
                 },
             }],
         };
@@ -166,7 +161,7 @@ const getOptions = selectedTestMode => {
             xAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'Channel',
+                    labelString: 'Channel | Frequency',
                 },
             }],
         };

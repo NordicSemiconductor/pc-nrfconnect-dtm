@@ -41,6 +41,9 @@ import { Bar } from 'react-chartjs-2';
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 import { dbmValues, channelTotal, bleChannels } from '../utils/constants';
 
+const frequencyBase = 2402;
+const frequencyInterval = 2;
+
 const chartColors = {
     inactive: 'rgba(255,99,132,0.2)',
     active: 'rgba(110,205,172,0.5)',
@@ -63,7 +66,7 @@ const chartDataTransmit = (currentChannel, txPower) => {
     }];
 
     const bleChannelsUpdated = bleChannels.map(
-        (channel, index) => `${channel} | ${2402 + index * 2} MHz`,
+        (channel, index) => `${channel} | ${frequencyBase + index * frequencyInterval} MHz`,
     );
 
     return {
@@ -87,7 +90,7 @@ const chartDataReceive = history => {
     }
 
     const bleChannelsUpdated = bleChannels.map(
-        (channel, index) => `${channel} | ${2402 + index * 2} MHz`,
+        (channel, index) => `${channel} | ${frequencyBase + index * frequencyInterval} MHz`,
     );
 
     return {

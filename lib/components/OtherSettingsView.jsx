@@ -36,13 +36,10 @@
 
 import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import Card from 'react-bootstrap/Card';
+import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Form from 'react-bootstrap/Form';
-import Accordion from 'react-bootstrap/Accordion';
-import Button from 'react-bootstrap/Button';
 
 import { fromPCA } from '../utils/boards';
 
@@ -79,33 +76,15 @@ const OtherSettingsView = ({
     phy,
     onPhyUpdated,
     isRunning,
-}) => {
-    const [open, setOpen] = useState(true);
-    return (
-        <div
-            className="app-sidepanel-panel"
-        >
-            <Card
-                collapsible="true"
-                expanded={open.toString()}
-                onSelect={() => setOpen(!open)}
-            >
-                <Card.Header>
-                    <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                        Other settings
-                    </Accordion.Toggle>
-                </Card.Header>
-                <Accordion.Collapse eventKey="1">
-                    <Card.Body>
-                        <div className="app-sidepanel-component-inputbox">
-                            {phyTypeView(boardType, phy, onPhyUpdated, isRunning)}
-                        </div>
-                    </Card.Body>
-                </Accordion.Collapse>
-            </Card>
+}) => (
+    <div
+        className="app-sidepanel-panel"
+    >
+        <div className="app-sidepanel-component-inputbox">
+            {phyTypeView(boardType, phy, onPhyUpdated, isRunning)}
         </div>
-    );
-};
+    </div>
+);
 
 OtherSettingsView.propTypes = {
     boardType: PropTypes.string,

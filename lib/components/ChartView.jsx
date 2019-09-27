@@ -39,7 +39,10 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
-import { dbmValues } from '../utils/constants';
+import { dbmValues, channelTotal, bleChannels } from '../utils/constants';
+
+const frequencyBase = 2402;
+const frequencyInterval = 2;
 
 const chartColors = {
     inactive: 'rgba(255,99,132,0.2)',
@@ -47,7 +50,7 @@ const chartColors = {
 };
 
 const chartDataTransmit = (currentChannel, txPower) => {
-    const active = Array.from(Array(40), () => 0);
+    const active = Array.from(Array(channelTotal), () => 0);
     if (currentChannel !== undefined) {
         active[currentChannel] = txPower;
     }
@@ -61,9 +64,13 @@ const chartDataTransmit = (currentChannel, txPower) => {
         hoverBackgroundColor: chartColors.active,
         hoverBorderColor: chartColors.active,
     }];
-    const channelLabels = Array.from(Array(40), (_, x) => x);
+
+    const bleChannelsUpdated = bleChannels.map(
+        (channel, index) => `${channel} | ${frequencyBase + index * frequencyInterval} MHz`,
+    );
+
     return {
-        labels: channelLabels,
+        labels: bleChannelsUpdated,
         datasets,
     };
 };
@@ -82,9 +89,12 @@ const chartDataReceive = history => {
         });
     }
 
-    const channelLabels = Array.from(Array(40), (_, x) => x);
+    const bleChannelsUpdated = bleChannels.map(
+        (channel, index) => `${channel} | ${frequencyBase + index * frequencyInterval} MHz`,
+    );
+
     return {
-        labels: channelLabels,
+        labels: bleChannelsUpdated,
         datasets,
     };
 };
@@ -129,7 +139,7 @@ const getOptions = selectedTestMode => {
             xAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'Channel',
+                    labelString: 'Channel | Frequency',
                 },
             }],
         };
@@ -154,7 +164,7 @@ const getOptions = selectedTestMode => {
             xAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'Channel',
+                    labelString: 'Channel | Frequency',
                 },
             }],
         };
@@ -162,8 +172,8 @@ const getOptions = selectedTestMode => {
     return options;
 };
 
-let receiveValueHistory = new Array(40).fill(0);
-const receiveValueHistoryTicks = new Array(40).fill(0);
+let receiveValueHistory = new Array(channelTotal).fill(0);
+const receiveValueHistoryTicks = new Array(channelTotal).fill(0);
 
 const ChartView = ({
     selectedTestMode,
@@ -174,7 +184,7 @@ const ChartView = ({
     txPower,
 }) => {
     receiveValueHistory = [...receiveValueHistory];
-    const activationColors = new Array(40).fill('#000000');
+    const activationColors = new Array(channelTotal).fill('#000000');
     receiveValueHistoryTicks.forEach((value, idx) => {
         if (value > 60) {
             receiveValueHistory[idx] = 0;
@@ -195,12 +205,12 @@ const ChartView = ({
     }
 
 
-    const currentChannelData = new Array(40).fill(0);
+    const currentChannelData = new Array(channelTotal).fill(0);
     if (currentChannel !== undefined) {
         currentChannelData[currentChannel] = Math.max(1, Math.max(...receiveValueHistory));
     }
 
-    const receivedChannelData = new Array(40).fill(0);
+    const receivedChannelData = new Array(channelTotal).fill(0);
     if (lastChannel.channel !== undefined) {
         receivedChannelData[lastChannel.channel] = lastChannel.received;
     }

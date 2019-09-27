@@ -41,8 +41,7 @@ import 'react-rangeslider/lib/index.css';
 
 import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import Card from 'react-bootstrap/Card';
+import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import FormControl from 'react-bootstrap/FormControl';
@@ -107,30 +106,16 @@ const PacketView = ({
     pkgType,
     bitpatternUpdated,
     isRunning,
-}) => {
-    const [open, setOpen] = useState(true);
-    return (
-        <div className="app-sidepanel-panel">
-            <Card
-                collapsible="true"
-                expanded={open.toString()}
-                onSelect={() => setOpen(!open)}
-            >
-                <Card.Header>
-                    Packet settings
-                </Card.Header>
-                <Card.Body>
-                    <div className="app-sidepanel-component-inputbox">
-                        {packetTypeView(bitpatternUpdated, pkgType, isRunning)}
-                    </div>
-                    <div className="app-sidepanel-component-inputbox">
-                        {packetLengthView(packetLength, lengthUpdated, pkgType, isRunning)}
-                    </div>
-                </Card.Body>
-            </Card>
+}) => (
+    <div className="app-sidepanel-panel">
+        <div className="app-sidepanel-component-inputbox">
+            {packetTypeView(bitpatternUpdated, pkgType, isRunning)}
         </div>
-    );
-};
+        <div className="app-sidepanel-component-inputbox">
+            {packetLengthView(packetLength, lengthUpdated, pkgType, isRunning)}
+        </div>
+    </div>
+);
 
 PacketView.propTypes = {
     packetLength: PropTypes.number.isRequired,

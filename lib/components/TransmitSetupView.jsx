@@ -40,8 +40,7 @@
 import 'react-rangeslider/lib/index.css';
 
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import Card from 'react-bootstrap/Card';
+import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import Slider from 'react-rangeslider';
 
@@ -83,25 +82,11 @@ const TransmitSetupView = ({
     txPowerIdx,
     boardType,
     isRunning,
-}) => {
-    const [open, setOpen] = useState(true);
-    return (
-        <div className="app-sidepanel-panel">
-            <Card
-                collapsible="true"
-                expanded={open.toString()}
-                onSelect={() => setOpen(!open)}
-            >
-                <Card.Header>
-                    Transmitter settings
-                </Card.Header>
-                <Card.Body>
-                    {txPowerView(boardType, txPowerIdx, txPowerUpdated, isRunning)}
-                </Card.Body>
-            </Card>
-        </div>
-    );
-};
+}) => (
+    <div className="app-sidepanel-panel">
+        {txPowerView(boardType, txPowerIdx, txPowerUpdated, isRunning)}
+    </div>
+);
 
 TransmitSetupView.propTypes = {
     txPowerUpdated: PropTypes.func.isRequired,

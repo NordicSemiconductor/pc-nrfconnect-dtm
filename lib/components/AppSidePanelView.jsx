@@ -37,7 +37,6 @@
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import PropTypes from 'prop-types';
-import Accordion from 'react-bootstrap/Accordion';
 
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 import ToggleTestModeView from '../containers/toggleTestModeView';
@@ -53,12 +52,10 @@ const AppSidePanelView = ({ selectedTestMode }) => (
         <RunTestView />
         <ToggleTestModeView />
         <ChannelView />
+        <PacketView />
+        <OtherSettingsView />
+        <TimeoutView />
         { selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && <TransmitSetupView /> }
-        <Accordion>
-            <PacketView />
-            <OtherSettingsView />
-            <TimeoutView />
-        </Accordion>
     </>
 );
 

@@ -52,10 +52,16 @@ const AppSidePanelView = ({ selectedTestMode }) => (
         <RunTestView />
         <ToggleTestModeView />
         <ChannelView />
-        <PacketView />
         <OtherSettingsView />
         <TimeoutView />
-        { selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && <TransmitSetupView /> }
+        { selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter
+            && (
+                <>
+                    <PacketView />
+                    <TransmitSetupView />
+                </>
+            )
+        }
     </>
 );
 

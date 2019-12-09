@@ -1,6 +1,6 @@
 {
   "name": "pc-nrfconnect-dtm",
-  "version": "0.5.2",
+  "version": "1.0.0",
   "description": "Direct Test Mode",
   "displayName": "Direct Test Mode",
   "repository": {
@@ -35,11 +35,11 @@
     "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\""
   },
   "devDependencies": {
-    "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#semver:3.4.0",
     "chart.js": "^2.8.0",
+    "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js",
+    "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#semver:3.4.0",
     "react-chartjs-2": "^2.7.6",
-    "react-rangeslider": "^2.2.0",
-    "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js"
+    "react-rangeslider": "^2.2.0"
   },
   "dependencies": {
     "electron-store": "^3.2.0"

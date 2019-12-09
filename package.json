@@ -35,7 +35,7 @@
     "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\""
   },
   "devDependencies": {
-    "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#internal-publish",
+    "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#semver:3.4.0",
     "chart.js": "^2.8.0",
     "react-chartjs-2": "^2.7.6",
     "react-rangeslider": "^2.2.0",

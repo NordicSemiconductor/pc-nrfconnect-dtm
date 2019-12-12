@@ -108,8 +108,10 @@ export default {
 
             case 'DEVICE_SETUP_INPUT_REQUIRED': {
                 /* eslint-disable no-param-reassign */
-                action.message = 'Would you like to program a pre-compiled Direct Test Mode '
-                    + 'firmware to the device?';
+                action.message = 'In order to use this application you need a firmware '
+                    + 'that supports Direct Test Mode. '
+                    + 'You may use the provided pre-compiled firmware or your own. '
+                    + 'Would you like to program the pre-compiled firmware to the device?';
                 break;
             }
 

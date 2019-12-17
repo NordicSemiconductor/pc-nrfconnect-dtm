@@ -53,6 +53,7 @@ import {
 import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
 import appReducer from './lib/reducers';
+import { compatiblePCAs } from './lib/utils/constants';
 
 export default {
     config: {
@@ -100,9 +101,12 @@ export default {
         const { type, device } = action;
         switch (type) {
             case 'DEVICE_SELECTED': {
-                const { serialNumber } = device;
+                const { serialNumber, boardVersion } = device;
                 dispatch(clearAllWarnings());
-                logger.info(`Validating firmware for device with s/n ${serialNumber}`);
+                console.log(boardVersion);
+                if (compatiblePCAs.includes(boardVersion)) {
+                    logger.info(`Validating firmware for device with s/n ${serialNumber}`);
+                }
                 break;
             }
 

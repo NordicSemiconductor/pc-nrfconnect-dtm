@@ -49,13 +49,10 @@ import React from 'react';
 import { deselectDevice, selectDevice } from './lib/actions/testActions';
 import {
     clearAllWarnings,
-    clearIncompatibleWarning,
-    setIncompatibleWarning,
 } from './lib/actions/warningActions';
 import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
 import appReducer from './lib/reducers';
-import { compatiblePCAs } from './lib/utils/constants';
 
 export default {
     config: {
@@ -109,17 +106,20 @@ export default {
                 break;
             }
 
+            case 'DEVICE_SETUP_INPUT_REQUIRED': {
+                /* eslint-disable no-param-reassign */
+                action.message = 'In order to use this application you need a firmware '
+                    + 'that supports Direct Test Mode. '
+                    + 'You may use the provided pre-compiled firmware or your own. '
+                    + 'Would you like to program the pre-compiled firmware to the device?';
+                break;
+            }
+
             case 'DEVICE_SETUP_COMPLETE': {
-                const { serialport, boardVersion, serialNumber } = device;
+                const { serialport, boardVersion } = device;
                 logger.info('Device selected successfully');
                 dispatch(stopWatchingDevices());
                 dispatch(selectDevice(serialport.comName, boardVersion));
-                if (compatiblePCAs.indexOf(boardVersion) >= 0) {
-                    dispatch(clearIncompatibleWarning());
-                } else {
-                    dispatch(setIncompatibleWarning(`The device with serial number \
-                        ${serialNumber} is not compatible with this application.`));
-                }
                 break;
             }
 

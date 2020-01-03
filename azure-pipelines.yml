@@ -15,7 +15,9 @@ steps:
       npm pack
     displayName: 'Build'
   - bash: |
-      cp -R *.tar.gz "$(Build.ArtifactStagingDirectory)"
+      shasum *.tgz > shasum
+      cp -R *.tgz "$(Build.ArtifactStagingDirectory)"
+      cp -R shasum "$(Build.ArtifactStagingDirectory)"
     condition: ne(variables['Build.Reason'], 'PullRequest')
     displayName: 'Copy artifacts'
   - task: GitHubRelease@0

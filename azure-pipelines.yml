@@ -1,14 +1,31 @@
 trigger:
-- master
-- release/*
+  - master
+  - release/*
 pool:
-  vmImage: 'Ubuntu-16.04'
+  vmImage: "Ubuntu-16.04"
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: 10
-- script: |
-    set -o errexit -o pipefail
-    npm i
-    npm run lint
-    npm run build
+  - task: NodeTool@0
+    inputs:
+      versionSpec: 10
+  - bash: |
+      set -o errexit -o pipefail
+      npm i
+      npm run lint
+      npm run build
+      npm pack
+    displayName: 'Build'
+  - bash: |
+      cp -R *.tar.gz "$(Build.ArtifactStagingDirectory)"
+    condition: ne(variables['Build.Reason'], 'PullRequest')
+    displayName: 'Copy artifacts'
+  - task: GitHubRelease@0
+    inputs:
+      gitHubConnection: 'waylandCI'
+      repositoryName: 'NordicSemiconductor/pc-nrfconnect-dtm'
+      action: 'edit'
+      tagSource: 'Git tag'
+      tag: '$(Build.SourceBranchName)'
+      assetUploadMode: 'replace'
+      isDraft: 'true'
+      addChangeLog: 'false'
+    condition: ne(variables['Build.Reason'], 'PullRequest')

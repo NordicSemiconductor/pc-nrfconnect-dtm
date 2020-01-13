@@ -34,6 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable no-param-reassign */
+
 import './resources/css/index.scss';
 
 import path from 'path';
@@ -102,11 +104,11 @@ export default {
         const { type, device } = action;
         const getPortComOne = serialport.list()
             .then(ports => ports.find(p => p.comName === 'COM1'));
+
         switch (type) {
             case 'DEVICES_DETECTED': {
                 const { devices } = action;
                 const port = await getPortComOne;
-                /* eslint-disable no-param-reassign */
                 action.devices = [
                     {
                         boardVersion: undefined,
@@ -122,7 +124,6 @@ export default {
             case 'DEVICE_SELECTED': {
                 const { serialNumber, boardVersion } = device;
                 dispatch(clearAllWarnings());
-                console.log(boardVersion);
                 if (compatiblePCAs.includes(boardVersion)) {
                     logger.info(`Validating firmware for device with s/n ${serialNumber}`);
                 }
@@ -130,7 +131,6 @@ export default {
             }
 
             case 'DEVICE_SETUP_INPUT_REQUIRED': {
-                /* eslint-disable no-param-reassign */
                 action.message = 'In order to use this application you need a firmware '
                     + 'that supports Direct Test Mode. '
                     + 'You may use the provided pre-compiled firmware or your own. '

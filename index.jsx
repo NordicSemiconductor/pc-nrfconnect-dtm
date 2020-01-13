@@ -109,15 +109,17 @@ export default {
             case 'DEVICES_DETECTED': {
                 const { devices } = action;
                 const port = await getPortComOne;
-                action.devices = [
-                    {
-                        boardVersion: undefined,
-                        serialNumber: 'COM1',
-                        serialport: port,
-                        traits: ['serialport'],
-                    },
-                    ...devices,
-                ];
+                if (port) {
+                    action.devices = [
+                        {
+                            boardVersion: undefined,
+                            serialNumber: 'COM1',
+                            serialport: port,
+                            traits: ['serialport'],
+                        },
+                        ...devices,
+                    ];
+                }
                 break;
             }
 

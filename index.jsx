@@ -45,6 +45,7 @@ import {
     stopWatchingDevices,
 } from 'nrfconnect/core';
 import React from 'react';
+import serialport from 'serialport';
 
 import { deselectDevice, selectDevice } from './lib/actions/testActions';
 import {
@@ -96,10 +97,28 @@ export default {
 
     reduceApp: appReducer,
 
-    middleware: store => next => action => {
+    middleware: store => next => async action => {
         const { dispatch } = store;
         const { type, device } = action;
+        const getPortComOne = serialport.list()
+            .then(ports => ports.find(p => p.comName === 'COM1'));
         switch (type) {
+            case 'DEVICES_DETECTED': {
+                const { devices } = action;
+                const port = await getPortComOne;
+                /* eslint-disable no-param-reassign */
+                action.devices = [
+                    {
+                        boardVersion: undefined,
+                        serialNumber: 'COM1',
+                        serialport: port,
+                        traits: ['serialport'],
+                    },
+                    ...devices,
+                ];
+                break;
+            }
+
             case 'DEVICE_SELECTED': {
                 const { serialNumber, boardVersion } = device;
                 dispatch(clearAllWarnings());
@@ -120,10 +139,10 @@ export default {
             }
 
             case 'DEVICE_SETUP_COMPLETE': {
-                const { serialport, boardVersion } = device;
+                const { serialport: port, boardVersion } = device;
                 logger.info('Device selected successfully');
                 dispatch(stopWatchingDevices());
-                dispatch(selectDevice(serialport.comName, boardVersion));
+                dispatch(selectDevice(port.comName, boardVersion));
                 break;
             }
 

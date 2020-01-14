@@ -49,7 +49,9 @@ import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
 
 const packetTypeView = (bitpatternUpdated, pkgType, isRunning) => {
-    const items = Object.keys(DTM.DTM_PKT).map((keyname, idx) => (
+    const items = Object.keys(DTM.DTM_PKT).filter(keyname => (
+        keyname !== 'DEFAULT' && keyname !== 'PAYLOAD_VENDOR'
+    )).map((keyname, idx) => (
         <Dropdown.Item
             eventKey={idx}
             onSelect={evt => bitpatternUpdated(evt)}

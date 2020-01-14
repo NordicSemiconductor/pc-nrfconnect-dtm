@@ -34,8 +34,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* eslint-disable no-param-reassign */
-
 import './resources/css/index.scss';
 
 import path from 'path';
@@ -102,23 +100,20 @@ export default {
     middleware: store => next => async action => {
         const { dispatch } = store;
         const { type, device } = action;
-        const getPortComOne = serialport.list()
-            .then(ports => ports.find(p => p.comName === 'COM1'));
+        const nextAction = { ...action };
 
         switch (type) {
             case 'DEVICES_DETECTED': {
-                const { devices } = action;
-                const port = await getPortComOne;
-                if (port) {
-                    action.devices = [
-                        {
-                            boardVersion: undefined,
-                            serialNumber: 'COM1',
-                            serialport: port,
-                            traits: ['serialport'],
-                        },
-                        ...devices,
-                    ];
+                const ports = await serialport.list();
+                const com1 = ports.find(p => p.comName === 'COM1');
+                if (com1 != null) {
+                    const com1Device = {
+                        boardVersion: undefined,
+                        serialNumber: 'COM1',
+                        serialport: com1,
+                        traits: ['serialport'],
+                    };
+                    nextAction.devices = [com1Device, ...action.devices];
                 }
                 break;
             }
@@ -133,7 +128,7 @@ export default {
             }
 
             case 'DEVICE_SETUP_INPUT_REQUIRED': {
-                action.message = 'In order to use this application you need a firmware '
+                nextAction.message = 'In order to use this application you need a firmware '
                     + 'that supports Direct Test Mode. '
                     + 'You may use the provided pre-compiled firmware or your own. '
                     + 'Would you like to program the pre-compiled firmware to the device?';
@@ -157,6 +152,6 @@ export default {
             default:
         }
 
-        next(action);
+        next(nextAction);
     },
 };

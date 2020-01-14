@@ -100,12 +100,12 @@ export default {
     middleware: store => next => async action => {
         const { dispatch } = store;
         const { type, device } = action;
-        const getPortComOne = serialport.list()
-            .then(ports => ports.find(p => p.comName === 'COM1'));
         const nextAction = { ...action };
 
         switch (type) {
             case 'DEVICES_DETECTED': {
+                const getPortComOne = serialport.list()
+                    .then(ports => ports.find(p => p.comName === 'COM1'));
                 const port = await getPortComOne;
                 if (port) {
                     const newDevice = {

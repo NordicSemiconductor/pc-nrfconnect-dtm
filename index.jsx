@@ -104,17 +104,16 @@ export default {
 
         switch (type) {
             case 'DEVICES_DETECTED': {
-                const getPortComOne = serialport.list()
-                    .then(ports => ports.find(p => p.comName === 'COM1'));
-                const port = await getPortComOne;
-                if (port) {
-                    const newDevice = {
+                const ports = await serialport.list();
+                const com1 = ports.find(p => p.comName === 'COM1');
+                if (com1 != null) {
+                    const com1Device = {
                         boardVersion: undefined,
                         serialNumber: 'COM1',
-                        serialport: port,
+                        serialport: com1,
                         traits: ['serialport'],
                     };
-                    nextAction.devices = [newDevice, ...action.devices];
+                    nextAction.devices = [com1Device, ...action.devices];
                 }
                 break;
             }

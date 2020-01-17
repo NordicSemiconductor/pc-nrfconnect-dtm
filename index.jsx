@@ -45,6 +45,7 @@ import {
     stopWatchingDevices,
 } from 'nrfconnect/core';
 import React from 'react';
+import serialport from 'serialport';
 
 import { deselectDevice, selectDevice } from './lib/actions/testActions';
 import {
@@ -53,6 +54,7 @@ import {
 import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
 import appReducer from './lib/reducers';
+import { compatiblePCAs } from './lib/utils/constants';
 
 export default {
     config: {
@@ -95,20 +97,38 @@ export default {
 
     reduceApp: appReducer,
 
-    middleware: store => next => action => {
+    middleware: store => next => async action => {
         const { dispatch } = store;
         const { type, device } = action;
+        const nextAction = { ...action };
+
         switch (type) {
+            case 'DEVICES_DETECTED': {
+                const ports = await serialport.list();
+                const com1 = ports.find(p => p.comName === 'COM1');
+                if (com1 != null) {
+                    const com1Device = {
+                        boardVersion: undefined,
+                        serialNumber: 'COM1',
+                        serialport: com1,
+                        traits: ['serialport'],
+                    };
+                    nextAction.devices = [com1Device, ...action.devices];
+                }
+                break;
+            }
+
             case 'DEVICE_SELECTED': {
-                const { serialNumber } = device;
+                const { serialNumber, boardVersion } = device;
                 dispatch(clearAllWarnings());
-                logger.info(`Validating firmware for device with s/n ${serialNumber}`);
+                if (compatiblePCAs.includes(boardVersion)) {
+                    logger.info(`Validating firmware for device with s/n ${serialNumber}`);
+                }
                 break;
             }
 
             case 'DEVICE_SETUP_INPUT_REQUIRED': {
-                /* eslint-disable no-param-reassign */
-                action.message = 'In order to use this application you need a firmware '
+                nextAction.message = 'In order to use this application you need a firmware '
                     + 'that supports Direct Test Mode. '
                     + 'You may use the provided pre-compiled firmware or your own. '
                     + 'Would you like to program the pre-compiled firmware to the device?';
@@ -116,10 +136,10 @@ export default {
             }
 
             case 'DEVICE_SETUP_COMPLETE': {
-                const { serialport, boardVersion } = device;
+                const { serialport: port, boardVersion } = device;
                 logger.info('Device selected successfully');
                 dispatch(stopWatchingDevices());
-                dispatch(selectDevice(serialport.comName, boardVersion));
+                dispatch(selectDevice(port.comName, boardVersion));
                 break;
             }
 
@@ -132,6 +152,6 @@ export default {
             default:
         }
 
-        next(action);
+        next(nextAction);
     },
 };

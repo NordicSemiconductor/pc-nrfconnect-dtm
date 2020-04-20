@@ -79,6 +79,7 @@ export default {
                     fwIdAddress: 0x6000,
                 },
             },
+            allowCustomDevice: true,
         },
     },
 

@@ -1,6 +1,6 @@
 ## Version 1.1.1
 
-- Fix: avoid programming custom devices
+- Fix: avoid programming custom devices #34
 
 ## Version 1.1.0
 

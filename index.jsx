@@ -45,7 +45,7 @@ import {
     stopWatchingDevices,
 } from 'nrfconnect/core';
 import React from 'react';
-import serialport from 'serialport';
+import SerialPort from 'serialport';
 
 import { deselectDevice, selectDevice } from './lib/actions/testActions';
 import {
@@ -55,6 +55,10 @@ import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
 import appReducer from './lib/reducers';
 import { compatiblePCAs } from './lib/utils/constants';
+
+
+// Prefer to use the serialport 8 property or fall back to the serialport 7 property
+const portPath = serialPort => serialPort.path || serialPort.comName;
 
 export default {
     config: {
@@ -75,6 +79,7 @@ export default {
                     fwIdAddress: 0x6000,
                 },
             },
+            allowCustomDevice: true,
         },
     },
 
@@ -104,8 +109,8 @@ export default {
 
         switch (type) {
             case 'DEVICES_DETECTED': {
-                const ports = await serialport.list();
-                const com1 = ports.find(p => p.comName === 'COM1');
+                const ports = await SerialPort.list();
+                const com1 = ports.find(p => portPath(p) === 'COM1');
                 if (com1 != null) {
                     const com1Device = {
                         boardVersion: undefined,
@@ -139,7 +144,7 @@ export default {
                 const { serialport: port, boardVersion } = device;
                 logger.info('Device selected successfully');
                 dispatch(stopWatchingDevices());
-                dispatch(selectDevice(port.comName, boardVersion));
+                dispatch(selectDevice(portPath(port), boardVersion));
                 break;
             }
 

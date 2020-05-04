@@ -1,3 +1,7 @@
+## Version 1.1.2
+
+- Allow 2Mb phy for unknown devices #36
+
 ## Version 1.1.1
 
 - Fix: avoid programming custom devices #34

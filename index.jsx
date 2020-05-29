@@ -148,6 +148,18 @@ export default {
                 break;
             }
 
+            case 'DEVICE_SETUP_ERROR': {
+                const { serialport: port, boardVersion } = device;
+                if (action.error && action.error.message) {
+                    logger.info(action.error.message);
+                }
+                logger.info('Please make sure the device has been programmed'
+                    + ' with a supported firmware');
+                dispatch(stopWatchingDevices());
+                dispatch(selectDevice(portPath(port), boardVersion));
+                break;
+            }
+
             case 'DEVICE_DESELECTED':
                 dispatch(deselectDevice());
                 dispatch(startWatchingDevices());

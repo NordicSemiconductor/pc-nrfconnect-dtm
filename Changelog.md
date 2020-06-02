@@ -1,3 +1,7 @@
+## Version 1.1.3
+
+- Added support for custom firmware with Nordic device #38
+
 ## Version 1.1.2
 
 - Allow 2Mb phy for unknown devices #36

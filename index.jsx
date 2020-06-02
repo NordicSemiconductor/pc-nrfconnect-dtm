@@ -41,8 +41,6 @@ import path from 'path';
 import {
     getAppDir,
     logger,
-    startWatchingDevices,
-    stopWatchingDevices,
 } from 'nrfconnect/core';
 import React from 'react';
 import SerialPort from 'serialport';
@@ -55,7 +53,6 @@ import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
 import appReducer from './lib/reducers';
 import { compatiblePCAs } from './lib/utils/constants';
-
 
 // Prefer to use the serialport 8 property or fall back to the serialport 7 property
 const portPath = serialPort => serialPort.path || serialPort.comName;
@@ -143,7 +140,6 @@ export default {
             case 'DEVICE_SETUP_COMPLETE': {
                 const { serialport: port, boardVersion } = device;
                 logger.info('Device selected successfully');
-                dispatch(stopWatchingDevices());
                 dispatch(selectDevice(portPath(port), boardVersion));
                 break;
             }
@@ -155,14 +151,12 @@ export default {
                 }
                 logger.info('Please make sure the device has been programmed'
                     + ' with a supported firmware');
-                dispatch(stopWatchingDevices());
                 dispatch(selectDevice(portPath(port), boardVersion));
                 break;
             }
 
             case 'DEVICE_DESELECTED':
                 dispatch(deselectDevice());
-                dispatch(startWatchingDevices());
                 dispatch(clearAllWarnings());
                 break;
 

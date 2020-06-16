@@ -143,6 +143,16 @@ const getOptions = selectedTestMode => {
                 },
             }],
         };
+        options.tooltips = {
+            enabled: true,
+            callbacks: {
+                label: (item, data) => {
+                    const dataset = data.datasets[item.datasetIndex];
+                    const value = dataset.data[item.index];
+                    return value in dbmValues ? `${dataset.label}: ${dbmValues[value]} dbm` : '';
+                },
+            },
+        };
     } else {
         options.animation = null;
         options.scales = {

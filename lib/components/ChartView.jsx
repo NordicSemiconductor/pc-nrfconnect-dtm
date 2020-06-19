@@ -124,12 +124,12 @@ const getOptions = selectedTestMode => {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    min: 0,
-                    max: 13,
+                    min: -0.5,
+                    max: 13.5,
                     suggestedMin: undefined,
                     suggestedMax: undefined,
                     stepSize: 1,
-                    callback: value => `${dbmValues[value]} dbm`,
+                    callback: value => (value in dbmValues ? `${dbmValues[value]} dbm` : ''),
                 },
                 scaleLabel: {
                     display: true,
@@ -142,6 +142,16 @@ const getOptions = selectedTestMode => {
                     labelString: 'Channel | Frequency',
                 },
             }],
+        };
+        options.tooltips = {
+            enabled: true,
+            callbacks: {
+                label: (item, data) => {
+                    const dataset = data.datasets[item.datasetIndex];
+                    const value = dataset.data[item.index];
+                    return value in dbmValues ? `${dataset.label}: ${dbmValues[value]} dbm` : '';
+                },
+            },
         };
     } else {
         options.animation = null;

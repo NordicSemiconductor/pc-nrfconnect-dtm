@@ -66,7 +66,6 @@ const ToggleChannelModeView = ({
     );
 };
 
-
 ToggleChannelModeView.propTypes = {
     selected: PropTypes.string.isRequired,
     onButtonClicked: PropTypes.func.isRequired,

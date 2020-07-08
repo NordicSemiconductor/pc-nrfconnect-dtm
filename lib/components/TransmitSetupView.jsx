@@ -65,8 +65,7 @@ const txPowerView = (boardType, txPowerIdx, txPowerUpdated, isRunning) => {
                         return txPowerUpdated(value);
                     }
                     return txPowerUpdated(txPowerIdx);
-                }
-                }
+                }}
                 max={maxDbmRangeValue}
                 min={0}
                 labels={label}

@@ -214,7 +214,6 @@ const ChartView = ({
         receiveValueHistoryTicks[lastChannel.channel] = 0;
     }
 
-
     const currentChannelData = new Array(channelTotal).fill(0);
     if (currentChannel !== undefined) {
         currentChannelData[currentChannel] = Math.max(1, Math.max(...receiveValueHistory));

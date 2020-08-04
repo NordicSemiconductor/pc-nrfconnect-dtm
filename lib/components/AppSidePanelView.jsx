@@ -60,8 +60,7 @@ const AppSidePanelView = ({ selectedTestMode }) => (
                     <PacketView />
                     <TransmitSetupView />
                 </>
-            )
-        }
+            )}
     </>
 );
 

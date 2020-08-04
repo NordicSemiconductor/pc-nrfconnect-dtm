@@ -1,6 +1,6 @@
 {
   "name": "pc-nrfconnect-dtm",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Direct Test Mode",
   "displayName": "Direct Test Mode",
   "repository": {
@@ -37,9 +37,12 @@
   "devDependencies": {
     "chart.js": "^2.8.0",
     "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js",
-    "pc-nrfconnect-devdep": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-devdep.git#semver:3.4.0",
+    "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#semver:^4.8.3",
+    "react": "16.13.1",
     "react-chartjs-2": "^2.7.6",
-    "react-rangeslider": "^2.2.0"
+    "react-dom": "16.13.1",
+    "react-rangeslider": "^2.2.0",
+    "react-redux": "7.2.0"
   },
   "dependencies": {
     "electron-store": "^3.2.0"

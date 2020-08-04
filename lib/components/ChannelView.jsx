@@ -75,7 +75,6 @@ const ChannelView = ({
         </div>
     );
 
-
     const delayLabel = channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
         ? 'Sweep delay'
         : 'Update period';
@@ -93,22 +92,19 @@ const ChannelView = ({
                     <div className="app-sidepanel-component-slider">
                         {ChannelSlider('Channel', channel, onChannelChanged)}
                     </div>
-                )
-            }
+                )}
             {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
                 && (
                     <div className="app-sidepanel-component-slider">
                         {ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}
                     </div>
-                )
-            }
+                )}
             {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
                 && (
                     <div className="app-sidepanel-component-slider">
                         {ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}
                     </div>
-                )
-            }
+                )}
 
             <div className="app-sidepanel-component-inputbox">
                 <Form>

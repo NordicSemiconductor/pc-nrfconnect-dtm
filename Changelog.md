@@ -1,6 +1,6 @@
 ## Version 1.1.4
 ### Updates
-- Fixed not showing a grapph when selecting -40 dBm output #40
+- Fixed not showing a graph when selecting -40 dBm output #40
 - Fixed tooltip value when hovering over the TX bar #40
 
 ## Version 1.1.3

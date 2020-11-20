@@ -38,17 +38,12 @@ import './resources/css/index.scss';
 
 import path from 'path';
 
-import {
-    getAppDir,
-    logger,
-} from 'nrfconnect/core';
+import { getAppDir, logger } from 'nrfconnect/core';
 import React from 'react';
 import SerialPort from 'serialport';
 
 import { deselectDevice, selectDevice } from './lib/actions/testActions';
-import {
-    clearAllWarnings,
-} from './lib/actions/warningActions';
+import { clearAllWarnings } from './lib/actions/warningActions';
 import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
 import appReducer from './lib/reducers';
@@ -66,12 +61,18 @@ export default {
         deviceSetup: {
             jprog: {
                 pca10040: {
-                    fw: path.resolve(getAppDir(), 'firmware/direct_test_mode_pca10040.hex'),
+                    fw: path.resolve(
+                        getAppDir(),
+                        'firmware/direct_test_mode_pca10040.hex'
+                    ),
                     fwVersion: 'dtm-fw-1.0.0',
                     fwIdAddress: 0x6000,
                 },
                 pca10056: {
-                    fw: path.resolve(getAppDir(), 'firmware/direct_test_mode_pca10056.hex'),
+                    fw: path.resolve(
+                        getAppDir(),
+                        'firmware/direct_test_mode_pca10056.hex'
+                    ),
                     fwVersion: 'dtm-fw-1.0.0',
                     fwIdAddress: 0x6000,
                 },
@@ -93,7 +94,8 @@ export default {
     ),
 
     mapDeviceSelectorState: (state, props) => ({
-        portIndicatorStatus: (state.app.device.serialNumber !== null) ? 'on' : 'off',
+        portIndicatorStatus:
+            state.app.device.serialNumber !== null ? 'on' : 'off',
         ...props,
     }),
 
@@ -124,16 +126,19 @@ export default {
                 const { serialNumber, boardVersion } = device;
                 dispatch(clearAllWarnings());
                 if (compatiblePCAs.includes(boardVersion)) {
-                    logger.info(`Validating firmware for device with s/n ${serialNumber}`);
+                    logger.info(
+                        `Validating firmware for device with s/n ${serialNumber}`
+                    );
                 }
                 break;
             }
 
             case 'DEVICE_SETUP_INPUT_REQUIRED': {
-                nextAction.message = 'In order to use this application you need a firmware '
-                    + 'that supports Direct Test Mode. '
-                    + 'You may use the provided pre-compiled firmware or your own. '
-                    + 'Would you like to program the pre-compiled firmware to the device?';
+                nextAction.message =
+                    'In order to use this application you need a firmware ' +
+                    'that supports Direct Test Mode. ' +
+                    'You may use the provided pre-compiled firmware or your own. ' +
+                    'Would you like to program the pre-compiled firmware to the device?';
                 break;
             }
 
@@ -149,8 +154,10 @@ export default {
                 if (action.error && action.error.message) {
                     logger.info(action.error.message);
                 }
-                logger.info('Please make sure the device has been programmed'
-                    + ' with a supported firmware');
+                logger.info(
+                    'Please make sure the device has been programmed' +
+                        ' with a supported firmware'
+                );
                 dispatch(selectDevice(portPath(port), boardVersion));
                 break;
             }

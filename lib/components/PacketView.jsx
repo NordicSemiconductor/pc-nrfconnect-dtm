@@ -49,22 +49,20 @@ import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
 
 const packetTypeView = (bitpatternUpdated, pkgType, isRunning) => {
-    const items = Object.keys(DTM.DTM_PKT).filter(keyname => (
-        keyname !== 'DEFAULT'
-    )).map((keyname, idx) => (
-        <Dropdown.Item
-            eventKey={idx}
-            onSelect={evt => bitpatternUpdated(evt)}
-            key={keyname}
-        >
-            {DTM_PKT_STRING[idx]}
-        </Dropdown.Item>
-    ));
+    const items = Object.keys(DTM.DTM_PKT)
+        .filter(keyname => keyname !== 'DEFAULT')
+        .map((keyname, idx) => (
+            <Dropdown.Item
+                eventKey={idx}
+                onSelect={evt => bitpatternUpdated(evt)}
+                key={keyname}
+            >
+                {DTM_PKT_STRING[idx]}
+            </Dropdown.Item>
+        ));
     return (
         <div>
-            <FormLabel>
-                Packet type
-            </FormLabel>
+            <FormLabel>Packet type</FormLabel>
             <DropdownButton
                 variant="light"
                 title={DTM_PKT_STRING[pkgType]}
@@ -88,7 +86,9 @@ const packetLengthView = (currentLength, changedFunc, pkgType, isRunning) => {
                 <FormLabel>Packet length (bytes)</FormLabel>
                 <FormControl
                     onChange={lengthChanged}
-                    disabled={pkgType === DTM.DTM_PKT.PAYLOAD_VENDOR || isRunning}
+                    disabled={
+                        pkgType === DTM.DTM_PKT.PAYLOAD_VENDOR || isRunning
+                    }
                     componentclass="input"
                     value={currentLength}
                     min={1}
@@ -127,7 +127,6 @@ PacketView.propTypes = {
     isRunning: PropTypes.bool.isRequired,
 };
 
-PacketView.defaultProps = {
-};
+PacketView.defaultProps = {};
 
 export default PacketView;

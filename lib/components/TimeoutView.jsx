@@ -38,13 +38,11 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 
-const TimeoutSetupView = ({
-    timeout,
-    onTimeoutChanged,
-    isRunning,
-}) => {
+const TimeoutSetupView = ({ timeout, onTimeoutChanged, isRunning }) => {
     const [enableTimeout, setEnableTimeout] = useState(timeout !== 0);
-    const [timeoutValue, setTimeoutValue] = useState(timeout === 0 ? 1000 : timeout);
+    const [timeoutValue, setTimeoutValue] = useState(
+        timeout === 0 ? 1000 : timeout
+    );
 
     const toggleTimeout = () => {
         if (enableTimeout) {
@@ -91,6 +89,5 @@ TimeoutSetupView.propTypes = {
     timeout: PropTypes.number.isRequired,
     onTimeoutChanged: PropTypes.func.isRequired,
     isRunning: PropTypes.bool.isRequired,
-
 };
 export default TimeoutSetupView;

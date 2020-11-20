@@ -40,11 +40,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import * as SettingsActions from '../actions/settingsActions';
 
-const ToggleChannelModeView = ({
-    selected,
-    onButtonClicked,
-    isRunning,
-}) => {
+const ToggleChannelModeView = ({ selected, onButtonClicked, isRunning }) => {
     const selectionButton = (type, text) => (
         <Button
             variant="light"
@@ -59,8 +55,14 @@ const ToggleChannelModeView = ({
     return (
         <div className="app-sidepanel-panel">
             <ButtonGroup>
-                {selectionButton(SettingsActions.DTM_CHANNEL_MODE.single, 'Single')}
-                {selectionButton(SettingsActions.DTM_CHANNEL_MODE.sweep, 'Sweep')}
+                {selectionButton(
+                    SettingsActions.DTM_CHANNEL_MODE.single,
+                    'Single'
+                )}
+                {selectionButton(
+                    SettingsActions.DTM_CHANNEL_MODE.sweep,
+                    'Sweep'
+                )}
             </ButtonGroup>
         </div>
     );

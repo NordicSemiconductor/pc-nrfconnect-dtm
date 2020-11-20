@@ -40,11 +40,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import * as SettingsActions from '../actions/settingsActions';
 
-const ToggleTestModeView = ({
-    selected,
-    onButtonClicked,
-    isRunning,
-}) => {
+const ToggleTestModeView = ({ selected, onButtonClicked, isRunning }) => {
     const selectionButton = (type, text) => (
         <Button
             variant="light"
@@ -58,8 +54,14 @@ const ToggleTestModeView = ({
     return (
         <div className="app-sidepanel-panel">
             <ButtonGroup>
-                {selectionButton(SettingsActions.DTM_TEST_MODE_BUTTON.transmitter, 'Transmitter')}
-                {selectionButton(SettingsActions.DTM_TEST_MODE_BUTTON.receiver, 'Receiver')}
+                {selectionButton(
+                    SettingsActions.DTM_TEST_MODE_BUTTON.transmitter,
+                    'Transmitter'
+                )}
+                {selectionButton(
+                    SettingsActions.DTM_TEST_MODE_BUTTON.receiver,
+                    'Receiver'
+                )}
             </ButtonGroup>
         </div>
     );

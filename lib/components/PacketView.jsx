@@ -48,13 +48,28 @@ import FormControl from 'react-bootstrap/FormControl';
 import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
 
-const packetTypeView = (bitpatternUpdated, pkgType, isRunning) => {
+const VENDOR_PAYLOAD_LENGTH = 1;
+
+const packetTypeView = (
+    bitpatternUpdated,
+    lengthUpdated,
+    pkgType,
+    isRunning
+) => {
+    const constantCarrierIdx = 3;
+    const isVendorPayload = idx =>
+        DTM_PKT_STRING[idx] === DTM_PKT_STRING[constantCarrierIdx];
     const items = Object.keys(DTM.DTM_PKT)
         .filter(keyname => keyname !== 'DEFAULT')
         .map((keyname, idx) => (
             <Dropdown.Item
                 eventKey={idx}
-                onSelect={evt => bitpatternUpdated(evt)}
+                onSelect={evt => {
+                    bitpatternUpdated(evt);
+                    if (isVendorPayload(idx)) {
+                        lengthUpdated(VENDOR_PAYLOAD_LENGTH);
+                    }
+                }}
                 key={keyname}
             >
                 {DTM_PKT_STRING[idx]}
@@ -76,8 +91,12 @@ const packetTypeView = (bitpatternUpdated, pkgType, isRunning) => {
 };
 
 const packetLengthView = (currentLength, changedFunc, pkgType, isRunning) => {
+    const isVendorPayload =
+        parseInt(pkgType, 10) === DTM.DTM_PKT.PAYLOAD_VENDOR;
     const lengthChanged = evt => {
-        const length = Math.min(255, Math.max(0, evt.target.value));
+        const length = !isVendorPayload
+            ? Math.min(255, Math.max(0, evt.target.value))
+            : VENDOR_PAYLOAD_LENGTH;
         changedFunc(length);
     };
     return (
@@ -86,9 +105,7 @@ const packetLengthView = (currentLength, changedFunc, pkgType, isRunning) => {
                 <FormLabel>Packet length (bytes)</FormLabel>
                 <FormControl
                     onChange={lengthChanged}
-                    disabled={
-                        pkgType === DTM.DTM_PKT.PAYLOAD_VENDOR || isRunning
-                    }
+                    disabled={isVendorPayload || isRunning}
                     componentclass="input"
                     value={currentLength}
                     min={1}
@@ -111,7 +128,12 @@ const PacketView = ({
 }) => (
     <div className="app-sidepanel-panel">
         <div className="app-sidepanel-component-inputbox">
-            {packetTypeView(bitpatternUpdated, pkgType, isRunning)}
+            {packetTypeView(
+                bitpatternUpdated,
+                lengthUpdated,
+                pkgType,
+                isRunning
+            )}
         </div>
         <div className="app-sidepanel-component-inputbox">
             {packetLengthView(packetLength, lengthUpdated, pkgType, isRunning)}

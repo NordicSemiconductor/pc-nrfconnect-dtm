@@ -55,18 +55,21 @@ const chartDataTransmit = (currentChannel, txPower) => {
         active[currentChannel] = txPower;
     }
 
-    const datasets = [{
-        label: 'Active transmission power',
-        data: active,
-        backgroundColor: chartColors.active,
-        borderColor: chartColors.active,
-        borderWidth: 1,
-        hoverBackgroundColor: chartColors.active,
-        hoverBorderColor: chartColors.active,
-    }];
+    const datasets = [
+        {
+            label: 'Active transmission power',
+            data: active,
+            backgroundColor: chartColors.active,
+            borderColor: chartColors.active,
+            borderWidth: 1,
+            hoverBackgroundColor: chartColors.active,
+            hoverBorderColor: chartColors.active,
+        },
+    ];
 
     const bleChannelsUpdated = bleChannels.map(
-        (channel, index) => `${channel} | ${frequencyBase + index * frequencyInterval} MHz`,
+        (channel, index) =>
+            `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
     );
 
     return {
@@ -90,7 +93,8 @@ const chartDataReceive = history => {
     }
 
     const bleChannelsUpdated = bleChannels.map(
-        (channel, index) => `${channel} | ${frequencyBase + index * frequencyInterval} MHz`,
+        (channel, index) =>
+            `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
     );
 
     return {
@@ -121,27 +125,32 @@ const getOptions = selectedTestMode => {
     if (selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter) {
         options.animation = false;
         options.scales = {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    min: -0.5,
-                    max: 13.5,
-                    suggestedMin: undefined,
-                    suggestedMax: undefined,
-                    stepSize: 1,
-                    callback: value => (value in dbmValues ? `${dbmValues[value]} dbm` : ''),
+            yAxes: [
+                {
+                    ticks: {
+                        beginAtZero: true,
+                        min: -0.5,
+                        max: 13.5,
+                        suggestedMin: undefined,
+                        suggestedMax: undefined,
+                        stepSize: 1,
+                        callback: value =>
+                            value in dbmValues ? `${dbmValues[value]} dbm` : '',
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Strength (dbm)',
+                    },
                 },
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Strength (dbm)',
+            ],
+            xAxes: [
+                {
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Channel | Frequency',
+                    },
                 },
-            }],
-            xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Channel | Frequency',
-                },
-            }],
+            ],
         };
         options.tooltips = {
             enabled: true,
@@ -149,34 +158,40 @@ const getOptions = selectedTestMode => {
                 label: (item, data) => {
                     const dataset = data.datasets[item.datasetIndex];
                     const value = dataset.data[item.index];
-                    return value in dbmValues ? `${dataset.label}: ${dbmValues[value]} dbm` : '';
+                    return value in dbmValues
+                        ? `${dataset.label}: ${dbmValues[value]} dbm`
+                        : '';
                 },
             },
         };
     } else {
         options.animation = null;
         options.scales = {
-            yAxes: [{
-                ticks: {
-                    min: undefined,
-                    max: undefined,
-                    suggestedMin: 0,
-                    suggestedMax: 10,
-                    stepSize: undefined,
-                    callback: value => value,
+            yAxes: [
+                {
+                    ticks: {
+                        min: undefined,
+                        max: undefined,
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                        stepSize: undefined,
+                        callback: value => value,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Received packets',
+                    },
                 },
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Received packets',
-                },
-            }],
+            ],
 
-            xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Channel | Frequency',
+            xAxes: [
+                {
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Channel | Frequency',
+                    },
                 },
-            }],
+            ],
         };
     }
     return options;
@@ -216,7 +231,10 @@ const ChartView = ({
 
     const currentChannelData = new Array(channelTotal).fill(0);
     if (currentChannel !== undefined) {
-        currentChannelData[currentChannel] = Math.max(1, Math.max(...receiveValueHistory));
+        currentChannelData[currentChannel] = Math.max(
+            1,
+            Math.max(...receiveValueHistory)
+        );
     }
 
     const receivedChannelData = new Array(channelTotal).fill(0);
@@ -227,10 +245,12 @@ const ChartView = ({
     if (!isRunning) {
         return (
             <Bar
-                data={(selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter
-                    && chartDataTransmit(undefined, txPower))
-                || (selectedTestMode === DTM_TEST_MODE_BUTTON.receiver
-                    && chartDataReceive(lastReceived))}
+                data={
+                    (selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter &&
+                        chartDataTransmit(undefined, txPower)) ||
+                    (selectedTestMode === DTM_TEST_MODE_BUTTON.receiver &&
+                        chartDataReceive(lastReceived))
+                }
                 options={getOptions(selectedTestMode)}
                 width={600}
                 height={250}
@@ -240,10 +260,12 @@ const ChartView = ({
 
     return (
         <Bar
-            data={(selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter
-                && chartDataTransmit(currentChannel, txPower))
-                || (selectedTestMode === DTM_TEST_MODE_BUTTON.receiver
-                    && chartDataReceive(lastReceived))}
+            data={
+                (selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter &&
+                    chartDataTransmit(currentChannel, txPower)) ||
+                (selectedTestMode === DTM_TEST_MODE_BUTTON.receiver &&
+                    chartDataReceive(lastReceived))
+            }
             options={getOptions(selectedTestMode)}
             width={600}
             height={250}

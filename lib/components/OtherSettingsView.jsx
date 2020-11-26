@@ -56,9 +56,7 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
     ));
     return (
         <Form.Group controlId="formTimeoutSelect">
-            <Form.Label>
-                Physical layer
-            </Form.Label>
+            <Form.Label>Physical layer</Form.Label>
             <DropdownButton
                 variant="light"
                 title={DTM_PHY_STRING[phy]}
@@ -71,15 +69,8 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
     );
 };
 
-const OtherSettingsView = ({
-    boardType,
-    phy,
-    onPhyUpdated,
-    isRunning,
-}) => (
-    <div
-        className="app-sidepanel-panel"
-    >
+const OtherSettingsView = ({ boardType, phy, onPhyUpdated, isRunning }) => (
+    <div className="app-sidepanel-panel">
         <div className="app-sidepanel-component-inputbox">
             {phyTypeView(boardType, phy, onPhyUpdated, isRunning)}
         </div>

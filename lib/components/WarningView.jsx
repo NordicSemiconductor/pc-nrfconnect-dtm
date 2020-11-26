@@ -40,17 +40,17 @@ import Alert from 'react-bootstrap/Alert';
 
 const warningIcon = <span className="mdi mdi-sign warning-sign" />;
 
-const combineWarnings = warnings => (
-    warnings.filter(str => str.length !== 0).map((s, index) => (
-        <Alert variant="danger" key={`warning-${index + 1}`}>
-            <span>{warningIcon}</span>{s}
-        </Alert>
-    )));
+const combineWarnings = warnings =>
+    warnings
+        .filter(str => str.length !== 0)
+        .map((s, index) => (
+            <Alert variant="danger" key={`warning-${index + 1}`}>
+                <span>{warningIcon}</span>
+                {s}
+            </Alert>
+        ));
 
-const WarningView = ({
-    compatibleDeviceWarning,
-    communicationError,
-}) => (
+const WarningView = ({ compatibleDeviceWarning, communicationError }) => (
     <div className="warning-view">
         {combineWarnings([compatibleDeviceWarning, communicationError])}
     </div>

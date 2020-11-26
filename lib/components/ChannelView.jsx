@@ -62,12 +62,12 @@ const ChannelView = ({
 }) => {
     const ChannelSlider = (label, currentValue, changedFunc) => (
         <div>
-            <Form.Label>
-                {`${label} [${bleChannels[currentValue]}]`}
-            </Form.Label>
+            <Form.Label>{`${label} [${bleChannels[currentValue]}]`}</Form.Label>
             <Slider
                 value={currentValue}
-                onChange={value => changedFunc(isRunning ? currentValue : value)}
+                onChange={value =>
+                    changedFunc(isRunning ? currentValue : value)
+                }
                 max={39}
                 min={0}
                 format={value => bleChannels[value]}
@@ -75,45 +75,49 @@ const ChannelView = ({
         </div>
     );
 
-    const delayLabel = channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-        ? 'Sweep delay'
-        : 'Update period';
+    const delayLabel =
+        channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+            ? 'Sweep delay'
+            : 'Update period';
 
     return (
-        <div
-            className="app-sidepanel-panel"
-        >
+        <div className="app-sidepanel-panel">
             <div className="app-sidepanel-component-inputbox">
                 <ToggleChannelModeView isRunning={isRunning} />
             </div>
 
-            {channelMode === SettingsActions.DTM_CHANNEL_MODE.single
-                && (
-                    <div className="app-sidepanel-component-slider">
-                        {ChannelSlider('Channel', channel, onChannelChanged)}
-                    </div>
-                )}
-            {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-                && (
-                    <div className="app-sidepanel-component-slider">
-                        {ChannelSlider('Channel Low', channelLow, onChannelLowChanged)}
-                    </div>
-                )}
-            {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
-                && (
-                    <div className="app-sidepanel-component-slider">
-                        {ChannelSlider('Channel High', channelHigh, onChannelHighChanged)}
-                    </div>
-                )}
+            {channelMode === SettingsActions.DTM_CHANNEL_MODE.single && (
+                <div className="app-sidepanel-component-slider">
+                    {ChannelSlider('Channel', channel, onChannelChanged)}
+                </div>
+            )}
+            {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep && (
+                <div className="app-sidepanel-component-slider">
+                    {ChannelSlider(
+                        'Channel Low',
+                        channelLow,
+                        onChannelLowChanged
+                    )}
+                </div>
+            )}
+            {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep && (
+                <div className="app-sidepanel-component-slider">
+                    {ChannelSlider(
+                        'Channel High',
+                        channelHigh,
+                        onChannelHighChanged
+                    )}
+                </div>
+            )}
 
             <div className="app-sidepanel-component-inputbox">
                 <Form>
-                    <Form.Group
-                        controlId="formSweepTimeSelect"
-                    >
+                    <Form.Group controlId="formSweepTimeSelect">
                         <Form.Label>{delayLabel} (ms)</Form.Label>
                         <Form.Control
-                            onChange={evt => onSweepTimeChanged(Number(evt.target.value))}
+                            onChange={evt =>
+                                onSweepTimeChanged(Number(evt.target.value))
+                            }
                             as="input"
                             value={sweepTime}
                             min={20}

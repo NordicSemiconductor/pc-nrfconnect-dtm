@@ -38,11 +38,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
-const RunTestView = ({
-    disabled,
-    onClick,
-    label,
-}) => (
+const RunTestView = ({ disabled, onClick, label }) => (
     <div className="app-sidepanel-panel">
         <Button
             variant="primary"

@@ -1,3 +1,6 @@
+## Version 1.1.6
+### Bugfixes
+- Fixed constant carrier for transmitter
 ## Version 1.1.5
 ### Updates
 - Enable constant carrier for transmitter

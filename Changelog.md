@@ -1,3 +1,10 @@
+## Version 1.1.6
+### Bugfixes
+- Fixed constant carrier for transmitter
+## Version 1.1.5
+### Updates
+- Enable constant carrier for transmitter
+
 ## Version 1.1.4
 ### Updates
 - Fixed not showing a graph when selecting -40 dBm output #40

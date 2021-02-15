@@ -80,6 +80,15 @@ const ChannelView = ({
             ? 'Sweep delay'
             : 'Update period';
 
+    sweepTime =
+        channelMode !== SettingsActions.DTM_CHANNEL_MODE.sweep
+            ? 0
+            : sweepTime;
+    const isSweepTimeDisabled =
+        channelMode !== SettingsActions.DTM_CHANNEL_MODE.sweep
+            ? true
+            : isRunning;
+
     return (
         <div className="app-sidepanel-panel">
             <div className="app-sidepanel-component-inputbox">
@@ -124,7 +133,7 @@ const ChannelView = ({
                             step={10}
                             type="number"
                             size="sm"
-                            disabled={isRunning}
+                            disabled={isSweepTimeDisabled}
                         />
                     </Form.Group>
                 </Form>

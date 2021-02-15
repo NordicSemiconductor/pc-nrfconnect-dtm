@@ -37,14 +37,14 @@
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
-import 'react-rangeslider/lib/index.css';
-
-import PropTypes from 'prop-types';
 import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import Slider from 'react-rangeslider';
+import PropTypes from 'prop-types';
 
 import { fromPCA } from '../utils/boards';
+
+import 'react-rangeslider/lib/index.css';
 
 const txPowerView = (boardType, txPowerIdx, txPowerUpdated, isRunning) => {
     const compatibility = fromPCA(boardType);

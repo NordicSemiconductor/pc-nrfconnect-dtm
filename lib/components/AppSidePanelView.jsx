@@ -39,13 +39,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
-import ToggleTestModeView from '../containers/toggleTestModeView';
 import ChannelView from '../containers/channelView';
-import RunTestView from '../containers/runTestView';
-import TransmitSetupView from '../containers/transmitSetupView';
-import PacketView from '../containers/packetView';
-import TimeoutView from '../containers/timeoutView';
 import OtherSettingsView from '../containers/otherSettingsView';
+import PacketView from '../containers/packetView';
+import RunTestView from '../containers/runTestView';
+import TimeoutView from '../containers/timeoutView';
+import ToggleTestModeView from '../containers/toggleTestModeView';
+import TransmitSetupView from '../containers/transmitSetupView';
 
 const AppSidePanelView = ({ selectedTestMode }) => (
     <>

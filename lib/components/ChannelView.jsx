@@ -37,16 +37,16 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 
-import 'react-rangeslider/lib/index.css';
-
-import PropTypes from 'prop-types';
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Slider from 'react-rangeslider';
+import PropTypes from 'prop-types';
 
 import * as SettingsActions from '../actions/settingsActions';
 import ToggleChannelModeView from '../containers/toggleChannelModeView';
 import { bleChannels } from '../utils/constants';
+
+import 'react-rangeslider/lib/index.css';
 
 const ChannelView = ({
     channel,
@@ -79,6 +79,13 @@ const ChannelView = ({
         channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
             ? 'Sweep delay'
             : 'Update period';
+
+    sweepTime =
+        channelMode !== SettingsActions.DTM_CHANNEL_MODE.sweep ? 0 : sweepTime;
+    const isSweepTimeDisabled =
+        channelMode !== SettingsActions.DTM_CHANNEL_MODE.sweep
+            ? true
+            : isRunning;
 
     return (
         <div className="app-sidepanel-panel">
@@ -124,7 +131,7 @@ const ChannelView = ({
                             step={10}
                             type="number"
                             size="sm"
-                            disabled={isRunning}
+                            disabled={isSweepTimeDisabled}
                         />
                     </Form.Group>
                 </Form>

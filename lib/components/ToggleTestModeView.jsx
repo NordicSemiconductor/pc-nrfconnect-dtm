@@ -38,6 +38,7 @@
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+
 import * as SettingsActions from '../actions/settingsActions';
 
 const ToggleTestModeView = ({ selected, onButtonClicked, isRunning }) => {

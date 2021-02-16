@@ -36,6 +36,7 @@
 
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
+
 import ChartView from '../containers/chartView';
 import WarningView from '../containers/warningView';
 

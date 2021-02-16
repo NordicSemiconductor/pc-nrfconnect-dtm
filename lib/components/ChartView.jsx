@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
+import PropTypes from 'prop-types';
 
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
-import { dbmValues, channelTotal, bleChannels } from '../utils/constants';
+import { bleChannels, channelTotal, dbmValues } from '../utils/constants';
 
 const frequencyBase = 2402;
 const frequencyInterval = 2;

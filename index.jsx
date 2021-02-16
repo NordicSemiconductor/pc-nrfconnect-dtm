@@ -34,12 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import './resources/css/index.scss';
-
-import path from 'path';
-
-import { getAppDir, logger } from 'nrfconnect/core';
 import React from 'react';
+import { getAppDir, logger } from 'nrfconnect/core';
+import path from 'path';
 import SerialPort from 'serialport';
 
 import { deselectDevice, selectDevice } from './lib/actions/testActions';
@@ -48,6 +45,8 @@ import AppMainView from './lib/containers/appMainView';
 import AppSidePanelView from './lib/containers/appSidePanelView';
 import appReducer from './lib/reducers';
 import { compatiblePCAs } from './lib/utils/constants';
+
+import './resources/css/index.scss';
 
 // Prefer to use the serialport 8 property or fall back to the serialport 7 property
 const portPath = serialPort => serialPort.path || serialPort.comName;

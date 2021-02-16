@@ -1,3 +1,9 @@
+## Version 1.1.7
+### Updates
+- Disabled the feature that indicates the status of receiving packets in UI
+  so that the test will not be interfered by the UI updates
+  and therefore the result will be more accurate
+
 ## Version 1.1.6
 ### Bugfixes
 - Fixed constant carrier for transmitter

@@ -37,16 +37,16 @@
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
-import 'react-rangeslider/lib/index.css';
-
-import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import FormControl from 'react-bootstrap/FormControl';
 import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
+import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
+import PropTypes from 'prop-types';
+
+import 'react-rangeslider/lib/index.css';
 
 const VENDOR_PAYLOAD_LENGTH = 1;
 

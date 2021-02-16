@@ -80,8 +80,6 @@ const ChannelView = ({
             ? 'Sweep delay'
             : 'Update period';
 
-    sweepTime =
-        channelMode !== SettingsActions.DTM_CHANNEL_MODE.sweep ? 0 : sweepTime;
     const isSweepTimeDisabled =
         channelMode !== SettingsActions.DTM_CHANNEL_MODE.sweep
             ? true

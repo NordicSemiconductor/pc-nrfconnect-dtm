@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Form from 'react-bootstrap/Form';
+import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
+import PropTypes from 'prop-types';
 
 import { fromPCA } from '../utils/boards';
 

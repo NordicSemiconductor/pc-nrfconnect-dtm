@@ -1,8 +1,8 @@
 ## Version 1.1.7
 ### Updates
-- Disabled the feature that indicates the status of receiving packets in UI
-  so that the test will not be interfered by the UI updates
-  and therefore the result will be more accurate
+- Removed live view of captured packets in receive mode.
+  Packets are only displayed in the UI after sampling has stopped.
+
 
 ## Version 1.1.6
 ### Bugfixes

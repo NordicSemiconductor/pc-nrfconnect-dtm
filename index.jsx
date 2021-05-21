@@ -42,8 +42,8 @@ import SerialPort from 'serialport';
 import { deselectDevice, selectDevice } from './src/actions/testActions';
 import { clearAllWarnings } from './src/actions/warningActions';
 import AppMainView from './src/Readings/appMainView';
-import AppSidePanelView from './src/SidePanel/appSidePanelView';
 import appReducer from './src/reducers';
+import AppSidePanelView from './src/SidePanel/appSidePanelView';
 import { compatiblePCAs } from './src/utils/constants';
 
 import './resources/css/index.scss';
@@ -80,17 +80,19 @@ export default {
         },
     },
 
-    decorateMainView: MainView => () => (
-        <MainView cssClass="main-view">
-            <AppMainView />
-        </MainView>
-    ),
+    decorateMainView: MainView => () =>
+        (
+            <MainView cssClass="main-view">
+                <AppMainView />
+            </MainView>
+        ),
 
-    decorateSidePanel: SidePanel => () => (
-        <SidePanel>
-            <AppSidePanelView cssClass="side-panel" />
-        </SidePanel>
-    ),
+    decorateSidePanel: SidePanel => () =>
+        (
+            <SidePanel>
+                <AppSidePanelView cssClass="side-panel" />
+            </SidePanel>
+        ),
 
     mapDeviceSelectorState: (state, props) => ({
         portIndicatorStatus:
@@ -155,7 +157,7 @@ export default {
                 }
                 logger.info(
                     'Please make sure the device has been programmed' +
-                    ' with a supported firmware'
+                        ' with a supported firmware'
                 );
                 dispatch(selectDevice(portPath(port), boardVersion));
                 break;

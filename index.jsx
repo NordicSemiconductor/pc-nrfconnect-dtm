@@ -39,12 +39,12 @@ import { getAppDir, logger } from 'nrfconnect/core';
 import path from 'path';
 import SerialPort from 'serialport';
 
-import { deselectDevice, selectDevice } from './lib/actions/testActions';
-import { clearAllWarnings } from './lib/actions/warningActions';
-import AppMainView from './lib/containers/appMainView';
-import AppSidePanelView from './lib/containers/appSidePanelView';
-import appReducer from './lib/reducers';
-import { compatiblePCAs } from './lib/utils/constants';
+import { deselectDevice, selectDevice } from './src/actions/testActions';
+import { clearAllWarnings } from './src/actions/warningActions';
+import AppMainView from './src/containers/appMainView';
+import AppSidePanelView from './src/containers/appSidePanelView';
+import appReducer from './src/reducers';
+import { compatiblePCAs } from './src/utils/constants';
 
 import './resources/css/index.scss';
 
@@ -155,7 +155,7 @@ export default {
                 }
                 logger.info(
                     'Please make sure the device has been programmed' +
-                        ' with a supported firmware'
+                    ' with a supported firmware'
                 );
                 dispatch(selectDevice(portPath(port), boardVersion));
                 break;

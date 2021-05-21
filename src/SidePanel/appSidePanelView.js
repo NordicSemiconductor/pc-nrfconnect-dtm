@@ -34,17 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React from 'react';
+import { connect } from 'react-redux';
 
-import ChartView from '../containers/chartView';
-import WarningView from '../containers/warningView';
+import AppSidePanelView from './AppSidePanelView';
 
-const AppMainView = () => (
-    <div className="app-main-view">
-        <WarningView />
-        <ChartView />
-    </div>
-);
-
-export default AppMainView;
+export default connect((state, props) => ({
+    ...props,
+    dtm: state.app.device.dtm,
+    selectedTestMode: state.app.settings.testMode,
+    channelMode: state.app.settings.channelMode,
+}))(AppSidePanelView);

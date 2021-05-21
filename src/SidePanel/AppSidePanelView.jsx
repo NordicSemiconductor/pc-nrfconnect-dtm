@@ -34,23 +34,37 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
+// eslint-disable-next-line import/no-unresolved
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import * as SettingsActions from '../actions/settingsActions';
-import OtherSettingsView from '../components/OtherSettingsView';
+import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
+import ChannelView from './channelView';
+import OtherSettingsView from './otherSettingsView';
+import PacketView from './packetView';
+import RunTestView from './runTestView';
+import TimeoutView from './timeoutView';
+import ToggleTestModeView from './toggleTestModeView';
+import TransmitSetupView from './transmitSetupView';
 
-export default connect(
-    (state, props) => ({
-        ...props,
-        phy: state.app.settings.phy,
-        modulation: state.app.settings.modulationMode,
-        boardType: state.app.device.board,
-        isRunning: state.app.test.isRunning,
-    }),
-    (dispatch, props) => ({
-        ...props,
-        onPhyUpdated: value => dispatch(SettingsActions.phyChanged(value)),
-        onModulationUpdated: value =>
-            dispatch(SettingsActions.modulationChanged(value)),
-    })
-)(OtherSettingsView);
+const AppSidePanelView = ({ selectedTestMode }) => (
+    <>
+        <RunTestView />
+        <ToggleTestModeView />
+        <ChannelView />
+        <OtherSettingsView />
+        <TimeoutView />
+        {selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && (
+            <>
+                <PacketView />
+                <TransmitSetupView />
+            </>
+        )}
+    </>
+);
+
+AppSidePanelView.propTypes = {
+    selectedTestMode: PropTypes.number.isRequired,
+};
+
+export default AppSidePanelView;

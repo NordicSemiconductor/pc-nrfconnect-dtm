@@ -36,27 +36,21 @@
 
 import { connect } from 'react-redux';
 
-import * as TestActions from '../actions/testActions';
-import RunTestView from '../components/RunTestView';
+import * as SettingsActions from '../actions/settingsActions';
+import OtherSettingsView from './OtherSettingsView';
 
 export default connect(
     (state, props) => ({
         ...props,
+        phy: state.app.settings.phy,
+        modulation: state.app.settings.modulationMode,
+        boardType: state.app.device.board,
         isRunning: state.app.test.isRunning,
-        board: state.app.device.board,
-        label: state.app.test.isRunning ? 'Stop test' : 'Start test',
-        disabled: !state.app.device.isReady,
     }),
     (dispatch, props) => ({
         ...props,
-        startTests: (dtm, settings) =>
-            dispatch(TestActions.startTests(dtm, settings)),
-        endTests: dtm => dispatch(TestActions.endTests(dtm)),
-    }),
-    (stateProps, dispatchProps) => ({
-        ...stateProps,
-        onClick: stateProps.isRunning
-            ? dispatchProps.endTests
-            : dispatchProps.startTests,
+        onPhyUpdated: value => dispatch(SettingsActions.phyChanged(value)),
+        onModulationUpdated: value =>
+            dispatch(SettingsActions.modulationChanged(value)),
     })
-)(RunTestView);
+)(OtherSettingsView);

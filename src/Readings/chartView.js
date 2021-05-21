@@ -36,18 +36,15 @@
 
 import { connect } from 'react-redux';
 
-import * as SettingsActions from '../actions/settingsActions';
-import ToggleTestModeView from '../components/ToggleTestModeView';
+import ChartView from './ChartView';
 
-export default connect(
-    (state, props) => ({
-        ...props,
-        selected: state.app.settings.testMode,
-        isRunning: state.app.test.isRunning,
-    }),
-    (dispatch, props) => ({
-        ...props,
-        onButtonClicked: button =>
-            dispatch(SettingsActions.testModeChanged(button)),
-    })
-)(ToggleTestModeView);
+export default connect((state, props) => ({
+    ...props,
+    selectedTestMode: state.app.settings.testMode,
+    currentChannel: state.app.test.currentChannel,
+    lastChannel: state.app.test.lastChannel,
+    lastReceived: state.app.test.lastReceived,
+    isRunning: state.app.test.isRunning,
+    txPower: state.app.settings.txPower,
+    update: state.app.test.update,
+}))(ChartView);

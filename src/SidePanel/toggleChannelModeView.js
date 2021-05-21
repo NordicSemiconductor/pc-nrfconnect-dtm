@@ -34,37 +34,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
-import ChannelView from '../containers/channelView';
-import OtherSettingsView from '../containers/otherSettingsView';
-import PacketView from '../containers/packetView';
-import RunTestView from '../containers/runTestView';
-import TimeoutView from '../containers/timeoutView';
-import ToggleTestModeView from '../containers/toggleTestModeView';
-import TransmitSetupView from '../containers/transmitSetupView';
+import * as SettingsActions from '../actions/settingsActions';
+import ToggleChannelModeView from './ToggleChannelModeView';
 
-const AppSidePanelView = ({ selectedTestMode }) => (
-    <>
-        <RunTestView />
-        <ToggleTestModeView />
-        <ChannelView />
-        <OtherSettingsView />
-        <TimeoutView />
-        {selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && (
-            <>
-                <PacketView />
-                <TransmitSetupView />
-            </>
-        )}
-    </>
-);
-
-AppSidePanelView.propTypes = {
-    selectedTestMode: PropTypes.number.isRequired,
-};
-
-export default AppSidePanelView;
+export default connect(
+    (state, props) => ({
+        ...props,
+        selected: state.app.settings.channelMode,
+    }),
+    (dispatch, props) => ({
+        ...props,
+        onButtonClicked: button =>
+            dispatch(SettingsActions.channelModeChanged(button)),
+    })
+)(ToggleChannelModeView);

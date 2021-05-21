@@ -43,7 +43,7 @@ import Slider from 'react-rangeslider';
 import PropTypes from 'prop-types';
 
 import * as SettingsActions from '../actions/settingsActions';
-import ToggleChannelModeView from '../containers/toggleChannelModeView';
+import ToggleChannelModeView from './toggleChannelModeView';
 import { bleChannels } from '../utils/constants';
 
 import 'react-rangeslider/lib/index.css';

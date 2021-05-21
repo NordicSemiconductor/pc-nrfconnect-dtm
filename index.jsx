@@ -41,8 +41,8 @@ import SerialPort from 'serialport';
 
 import { deselectDevice, selectDevice } from './src/actions/testActions';
 import { clearAllWarnings } from './src/actions/warningActions';
-import AppMainView from './src/containers/appMainView';
-import AppSidePanelView from './src/containers/appSidePanelView';
+import AppMainView from './src/Readings/appMainView';
+import AppSidePanelView from './src/SidePanel/appSidePanelView';
 import appReducer from './src/reducers';
 import { compatiblePCAs } from './src/utils/constants';
 

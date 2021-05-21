@@ -34,21 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { connect } from 'react-redux';
+// eslint-disable-next-line import/no-unresolved
+import React from 'react';
 
-import * as SettingsActions from '../actions/settingsActions';
-import TransmitSetupView from '../components/TransmitSetupView';
+import ChartView from './chartView';
+import WarningView from './warningView';
 
-export default connect(
-    (state, props) => ({
-        ...props,
-        txPowerIdx: state.app.settings.txPower,
-        boardType: state.app.device.board,
-        isRunning: state.app.test.isRunning,
-    }),
-    (dispatch, props) => ({
-        ...props,
-        txPowerUpdated: value =>
-            dispatch(SettingsActions.txPowerUpdated(value)),
-    })
-)(TransmitSetupView);
+const AppMainView = () => (
+    <div className="app-main-view">
+        <WarningView />
+        <ChartView />
+    </div>
+);
+
+export default AppMainView;

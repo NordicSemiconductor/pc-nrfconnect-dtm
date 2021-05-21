@@ -36,10 +36,20 @@
 
 import { connect } from 'react-redux';
 
-import WarningView from '../components/WarningView';
+import * as SettingsActions from '../actions/settingsActions';
+import PacketView from './PacketView';
 
-export default connect((state, props) => ({
-    ...props,
-    compatibleDeviceWarning: state.app.warning.compatibleDeviceWarning,
-    communicationError: state.app.warning.communicationError,
-}))(WarningView);
+export default connect(
+    (state, props) => ({
+        ...props,
+        pkgType: state.app.settings.bitpattern.toString(),
+        packetLength: state.app.settings.length,
+        isRunning: state.app.test.isRunning,
+    }),
+    (dispatch, props) => ({
+        ...props,
+        bitpatternUpdated: value =>
+            dispatch(SettingsActions.bitpatternUpdated(value)),
+        lengthUpdated: value => dispatch(SettingsActions.lengthUpdated(value)),
+    })
+)(PacketView);

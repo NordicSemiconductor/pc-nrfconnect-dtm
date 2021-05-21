@@ -37,19 +37,17 @@
 import { connect } from 'react-redux';
 
 import * as SettingsActions from '../actions/settingsActions';
-import PacketView from '../components/PacketView';
+import ToggleTestModeView from './ToggleTestModeView';
 
 export default connect(
     (state, props) => ({
         ...props,
-        pkgType: state.app.settings.bitpattern.toString(),
-        packetLength: state.app.settings.length,
+        selected: state.app.settings.testMode,
         isRunning: state.app.test.isRunning,
     }),
     (dispatch, props) => ({
         ...props,
-        bitpatternUpdated: value =>
-            dispatch(SettingsActions.bitpatternUpdated(value)),
-        lengthUpdated: value => dispatch(SettingsActions.lengthUpdated(value)),
+        onButtonClicked: button =>
+            dispatch(SettingsActions.testModeChanged(button)),
     })
-)(PacketView);
+)(ToggleTestModeView);

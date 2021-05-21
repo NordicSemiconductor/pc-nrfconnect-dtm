@@ -37,16 +37,17 @@
 import { connect } from 'react-redux';
 
 import * as SettingsActions from '../actions/settingsActions';
-import ToggleChannelModeView from '../components/ToggleChannelModeView';
+import TimeoutView from './TimeoutView';
 
 export default connect(
     (state, props) => ({
         ...props,
-        selected: state.app.settings.channelMode,
+        timeout: state.app.settings.timeout,
+        isRunning: state.app.test.isRunning,
     }),
     (dispatch, props) => ({
         ...props,
-        onButtonClicked: button =>
-            dispatch(SettingsActions.channelModeChanged(button)),
+        onTimeoutChanged: time =>
+            dispatch(SettingsActions.timeoutChanged(time)),
     })
-)(ToggleChannelModeView);
+)(TimeoutView);

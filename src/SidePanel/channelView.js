@@ -37,17 +37,27 @@
 import { connect } from 'react-redux';
 
 import * as SettingsActions from '../actions/settingsActions';
-import TimeoutView from '../components/TimeoutView';
+import ChannelView from './ChannelView';
 
 export default connect(
     (state, props) => ({
         ...props,
-        timeout: state.app.settings.timeout,
+        channelMode: state.app.settings.channelMode,
+        channel: state.app.settings.singleChannel,
+        channelLow: state.app.settings.lowChannel,
+        channelHigh: state.app.settings.highChannel,
+        sweepTime: state.app.settings.sweepTime,
         isRunning: state.app.test.isRunning,
     }),
     (dispatch, props) => ({
         ...props,
-        onTimeoutChanged: time =>
-            dispatch(SettingsActions.timeoutChanged(time)),
+        onChannelChanged: channel =>
+            dispatch(SettingsActions.singleChannelChanged(channel)),
+        onChannelLowChanged: channel =>
+            dispatch(SettingsActions.lowChannelChanged(channel)),
+        onChannelHighChanged: channel =>
+            dispatch(SettingsActions.highChannelChanged(channel)),
+        onSweepTimeChanged: time =>
+            dispatch(SettingsActions.sweepTimeChanged(time)),
     })
-)(TimeoutView);
+)(ChannelView);

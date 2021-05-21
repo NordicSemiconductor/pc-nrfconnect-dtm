@@ -36,28 +36,27 @@
 
 import { connect } from 'react-redux';
 
-import * as SettingsActions from '../actions/settingsActions';
-import ChannelView from '../components/ChannelView';
+import * as TestActions from '../actions/testActions';
+import RunTestView from './RunTestView';
 
 export default connect(
     (state, props) => ({
         ...props,
-        channelMode: state.app.settings.channelMode,
-        channel: state.app.settings.singleChannel,
-        channelLow: state.app.settings.lowChannel,
-        channelHigh: state.app.settings.highChannel,
-        sweepTime: state.app.settings.sweepTime,
         isRunning: state.app.test.isRunning,
+        board: state.app.device.board,
+        label: state.app.test.isRunning ? 'Stop test' : 'Start test',
+        disabled: !state.app.device.isReady,
     }),
     (dispatch, props) => ({
         ...props,
-        onChannelChanged: channel =>
-            dispatch(SettingsActions.singleChannelChanged(channel)),
-        onChannelLowChanged: channel =>
-            dispatch(SettingsActions.lowChannelChanged(channel)),
-        onChannelHighChanged: channel =>
-            dispatch(SettingsActions.highChannelChanged(channel)),
-        onSweepTimeChanged: time =>
-            dispatch(SettingsActions.sweepTimeChanged(time)),
+        startTests: (dtm, settings) =>
+            dispatch(TestActions.startTests(dtm, settings)),
+        endTests: dtm => dispatch(TestActions.endTests(dtm)),
+    }),
+    (stateProps, dispatchProps) => ({
+        ...stateProps,
+        onClick: stateProps.isRunning
+            ? dispatchProps.endTests
+            : dispatchProps.startTests,
     })
-)(ChannelView);
+)(RunTestView);

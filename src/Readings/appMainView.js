@@ -36,7 +36,7 @@
 
 import { connect } from 'react-redux';
 
-import AppMainView from '../components/AppMainView';
+import AppMainView from './AppMainView';
 
 export default connect((state, props) => ({
     ...props,

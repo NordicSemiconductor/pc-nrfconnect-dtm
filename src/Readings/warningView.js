@@ -36,11 +36,10 @@
 
 import { connect } from 'react-redux';
 
-import AppSidePanelView from '../components/AppSidePanelView';
+import WarningView from './WarningView';
 
 export default connect((state, props) => ({
     ...props,
-    dtm: state.app.device.dtm,
-    selectedTestMode: state.app.settings.testMode,
-    channelMode: state.app.settings.channelMode,
-}))(AppSidePanelView);
+    compatibleDeviceWarning: state.app.warning.compatibleDeviceWarning,
+    communicationError: state.app.warning.communicationError,
+}))(WarningView);

@@ -50,11 +50,6 @@
   "bundledDependencies": [
     "electron-store"
   ],
-  "jest": {
-    "moduleNameMapper": {
-      "nrfconnect/core": "<rootDir>/mocks/coreMock.js"
-    }
-  },
   "eslintConfig": {
     "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc.json"
   },

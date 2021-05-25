@@ -39,7 +39,7 @@ import {
     DTM_MODULATION_STRING,
     DTM_PHY_STRING,
 } from 'nrf-dtm-js/src/DTM.js';
-import { logger } from 'nrfconnect/core';
+import { logger } from 'pc-nrfconnect-shared';
 
 import * as Constants from '../utils/constants';
 import { deviceReadyAction } from './deviceActions';

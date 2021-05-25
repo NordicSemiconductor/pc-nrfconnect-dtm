@@ -40,13 +40,22 @@
 import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import Slider from 'react-rangeslider';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { txPowerUpdated } from '../actions/settingsActions';
+import { getBoard } from '../reducers/deviceReducer';
+import { getTxPower } from '../reducers/settingsReducer';
+import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 
 import 'react-rangeslider/lib/index.css';
 
-const txPowerView = (boardType, txPowerIdx, txPowerUpdated, isRunning) => {
+const txPowerView = (
+    boardType,
+    txPowerIdx,
+    txPowerUpdatedAction,
+    isRunning
+) => {
     const compatibility = fromPCA(boardType);
     const maxDbmRangeValue = compatibility.txPower.length - 1;
 
@@ -62,9 +71,9 @@ const txPowerView = (boardType, txPowerIdx, txPowerUpdated, isRunning) => {
                 value={txPowerIdx}
                 onChange={value => {
                     if (!isRunning) {
-                        return txPowerUpdated(value);
+                        return txPowerUpdatedAction(value);
                     }
-                    return txPowerUpdated(txPowerIdx);
+                    return txPowerUpdatedAction(txPowerIdx);
                 }}
                 max={maxDbmRangeValue}
                 min={0}
@@ -76,26 +85,23 @@ const txPowerView = (boardType, txPowerIdx, txPowerUpdated, isRunning) => {
     );
 };
 
-const TransmitSetupView = ({
-    txPowerUpdated,
-    txPowerIdx,
-    boardType,
-    isRunning,
-}) => (
-    <div className="app-sidepanel-panel">
-        {txPowerView(boardType, txPowerIdx, txPowerUpdated, isRunning)}
-    </div>
-);
+const TransmitSetupView = () => {
+    const dispatch = useDispatch();
 
-TransmitSetupView.propTypes = {
-    txPowerUpdated: PropTypes.func.isRequired,
-    txPowerIdx: PropTypes.number.isRequired,
-    boardType: PropTypes.string,
-    isRunning: PropTypes.bool.isRequired,
-};
+    const txPowerIdx = useSelector(getTxPower);
+    const boardType = useSelector(getBoard);
+    const isRunning = useSelector(getIsRunning);
 
-TransmitSetupView.defaultProps = {
-    boardType: '',
+    return (
+        <div className="app-sidepanel-panel">
+            {txPowerView(
+                boardType,
+                txPowerIdx,
+                value => dispatch(txPowerUpdated(value)),
+                isRunning
+            )}
+        </div>
+    );
 };
 
 export default TransmitSetupView;

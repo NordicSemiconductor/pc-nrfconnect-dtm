@@ -51,7 +51,7 @@ import {
     stoppedAction,
 } from '../reducers/testReducer';
 import * as Constants from '../utils/constants';
-import { deviceReadyAction } from './deviceActions';
+import { deviceReadyAction, dtmBoardSelectedAction } from './deviceActions';
 import * as SettingsActions from './settingsActions';
 import {
     clearCommunicationErrorWarning,
@@ -254,10 +254,8 @@ export function selectDevice(portPath, board) {
         dtm.on('log', param => {
             logger.info(param.message);
         });
-        dispatch({
-            type: DTM_BOARD_SELECTED_ACTION,
-            board,
-        });
+        dispatch(dtmBoardSelectedAction(board));
+
         dispatch(deviceReadyAction());
     };
 }
@@ -268,10 +266,7 @@ export function deselectDevice() {
         if (test.isRunning) {
             dispatch(endTests());
         }
-        dispatch({
-            type: DTM_BOARD_SELECTED_ACTION,
-            board: null,
-        });
+        dispatch(dtmBoardSelectedAction(null));
         dtm = null;
     };
 }

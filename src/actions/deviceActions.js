@@ -36,7 +36,12 @@
 
 import { createAction } from '@reduxjs/toolkit';
 
-import { deviceReady, dtmInit } from '../reducers/deviceReducer';
+import {
+    deviceReady,
+    dtmBoardSelected,
+    dtmInit,
+} from '../reducers/deviceReducer';
 
 export const deviceReadyAction = createAction(deviceReady);
 export const dtmInitAction = createAction(dtmInit);
+export const dtmBoardSelectedAction = createAction(dtmBoardSelected);

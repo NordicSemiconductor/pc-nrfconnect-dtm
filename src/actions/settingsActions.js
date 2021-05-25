@@ -34,6 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { createAction } from '@reduxjs/toolkit';
+
 import {
     bitpatternChanged,
     dtmChannelModeChanged,
@@ -59,12 +61,6 @@ export const DTM_CHANNEL_MODE = {
     sweep: 'DTM_CHANNEL_MODE_SWEEP_ACTION',
 };
 
-export function testModeChanged(buttonClicked) {
-    return dispatch => {
-        dispatch(dtmTestModeChanged(buttonClicked));
-    };
-}
-
 export function channelModeChanged(buttonClicked) {
     return dispatch => {
         if (buttonClicked === DTM_CHANNEL_MODE.single) {
@@ -77,62 +73,14 @@ export function channelModeChanged(buttonClicked) {
     };
 }
 
-export function singleChannelChanged(channel) {
-    return dispatch => {
-        dispatch(dtmSingleChannelChanged(channel));
-    };
-}
-
-export function lowChannelChanged(channel) {
-    return dispatch => {
-        dispatch(dtmLowChannelChanged(channel));
-    };
-}
-
-export function highChannelChanged(channel) {
-    return dispatch => {
-        dispatch(dtmHighChannelChanged(channel));
-    };
-}
-
-export function sweepTimeChanged(time) {
-    return dispatch => {
-        dispatch(sweepTimeChangedAction(time));
-    };
-}
-
-export function txPowerUpdated(value) {
-    return dispatch => {
-        dispatch(txPowerChanged(value));
-    };
-}
-
-export function bitpatternUpdated(value) {
-    return dispatch => {
-        dispatch(bitpatternChanged(value));
-    };
-}
-
-export function lengthUpdated(value) {
-    return dispatch => {
-        dispatch(lengthChanged(value));
-    };
-}
-
-export function timeoutChanged(time) {
-    return dispatch => {
-        dispatch(timeoutChanged(time));
-    };
-}
-
-export function phyChanged(value) {
-    return dispatch => {
-        dispatch(phyChanged(value));
-    };
-}
-
-export function modulationChanged(value) {
-    return dispatch => {
-        dispatch(modulationChanged(value));
-    };
-}
+export const testModeChanged = createAction(dtmTestModeChanged);
+export const singleChannelChanged = createAction(dtmSingleChannelChanged);
+export const lowChannelChanged = createAction(dtmLowChannelChanged);
+export const highChannelChanged = createAction(dtmHighChannelChanged);
+export const sweepTimeChanged = createAction(sweepTimeChangedAction);
+export const txPowerUpdated = createAction(txPowerChanged);
+export const bitpatternUpdated = createAction(bitpatternChanged);
+export const lengthUpdated = createAction(lengthChanged);
+export const timeoutChanged = createAction(timeoutChanged);
+export const phyChanged = createAction(phyChanged);
+export const modulationChanged = createAction(modulationChanged);

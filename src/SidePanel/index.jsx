@@ -36,8 +36,8 @@
 
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
-import PropTypes from 'prop-types';
 import { SidePanel } from 'pc-nrfconnect-shared';
+import PropTypes from 'prop-types';
 
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 import ChannelView from './channelView';

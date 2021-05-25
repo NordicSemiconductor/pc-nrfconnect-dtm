@@ -49,36 +49,36 @@ const testSlice = createSlice({
     name: 'test',
     initialState: InitialState,
     reducers: {
-        startedAction(state) { 
-            state.set('isRunning', true)
+        startedAction(state) {
+            state
+                .set('isRunning', true)
                 .set('lastStatusMessage', 'Running test')
                 .set('lastReceived', new Array(40).fill(0))
-                .set('update', state.update + 1)
+                .set('update', state.update + 1);
         },
         stoppedAction(state) {
-            state.set('isRunning', false)
-                .set('update', state.update + 1)
+            state.set('isRunning', false).set('update', state.update + 1);
         },
         actionSucceeded(state, action) {
             state
                 .set('lastReceived', action.payload)
                 .set('lastStatusMessage', 'Test ended successfully')
-                .set('update', state.update + 1)
+                .set('update', state.update + 1);
         },
         actionFailed(state, action) {
             state
                 .set('lastStatusMessage', action.payload)
-                .set('update', state.update + 1)
+                .set('update', state.update + 1);
         },
         startedChannel(state, action) {
             state
                 .set('currentChannel', action.payload)
-                .set('update', state.update + 1)
+                .set('update', state.update + 1);
         },
         resetChannel(state) {
             state
                 .set('currentChannel', undefined)
-                .set('update', state.update + 1)
+                .set('update', state.update + 1);
         },
         endedChannel(state, action) {
             const { channel, received } = action.payload;
@@ -88,9 +88,9 @@ const testSlice = createSlice({
             state
                 .set('lastChannel', { channel, received: packets })
                 .set('lastReceived', nextReceivedCount)
-                .set('update', state.update + 1)
-        }
-    }
+                .set('update', state.update + 1);
+        },
+    },
 });
 
 export default testSlice.reducer;
@@ -105,12 +105,12 @@ const {
     endedChannel,
 } = testSlice.actions;
 
-const getIsRunning = (state) => state.app.test.isRunning;
-const getLastStatusMessage = (state) => state.app.test.lastStatusMessage;
-const getLastReceived = (state) => state.app.test.lastReceived;
-const getCurrentChannel = (state) => state.app.test.currentChannel;
-const getLastChannel = (state) => state.app.test.lastChannel;
-const getUpdate = (state) => state.app.test.update;
+const getIsRunning = state => state.app.test.isRunning;
+const getLastStatusMessage = state => state.app.test.lastStatusMessage;
+const getLastReceived = state => state.app.test.lastReceived;
+const getCurrentChannel = state => state.app.test.currentChannel;
+const getLastChannel = state => state.app.test.lastChannel;
+const getUpdate = state => state.app.test.update;
 
 export {
     startedAction,

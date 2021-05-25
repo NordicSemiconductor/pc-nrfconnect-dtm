@@ -41,6 +41,15 @@ import {
 } from 'nrf-dtm-js/src/DTM.js';
 import { logger } from 'pc-nrfconnect-shared';
 
+import {
+    actionFailed,
+    actionSucceeded,
+    endedChannel,
+    resetChannel,
+    startedAction,
+    startedChannel,
+    stoppedAction,
+} from '../reducers/testReducer';
 import * as Constants from '../utils/constants';
 import { deviceReadyAction } from './deviceActions';
 import * as SettingsActions from './settingsActions';
@@ -48,17 +57,9 @@ import {
     clearCommunicationErrorWarning,
     setCommunicationErrorWarning,
 } from './warningActions';
-import {startedAction,
-    stoppedAction,
-    actionSucceeded,
-    actionFailed,
-    startedChannel,
-    resetChannel,
-    endedChannel} from '../reducers/testReducer';
 
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
 export const DTM_TEST_DONE = 'DTM_TEST_DONE';
-
 
 const dtmStatisticsUpdated = dispatch => event => {
     if (event.type === 'reset') {
@@ -66,7 +67,10 @@ const dtmStatisticsUpdated = dispatch => event => {
     } else if (event.action === 'started') {
         dispatch(startedChannel, event.channel);
     } else if (event.action === 'ended') {
-        dispatch(endedChannel, {channel: event.channel, received: event.packets});
+        dispatch(endedChannel, {
+            channel: event.channel,
+            received: event.packets,
+        });
     } else if (event.action === 'done') {
         dispatch({
             type: DTM_TEST_DONE,

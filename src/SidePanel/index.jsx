@@ -37,6 +37,7 @@
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import PropTypes from 'prop-types';
+import { SidePanel } from 'pc-nrfconnect-shared';
 
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 import ChannelView from './channelView';
@@ -48,7 +49,7 @@ import ToggleTestModeView from './toggleTestModeView';
 import TransmitSetupView from './transmitSetupView';
 
 const AppSidePanelView = ({ selectedTestMode }) => (
-    <>
+    <SidePanel>
         <RunTestView />
         <ToggleTestModeView />
         <ChannelView />
@@ -60,7 +61,7 @@ const AppSidePanelView = ({ selectedTestMode }) => (
                 <TransmitSetupView />
             </>
         )}
-    </>
+    </SidePanel>
 );
 
 AppSidePanelView.propTypes = {

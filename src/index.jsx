@@ -38,7 +38,7 @@ import React from 'react';
 import { App } from 'pc-nrfconnect-shared';
 
 import DeviceSelector from './DeviceSelector';
-import AppMainView from './Readings/appMainView';
+import Main from './Readings';
 import appReducer from './reducers';
 import SidePanel from './SidePanel';
 
@@ -50,6 +50,6 @@ export default () => (
         deviceSelect={<DeviceSelector />}
         sidePanel={<SidePanel />}
         showLogByDefault={false}
-        panes={[['AppMainView', AppMainView]]}
+        panes={[['Main', Main]]}
     />
 );

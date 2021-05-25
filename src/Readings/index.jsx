@@ -36,15 +36,16 @@
 
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
+import { Main } from 'pc-nrfconnect-shared';
 
 import ChartView from './chartView';
 import WarningView from './warningView';
 
 const AppMainView = () => (
-    <div className="app-main-view">
+    <Main>
         <WarningView />
         <ChartView />
-    </div>
+    </Main>
 );
 
 export default AppMainView;

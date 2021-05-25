@@ -40,7 +40,7 @@ import { App } from 'pc-nrfconnect-shared';
 import DeviceSelector from './DeviceSelector';
 import AppMainView from './Readings/appMainView';
 import appReducer from './reducers';
-import AppSidePanelView from './SidePanel/appSidePanelView';
+import SidePanel from './SidePanel';
 
 import '../resources/css/index.scss';
 
@@ -48,7 +48,7 @@ export default () => (
     <App
         appReducer={appReducer}
         deviceSelect={<DeviceSelector />}
-        sidePanel={<AppSidePanelView />}
+        sidePanel={<SidePanel />}
         showLogByDefault={false}
         panes={[['AppMainView', AppMainView]]}
     />

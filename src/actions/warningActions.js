@@ -34,50 +34,38 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export const INCOMPATIBLE_DEVICE = 'INCOMPATIBLE_DEVICE';
-export const COMMUNICATION_ERROR = 'COMMUNICATION_ERROR';
-export const CLEAR_ALL_WARNINGS = 'CLEAR_ALL_WARNINGS';
+import {
+    clearAllWarnings as clearAllWarningsAction,
+    communicationError,
+    incompatibleDevice,
+} from '../reducers/warningReducer';
 
 export function setIncompatibleWarning(message) {
     return dispatch => {
-        dispatch({
-            type: INCOMPATIBLE_DEVICE,
-            message,
-        });
+        dispatch(incompatibleDevice, message);
     };
 }
 
 export function clearIncompatibleWarning() {
     return dispatch => {
-        dispatch({
-            type: INCOMPATIBLE_DEVICE,
-            message: '',
-        });
+        dispatch(incompatibleDevice, '');
     };
 }
 
 export function setCommunicationErrorWarning(message) {
     return dispatch => {
-        dispatch({
-            type: COMMUNICATION_ERROR,
-            message,
-        });
+        dispatch(communicationError, message);
     };
 }
 
 export function clearCommunicationErrorWarning() {
     return dispatch => {
-        dispatch({
-            type: COMMUNICATION_ERROR,
-            message: '',
-        });
+        dispatch(communicationError, '');
     };
 }
 
 export function clearAllWarnings() {
     return dispatch => {
-        dispatch({
-            type: CLEAR_ALL_WARNINGS,
-        });
+        dispatch(clearAllWarningsAction);
     };
 }

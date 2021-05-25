@@ -34,13 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record } from 'immutable';
+import { createSlice } from '@reduxjs/toolkit';
 import { DTM } from 'nrf-dtm-js/src/DTM.js';
 
 import * as SettingsActions from '../actions/settingsActions';
 import * as Constants from '../utils/constants';
 
-const InitialState = new Record({
+const InitialState = {
     testMode: SettingsActions.DTM_TEST_MODE_BUTTON.transmitter,
     channelMode: SettingsActions.DTM_CHANNEL_MODE.single,
     singleChannel: 19,
@@ -53,47 +53,102 @@ const InitialState = new Record({
     phy: DTM.DTM_PARAMETER.PHY_LE_1M,
     modulationMode: DTM.DTM_PARAMETER.STANDARD_MODULATION_INDEX,
     timeout: 0,
+};
+
+const settingsSlice = createSlice({
+    name: 'settings',
+    initialState: InitialState,
+    reducers: {
+        dtmTestModeChanged(state, action) {
+            state.set('testMode', action.payload);
+        },
+        dtmChannelModeChanged(state, action) {
+            state.set('channelMode', action.payload);
+        },
+        dtmSingleChannelChanged(state, action) {
+            state.set('singleChannel', action.payload);
+        },
+        dtmLowChannelChanged(state, action) {
+            state.set('lowChannel', action.payload);
+        },
+        dtmHighChannelChanged(state, action) {
+            state.set('highChannel', action.payload);
+        },
+        sweepTimeChanged(state, action) {
+            state.set('sweepTime', action.payload);
+        },
+        txPowerChanged(state, action) {
+            state.set('txPower', action.payload);
+        },
+        bitpatternChanged(state, action) {
+            state.set('bitpattern', action.payload);
+        },
+        lengthChanged(state, action) {
+            state.set('length', action.payload);
+        },
+        timeoutChanged(state, action) {
+            state.set('timeout', action.payload);
+        },
+        phyChanged(state, action) {
+            state.set('phy', action.payload);
+        },
+        modulationChanged(state, action) {
+            state.set('modulationMode', action.payload);
+        },
+    },
 });
 
-export default function target(state = new InitialState(), action) {
-    switch (action.type) {
-        case SettingsActions.DTM_TEST_MODE_CHANGED_ACTION:
-            return state.set('testMode', action.buttonClicked);
+export default settingsSlice.reducer;
 
-        case SettingsActions.DTM_CHANNEL_MODE_CHANGED_ACTION:
-            return state.set('channelMode', action.buttonClicked);
+const {
+    dtmTestModeChanged,
+    dtmChannelModeChanged,
+    dtmSingleChannelChanged,
+    dtmLowChannelChanged,
+    dtmHighChannelChanged,
+    sweepTimeChanged,
+    txPowerChanged,
+    bitpatternChanged,
+    lengthChanged,
+    timeoutChanged,
+    phyChanged,
+    modulationChanged,
+} = settingsSlice.actions;
 
-        case SettingsActions.DTM_CHANNEL_CHANGED_ACTION.SINGLE:
-            return state.set('singleChannel', action.channel);
+const getChannelMode = state => state.app.settings.channelMode;
+const getSingleChannel = state => state.app.settings.singleChannel;
+const getLowChannel = state => state.app.settings.lowChannel;
+const getHighChannel = state => state.app.settings.highChannel;
+const getSweepTime = state => state.app.settings.sweepTime;
+const getBitpattern = state => state.app.settings.bitpattern;
+const getLength = state => state.app.settings.length;
+const getTxPower = state => state.app.settings.txPower;
+const getPhy = state => state.app.settings.phy;
+const getModulation = state => state.app.settings.modulationMode;
+const getTimeout = state => state.app.settings.timeout;
 
-        case SettingsActions.DTM_CHANNEL_CHANGED_ACTION.LOW:
-            return state.set('lowChannel', action.channel);
-
-        case SettingsActions.DTM_CHANNEL_CHANGED_ACTION.HIGH:
-            return state.set('highChannel', action.channel);
-
-        case SettingsActions.SWEEP_TIME_CHANGED_ACTION:
-            return state.set('sweepTime', action.time);
-
-        case SettingsActions.TX_POWER_CHANGED_ACTION:
-            return state.set('txPower', action.value);
-
-        case SettingsActions.BITPATTERN_CHANGED_ACTION:
-            return state.set('bitpattern', action.value);
-
-        case SettingsActions.LENGTH_CHANGED_ACTION:
-            return state.set('length', action.value);
-
-        case SettingsActions.TIMEOUT_CHANGED_ACTION:
-            return state.set('timeout', action.time);
-
-        case SettingsActions.PHY_CHANGED_ACTION:
-            return state.set('phy', action.value);
-
-        case SettingsActions.MODULATION_CHANGED_ACTION:
-            return state.set('modulationMode', action.value);
-
-        default:
-    }
-    return state;
-}
+export {
+    dtmTestModeChanged,
+    dtmChannelModeChanged,
+    dtmSingleChannelChanged,
+    dtmLowChannelChanged,
+    dtmHighChannelChanged,
+    sweepTimeChanged,
+    txPowerChanged,
+    bitpatternChanged,
+    lengthChanged,
+    timeoutChanged,
+    phyChanged,
+    modulationChanged,
+    getChannelMode,
+    getSingleChannel,
+    getLowChannel,
+    getHighChannel,
+    getSweepTime,
+    getBitpattern,
+    getLength,
+    getTxPower,
+    getPhy,
+    getModulation,
+    getTimeout,
+};

@@ -33,24 +33,21 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-export const DTM_TEST_MODE_CHANGED_ACTION = 'DTM_TEST_MODE_CHANGED_ACTION';
-export const DTM_CHANNEL_MODE_CHANGED_ACTION =
-    'DTM_CHANNEL_MODE_CHANGED_ACTION';
 
-export const DTM_CHANNEL_CHANGED_ACTION = {
-    SINGLE: 'DTM_SINGLE_CHANNEL_CHANGED_ACTION',
-    LOW: 'DTM_LOW_CHANNEL_CHANGED_ACTION',
-    HIGH: 'DTM_HIGH_CHANNEL_CHANGED_ACTION',
-};
-
-export const SWEEP_TIME_CHANGED_ACTION = 'SWEEP_TIME_CHANGED_ACTION';
-export const TIMEOUT_CHANGED_ACTION = 'TIMEOUT_CHANGED_ACTION';
-
-export const TX_POWER_CHANGED_ACTION = 'TX_POWER_CHANGED_ACTION';
-export const BITPATTERN_CHANGED_ACTION = 'BITPATTERN_CHANGED_ACTION';
-export const LENGTH_CHANGED_ACTION = 'LENGTH_CHANGED_ACTION';
-export const PHY_CHANGED_ACTION = 'PHY_CHANGED_ACTION';
-export const MODULATION_CHANGED_ACTION = 'MODULATION_CHANGED_ACTION';
+import {
+    bitpatternChanged,
+    dtmChannelModeChanged,
+    dtmHighChannelChanged,
+    dtmLowChannelChanged,
+    dtmSingleChannelChanged,
+    dtmTestModeChanged,
+    lengthChanged,
+    modulationChanged,
+    phyChanged,
+    sweepTimeChanged as sweepTimeChangedAction,
+    timeoutChanged,
+    txPowerChanged,
+} from '../reducers/settingsReducer';
 
 export const DTM_TEST_MODE_BUTTON = {
     transmitter: 0,
@@ -64,10 +61,7 @@ export const DTM_CHANNEL_MODE = {
 
 export function testModeChanged(buttonClicked) {
     return dispatch => {
-        dispatch({
-            type: DTM_TEST_MODE_CHANGED_ACTION,
-            buttonClicked,
-        });
+        dispatch(dtmTestModeChanged(buttonClicked));
     };
 }
 
@@ -79,99 +73,66 @@ export function channelModeChanged(buttonClicked) {
         if (buttonClicked === DTM_CHANNEL_MODE.sweep) {
             dispatch(sweepTimeChanged(30));
         }
-        dispatch({
-            type: DTM_CHANNEL_MODE_CHANGED_ACTION,
-            buttonClicked,
-        });
+        dispatch(dtmChannelModeChanged(buttonClicked));
     };
 }
 
 export function singleChannelChanged(channel) {
     return dispatch => {
-        dispatch({
-            type: DTM_CHANNEL_CHANGED_ACTION.SINGLE,
-            channel,
-        });
+        dispatch(dtmSingleChannelChanged(channel));
     };
 }
 
 export function lowChannelChanged(channel) {
     return dispatch => {
-        dispatch({
-            type: DTM_CHANNEL_CHANGED_ACTION.LOW,
-            channel,
-        });
+        dispatch(dtmLowChannelChanged(channel));
     };
 }
 
 export function highChannelChanged(channel) {
     return dispatch => {
-        dispatch({
-            type: DTM_CHANNEL_CHANGED_ACTION.HIGH,
-            channel,
-        });
+        dispatch(dtmHighChannelChanged(channel));
     };
 }
 
 export function sweepTimeChanged(time) {
     return dispatch => {
-        dispatch({
-            type: SWEEP_TIME_CHANGED_ACTION,
-            time,
-        });
+        dispatch(sweepTimeChangedAction(time));
     };
 }
 
 export function txPowerUpdated(value) {
     return dispatch => {
-        dispatch({
-            type: TX_POWER_CHANGED_ACTION,
-            value,
-        });
+        dispatch(txPowerChanged(value));
     };
 }
 
 export function bitpatternUpdated(value) {
     return dispatch => {
-        dispatch({
-            type: BITPATTERN_CHANGED_ACTION,
-            value,
-        });
+        dispatch(bitpatternChanged(value));
     };
 }
 
 export function lengthUpdated(value) {
     return dispatch => {
-        dispatch({
-            type: LENGTH_CHANGED_ACTION,
-            value,
-        });
+        dispatch(lengthChanged(value));
     };
 }
 
 export function timeoutChanged(time) {
     return dispatch => {
-        dispatch({
-            type: TIMEOUT_CHANGED_ACTION,
-            time,
-        });
+        dispatch(timeoutChanged(time));
     };
 }
 
 export function phyChanged(value) {
     return dispatch => {
-        dispatch({
-            type: PHY_CHANGED_ACTION,
-            value,
-        });
+        dispatch(phyChanged(value));
     };
 }
 
 export function modulationChanged(value) {
     return dispatch => {
-        dispatch({
-            type: MODULATION_CHANGED_ACTION,
-            value,
-        });
+        dispatch(modulationChanged(value));
     };
 }

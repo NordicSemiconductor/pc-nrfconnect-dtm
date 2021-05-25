@@ -34,18 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export const DEVICE_READY_ACTION = 'DEVICE_READY_ACTION';
-export const DTM_INIT_ACTION = 'DTM_INIT_ACTION';
+import { createAction } from '@reduxjs/toolkit';
 
-export function deviceReadyAction() {
-    return {
-        type: DEVICE_READY_ACTION,
-    };
-}
+import { deviceReady, dtmInit } from '../reducers/deviceReducer';
 
-export function dtmInitAction(dtm) {
-    return {
-        type: DTM_INIT_ACTION,
-        dtm,
-    };
-}
+export const deviceReadyAction = createAction(deviceReady);
+export const dtmInitAction = createAction(dtmInit);

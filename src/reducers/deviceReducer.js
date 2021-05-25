@@ -34,36 +34,60 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record } from 'immutable';
+import { createSlice } from '@reduxjs/toolkit';
 
-import * as deviceActions from '../actions/deviceActions';
-import * as TestActions from '../actions/testActions';
-
-const InitialState = new Record({
+const InitialState = {
     serialNumber: null,
     dtm: null,
     board: null,
     isReady: false,
+};
+
+const deviceSlice = createSlice({
+    name: 'device',
+    initialState: InitialState,
+    reducers: {
+        deviceSelected(state, action) {
+            state.set('serialNumber', action.payload);
+        },
+        deviceDeselected(state) {
+            state = new InitialState();
+        },
+        deviceReady(state) {
+            state.set('isReady', true);
+        },
+        dtmInit(state, action) {
+            state.set('dtm', action.dtm);
+        },
+        dtmBoardSelected(state, action) {
+            state.set('board', action.payload);
+        },
+    },
 });
 
-export default function target(state = new InitialState(), action) {
-    switch (action.type) {
-        case 'DEVICE_SELECTED':
-            return state.set('serialNumber', action.device.serialNumber);
+export default deviceSlice.reducer;
 
-        case 'DEVICE_DESELECTED':
-            return new InitialState();
+const {
+    deviceSelected,
+    deviceDeselected,
+    deviceReady,
+    dtmInit,
+    dtmBoardSelected,
+} = deviceSlice.actions;
 
-        case deviceActions.DEVICE_READY_ACTION:
-            return state.set('isReady', true);
+const getSerialNumber = state => state.app.device.serialNumber;
+const getDtm = state => state.app.device.dtm;
+const getBoard = state => state.app.device.board;
+const getIsReady = state => state.app.device.isReady;
 
-        case deviceActions.DTM_INIT_ACTION:
-            return state.set('dtm', action.dtm);
-
-        case TestActions.DTM_BOARD_SELECTED_ACTION:
-            return state.set('board', action.board);
-
-        default:
-    }
-    return state;
-}
+export {
+    deviceSelected,
+    deviceDeselected,
+    deviceReady,
+    dtmInit,
+    dtmBoardSelected,
+    getSerialNumber,
+    getDtm,
+    getBoard,
+    getIsReady,
+};

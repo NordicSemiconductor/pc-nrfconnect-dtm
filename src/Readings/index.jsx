@@ -36,16 +36,24 @@
 
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Main } from 'pc-nrfconnect-shared';
 
+import { getDtm } from '../reducers/deviceReducer';
+import {getChannelMode, getTestMode} from '../reducers/settingsReducer';
 import ChartView from './chartView';
 import WarningView from './warningView';
 
-const AppMainView = () => (
-    <Main>
-        <WarningView />
-        <ChartView />
-    </Main>
-);
+const AppMainView = () => {
+    const dtm = useSelector(getDtm);
+    const selectedTestMode = useSelector(getTestMode),
+    const channelMode = useSelector(getChannelMode),
+
+    return (
+        <Main>
+            <WarningView />
+            <ChartView />
+        </Main>);
+};
 
 export default AppMainView;

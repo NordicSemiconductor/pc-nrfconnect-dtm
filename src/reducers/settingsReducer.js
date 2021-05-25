@@ -115,6 +115,7 @@ const {
     modulationChanged,
 } = settingsSlice.actions;
 
+const getTestMode = state => state.app.settings.testMode;
 const getChannelMode = state => state.app.settings.channelMode;
 const getSingleChannel = state => state.app.settings.singleChannel;
 const getLowChannel = state => state.app.settings.lowChannel;

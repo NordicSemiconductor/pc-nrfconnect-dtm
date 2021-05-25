@@ -48,34 +48,25 @@ import {
     clearCommunicationErrorWarning,
     setCommunicationErrorWarning,
 } from './warningActions';
+import {startedAction,
+    stoppedAction,
+    actionSucceeded,
+    actionFailed,
+    startedChannel,
+    resetChannel,
+    endedChannel} from '../reducers/testReducer';
 
-export const DTM_TEST_STARTED_ACTION = 'DTM_TEST_STARTED_ACTION';
-export const DTM_TEST_STOPPED_ACTION = 'DTM_TEST_STOPPED_ACTION';
-export const DTM_TEST_ENDED_SUCCESSFULLY_ACTION =
-    'DTM_TEST_ENDED_SUCCESSFULLY_ACTION';
-export const DTM_TEST_ENDED_FAILURE_ACTION = 'DTM_TEST_ENDED_FAILURE_ACTION';
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
-export const DTM_CHANNEL_START = 'DTM_CHANNEL_START';
-export const DTM_CHANNEL_END = 'DTM_CHANNEL_END';
-export const DTM_CHANNEL_RESET = 'DTM_CHANNEL_RESET';
 export const DTM_TEST_DONE = 'DTM_TEST_DONE';
+
 
 const dtmStatisticsUpdated = dispatch => event => {
     if (event.type === 'reset') {
-        dispatch({
-            type: DTM_CHANNEL_RESET,
-        });
+        dispatch(resetChannel);
     } else if (event.action === 'started') {
-        dispatch({
-            type: DTM_CHANNEL_START,
-            channel: event.channel,
-        });
+        dispatch(startedChannel, event.channel);
     } else if (event.action === 'ended') {
-        dispatch({
-            type: DTM_CHANNEL_END,
-            channel: event.channel,
-            received: event.packets,
-        });
+        dispatch(endedChannel, {channel: event.channel, received: event.packets});
     } else if (event.action === 'done') {
         dispatch({
             type: DTM_TEST_DONE,
@@ -226,22 +217,14 @@ export function startTests() {
                 logger.info(
                     `${testTypeStr} test finished successfully${packetsRcvStr}`
                 );
-                dispatch({
-                    type: DTM_TEST_ENDED_SUCCESSFULLY_ACTION,
-                    received: receivedChannels,
-                });
+                dispatch(actionSucceeded, receivedChannels);
             } else {
                 logger.info(`End test failed: ${message}`);
-                dispatch({
-                    type: DTM_TEST_ENDED_FAILURE_ACTION,
-                    message,
-                });
+                dispatch(actionFailed, message);
             }
         });
 
-        dispatch({
-            type: DTM_TEST_STARTED_ACTION,
-        });
+        dispatch(startedAction);
     };
 }
 
@@ -252,9 +235,7 @@ export function endTests() {
             if (res !== undefined) {
                 logger.debug(`Test ended: ${res}`);
             }
-            dispatch({
-                type: DTM_TEST_STOPPED_ACTION,
-            });
+            dispatch(stoppedAction);
         });
     };
 }

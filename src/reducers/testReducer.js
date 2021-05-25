@@ -34,60 +34,96 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Record } from 'immutable';
+import { createSlice } from '@reduxjs/toolkit';
 
-import * as TestActions from '../actions/testActions';
-
-const InitialState = new Record({
+const InitialState = {
     isRunning: false,
     lastStatusMessage: '',
     lastReceived: new Array(40).fill(0),
     currentChannel: undefined,
     lastChannel: { channel: 0, received: 0 },
     update: 0,
-});
+};
 
-export default function target(state = new InitialState(), action) {
-    switch (action.type) {
-        case TestActions.DTM_TEST_STARTED_ACTION:
-            return state
-                .set('isRunning', true)
+const testSlice = createSlice({
+    name: 'test',
+    initialState: InitialState,
+    reducers: {
+        startedAction(state) { 
+            state.set('isRunning', true)
                 .set('lastStatusMessage', 'Running test')
                 .set('lastReceived', new Array(40).fill(0))
-                .set('update', state.update + 1);
-        case TestActions.DTM_TEST_STOPPED_ACTION:
-            return state
-                .set('isRunning', false)
-                .set('update', state.update + 1);
-        case TestActions.DTM_TEST_ENDED_SUCCESSFULLY_ACTION:
-            return state
-                .set('lastReceived', action.received)
+                .set('update', state.update + 1)
+        },
+        stoppedAction(state) {
+            state.set('isRunning', false)
+                .set('update', state.update + 1)
+        },
+        actionSucceeded(state, action) {
+            state
+                .set('lastReceived', action.payload)
                 .set('lastStatusMessage', 'Test ended successfully')
-                .set('update', state.update + 1);
-        case TestActions.DTM_TEST_ENDED_FAILURE_ACTION:
-            return state
-                .set('lastStatusMessage', action.message)
-                .set('update', state.update + 1);
-        case TestActions.DTM_CHANNEL_START:
-            return state
-                .set('currentChannel', action.channel)
-                .set('update', state.update + 1);
-        case TestActions.DTM_CHANNEL_RESET:
-            return state
+                .set('update', state.update + 1)
+        },
+        actionFailed(state, action) {
+            state
+                .set('lastStatusMessage', action.payload)
+                .set('update', state.update + 1)
+        },
+        startedChannel(state, action) {
+            state
+                .set('currentChannel', action.payload)
+                .set('update', state.update + 1)
+        },
+        resetChannel(state) {
+            state
                 .set('currentChannel', undefined)
-                .set('update', state.update + 1);
-        case TestActions.DTM_CHANNEL_END: {
-            const { channel, received } = action;
+                .set('update', state.update + 1)
+        },
+        endedChannel(state, action) {
+            const { channel, received } = action.payload;
             const packets = received === undefined ? 0 : received;
             const nextReceivedCount = [...state.lastReceived];
             nextReceivedCount[channel] += packets;
-            return state
+            state
                 .set('lastChannel', { channel, received: packets })
                 .set('lastReceived', nextReceivedCount)
-                .set('update', state.update + 1);
+                .set('update', state.update + 1)
         }
-
-        default:
     }
-    return state;
-}
+});
+
+export default testSlice.reducer;
+
+const {
+    startedAction,
+    stoppedAction,
+    actionSucceeded,
+    actionFailed,
+    startedChannel,
+    resetChannel,
+    endedChannel,
+} = testSlice.actions;
+
+const getIsRunning = (state) => state.app.test.isRunning;
+const getLastStatusMessage = (state) => state.app.test.lastStatusMessage;
+const getLastReceived = (state) => state.app.test.lastReceived;
+const getCurrentChannel = (state) => state.app.test.currentChannel;
+const getLastChannel = (state) => state.app.test.lastChannel;
+const getUpdate = (state) => state.app.test.update;
+
+export {
+    startedAction,
+    stoppedAction,
+    actionSucceeded,
+    actionFailed,
+    startedChannel,
+    resetChannel,
+    endedChannel,
+    getIsRunning,
+    getLastStatusMessage,
+    getLastReceived,
+    getCurrentChannel,
+    getLastChannel,
+    getUpdate,
+};

@@ -38,9 +38,13 @@ import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Form from 'react-bootstrap/Form';
+import { useDispatch, useSelector } from 'react-redux';
 import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
-import PropTypes from 'prop-types';
 
+import { modulationChanged, phyChanged } from '../actions/settingsActions';
+import { getBoard } from '../reducers/deviceReducer';
+import { getModulation, getPhy } from '../reducers/settingsReducer';
+import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 
 const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
@@ -69,23 +73,23 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
     );
 };
 
-const OtherSettingsView = ({ boardType, phy, onPhyUpdated, isRunning }) => (
-    <div className="app-sidepanel-panel">
-        <div className="app-sidepanel-component-inputbox">
-            {phyTypeView(boardType, phy, onPhyUpdated, isRunning)}
+const OtherSettingsView = () => {
+    const phy = useSelector(getPhy)
+    const modulation = useSelector(getModulation)
+    const boardType = useSelector(getBoard)
+    const isRunning = useSelector(getIsRunning)
+
+    const dispatch = useDispatch();
+
+    const onModulationUpdated = value => dispatch(modulationChanged(value)),
+
+    return (
+        <div className="app-sidepanel-panel" >
+            <div className="app-sidepanel-component-inputbox">
+                {phyTypeView(boardType, phy, value => dispatch(phyChanged(value)), isRunning)}
+            </div>
         </div>
-    </div>
-);
-
-OtherSettingsView.propTypes = {
-    boardType: PropTypes.string,
-    phy: PropTypes.number.isRequired,
-    onPhyUpdated: PropTypes.func.isRequired,
-    isRunning: PropTypes.bool.isRequired,
-};
-
-OtherSettingsView.defaultProps = {
-    boardType: '',
+    );
 };
 
 export default OtherSettingsView;

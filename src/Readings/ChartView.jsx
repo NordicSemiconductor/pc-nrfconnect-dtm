@@ -36,9 +36,17 @@
 
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
+import { getTestMode, getTxPower } from '../reducers/settingsReducer';
+import {
+    getCurrentChannel,
+    getIsRunning,
+    getLastChannel,
+    getLastReceived,
+    getUpdate,
+} from '../reducers/testReducer';
 import { bleChannels, channelTotal, dbmValues } from '../utils/constants';
 
 const frequencyBase = 2402;
@@ -200,14 +208,15 @@ const getOptions = selectedTestMode => {
 let receiveValueHistory = new Array(channelTotal).fill(0);
 const receiveValueHistoryTicks = new Array(channelTotal).fill(0);
 
-const ChartView = ({
-    selectedTestMode,
-    currentChannel,
-    lastChannel,
-    lastReceived,
-    isRunning,
-    txPower,
-}) => {
+const ChartView = () => {
+    const selectedTestMode = useSelector(getTestMode);
+    const currentChannel = useSelector(getCurrentChannel);
+    const lastChannel = useSelector(getLastChannel);
+    const lastReceived = useSelector(getLastReceived);
+    const isRunning = useSelector(getIsRunning);
+    const txPower = useSelector(getTxPower);
+    const update = useSelector(getUpdate);
+
     receiveValueHistory = [...receiveValueHistory];
     const activationColors = new Array(channelTotal).fill('#000000');
     receiveValueHistoryTicks.forEach((value, idx) => {
@@ -271,19 +280,6 @@ const ChartView = ({
             height={250}
         />
     );
-};
-
-ChartView.propTypes = {
-    lastChannel: PropTypes.objectOf(PropTypes.number).isRequired,
-    lastReceived: PropTypes.arrayOf(PropTypes.number).isRequired,
-    isRunning: PropTypes.bool.isRequired,
-    currentChannel: PropTypes.number,
-    selectedTestMode: PropTypes.number.isRequired,
-    txPower: PropTypes.number.isRequired,
-};
-
-ChartView.defaultProps = {
-    currentChannel: 0,
 };
 
 export default ChartView;

@@ -100,7 +100,7 @@ export default warningSlice.reducer;
 const { incompatibleDevice, communicationError, clearAllWarnings } =
     warningSlice.actions;
 
-const getCompativeDeviceWarning = state =>
+const getCompatibleDeviceWaring = state =>
     state.app.warning.compatibleDeviceWarning;
 const getCommunicationError = state => state.app.warning.communicationError;
 
@@ -108,6 +108,6 @@ export {
     incompatibleDevice,
     communicationError,
     clearAllWarnings,
-    getCompativeDeviceWarning,
+    getCompatibleDeviceWaring,
     getCommunicationError,
 };

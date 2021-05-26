@@ -36,9 +36,19 @@
 
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
-const TimeoutSetupView = ({ timeout, onTimeoutChanged, isRunning }) => {
+import { timeoutChanged } from '../actions/settingsActions';
+import { getTimeout } from '../reducers/settingsReducer';
+import { getIsRunning } from '../reducers/testReducer';
+
+const TimeoutSetupView = () => {
+    const timeout = useSelector(getTimeout);
+    const isRunning = useSelector(getIsRunning);
+
+    const dispatch = useDispatch();
+    const onTimeoutChanged = time => dispatch(timeoutChanged(time));
+
     const [enableTimeout, setEnableTimeout] = useState(timeout !== 0);
     const [timeoutValue, setTimeoutValue] = useState(
         timeout === 0 ? 1000 : timeout
@@ -85,9 +95,4 @@ const TimeoutSetupView = ({ timeout, onTimeoutChanged, isRunning }) => {
     );
 };
 
-TimeoutSetupView.propTypes = {
-    timeout: PropTypes.number.isRequired,
-    onTimeoutChanged: PropTypes.func.isRequired,
-    isRunning: PropTypes.bool.isRequired,
-};
 export default TimeoutSetupView;

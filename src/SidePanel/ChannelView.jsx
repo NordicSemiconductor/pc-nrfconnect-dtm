@@ -40,26 +40,32 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Slider from 'react-rangeslider';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import * as SettingsActions from '../actions/settingsActions';
+import {
+    getChannelMode,
+    getHighChannel,
+    getLowChannel,
+    getSingleChannel,
+    getSweepTime,
+} from '../reducers/settingsReducer';
+import { getIsRunning } from '../reducers/testReducer';
 import { bleChannels } from '../utils/constants';
 import ToggleChannelModeView from './toggleChannelModeView';
 
 import 'react-rangeslider/lib/index.css';
 
-const ChannelView = ({
-    channel,
-    channelMode,
-    channelLow,
-    channelHigh,
-    sweepTime,
-    onChannelChanged,
-    onChannelLowChanged,
-    onChannelHighChanged,
-    onSweepTimeChanged,
-    isRunning,
-}) => {
+const ChannelView = () => {
+    const channelMode = useSelector(getChannelMode);
+    const channel = useSelector(getSingleChannel);
+    const channelLow = useSelector(getLowChannel);
+    const channelHigh = useSelector(getHighChannel);
+    const sweepTime = useSelector(getSweepTime);
+    const isRunning = useSelector(getIsRunning);
+
+    const dispatch = useDispatch();
+
     const ChannelSlider = (label, currentValue, changedFunc) => (
         <div>
             <Form.Label>{`${label} [${bleChannels[currentValue]}]`}</Form.Label>
@@ -93,24 +99,22 @@ const ChannelView = ({
 
             {channelMode === SettingsActions.DTM_CHANNEL_MODE.single && (
                 <div className="app-sidepanel-component-slider">
-                    {ChannelSlider('Channel', channel, onChannelChanged)}
-                </div>
-            )}
-            {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep && (
-                <div className="app-sidepanel-component-slider">
-                    {ChannelSlider(
-                        'Channel Low',
-                        channelLow,
-                        onChannelLowChanged
+                    {ChannelSlider('Channel', channel, channel =>
+                        dispatch(SettingsActions.singleChannelChanged(channel))
                     )}
                 </div>
             )}
             {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep && (
                 <div className="app-sidepanel-component-slider">
-                    {ChannelSlider(
-                        'Channel High',
-                        channelHigh,
-                        onChannelHighChanged
+                    {ChannelSlider('Channel Low', channelLow, channel =>
+                        dispatch(SettingsActions.lowChannelChanged(channel))
+                    )}
+                </div>
+            )}
+            {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep && (
+                <div className="app-sidepanel-component-slider">
+                    {ChannelSlider('Channel High', channelHigh, channel =>
+                        dispatch(SettingsActions.highChannelChanged(channel))
                     )}
                 </div>
             )}
@@ -121,7 +125,11 @@ const ChannelView = ({
                         <Form.Label>{delayLabel} (ms)</Form.Label>
                         <Form.Control
                             onChange={evt =>
-                                onSweepTimeChanged(Number(evt.target.value))
+                                dispatch(
+                                    SettingsActions.sweepTimeChanged(
+                                        Number(evt.target.value)
+                                    )
+                                )
                             }
                             as="input"
                             value={sweepTime}
@@ -136,19 +144,6 @@ const ChannelView = ({
             </div>
         </div>
     );
-};
-
-ChannelView.propTypes = {
-    channelMode: PropTypes.string.isRequired,
-    channel: PropTypes.number.isRequired,
-    channelLow: PropTypes.number.isRequired,
-    channelHigh: PropTypes.number.isRequired,
-    sweepTime: PropTypes.number.isRequired,
-    onChannelChanged: PropTypes.func.isRequired,
-    onChannelLowChanged: PropTypes.func.isRequired,
-    onChannelHighChanged: PropTypes.func.isRequired,
-    onSweepTimeChanged: PropTypes.func.isRequired,
-    isRunning: PropTypes.bool.isRequired,
 };
 
 export default ChannelView;

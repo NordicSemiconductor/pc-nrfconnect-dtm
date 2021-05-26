@@ -36,7 +36,12 @@
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import Alert from 'react-bootstrap/Alert';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
+import {
+    getCommunicationError,
+    getCompatibleDeviceWaring,
+} from '../reducers/warningReducer';
 
 const warningIcon = <span className="mdi mdi-sign warning-sign" />;
 
@@ -50,15 +55,14 @@ const combineWarnings = warnings =>
             </Alert>
         ));
 
-const WarningView = ({ compatibleDeviceWarning, communicationError }) => (
-    <div className="warning-view">
-        {combineWarnings([compatibleDeviceWarning, communicationError])}
-    </div>
-);
-
-WarningView.propTypes = {
-    compatibleDeviceWarning: PropTypes.string.isRequired,
-    communicationError: PropTypes.string.isRequired,
+const WarningView = () => {
+    const compatibleDeviceWarning = useSelector(getCompatibleDeviceWaring);
+    const communicationError = useSelector(getCommunicationError);
+    return (
+        <div className="warning-view">
+            {combineWarnings([compatibleDeviceWarning, communicationError])}
+        </div>
+    );
 };
 
 export default WarningView;

@@ -43,8 +43,12 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import FormControl from 'react-bootstrap/FormControl';
 import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
+import { useSelector } from 'react-redux';
 import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
-import PropTypes from 'prop-types';
+
+import { bitpatternUpdated, lengthUpdated } from '../actions/settingsActions';
+import { getBitpattern, getLength } from '../reducers/settingsReducer';
+import { getIsRunning } from '../reducers/testReducer';
 
 import 'react-rangeslider/lib/index.css';
 
@@ -119,36 +123,31 @@ const packetLengthView = (currentLength, changedFunc, pkgType, isRunning) => {
     );
 };
 
-const PacketView = ({
-    packetLength,
-    lengthUpdated,
-    pkgType,
-    bitpatternUpdated,
-    isRunning,
-}) => (
-    <div className="app-sidepanel-panel">
-        <div className="app-sidepanel-component-inputbox">
-            {packetTypeView(
-                bitpatternUpdated,
-                lengthUpdated,
-                pkgType,
-                isRunning
-            )}
-        </div>
-        <div className="app-sidepanel-component-inputbox">
-            {packetLengthView(packetLength, lengthUpdated, pkgType, isRunning)}
-        </div>
-    </div>
-);
+const PacketView = () => {
+    const pkgType = useSelector(getBitpattern).toString();
+    const packetLength = useSelector(getLength);
+    const isRunning = useSelector(getIsRunning);
 
-PacketView.propTypes = {
-    packetLength: PropTypes.number.isRequired,
-    lengthUpdated: PropTypes.func.isRequired,
-    pkgType: PropTypes.string.isRequired,
-    bitpatternUpdated: PropTypes.func.isRequired,
-    isRunning: PropTypes.bool.isRequired,
+    return (
+        <div className="app-sidepanel-panel">
+            <div className="app-sidepanel-component-inputbox">
+                {packetTypeView(
+                    value => dispatch(bitpatternUpdated(value)),
+                    value => dispatch(lengthUpdated(value)),
+                    pkgType,
+                    isRunning
+                )}
+            </div>
+            <div className="app-sidepanel-component-inputbox">
+                {packetLengthView(
+                    packetLength,
+                    lengthUpdated,
+                    pkgType,
+                    isRunning
+                )}
+            </div>
+        </div>
+    );
 };
-
-PacketView.defaultProps = {};
 
 export default PacketView;

@@ -141,6 +141,7 @@ export {
     timeoutChanged,
     phyChanged,
     modulationChanged,
+    getTestMode,
     getChannelMode,
     getSingleChannel,
     getLowChannel,

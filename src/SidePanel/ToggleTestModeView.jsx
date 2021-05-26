@@ -37,15 +37,22 @@
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import * as SettingsActions from '../actions/settingsActions';
+import { getTestMode } from '../reducers/settingsReducer';
+import { getIsRunning } from '../reducers/testReducer';
 
-const ToggleTestModeView = ({ selected, onButtonClicked, isRunning }) => {
+const ToggleTestModeView = () => {
+    const selected = useSelector(getTestMode);
+    const isRunning = useSelector(getIsRunning);
+
+    const dispatch = useDispatch();
+
     const selectionButton = (type, text) => (
         <Button
             variant="light"
-            onClick={() => onButtonClicked(type)}
+            onClick={() => dispatch(SettingsActions.testModeChanged(type))}
             active={selected === type}
             disabled={isRunning}
         >
@@ -66,12 +73,6 @@ const ToggleTestModeView = ({ selected, onButtonClicked, isRunning }) => {
             </ButtonGroup>
         </div>
     );
-};
-
-ToggleTestModeView.propTypes = {
-    selected: PropTypes.number.isRequired,
-    onButtonClicked: PropTypes.func.isRequired,
-    isRunning: PropTypes.bool.isRequired,
 };
 
 export default ToggleTestModeView;

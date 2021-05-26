@@ -36,10 +36,12 @@
 
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { SidePanel } from 'pc-nrfconnect-shared';
-import PropTypes from 'prop-types';
 
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
+import { getDtm } from '../reducers/deviceReducer';
+import { getChannelMode, getTestMode } from '../reducers/settingsReducer';
 import ChannelView from './channelView';
 import OtherSettingsView from './otherSettingsView';
 import PacketView from './packetView';
@@ -48,24 +50,26 @@ import TimeoutView from './timeoutView';
 import ToggleTestModeView from './toggleTestModeView';
 import TransmitSetupView from './transmitSetupView';
 
-const AppSidePanelView = ({ selectedTestMode }) => (
-    <SidePanel>
-        <RunTestView />
-        <ToggleTestModeView />
-        <ChannelView />
-        <OtherSettingsView />
-        <TimeoutView />
-        {selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && (
-            <>
-                <PacketView />
-                <TransmitSetupView />
-            </>
-        )}
-    </SidePanel>
-);
+const AppSidePanelView = () => {
+    const dtm = useSelector(getDtm);
+    const selectedTestMode = useSelector(getTestMode);
+    const channelMode = useSelector(getChannelMode);
 
-AppSidePanelView.propTypes = {
-    selectedTestMode: PropTypes.number.isRequired,
+    return (
+        <SidePanel>
+            <RunTestView />
+            <ToggleTestModeView />
+            <ChannelView />
+            <OtherSettingsView />
+            <TimeoutView />
+            {selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && (
+                <>
+                    <PacketView />
+                    <TransmitSetupView />
+                </>
+            )}
+        </SidePanel>
+    );
 };
 
 export default AppSidePanelView;

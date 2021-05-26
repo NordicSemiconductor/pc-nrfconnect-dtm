@@ -40,20 +40,21 @@ import { useSelector } from 'react-redux';
 import { Main } from 'pc-nrfconnect-shared';
 
 import { getDtm } from '../reducers/deviceReducer';
-import {getChannelMode, getTestMode} from '../reducers/settingsReducer';
-import ChartView from './chartView';
-import WarningView from './warningView';
+import { getChannelMode, getTestMode } from '../reducers/settingsReducer';
+import ChartView from './ChartView';
+import WarningView from './WarningView';
 
 const AppMainView = () => {
     const dtm = useSelector(getDtm);
-    const selectedTestMode = useSelector(getTestMode),
-    const channelMode = useSelector(getChannelMode),
+    const selectedTestMode = useSelector(getTestMode);
+    const channelMode = useSelector(getChannelMode);
 
     return (
         <Main>
             <WarningView />
             <ChartView />
-        </Main>);
+        </Main>
+    );
 };
 
 export default AppMainView;

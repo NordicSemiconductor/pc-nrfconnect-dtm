@@ -42,13 +42,13 @@ import { SidePanel } from 'pc-nrfconnect-shared';
 import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 import { getDtm } from '../reducers/deviceReducer';
 import { getChannelMode, getTestMode } from '../reducers/settingsReducer';
-import ChannelView from './channelView';
-import OtherSettingsView from './otherSettingsView';
-import PacketView from './packetView';
-import RunTestView from './runTestView';
-import TimeoutView from './timeoutView';
-import ToggleTestModeView from './toggleTestModeView';
-import TransmitSetupView from './transmitSetupView';
+import ChannelView from './ChannelView';
+import OtherSettingsView from './OtherSettingsView';
+import PacketView from './PacketView';
+import RunTestView from './RunTestView';
+import TimeoutView from './TimeoutView';
+import ToggleTestModeView from './ToggleTestModeView';
+import TransmitSetupView from './TransmitSetupView';
 
 const AppSidePanelView = () => {
     const dtm = useSelector(getDtm);

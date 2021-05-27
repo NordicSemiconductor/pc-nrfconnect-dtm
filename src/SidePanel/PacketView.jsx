@@ -43,11 +43,15 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import FormControl from 'react-bootstrap/FormControl';
 import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
 
-import { bitpatternUpdated, lengthUpdated } from '../actions/settingsActions';
-import { getBitpattern, getLength } from '../reducers/settingsReducer';
+import {
+    bitpatternChanged,
+    getBitpattern,
+    getLength,
+    lengthChanged,
+} from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 
 import 'react-rangeslider/lib/index.css';
@@ -97,7 +101,7 @@ const packetTypeView = (
 const packetLengthView = (currentLength, changedFunc, pkgType, isRunning) => {
     const isVendorPayload =
         parseInt(pkgType, 10) === DTM.DTM_PKT.PAYLOAD_VENDOR;
-    const lengthChanged = evt => {
+    const lengthChangedAction = evt => {
         const length = !isVendorPayload
             ? Math.min(255, Math.max(0, evt.target.value))
             : VENDOR_PAYLOAD_LENGTH;
@@ -108,7 +112,7 @@ const packetLengthView = (currentLength, changedFunc, pkgType, isRunning) => {
             <FormGroup controlId="formPacketLength">
                 <FormLabel>Packet length (bytes)</FormLabel>
                 <FormControl
-                    onChange={lengthChanged}
+                    onChange={lengthChangedAction}
                     disabled={isVendorPayload || isRunning}
                     componentclass="input"
                     value={currentLength}
@@ -128,12 +132,16 @@ const PacketView = () => {
     const packetLength = useSelector(getLength);
     const isRunning = useSelector(getIsRunning);
 
+    const dispatch = useDispatch();
+
+    const lengthChangedAction = value => dispatch(lengthChanged(value));
+
     return (
         <div className="app-sidepanel-panel">
             <div className="app-sidepanel-component-inputbox">
                 {packetTypeView(
-                    value => dispatch(bitpatternUpdated(value)),
-                    value => dispatch(lengthUpdated(value)),
+                    value => dispatch(bitpatternChanged(value)),
+                    lengthChangedAction,
                     pkgType,
                     isRunning
                 )}
@@ -141,7 +149,7 @@ const PacketView = () => {
             <div className="app-sidepanel-component-inputbox">
                 {packetLengthView(
                     packetLength,
-                    lengthUpdated,
+                    lengthChangedAction,
                     pkgType,
                     isRunning
                 )}

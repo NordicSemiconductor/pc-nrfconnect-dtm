@@ -52,13 +52,13 @@ import {
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { bleChannels } from '../utils/constants';
-import ToggleChannelModeView from './toggleChannelModeView';
+import ToggleChannelModeView from './ToggleChannelModeView';
 
 import 'react-rangeslider/lib/index.css';
 
 const ChannelView = () => {
     const channelMode = useSelector(getChannelMode);
-    const channel = useSelector(getSingleChannel);
+    const channelSingle = useSelector(getSingleChannel);
     const channelLow = useSelector(getLowChannel);
     const channelHigh = useSelector(getHighChannel);
     const sweepTime = useSelector(getSweepTime);
@@ -99,7 +99,7 @@ const ChannelView = () => {
 
             {channelMode === SettingsActions.DTM_CHANNEL_MODE.single && (
                 <div className="app-sidepanel-component-slider">
-                    {ChannelSlider('Channel', channel, channel =>
+                    {ChannelSlider('Channel', channelSingle, channel =>
                         dispatch(SettingsActions.singleChannelChanged(channel))
                     )}
                 </div>

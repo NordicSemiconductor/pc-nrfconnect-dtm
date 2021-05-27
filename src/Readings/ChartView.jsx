@@ -38,8 +38,11 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 
-import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
-import { getTestMode, getTxPower } from '../reducers/settingsReducer';
+import {
+    DTM_TEST_MODE_BUTTON,
+    getTestMode,
+    getTxPower,
+} from '../reducers/settingsReducer';
 import {
     getCurrentChannel,
     getIsRunning,

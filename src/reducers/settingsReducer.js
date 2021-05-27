@@ -37,12 +37,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { DTM } from 'nrf-dtm-js/src/DTM.js';
 
-import * as SettingsActions from '../actions/settingsActions';
 import * as Constants from '../utils/constants';
 
+export const DTM_TEST_MODE_BUTTON = {
+    transmitter: 0,
+    receiver: 1,
+};
+
+export const DTM_CHANNEL_MODE = {
+    single: 'DTM_CHANNEL_MODE_SINGLE_ACTION',
+    sweep: 'DTM_CHANNEL_MODE_SWEEP_ACTION',
+};
+
 const InitialState = {
-    testMode: SettingsActions.DTM_TEST_MODE_BUTTON.transmitter,
-    channelMode: SettingsActions.DTM_CHANNEL_MODE.single,
+    testMode: DTM_TEST_MODE_BUTTON.transmitter,
+    channelMode: DTM_CHANNEL_MODE.single,
     singleChannel: 19,
     lowChannel: 11,
     highChannel: 26,

@@ -34,16 +34,15 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createAction } from '@reduxjs/toolkit';
-
 import {
-    clearAllWarnings as clearAllWarningsAction,
     communicationError,
     incompatibleDevice,
 } from '../reducers/warningReducer';
 
-export const setIncompatibleWarning = createAction(incompatibleDevice);
-export const clearIncompatibleWarning = createAction(incompatibleDevice);
-export const setCommunicationErrorWarning = createAction(communicationError);
-export const clearCommunicationErrorWarning = createAction(communicationError);
-export const clearAllWarnings = createAction(clearAllWarningsAction);
+export function clearIncompatibleWarning() {
+    return incompatibleDevice('');
+}
+
+export function clearCommunicationErrorWarning() {
+    return communicationError('');
+}

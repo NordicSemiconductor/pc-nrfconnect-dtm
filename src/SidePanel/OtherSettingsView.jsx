@@ -41,9 +41,13 @@ import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from 'react-redux';
 import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
 
-import { modulationChanged, phyChanged } from '../actions/settingsActions';
 import { getBoard } from '../reducers/deviceReducer';
-import { getModulation, getPhy } from '../reducers/settingsReducer';
+import {
+    getModulation,
+    getPhy,
+    modulationChanged,
+    phyChanged,
+} from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 
@@ -58,6 +62,7 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
             {DTM_PHY_STRING[compatibility.phy[keyname]]}
         </Dropdown.Item>
     ));
+
     return (
         <Form.Group controlId="formTimeoutSelect">
             <Form.Label>Physical layer</Form.Label>
@@ -74,19 +79,24 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
 };
 
 const OtherSettingsView = () => {
-    const phy = useSelector(getPhy)
-    const modulation = useSelector(getModulation)
-    const boardType = useSelector(getBoard)
-    const isRunning = useSelector(getIsRunning)
+    const phy = useSelector(getPhy);
+    const modulation = useSelector(getModulation);
+    const boardType = useSelector(getBoard);
+    const isRunning = useSelector(getIsRunning);
 
     const dispatch = useDispatch();
 
-    const onModulationUpdated = value => dispatch(modulationChanged(value)),
+    const onModulationUpdated = value => dispatch(modulationChanged(value));
 
     return (
-        <div className="app-sidepanel-panel" >
+        <div className="app-sidepanel-panel">
             <div className="app-sidepanel-component-inputbox">
-                {phyTypeView(boardType, phy, value => dispatch(phyChanged(value)), isRunning)}
+                {phyTypeView(
+                    boardType,
+                    phy,
+                    value => dispatch(phyChanged(value)),
+                    isRunning
+                )}
             </div>
         </div>
     );

@@ -39,9 +39,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { SidePanel } from 'pc-nrfconnect-shared';
 
-import { DTM_TEST_MODE_BUTTON } from '../actions/settingsActions';
 import { getDtm } from '../reducers/deviceReducer';
-import { getChannelMode, getTestMode } from '../reducers/settingsReducer';
+import {
+    DTM_TEST_MODE_BUTTON,
+    getChannelMode,
+    getTestMode,
+} from '../reducers/settingsReducer';
 import ChannelView from './ChannelView';
 import OtherSettingsView from './OtherSettingsView';
 import PacketView from './PacketView';

@@ -41,6 +41,7 @@ import {
 } from 'nrf-dtm-js/src/DTM.js';
 import { logger } from 'pc-nrfconnect-shared';
 
+import { deviceReady, dtmBoardSelected } from '../reducers/deviceReducer';
 import {
     actionFailed,
     actionSucceeded,
@@ -50,13 +51,10 @@ import {
     startedChannel,
     stoppedAction,
 } from '../reducers/testReducer';
+import { communicationError } from '../reducers/warningReducer';
 import * as Constants from '../utils/constants';
-import { deviceReadyAction, dtmBoardSelectedAction } from './deviceActions';
 import * as SettingsActions from './settingsActions';
-import {
-    clearCommunicationErrorWarning,
-    setCommunicationErrorWarning,
-} from './warningActions';
+import { clearCommunicationErrorWarning } from './warningActions';
 
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
 export const DTM_TEST_DONE = 'DTM_TEST_DONE';
@@ -150,7 +148,7 @@ export function startTests() {
                 'Make sure it is not in use by another application ' +
                 'and that it has a Direct Test Mode compatible firmware.';
             logger.info(message);
-            dispatch(setCommunicationErrorWarning(message));
+            dispatch(communicationError(message));
             return;
         }
         dispatch(clearCommunicationErrorWarning());
@@ -254,9 +252,9 @@ export function selectDevice(portPath, board) {
         dtm.on('log', param => {
             logger.info(param.message);
         });
-        dispatch(dtmBoardSelectedAction(board));
+        dispatch(dtmBoardSelected(board));
 
-        dispatch(deviceReadyAction());
+        dispatch(deviceReady());
     };
 }
 
@@ -266,7 +264,7 @@ export function deselectDevice() {
         if (test.isRunning) {
             dispatch(endTests());
         }
-        dispatch(dtmBoardSelectedAction(null));
+        dispatch(dtmBoardSelected(null));
         dtm = null;
     };
 }

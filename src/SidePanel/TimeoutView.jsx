@@ -38,8 +38,7 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { timeoutChanged } from '../actions/settingsActions';
-import { getTimeout } from '../reducers/settingsReducer';
+import { getTimeout, timeoutChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 
 const TimeoutSetupView = () => {

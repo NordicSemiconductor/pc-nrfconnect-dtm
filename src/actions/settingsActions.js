@@ -34,32 +34,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createAction } from '@reduxjs/toolkit';
-
 import {
-    bitpatternChanged,
+    DTM_CHANNEL_MODE,
     dtmChannelModeChanged,
-    dtmHighChannelChanged,
-    dtmLowChannelChanged,
-    dtmSingleChannelChanged,
-    dtmTestModeChanged,
-    lengthChanged,
-    modulationChanged,
-    phyChanged,
-    sweepTimeChanged as sweepTimeChangedAction,
-    timeoutChanged,
-    txPowerChanged,
+    sweepTimeChanged,
 } from '../reducers/settingsReducer';
-
-export const DTM_TEST_MODE_BUTTON = {
-    transmitter: 0,
-    receiver: 1,
-};
-
-export const DTM_CHANNEL_MODE = {
-    single: 'DTM_CHANNEL_MODE_SINGLE_ACTION',
-    sweep: 'DTM_CHANNEL_MODE_SWEEP_ACTION',
-};
 
 export function channelModeChanged(buttonClicked) {
     return dispatch => {
@@ -72,15 +51,3 @@ export function channelModeChanged(buttonClicked) {
         dispatch(dtmChannelModeChanged(buttonClicked));
     };
 }
-
-export const testModeChanged = createAction(dtmTestModeChanged);
-export const singleChannelChanged = createAction(dtmSingleChannelChanged);
-export const lowChannelChanged = createAction(dtmLowChannelChanged);
-export const highChannelChanged = createAction(dtmHighChannelChanged);
-export const sweepTimeChanged = createAction(sweepTimeChangedAction);
-export const txPowerUpdated = createAction(txPowerChanged);
-export const bitpatternUpdated = createAction(bitpatternChanged);
-export const lengthUpdated = createAction(lengthChanged);
-export const timeoutChanged = createAction(timeoutChanged);
-export const phyChanged = createAction(phyChanged);
-export const modulationChanged = createAction(modulationChanged);

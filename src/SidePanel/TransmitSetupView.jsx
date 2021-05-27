@@ -42,9 +42,8 @@ import FormLabel from 'react-bootstrap/FormLabel';
 import Slider from 'react-rangeslider';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { txPowerUpdated } from '../actions/settingsActions';
 import { getBoard } from '../reducers/deviceReducer';
-import { getTxPower } from '../reducers/settingsReducer';
+import { getTxPower, txPowerChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 
@@ -97,7 +96,7 @@ const TransmitSetupView = () => {
             {txPowerView(
                 boardType,
                 txPowerIdx,
-                value => dispatch(txPowerUpdated(value)),
+                value => dispatch(txPowerChanged(value)),
                 isRunning
             )}
         </div>

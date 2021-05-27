@@ -32,7 +32,6 @@ const deviceSetup = {
             fwIdAddress: 0x6000,
         },
     },
-    allowCustomDevice: true,
 };
 
 const mapStateToProps = () => ({

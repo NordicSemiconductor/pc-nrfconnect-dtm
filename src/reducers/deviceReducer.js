@@ -48,19 +48,19 @@ const deviceSlice = createSlice({
     initialState: InitialState,
     reducers: {
         deviceSelected(state, action) {
-            state.set('serialNumber', action.payload);
+            state.serialNumber = action.payload;
         },
         deviceDeselected(state) {
             state = new InitialState();
         },
         deviceReady(state) {
-            state.set('isReady', true);
+            state.isReady = true;
         },
         dtmInit(state, action) {
-            state.set('dtm', action.dtm);
+            state.dtm = action.payload;
         },
         dtmBoardSelected(state, action) {
-            state.set('board', action.payload);
+            state.board = action.payload;
         },
     },
 });

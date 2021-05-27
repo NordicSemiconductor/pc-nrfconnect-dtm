@@ -82,15 +82,14 @@ const warningSlice = createSlice({
     initialState: InitialState,
     reducers: {
         incompatibleDevice(state, action) {
-            state.set('compatibleDeviceWarning', action.payload);
+            state.compatibleDeviceWarning = action.payload;
         },
         communicationError(state, action) {
-            state.set('communicationError', action.payload);
+            state.communicationError = action.payload;
         },
         clearAllWarnings(state) {
-            state
-                .set('compatibleDeviceWarning', '')
-                .set('communicationError', '');
+            state.compatibleDeviceWarning = '';
+            state.communicationError = '';
         },
     },
 });

@@ -69,40 +69,40 @@ const settingsSlice = createSlice({
     initialState: InitialState,
     reducers: {
         dtmTestModeChanged(state, action) {
-            state.set('testMode', action.payload);
+            state.testMode = action.payload;
         },
         dtmChannelModeChanged(state, action) {
-            state.set('channelMode', action.payload);
+            state.channelMode = action.payload;
         },
         dtmSingleChannelChanged(state, action) {
-            state.set('singleChannel', action.payload);
+            state.singleChannel = action.payload;
         },
         dtmLowChannelChanged(state, action) {
-            state.set('lowChannel', action.payload);
+            state.lowChannel = action.payload;
         },
         dtmHighChannelChanged(state, action) {
-            state.set('highChannel', action.payload);
+            state.highChannel = action.payload;
         },
         sweepTimeChanged(state, action) {
-            state.set('sweepTime', action.payload);
+            state.sweepTime = action.payload;
         },
         txPowerChanged(state, action) {
-            state.set('txPower', action.payload);
+            state.txPower = action.payload;
         },
         bitpatternChanged(state, action) {
-            state.set('bitpattern', action.payload);
+            state.bitpattern = action.payload;
         },
         lengthChanged(state, action) {
-            state.set('length', action.payload);
+            state.length = action.payload;
         },
         timeoutChanged(state, action) {
-            state.set('timeout', action.payload);
+            state.timeout = action.payload;
         },
         phyChanged(state, action) {
-            state.set('phy', action.payload);
+            state.phy = action.payload;
         },
         modulationChanged(state, action) {
-            state.set('modulationMode', action.payload);
+            state.modulationMode = action.payload;
         },
     },
 });

@@ -50,45 +50,40 @@ const testSlice = createSlice({
     initialState: InitialState,
     reducers: {
         startedAction(state) {
-            state
-                .set('isRunning', true)
-                .set('lastStatusMessage', 'Running test')
-                .set('lastReceived', new Array(40).fill(0))
-                .set('update', state.update + 1);
+            state.isRunning = true;
+            state.lastStatusMessage = 'Running test';
+            state.lastReceived = new Array(40).fill(0);
+            state.update += 1;
         },
         stoppedAction(state) {
-            state.set('isRunning', false).set('update', state.update + 1);
+            state.isRunning = false;
+            state.update += 1;
         },
         actionSucceeded(state, action) {
-            state
-                .set('lastReceived', action.payload)
-                .set('lastStatusMessage', 'Test ended successfully')
-                .set('update', state.update + 1);
+            statelastReceived = action.payload;
+            state.lastStatusMessage = 'Test ended successfully';
+            state.update += 1;
         },
         actionFailed(state, action) {
-            state
-                .set('lastStatusMessage', action.payload)
-                .set('update', state.update + 1);
+            state.lastStatusMessage = action.payload;
+            state.update += 1;
         },
         startedChannel(state, action) {
-            state
-                .set('currentChannel', action.payload)
-                .set('update', state.update + 1);
+            state.currentChannel = action.payload;
+            state.update += 1;
         },
         resetChannel(state) {
-            state
-                .set('currentChannel', undefined)
-                .set('update', state.update + 1);
+            state.currentChannel = undefined;
+            state.update += 1;
         },
         endedChannel(state, action) {
             const { channel, received } = action.payload;
             const packets = received === undefined ? 0 : received;
             const nextReceivedCount = [...state.lastReceived];
             nextReceivedCount[channel] += packets;
-            state
-                .set('lastChannel', { channel, received: packets })
-                .set('lastReceived', nextReceivedCount)
-                .set('update', state.update + 1);
+            state.lastChannel = { channel, received: packets };
+            state.lastReceived = nextReceivedCount;
+            state.update += 1;
         },
     },
 });

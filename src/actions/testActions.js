@@ -43,6 +43,10 @@ import { logger } from 'pc-nrfconnect-shared';
 
 import { deviceReady, dtmBoardSelected } from '../reducers/deviceReducer';
 import {
+    DTM_CHANNEL_MODE,
+    DTM_TEST_MODE_BUTTON,
+} from '../reducers/settingsReducer';
+import {
     actionFailed,
     actionSucceeded,
     endedChannel,
@@ -53,7 +57,6 @@ import {
 } from '../reducers/testReducer';
 import { communicationError } from '../reducers/warningReducer';
 import * as Constants from '../utils/constants';
-import * as SettingsActions from './settingsActions';
 import { clearCommunicationErrorWarning } from './warningActions';
 
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
@@ -136,7 +139,6 @@ export function startTests() {
             channelMode,
         } = settings;
 
-        const { DTM_TEST_MODE_BUTTON, DTM_CHANNEL_MODE } = SettingsActions;
         const { transmitter, receiver } = DTM_TEST_MODE_BUTTON;
         const { single, sweep } = DTM_CHANNEL_MODE;
 

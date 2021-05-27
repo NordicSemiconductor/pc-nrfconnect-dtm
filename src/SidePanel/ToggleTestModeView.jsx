@@ -39,8 +39,11 @@ import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
-import * as SettingsActions from '../actions/settingsActions';
-import { getTestMode } from '../reducers/settingsReducer';
+import {
+    DTM_TEST_MODE_BUTTON,
+    dtmTestModeChanged,
+    getTestMode,
+} from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 
 const ToggleTestModeView = () => {
@@ -52,7 +55,7 @@ const ToggleTestModeView = () => {
     const selectionButton = (type, text) => (
         <Button
             variant="light"
-            onClick={() => dispatch(SettingsActions.testModeChanged(type))}
+            onClick={() => dispatch(dtmTestModeChanged(type))}
             active={selected === type}
             disabled={isRunning}
         >
@@ -63,13 +66,10 @@ const ToggleTestModeView = () => {
         <div className="app-sidepanel-panel">
             <ButtonGroup>
                 {selectionButton(
-                    SettingsActions.DTM_TEST_MODE_BUTTON.transmitter,
+                    DTM_TEST_MODE_BUTTON.transmitter,
                     'Transmitter'
                 )}
-                {selectionButton(
-                    SettingsActions.DTM_TEST_MODE_BUTTON.receiver,
-                    'Receiver'
-                )}
+                {selectionButton(DTM_TEST_MODE_BUTTON.receiver, 'Receiver')}
             </ButtonGroup>
         </div>
     );

@@ -40,8 +40,11 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import * as SettingsActions from '../actions/settingsActions';
-import { getChannelMode } from '../reducers/settingsReducer';
+import {
+    DTM_CHANNEL_MODE,
+    dtmChannelModeChanged,
+    getChannelMode,
+} from '../reducers/settingsReducer';
 
 const ToggleChannelModeView = ({ isRunning }) => {
     const selected = useSelector(getChannelMode);
@@ -51,7 +54,7 @@ const ToggleChannelModeView = ({ isRunning }) => {
     const selectionButton = (type, text) => (
         <Button
             variant="light"
-            onClick={() => dispatch(SettingsActions.channelModeChanged(type))}
+            onClick={() => dispatch(dtmChannelModeChanged(type))}
             active={selected === type}
             disabled={isRunning}
         >
@@ -62,14 +65,8 @@ const ToggleChannelModeView = ({ isRunning }) => {
     return (
         <div className="app-sidepanel-panel">
             <ButtonGroup>
-                {selectionButton(
-                    SettingsActions.DTM_CHANNEL_MODE.single,
-                    'Single'
-                )}
-                {selectionButton(
-                    SettingsActions.DTM_CHANNEL_MODE.sweep,
-                    'Sweep'
-                )}
+                {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
+                {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
             </ButtonGroup>
         </div>
     );

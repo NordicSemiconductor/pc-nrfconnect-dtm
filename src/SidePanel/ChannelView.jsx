@@ -42,13 +42,17 @@ import Form from 'react-bootstrap/Form';
 import Slider from 'react-rangeslider';
 import { useDispatch, useSelector } from 'react-redux';
 
-import * as SettingsActions from '../actions/settingsActions';
 import {
+    DTM_CHANNEL_MODE,
+    dtmHighChannelChanged,
+    dtmLowChannelChanged,
+    dtmSingleChannelChanged,
     getChannelMode,
     getHighChannel,
     getLowChannel,
     getSingleChannel,
     getSweepTime,
+    sweepTimeChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { bleChannels } from '../utils/constants';
@@ -82,14 +86,12 @@ const ChannelView = () => {
     );
 
     const delayLabel =
-        channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep
+        channelMode === DTM_CHANNEL_MODE.sweep
             ? 'Sweep delay'
             : 'Update period';
 
     const isSweepTimeDisabled =
-        channelMode !== SettingsActions.DTM_CHANNEL_MODE.sweep
-            ? true
-            : isRunning;
+        channelMode !== DTM_CHANNEL_MODE.sweep ? true : isRunning;
 
     return (
         <div className="app-sidepanel-panel">
@@ -97,24 +99,24 @@ const ChannelView = () => {
                 <ToggleChannelModeView isRunning={isRunning} />
             </div>
 
-            {channelMode === SettingsActions.DTM_CHANNEL_MODE.single && (
+            {channelMode === DTM_CHANNEL_MODE.single && (
                 <div className="app-sidepanel-component-slider">
                     {ChannelSlider('Channel', channelSingle, channel =>
-                        dispatch(SettingsActions.singleChannelChanged(channel))
+                        dispatch(dtmSingleChannelChanged(channel))
                     )}
                 </div>
             )}
-            {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep && (
+            {channelMode === DTM_CHANNEL_MODE.sweep && (
                 <div className="app-sidepanel-component-slider">
                     {ChannelSlider('Channel Low', channelLow, channel =>
-                        dispatch(SettingsActions.lowChannelChanged(channel))
+                        dispatch(dtmLowChannelChanged(channel))
                     )}
                 </div>
             )}
-            {channelMode === SettingsActions.DTM_CHANNEL_MODE.sweep && (
+            {channelMode === DTM_CHANNEL_MODE.sweep && (
                 <div className="app-sidepanel-component-slider">
                     {ChannelSlider('Channel High', channelHigh, channel =>
-                        dispatch(SettingsActions.highChannelChanged(channel))
+                        dispatch(dtmHighChannelChanged(channel))
                     )}
                 </div>
             )}
@@ -126,9 +128,7 @@ const ChannelView = () => {
                         <Form.Control
                             onChange={evt =>
                                 dispatch(
-                                    SettingsActions.sweepTimeChanged(
-                                        Number(evt.target.value)
-                                    )
+                                    sweepTimeChanged(Number(evt.target.value))
                                 )
                             }
                             as="input"

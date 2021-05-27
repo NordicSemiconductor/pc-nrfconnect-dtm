@@ -39,16 +39,14 @@
 
 import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
-import Slider from 'react-rangeslider';
 import { useDispatch, useSelector } from 'react-redux';
+import { Slider } from 'pc-nrfconnect-shared';
 
 import { txPowerUpdated } from '../actions/settingsActions';
 import { getBoard } from '../reducers/deviceReducer';
 import { getTxPower } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
-
-import 'react-rangeslider/lib/index.css';
 
 const txPowerView = (
     boardType,

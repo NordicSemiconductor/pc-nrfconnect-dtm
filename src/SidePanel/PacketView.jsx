@@ -50,8 +50,6 @@ import { bitpatternUpdated, lengthUpdated } from '../actions/settingsActions';
 import { getBitpattern, getLength } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 
-import 'react-rangeslider/lib/index.css';
-
 const VENDOR_PAYLOAD_LENGTH = 1;
 
 const packetTypeView = (

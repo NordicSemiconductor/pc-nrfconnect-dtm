@@ -34,7 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.main-view, .side-panel {
+.main-view,
+.side-panel {
     padding: 10px 15px;
 }
 
@@ -93,13 +94,6 @@
     background-color: #f5f5f5;
 }
 
-.app-sidepanel-component-slider {
-    line-height: 32px;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
 .app-sidepanel-component-inputbox {
     margin-bottom: 15px;
 }
@@ -110,39 +104,6 @@
 
 .form-label {
     font-weight: bold;
-}
-
-
-.rangeslider.rangeslider-horizontal {
-    flex: 1;
-    margin: 5px 10px 40px 10px;
-    border-radius: 0px;
-    .rangeslider__fill {
-        background-color: #0080B7;
-        border-radius: 0px;
-    }
-    .rangeslider__handle {
-        width: 10px;
-        border-radius: 0px;
-        box-shadow: none;
-        transform: translate(-50%, -50%);
-        &:after {
-            display: none;
-        }
-    }
-    .rangeslider__handle:focus {
-        outline: none;
-    }
-    .rangeslider__labels .rangeslider__label-item {
-        transform: translate(-50%, 0);
-    }
-
-    li.rangeslider__label-item:nth-child(2) {
-        background: white;
-        z-index: 100;
-        padding: 0 10px;
-        font-weight: bold;
-    }
 }
 
 .dropdown-toggle {

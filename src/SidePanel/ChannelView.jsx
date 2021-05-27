@@ -39,8 +39,8 @@
 
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import Slider from 'react-rangeslider';
 import { useDispatch, useSelector } from 'react-redux';
+import { Slider } from 'pc-nrfconnect-shared';
 
 import * as SettingsActions from '../actions/settingsActions';
 import {
@@ -53,8 +53,6 @@ import {
 import { getIsRunning } from '../reducers/testReducer';
 import { bleChannels } from '../utils/constants';
 import ToggleChannelModeView from './toggleChannelModeView';
-
-import 'react-rangeslider/lib/index.css';
 
 const ChannelView = () => {
     const channelMode = useSelector(getChannelMode);

@@ -1,6 +1,12 @@
 import { connect } from 'react-redux';
 import path from 'path';
-import { DeviceSelector, getAppDir } from 'pc-nrfconnect-shared';
+import { DeviceSelector, getAppDir, logger } from 'pc-nrfconnect-shared';
+
+import { deselectDevice, selectDevice } from './actions/testActions';
+import { clearAllWarnings } from './reducers/warningReducer';
+import { compatiblePCAs } from './utils/constants';
+
+const portPath = serialPort => serialPort.path || serialPort.comName;
 
 const deviceListing = {
     serialport: true,
@@ -36,92 +42,25 @@ const mapStateToProps = () => ({
 
 function mapDispatchToProps(dispatch) {
     return {
-        onDeviceSelected: device => {},
-        onDeviceDeselected: () => {},
+        onDeviceSelected: device => {
+            const { serialNumber, boardVersion } = device;
+            dispatch(clearAllWarnings());
+            if (compatiblePCAs.includes(boardVersion)) {
+                logger.info(
+                    `Validating firmware for device with s/n ${serialNumber}`
+                );
+            }
+        },
+        onDeviceDeselected: () => {
+            dispatch(deselectDevice());
+            dispatch(clearAllWarnings());
+        },
+        onDeviceIsReady: device => {
+            const { serialport: port, boardVersion } = device;
+            logger.info('Device selected successfully');
+            dispatch(selectDevice(portPath(port), boardVersion));
+        },
     };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceSelector);
-
-/*
-mapDeviceSelectorState: (state, props) => ({
-    portIndicatorStatus:
-        state.app.device.serialNumber !== null ? 'on' : 'off',
-    ...props,
-}),
-
-    middleware: store => next => async action => {
-        const { dispatch } = store;
-        const { type, device } = action;
-        const nextAction = { ...action };
-
-        switch (type) {
-            case 'DEVICES_DETECTED': {
-                const ports = await SerialPort.list();
-                const com1 = ports.find(p => portPath(p) === 'COM1');
-                if (com1 != null) {
-                    const com1Device = {
-                        boardVersion: undefined,
-                        serialNumber: 'COM1',
-                        serialport: com1,
-                        traits: ['serialport'],
-                    };
-                    nextAction.devices = [com1Device, ...action.devices];
-                }
-                break;
-            }
-
-            case 'DEVICE_SELECTED': {
-                const { serialNumber, boardVersion } = device;
-                dispatch(clearAllWarnings());
-                if (compatiblePCAs.includes(boardVersion)) {
-                    logger.info(
-                        `Validating firmware for device with s/n ${serialNumber}`
-                    );
-                }
-                break;
-            }
-
-            case 'DEVICE_SETUP_INPUT_REQUIRED': {
-                nextAction.message =
-                    'In order to use this application you need a firmware ' +
-                    'that supports Direct Test Mode. ' +
-                    'You may use the provided pre-compiled firmware or your own. ' +
-                    'Would you like to program the pre-compiled firmware to the device?';
-                break;
-            }
-
-            case 'DEVICE_SETUP_COMPLETE': {
-                const { serialport: port, boardVersion } = device;
-                logger.info('Device selected successfully');
-                dispatch(selectDevice(portPath(port), boardVersion));
-                break;
-            }
-
-            case 'DEVICE_SETUP_ERROR': {
-                const { serialport: port, boardVersion } = device;
-                if (action.error && action.error.message) {
-                    logger.info(action.error.message);
-                }
-                logger.info(
-                    'Please make sure the device has been programmed' +
-                    ' with a supported firmware'
-                );
-                dispatch(selectDevice(portPath(port), boardVersion));
-                break;
-            }
-
-            case 'DEVICE_DESELECTED':
-                dispatch(deselectDevice());
-                dispatch(clearAllWarnings());
-                break;
-
-            default:
-        }
-
-        next(nextAction);
-    },
-
-    // Prefer to use the serialport 8 property or fall back to the serialport 7 property
-const portPath = serialPort => serialPort.path || serialPort.comName;
-*/

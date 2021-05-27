@@ -37,6 +37,7 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
+import { colors } from 'pc-nrfconnect-shared';
 
 import {
     DTM_TEST_MODE_BUTTON,
@@ -58,6 +59,8 @@ const frequencyInterval = 2;
 const chartColors = {
     inactive: 'rgba(255,99,132,0.2)',
     active: 'rgba(110,205,172,0.5)',
+    background: colors.gray50,
+    label: colors.gray300,
 };
 
 const chartDataTransmit = (currentChannel, txPower) => {
@@ -65,6 +68,11 @@ const chartDataTransmit = (currentChannel, txPower) => {
     if (currentChannel !== undefined) {
         active[currentChannel] = txPower;
     }
+
+    const bleChannelsUpdated = bleChannels.map(
+        (channel, index) =>
+            `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
+    );
 
     const datasets = [
         {
@@ -76,12 +84,14 @@ const chartDataTransmit = (currentChannel, txPower) => {
             hoverBackgroundColor: chartColors.active,
             hoverBorderColor: chartColors.active,
         },
+        {
+            label: 'bgBars',
+            backgroundColor: chartColors.background,
+            borderWidth: 0,
+            data: Array(bleChannelsUpdated.length).fill(active.length),
+            display: false,
+        },
     ];
-
-    const bleChannelsUpdated = bleChannels.map(
-        (channel, index) =>
-            `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
-    );
 
     return {
         labels: bleChannelsUpdated,
@@ -91,23 +101,31 @@ const chartDataTransmit = (currentChannel, txPower) => {
 
 const chartDataReceive = history => {
     const datasets = [];
-    if (history !== undefined) {
-        datasets.push({
-            label: 'Received packets',
-            data: history,
-            backgroundColor: chartColors.active,
-            borderColor: chartColors.active,
-            borderWidth: 1,
-            hoverBackgroundColor: chartColors.active,
-            hoverBorderColor: chartColors.active,
-        });
-    }
 
     const bleChannelsUpdated = bleChannels.map(
         (channel, index) =>
             `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
     );
 
+    if (history !== undefined) {
+        datasets.push({
+            label: 'Received packets',
+            data: [...history],
+            backgroundColor: chartColors.active,
+            borderColor: chartColors.active,
+            borderWidth: 1,
+            hoverBackgroundColor: chartColors.active,
+            hoverBorderColor: chartColors.active,
+        });
+        datasets.push({
+            label: 'bgBars',
+            backgroundColor: chartColors.background,
+            borderWidth: 0,
+            data: Array(bleChannelsUpdated.length).fill(
+                datasets[0].data.length
+            ),
+        });
+    }
     return {
         labels: bleChannelsUpdated,
         datasets,
@@ -131,6 +149,7 @@ const getOptions = selectedTestMode => {
         datasetStrokeWidth: 2,
         datasetFill: true,
         maintainAspectRatio: false,
+        legend: { display: false },
     };
 
     if (selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter) {
@@ -138,27 +157,79 @@ const getOptions = selectedTestMode => {
         options.scales = {
             yAxes: [
                 {
+                    beginAtZero: true,
                     ticks: {
-                        beginAtZero: true,
-                        min: -0.5,
+                        display: true,
+                        min: 0,
                         max: 13.5,
                         suggestedMin: undefined,
                         suggestedMax: undefined,
                         stepSize: 1,
                         callback: value =>
-                            value in dbmValues ? `${dbmValues[value]} dbm` : '',
+                            value in dbmValues ? dbmValues[value] : '',
+                        fontColor: chartColors.label,
                     },
                     scaleLabel: {
                         display: true,
                         labelString: 'Strength (dbm)',
+                        fontColor: chartColors.label,
+                        fontSize: 14,
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false,
                     },
                 },
             ],
             xAxes: [
                 {
+                    type: 'category',
+                    position: 'top',
+                    offset: true,
+                    stacked: true,
+                    gridLines: {
+                        display: false,
+                    },
+                    ticks: {
+                        callback: (_, index) =>
+                            String(bleChannels[index]).padStart(2, '0'),
+                        minRotation: 0,
+                        maxRotation: 0,
+                        labelOffset: 0,
+                        autoSkipPadding: 5,
+                        fontColor: chartColors.label,
+                    },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Channel | Frequency',
+                        labelString: 'BLE channel',
+                        fontColor: chartColors.label,
+                        fontSize: 14,
+                    },
+                },
+                {
+                    type: 'category',
+                    position: 'bottom',
+                    offset: true,
+                    stacked: true,
+                    gridLines: {
+                        offsetGridLines: true,
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        callback: (_, index) =>
+                            frequencyBase + index * frequencyInterval,
+                        minRotation: 90,
+                        labelOffset: 0,
+                        autoSkipPadding: 5,
+                        fontColor: chartColors.label,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'MHz',
+                        fontColor: chartColors.label,
+                        fontSize: 14,
+                        padding: { top: 10 },
                     },
                 },
             ],
@@ -197,9 +268,19 @@ const getOptions = selectedTestMode => {
 
             xAxes: [
                 {
+                    type: 'category',
+                    position: 'top',
                     scaleLabel: {
                         display: true,
-                        labelString: 'Channel | Frequency',
+                        labelString: 'BLE channel',
+                    },
+                },
+                {
+                    type: 'category',
+                    position: 'bottom',
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'MHz',
                     },
                 },
             ],

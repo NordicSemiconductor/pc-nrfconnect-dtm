@@ -36,25 +36,36 @@
 
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
-const RunTestView = ({ disabled, onClick, label }) => (
-    <div className="app-sidepanel-panel">
-        <Button
-            variant="primary"
-            size="lg"
-            disabled={disabled}
-            onClick={onClick}
-        >
-            {label}
-        </Button>
-    </div>
-);
+import { endTests, startTests } from '../actions/testActions';
+import { getIsReady } from '../reducers/deviceReducer';
+import { getIsRunning } from '../reducers/testReducer';
 
-RunTestView.propTypes = {
-    label: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired,
+const RunTestView = () => {
+    const dispatch = useDispatch();
+
+    const isRunning = useSelector(getIsRunning);
+    const label = isRunning ? 'Stop test' : 'Start test';
+
+    const disabled = !useSelector(getIsReady);
+
+    const onClick = () => {
+        dispatch(isRunning ? endTests : startTests);
+    };
+
+    return (
+        <div className="app-sidepanel-panel">
+            <Button
+                variant="primary"
+                size="lg"
+                disabled={disabled}
+                onClick={onClick}
+            >
+                {label}
+            </Button>
+        </div>
+    );
 };
 
 export default RunTestView;

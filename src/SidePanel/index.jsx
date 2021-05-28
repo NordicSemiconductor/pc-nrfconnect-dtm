@@ -53,13 +53,15 @@ import TimeoutView from './TimeoutView';
 import ToggleTestModeView from './ToggleTestModeView';
 import TransmitSetupView from './TransmitSetupView';
 
+import './sidepanel.scss';
+
 const AppSidePanelView = () => {
     const dtm = useSelector(getDtm);
     const selectedTestMode = useSelector(getTestMode);
     const channelMode = useSelector(getChannelMode);
 
     return (
-        <SidePanel>
+        <SidePanel className="side-panel">
             <RunTestView />
             <ToggleTestModeView />
             <ChannelView />

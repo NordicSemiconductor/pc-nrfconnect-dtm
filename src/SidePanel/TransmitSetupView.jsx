@@ -39,15 +39,13 @@
 
 import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
-import Slider from 'react-rangeslider';
 import { useDispatch, useSelector } from 'react-redux';
+import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
 import { getBoard } from '../reducers/deviceReducer';
 import { getTxPower, txPowerChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
-
-import 'react-rangeslider/lib/index.css';
 
 const txPowerView = (
     boardType,
@@ -58,27 +56,31 @@ const txPowerView = (
     const compatibility = fromPCA(boardType);
     const maxDbmRangeValue = compatibility.txPower.length - 1;
 
-    const label = {};
-    label[0] = `${compatibility.txPower[0]}`;
-    label[maxDbmRangeValue] = `${compatibility.txPower[maxDbmRangeValue]}`;
+    const range = { min: 0, max: maxDbmRangeValue };
+
     return (
         <div className="app-sidepanel-component-slider">
-            <FormLabel>
-                {`TX Power [${compatibility.txPower[txPowerIdx]} dBm]`}
+            <FormLabel htmlFor="transmit-power-slider">
+                <span className="flex-fill">Transmit power</span>
+                <NumberInlineInput
+                    value={txPowerIdx}
+                    range={range}
+                    onChange={value =>
+                        txPowerUpdatedAction(isRunning ? txPowerIdx : value)
+                    }
+                />{' '}
+                dBm
             </FormLabel>
             <Slider
-                value={txPowerIdx}
-                onChange={value => {
-                    if (!isRunning) {
-                        return txPowerUpdatedAction(value);
-                    }
-                    return txPowerUpdatedAction(txPowerIdx);
-                }}
-                max={maxDbmRangeValue}
-                min={0}
-                labels={label}
+                id="transmit-power-slider"
+                values={[txPowerIdx]}
+                onChange={[
+                    value => {
+                        txPowerUpdatedAction(isRunning ? txPowerIdx : value);
+                    },
+                ]}
+                range={range}
                 disabled={isRunning}
-                format={i => `${compatibility.txPower[i]} dBm`}
             />
         </div>
     );

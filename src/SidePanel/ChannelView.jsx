@@ -39,8 +39,8 @@
 
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import Slider from 'react-rangeslider';
 import { useDispatch, useSelector } from 'react-redux';
+import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
 import {
     DTM_CHANNEL_MODE,
@@ -55,7 +55,6 @@ import {
     sweepTimeChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
-import { bleChannels } from '../utils/constants';
 import ToggleChannelModeView from './ToggleChannelModeView';
 
 import 'react-rangeslider/lib/index.css';
@@ -70,17 +69,27 @@ const ChannelView = () => {
 
     const dispatch = useDispatch();
 
-    const ChannelSlider = (label, currentValue, changedFunc) => (
+    const range = { min: 0, max: 39 };
+
+    const ChannelSlider = (currentValue, changedFunc) => (
         <div>
-            <Form.Label>{`${label} [${bleChannels[currentValue]}]`}</Form.Label>
+            <Form.Label htmlFor="transit-channel-slider">
+                <span className="flex-fill">Transit on channel</span>
+                <NumberInlineInput
+                    value={currentValue}
+                    range={range}
+                    onChange={value =>
+                        changedFunc(isRunning ? currentValue : value)
+                    }
+                />
+            </Form.Label>
             <Slider
-                value={currentValue}
-                onChange={value =>
-                    changedFunc(isRunning ? currentValue : value)
-                }
-                max={39}
-                min={0}
-                format={value => bleChannels[value]}
+                id="transit-channel-slider"
+                values={[currentValue]}
+                onChange={[
+                    value => changedFunc(isRunning ? currentValue : value),
+                ]}
+                range={range}
             />
         </div>
     );

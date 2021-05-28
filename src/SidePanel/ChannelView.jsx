@@ -77,7 +77,7 @@ const ChannelView = () => {
                 <span className="flex-fill">Transit on channel</span>
                 <NumberInlineInput
                     value={currentValue}
-                    range={{ ...range }}
+                    range={range}
                     onChange={value =>
                         changedFunc(isRunning ? currentValue : value)
                     }
@@ -89,7 +89,7 @@ const ChannelView = () => {
                 onChange={[
                     value => changedFunc(isRunning ? currentValue : value),
                 ]}
-                range={{ ...range }}
+                range={range}
             />
         </div>
     );

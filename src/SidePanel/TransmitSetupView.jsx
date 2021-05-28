@@ -64,9 +64,9 @@ const txPowerView = (
                 <span className="flex-fill">Transmit power</span>
                 <NumberInlineInput
                     value={txPowerIdx}
-                    range={{ ...range }}
+                    range={range}
                     onChange={value =>
-txPowerUpdatedAction(isRunning ? txPowerIdx : value)
+                        txPowerUpdatedAction(isRunning ? txPowerIdx : value)
                     }
                 />{' '}
                 dBm
@@ -79,7 +79,7 @@ txPowerUpdatedAction(isRunning ? txPowerIdx : value)
                         txPowerUpdatedAction(isRunning ? txPowerIdx : value);
                     },
                 ]}
-                range={{ ...range }}
+                range={range}
                 disabled={isRunning}
             />
         </div>

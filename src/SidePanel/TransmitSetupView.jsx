@@ -66,9 +66,7 @@ const txPowerView = (
                     value={txPowerIdx}
                     range={{ ...range }}
                     onChange={value =>
-                        isRunning
-                            ? txPowerUpdatedAction(txPowerIdx)
-                            : txPowerUpdatedAction(value)
+txPowerUpdatedAction(isRunning ? txPowerIdx : value)
                     }
                 />{' '}
                 dBm
@@ -78,9 +76,7 @@ const txPowerView = (
                 values={[txPowerIdx]}
                 onChange={[
                     value => {
-                        isRunning
-                            ? txPowerUpdatedAction(txPowerIdx)
-                            : txPowerUpdatedAction(value);
+                        txPowerUpdatedAction(isRunning ? txPowerIdx : value);
                     },
                 ]}
                 range={{ ...range }}

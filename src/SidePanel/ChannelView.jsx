@@ -55,7 +55,6 @@ import {
     sweepTimeChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
-import { bleChannels } from '../utils/constants';
 import ToggleChannelModeView from './ToggleChannelModeView';
 
 import 'react-rangeslider/lib/index.css';
@@ -72,7 +71,7 @@ const ChannelView = () => {
 
     const range = { min: 0, max: 39 };
 
-    const ChannelSlider = (label, currentValue, changedFunc) => (
+    const ChannelSlider = (currentValue, changedFunc) => (
         <div>
             <Form.Label htmlFor="transit-channel-slider">
                 <span className="flex-fill">Transit on channel</span>
@@ -91,7 +90,6 @@ const ChannelView = () => {
                     value => changedFunc(isRunning ? currentValue : value),
                 ]}
                 range={{ ...range }}
-                // format={value => bleChannels[value]}
             />
         </div>
     );

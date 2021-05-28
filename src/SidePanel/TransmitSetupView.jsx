@@ -58,9 +58,6 @@ const txPowerView = (
 
     const range = { min: 0, max: maxDbmRangeValue };
 
-    const label = {};
-    label[0] = `${compatibility.txPower[0]}`;
-    label[maxDbmRangeValue] = `${compatibility.txPower[maxDbmRangeValue]}`;
     return (
         <div className="app-sidepanel-component-slider">
             <FormLabel htmlFor="transmit-power-slider">
@@ -87,9 +84,7 @@ const txPowerView = (
                     },
                 ]}
                 range={{ ...range }}
-                // labels={label}
                 disabled={isRunning}
-                // format={i => `${compatibility.txPower[i]} dBm`}
             />
         </div>
     );

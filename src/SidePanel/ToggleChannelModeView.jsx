@@ -38,6 +38,7 @@
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Group } from 'pc-nrfconnect-shared';
 import PropTypes from 'prop-types';
 
 import { channelModeChanged } from '../actions/settingsActions';
@@ -47,10 +48,10 @@ const ToggleChannelModeView = ({ isRunning }) => {
     const selected = useSelector(getChannelMode);
 
     const dispatch = useDispatch();
-
+    console.log(selected);
     const selectionButton = (type, text) => (
         <Button
-            variant="light"
+            variant={selected === type ? 'set' : 'unset'}
             onClick={() => dispatch(channelModeChanged(type))}
             active={selected === type}
             disabled={isRunning}
@@ -60,11 +61,13 @@ const ToggleChannelModeView = ({ isRunning }) => {
     );
 
     return (
-        <div className="app-sidepanel-panel">
-            <ButtonGroup>
-                {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
-                {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
-            </ButtonGroup>
+        <div>
+            <Group heading="CHANNEL SELECTION">
+                <ButtonGroup className="mb-2 w-100 d-flex flex-row channel-selection">
+                    {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
+                    {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
+                </ButtonGroup>
+            </Group>
         </div>
     );
 };

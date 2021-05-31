@@ -41,14 +41,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Group } from 'pc-nrfconnect-shared';
 import PropTypes from 'prop-types';
 
-import { channelModeChanged } from '../actions/settingsActions';
+import channelModeChanged from '../actions/settingsActions';
 import { DTM_CHANNEL_MODE, getChannelMode } from '../reducers/settingsReducer';
 
 const ToggleChannelModeView = ({ isRunning }) => {
     const selected = useSelector(getChannelMode);
 
     const dispatch = useDispatch();
-    console.log(selected);
+
     const selectionButton = (type, text) => (
         <Button
             variant={selected === type ? 'set' : 'unset'}

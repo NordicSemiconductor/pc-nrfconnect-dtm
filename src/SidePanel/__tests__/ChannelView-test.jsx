@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,22 +34,52 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    DTM_CHANNEL_MODE,
-    dtmChannelModeChanged,
-    sweepTimeChanged,
-} from '../reducers/settingsReducer';
+// import React from 'react';
 
-function channelModeChanged(buttonClicked) {
-    return dispatch => {
-        if (buttonClicked === DTM_CHANNEL_MODE.single) {
-            dispatch(sweepTimeChanged(0));
-        }
-        if (buttonClicked === DTM_CHANNEL_MODE.sweep) {
-            dispatch(sweepTimeChanged(30));
-        }
-        dispatch(dtmChannelModeChanged(buttonClicked));
-    };
-}
+// import { render } from '../../utils/testUtils';
+// import ChannelView from '../ChannelView';
 
-export default channelModeChanged;
+import React from 'react';
+import userEvent from '@testing-library/user-event';
+
+import { render, screen } from '../../utils/testUtils';
+import ChannelView from '../ChannelView';
+
+describe('Initial state', () => {
+    test('should have single channel selected', () => {
+        render(<ChannelView />);
+
+        const singleBtn = screen.getByRole(`button`, { name: /single/i });
+
+        expect(singleBtn).toHaveClass('active');
+    });
+
+    test('should have sweep channel not selected', () => {
+        render(<ChannelView />);
+
+        const sweepBtn = screen.getByRole(`button`, { name: /sweep/i });
+
+        expect(sweepBtn).not.toHaveClass('active');
+    });
+});
+
+describe('Select sweep', () => {
+    test('should have sweep channel selected', () => {
+        render(<ChannelView />);
+
+        const sweepBtn = screen.getByRole('button', { name: /sweep/i });
+        userEvent.click(sweepBtn);
+
+        expect(sweepBtn).toHaveClass('active');
+    });
+
+    test('should render two channel sliders', async () => {
+        render(<ChannelView />);
+
+        userEvent.click(screen.getByRole('button', { name: /sweep/i }));
+
+        const sliders = await screen.findAllByRole('slider');
+
+        expect(sliders.length).toBe(2);
+    });
+});

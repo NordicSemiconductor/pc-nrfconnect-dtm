@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,22 +34,59 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import React, { FC } from 'react';
+import { Provider } from 'react-redux';
+import { render, RenderOptions } from '@testing-library/react';
 import {
-    DTM_CHANNEL_MODE,
-    dtmChannelModeChanged,
-    sweepTimeChanged,
-} from '../reducers/settingsReducer';
+    AnyAction,
+    applyMiddleware,
+    combineReducers,
+    createStore,
+} from 'redux';
+import thunk from 'redux-thunk';
 
-function channelModeChanged(buttonClicked) {
-    return dispatch => {
-        if (buttonClicked === DTM_CHANNEL_MODE.single) {
-            dispatch(sweepTimeChanged(0));
-        }
-        if (buttonClicked === DTM_CHANNEL_MODE.sweep) {
-            dispatch(sweepTimeChanged(30));
-        }
-        dispatch(dtmChannelModeChanged(buttonClicked));
+import reducer from '../reducers';
+
+const createPreparedStore = (actions: AnyAction[]) => {
+    const store = createStore(
+        combineReducers({ app: reducer }),
+        applyMiddleware(thunk)
+    );
+    actions.forEach(store.dispatch);
+
+    return store;
+};
+
+jest.mock('nrf-dtm-js/src/DTM', () => {
+    return {
+        DTM: {
+            DTM_PARAMETER: {
+                PHY_LE_1M: 0x01,
+            },
+        },
     };
-}
+});
 
-export default channelModeChanged;
+window.ResizeObserver = function ResizeObserverStub() {
+    this.observe = () => {};
+    this.disconnect = () => {};
+};
+
+window.MutationObserver = function MutationObserverStub() {
+    this.observe = () => {};
+    this.disconnect = () => {};
+};
+
+const customRender = (
+    element: React.ReactElement,
+    actions: AnyAction[] = [],
+    options: RenderOptions = {}
+) => {
+    const Wrapper: FC = props => {
+        return <Provider store={createPreparedStore(actions)} {...props} />;
+    };
+    return render(element, { wrapper: Wrapper, ...options });
+};
+
+export * from '@testing-library/react';
+export { customRender as render };

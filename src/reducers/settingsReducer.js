@@ -35,7 +35,7 @@
  */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { DTM } from 'nrf-dtm-js/src/DTM.js';
+import { DTM } from 'nrf-dtm-js/src/DTM';
 
 import * as Constants from '../utils/constants';
 

@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2020, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,22 +34,38 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    DTM_CHANNEL_MODE,
-    dtmChannelModeChanged,
-    sweepTimeChanged,
-} from '../reducers/settingsReducer';
+import React from 'react';
 
-function channelModeChanged(buttonClicked) {
-    return dispatch => {
-        if (buttonClicked === DTM_CHANNEL_MODE.single) {
-            dispatch(sweepTimeChanged(0));
-        }
-        if (buttonClicked === DTM_CHANNEL_MODE.sweep) {
-            dispatch(sweepTimeChanged(30));
-        }
-        dispatch(dtmChannelModeChanged(buttonClicked));
+import { deviceReady } from '../reducers/deviceReducer';
+import RunTestView from '../SidePanel/RunTestView';
+import { render, screen } from '../utils/testUtils';
+
+jest.mock('nrf-dtm-js/src/DTM', () => {
+    return {
+        DTM: {
+            DTM_PARAMETER: {
+                PHY_LE_1M: 0x01,
+            },
+        },
     };
-}
+});
 
-export default channelModeChanged;
+describe('Initial state with unselected device', () => {
+    it('should render start button disabled', async () => {
+        render(<RunTestView />);
+
+        const startButton = screen.getByRole('button', { name: /start test/i });
+
+        expect(startButton).toBeDisabled();
+    });
+});
+
+describe('State with selected device', () => {
+    it('should render start button enabled', async () => {
+        render(<RunTestView />, [deviceReady()]);
+
+        const startButton = screen.getByRole('button', { name: /start test/i });
+
+        expect(startButton).toBeEnabled();
+    });
+});

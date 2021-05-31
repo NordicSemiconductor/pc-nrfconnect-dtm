@@ -34,11 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    DTM,
-    DTM_MODULATION_STRING,
-    DTM_PHY_STRING,
-} from 'nrf-dtm-js/src/DTM.js';
+import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 import { logger } from 'pc-nrfconnect-shared';
 
 import { deviceReady, dtmBoardSelected } from '../reducers/deviceReducer';

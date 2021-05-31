@@ -39,7 +39,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from 'react-redux';
-import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
+import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
 import { getBoard } from '../reducers/deviceReducer';
 import {

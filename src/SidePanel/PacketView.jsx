@@ -44,7 +44,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
+import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM';
 
 import {
     bitpatternChanged,

@@ -110,21 +110,21 @@ const ChannelView = () => {
 
             {channelMode === DTM_CHANNEL_MODE.single && (
                 <div className="app-sidepanel-component-slider">
-                    {ChannelSlider('Channel', channelSingle, channel =>
+                    {ChannelSlider(channelSingle, channel =>
                         dispatch(dtmSingleChannelChanged(channel))
                     )}
                 </div>
             )}
             {channelMode === DTM_CHANNEL_MODE.sweep && (
                 <div className="app-sidepanel-component-slider">
-                    {ChannelSlider('Channel Low', channelLow, channel =>
+                    {ChannelSlider(channelLow, channel =>
                         dispatch(dtmLowChannelChanged(channel))
                     )}
                 </div>
             )}
             {channelMode === DTM_CHANNEL_MODE.sweep && (
                 <div className="app-sidepanel-component-slider">
-                    {ChannelSlider('Channel High', channelHigh, channel =>
+                    {ChannelSlider(channelHigh, channel =>
                         dispatch(dtmHighChannelChanged(channel))
                     )}
                 </div>

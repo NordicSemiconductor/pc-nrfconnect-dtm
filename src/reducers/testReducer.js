@@ -60,7 +60,7 @@ const testSlice = createSlice({
             state.update += 1;
         },
         actionSucceeded(state, action) {
-            statelastReceived = action.payload;
+            state.lastReceived = action.payload;
             state.lastStatusMessage = 'Test ended successfully';
             state.update += 1;
         },

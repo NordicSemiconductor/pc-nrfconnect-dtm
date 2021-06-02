@@ -50,8 +50,8 @@ const deviceSlice = createSlice({
         deviceSelected(state, action) {
             state.serialNumber = action.payload;
         },
-        deviceDeselected(state) {
-            state = new InitialState();
+        deviceDeselected() {
+            return new InitialState();
         },
         deviceReady(state) {
             state.isReady = true;

@@ -41,7 +41,6 @@ import { colors } from 'pc-nrfconnect-shared';
 
 import {
     getCurrentChannel,
-    getIsRunning,
     getLastChannel,
     getLastReceived,
 } from '../reducers/testReducer';
@@ -211,7 +210,6 @@ const ChartView = () => {
     const currentChannel = useSelector(getCurrentChannel);
     const lastChannel = useSelector(getLastChannel);
     const lastReceived = useSelector(getLastReceived);
-    const isRunning = useSelector(getIsRunning);
 
     receiveValueHistory = [...receiveValueHistory];
     const activationColors = new Array(channelTotal).fill('#000000');

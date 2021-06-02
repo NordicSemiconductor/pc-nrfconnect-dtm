@@ -42,12 +42,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
 import { getBoard } from '../reducers/deviceReducer';
-import {
-    getModulation,
-    getPhy,
-    modulationChanged,
-    phyChanged,
-} from '../reducers/settingsReducer';
+import { getPhy, phyChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 
@@ -80,13 +75,10 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
 
 const OtherSettingsView = () => {
     const phy = useSelector(getPhy);
-    const modulation = useSelector(getModulation);
     const boardType = useSelector(getBoard);
     const isRunning = useSelector(getIsRunning);
 
     const dispatch = useDispatch();
-
-    const onModulationUpdated = value => dispatch(modulationChanged(value));
 
     return (
         <div className="app-sidepanel-panel">

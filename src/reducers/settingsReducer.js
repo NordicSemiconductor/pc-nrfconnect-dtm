@@ -39,18 +39,12 @@ import { DTM } from 'nrf-dtm-js/src/DTM';
 
 import * as Constants from '../utils/constants';
 
-export const DTM_TEST_MODE_BUTTON = {
-    transmitter: 0,
-    receiver: 1,
-};
-
 export const DTM_CHANNEL_MODE = {
     single: 'DTM_CHANNEL_MODE_SINGLE_ACTION',
     sweep: 'DTM_CHANNEL_MODE_SWEEP_ACTION',
 };
 
 const InitialState = {
-    testMode: DTM_TEST_MODE_BUTTON.transmitter,
     channelMode: DTM_CHANNEL_MODE.single,
     singleChannel: 19,
     lowChannel: 11,
@@ -68,9 +62,6 @@ const settingsSlice = createSlice({
     name: 'settings',
     initialState: InitialState,
     reducers: {
-        dtmTestModeChanged(state, action) {
-            state.testMode = action.payload;
-        },
         dtmChannelModeChanged(state, action) {
             state.channelMode = action.payload;
         },
@@ -110,7 +101,6 @@ const settingsSlice = createSlice({
 export default settingsSlice.reducer;
 
 const {
-    dtmTestModeChanged,
     dtmChannelModeChanged,
     dtmSingleChannelChanged,
     dtmLowChannelChanged,
@@ -124,7 +114,6 @@ const {
     modulationChanged,
 } = settingsSlice.actions;
 
-const getTestMode = state => state.app.settings.testMode;
 const getChannelMode = state => state.app.settings.channelMode;
 const getSingleChannel = state => state.app.settings.singleChannel;
 const getLowChannel = state => state.app.settings.lowChannel;
@@ -138,7 +127,6 @@ const getModulation = state => state.app.settings.modulationMode;
 const getTimeout = state => state.app.settings.timeout;
 
 export {
-    dtmTestModeChanged,
     dtmChannelModeChanged,
     dtmSingleChannelChanged,
     dtmLowChannelChanged,
@@ -150,7 +138,6 @@ export {
     timeoutChanged,
     phyChanged,
     modulationChanged,
-    getTestMode,
     getChannelMode,
     getSingleChannel,
     getLowChannel,

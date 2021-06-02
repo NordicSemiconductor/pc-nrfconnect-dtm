@@ -33,28 +33,36 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
+import Alert from 'react-bootstrap/Alert';
 import { useSelector } from 'react-redux';
-import { Main } from 'pc-nrfconnect-shared';
 
-import { getDtm } from '../reducers/deviceReducer';
-import { getChannelMode, getTestMode } from '../reducers/settingsReducer';
-import ChartView from './ChartView';
-import WarningView from './WarningView';
+import {
+    getCommunicationError,
+    getCompatibleDeviceWaring,
+} from './reducers/warningReducer';
 
-const AppMainView = () => {
-    const dtm = useSelector(getDtm);
-    const selectedTestMode = useSelector(getTestMode);
-    const channelMode = useSelector(getChannelMode);
+const warningIcon = <span className="mdi mdi-sign warning-sign" />;
 
+const combineWarnings = warnings =>
+    warnings
+        .filter(str => str.length !== 0)
+        .map((s, index) => (
+            <Alert variant="danger" key={`warning-${index + 1}`}>
+                <span>{warningIcon}</span>
+                {s}
+            </Alert>
+        ));
+
+const WarningView = () => {
+    const compatibleDeviceWarning = useSelector(getCompatibleDeviceWaring);
+    const communicationError = useSelector(getCommunicationError);
     return (
-        <Main>
-            <WarningView />
-            <ChartView />
-        </Main>
+        <div className="warning-view">
+            {combineWarnings([compatibleDeviceWarning, communicationError])}
+        </div>
     );
 };
 
-export default AppMainView;
+export default WarningView;

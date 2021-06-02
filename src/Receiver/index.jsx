@@ -35,28 +35,16 @@
  */
 
 import React from 'react';
-import { App } from 'pc-nrfconnect-shared';
+import { Main } from 'pc-nrfconnect-shared';
 
-import DeviceSelector from './DeviceSelector';
-import Receiver from './Receiver';
-import appReducer from './reducers';
-import SidePanel from './SidePanel';
-import Transmitter from './Transmitter';
+import WarningView from '../WarningView';
+import ReceiverChartView from './ReceiverChartView';
 
-import '../resources/css/index.scss';
-
-export default () => (
-    <App
-        appReducer={appReducer}
-        deviceSelect={<DeviceSelector />}
-        sidePanel={<SidePanel />}
-        showLogByDefault={false}
-        panes={[
-            {
-                name: 'Transmitter',
-                Main: Transmitter,
-            },
-            { name: 'Receiver', Main: Receiver },
-        ]}
-    />
+const AppMainView = () => (
+    <Main>
+        <WarningView />
+        <ReceiverChartView />
+    </Main>
 );
+
+export default AppMainView;

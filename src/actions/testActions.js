@@ -38,10 +38,7 @@ import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 import { logger } from 'pc-nrfconnect-shared';
 
 import { deviceReady, dtmBoardSelected } from '../reducers/deviceReducer';
-import {
-    DTM_CHANNEL_MODE,
-    DTM_TEST_MODE_BUTTON,
-} from '../reducers/settingsReducer';
+import { DTM_CHANNEL_MODE } from '../reducers/settingsReducer';
 import {
     actionFailed,
     actionSucceeded,
@@ -53,6 +50,7 @@ import {
 } from '../reducers/testReducer';
 import { communicationError } from '../reducers/warningReducer';
 import * as Constants from '../utils/constants';
+import { paneName } from '../utils/panes';
 import { clearCommunicationErrorWarning } from './warningActions';
 
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
@@ -131,11 +129,11 @@ export function startTests() {
             highChannel,
             sweepTime,
             timeout,
-            testMode,
             channelMode,
         } = settings;
 
-        const { transmitter, receiver } = DTM_TEST_MODE_BUTTON;
+        const testMode = paneName(getState());
+
         const { single, sweep } = DTM_CHANNEL_MODE;
 
         logger.info('Running device setup');
@@ -153,14 +151,14 @@ export function startTests() {
         logger.info('Starting test');
 
         let testPromise;
-        if (testMode === transmitter && channelMode === single) {
+        if (testMode === 'transmitter' && channelMode === single) {
             testPromise = dtm.singleChannelTransmitterTest(
                 bitpattern,
                 length,
                 singleChannel,
                 timeout
             );
-        } else if (testMode === transmitter && channelMode === sweep) {
+        } else if (testMode === 'transmitter' && channelMode === sweep) {
             testPromise = dtm.sweepTransmitterTest(
                 bitpattern,
                 length,
@@ -169,7 +167,7 @@ export function startTests() {
                 sweepTime,
                 timeout
             );
-        } else if (testMode === receiver && channelMode === single) {
+        } else if (testMode === 'receiver' && channelMode === single) {
             // TODO: Figure out the importance of execution of single channel test,
             //   this solution does not give continuous upate, but probably captures more packets.
             // testPromise = dtm.singleChannelReceiverTest(
@@ -209,9 +207,9 @@ export function startTests() {
                     }
                 }
                 const testTypeStr =
-                    testMode === transmitter ? 'Transmitter' : 'Receiver';
+                    testMode === 'transmitter' ? 'Transmitter' : 'Receiver';
                 const packetsRcvStr =
-                    testMode === transmitter
+                    testMode === 'transmitter'
                         ? ''
                         : `. Received ${received} packets.`;
                 logger.info(

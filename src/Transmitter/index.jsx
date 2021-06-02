@@ -34,45 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
 import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { Main } from 'pc-nrfconnect-shared';
 
-import {
-    DTM_TEST_MODE_BUTTON,
-    dtmTestModeChanged,
-    getTestMode,
-} from '../reducers/settingsReducer';
-import { getIsRunning } from '../reducers/testReducer';
+import WarningView from '../WarningView';
+import TransmitterChartView from './TransmitterChartView';
 
-const ToggleTestModeView = () => {
-    const selected = useSelector(getTestMode);
-    const isRunning = useSelector(getIsRunning);
+const AppMainView = () => (
+    <Main>
+        <WarningView />
+        <TransmitterChartView />
+    </Main>
+);
 
-    const dispatch = useDispatch();
-
-    const selectionButton = (type, text) => (
-        <Button
-            variant="light"
-            onClick={() => dispatch(dtmTestModeChanged(type))}
-            active={selected === type}
-            disabled={isRunning}
-        >
-            {text}
-        </Button>
-    );
-    return (
-        <div className="app-sidepanel-panel">
-            <ButtonGroup>
-                {selectionButton(
-                    DTM_TEST_MODE_BUTTON.transmitter,
-                    'Transmitter'
-                )}
-                {selectionButton(DTM_TEST_MODE_BUTTON.receiver, 'Receiver')}
-            </ButtonGroup>
-        </div>
-    );
-};
-
-export default ToggleTestModeView;
+export default AppMainView;

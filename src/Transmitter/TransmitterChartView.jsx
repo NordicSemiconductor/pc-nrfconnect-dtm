@@ -127,7 +127,7 @@ const getOptions = () => {
                 },
                 scaleLabel: {
                     display: true,
-                    labelString: 'Strength (dbm)',
+                    labelString: 'Strength (dBm)',
                     fontColor: chartColors.label,
                     fontSize: 14,
                 },

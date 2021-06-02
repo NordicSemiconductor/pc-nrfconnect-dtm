@@ -53,7 +53,7 @@ const AppSidePanelView = () => {
     const selectedTestMode = useSelector(paneName);
 
     return (
-        <SidePanel className="side-panel">
+        <SidePanel>
             <RunTestView />
             <ChannelView />
             <OtherSettingsView />

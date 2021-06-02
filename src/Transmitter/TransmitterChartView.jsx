@@ -40,11 +40,7 @@ import { useSelector } from 'react-redux';
 import { colors } from 'pc-nrfconnect-shared';
 
 import { getTxPower } from '../reducers/settingsReducer';
-import {
-    getCurrentChannel,
-    getIsRunning,
-    getLastChannel,
-} from '../reducers/testReducer';
+import { getCurrentChannel, getIsRunning } from '../reducers/testReducer';
 import { bleChannels, channelTotal, dbmValues } from '../utils/constants';
 
 const frequencyBase = 2402;
@@ -210,48 +206,10 @@ const getOptions = () => {
     return options;
 };
 
-let receiveValueHistory = new Array(channelTotal).fill(0);
-const receiveValueHistoryTicks = new Array(channelTotal).fill(0);
-
 const TransmitterChartView = () => {
     const currentChannel = useSelector(getCurrentChannel);
-    const lastChannel = useSelector(getLastChannel);
     const isRunning = useSelector(getIsRunning);
     const txPower = useSelector(getTxPower);
-
-    receiveValueHistory = [...receiveValueHistory];
-    const activationColors = new Array(channelTotal).fill('#000000');
-    receiveValueHistoryTicks.forEach((value, idx) => {
-        if (value > 60) {
-            receiveValueHistory[idx] = 0;
-        }
-        if (value < 10) {
-            activationColors[idx] = '#90ef00';
-        } else if (value < 25) {
-            activationColors[idx] = '#be3000';
-        } else {
-            activationColors[idx] = '#ef3000';
-        }
-        receiveValueHistoryTicks[idx] += 1;
-    });
-
-    if (lastChannel.channel !== undefined) {
-        receiveValueHistory[lastChannel.channel] = lastChannel.received;
-        receiveValueHistoryTicks[lastChannel.channel] = 0;
-    }
-
-    const currentChannelData = new Array(channelTotal).fill(0);
-    if (currentChannel !== undefined) {
-        currentChannelData[currentChannel] = Math.max(
-            1,
-            Math.max(...receiveValueHistory)
-        );
-    }
-
-    const receivedChannelData = new Array(channelTotal).fill(0);
-    if (lastChannel.channel !== undefined) {
-        receivedChannelData[lastChannel.channel] = lastChannel.received;
-    }
 
     return (
         <Bar

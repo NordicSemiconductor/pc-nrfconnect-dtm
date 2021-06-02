@@ -39,12 +39,8 @@ import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import { colors } from 'pc-nrfconnect-shared';
 
-import {
-    getCurrentChannel,
-    getLastChannel,
-    getLastReceived,
-} from '../reducers/testReducer';
-import { bleChannels, channelTotal, dbmValues } from '../utils/constants';
+import { getLastReceived } from '../reducers/testReducer';
+import { bleChannels, dbmValues } from '../utils/constants';
 
 const frequencyBase = 2402;
 const frequencyInterval = 2;
@@ -203,47 +199,8 @@ const getOptions = () => {
     return options;
 };
 
-let receiveValueHistory = new Array(channelTotal).fill(0);
-const receiveValueHistoryTicks = new Array(channelTotal).fill(0);
-
 const ChartView = () => {
-    const currentChannel = useSelector(getCurrentChannel);
-    const lastChannel = useSelector(getLastChannel);
     const lastReceived = useSelector(getLastReceived);
-
-    receiveValueHistory = [...receiveValueHistory];
-    const activationColors = new Array(channelTotal).fill('#000000');
-    receiveValueHistoryTicks.forEach((value, idx) => {
-        if (value > 60) {
-            receiveValueHistory[idx] = 0;
-        }
-        if (value < 10) {
-            activationColors[idx] = '#90ef00';
-        } else if (value < 25) {
-            activationColors[idx] = '#be3000';
-        } else {
-            activationColors[idx] = '#ef3000';
-        }
-        receiveValueHistoryTicks[idx] += 1;
-    });
-
-    if (lastChannel.channel !== undefined) {
-        receiveValueHistory[lastChannel.channel] = lastChannel.received;
-        receiveValueHistoryTicks[lastChannel.channel] = 0;
-    }
-
-    const currentChannelData = new Array(channelTotal).fill(0);
-    if (currentChannel !== undefined) {
-        currentChannelData[currentChannel] = Math.max(
-            1,
-            Math.max(...receiveValueHistory)
-        );
-    }
-
-    const receivedChannelData = new Array(channelTotal).fill(0);
-    if (lastChannel.channel !== undefined) {
-        receivedChannelData[lastChannel.channel] = lastChannel.received;
-    }
 
     return (
         <Bar

@@ -53,7 +53,7 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
             key={keyname}
             title={DTM_PHY_STRING[compatibility.phy[keyname]]}
             eventKey={keyname}
-            onSelect={eventKey => onPhyUpdated(compatibility.phy[eventKey])}
+            onSelect={() => onPhyUpdated(compatibility.phy[keyname])}
         />
     ));
 

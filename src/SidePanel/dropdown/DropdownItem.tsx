@@ -38,16 +38,11 @@ import React from 'react';
 
 interface DropdownItemProps {
     title: string;
-    eventKey?: string;
-    onSelect?: (eventKey: string) => void;
+    onSelect?: () => void;
 }
 
-const DropdownItem = ({ title, eventKey, onSelect }: DropdownItemProps) => (
-    <button
-        type="button"
-        className="dropdown-item"
-        onClick={() => onSelect(eventKey)}
-    >
+const DropdownItem = ({ title, onSelect }: DropdownItemProps) => (
+    <button type="button" className="dropdown-item" onClick={onSelect}>
         {title}
     </button>
 );

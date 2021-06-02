@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -35,60 +35,16 @@
  */
 
 import React from 'react';
-import Form from 'react-bootstrap/Form';
-import { useDispatch, useSelector } from 'react-redux';
-import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
-import { getBoard } from '../reducers/deviceReducer';
-import { getPhy, phyChanged } from '../reducers/settingsReducer';
-import { getIsRunning } from '../reducers/testReducer';
-import { fromPCA } from '../utils/boards';
-import Dropdown from './dropdown/Dropdown';
-import DropdownItem from './dropdown/DropdownItem';
+interface DropdownItemProps {
+    title: string;
+    onSelect?: () => void;
+}
 
-const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
-    const compatibility = fromPCA(boardType);
-    const items = Object.keys(compatibility.phy).map(keyname => (
-        <DropdownItem
-            key={keyname}
-            title={DTM_PHY_STRING[compatibility.phy[keyname]]}
-            eventKey={keyname}
-            onSelect={() => onPhyUpdated(compatibility.phy[keyname])}
-        />
-    ));
+const DropdownItem = ({ title, onSelect }: DropdownItemProps) => (
+    <button type="button" className="dropdown-item" onClick={onSelect}>
+        {title}
+    </button>
+);
 
-    return (
-        <Form.Group controlId="formTimeoutSelect">
-            <Form.Label>Physical layer</Form.Label>
-            <Dropdown
-                items={items}
-                title={DTM_PHY_STRING[phy]}
-                id="dropdown-variants-phy-type"
-                disabled={isRunning}
-            />
-        </Form.Group>
-    );
-};
-
-const OtherSettingsView = () => {
-    const phy = useSelector(getPhy);
-    const boardType = useSelector(getBoard);
-    const isRunning = useSelector(getIsRunning);
-
-    const dispatch = useDispatch();
-
-    return (
-        <div className="app-sidepanel-panel">
-            <div className="app-sidepanel-component-inputbox">
-                {phyTypeView(
-                    boardType,
-                    phy,
-                    value => dispatch(phyChanged(value)),
-                    isRunning
-                )}
-            </div>
-        </div>
-    );
-};
-
-export default OtherSettingsView;
+export default DropdownItem;

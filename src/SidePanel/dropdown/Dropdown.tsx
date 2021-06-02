@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,61 +34,49 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
-import Form from 'react-bootstrap/Form';
-import { useDispatch, useSelector } from 'react-redux';
-import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
+import React, { useRef } from 'react';
 
-import { getBoard } from '../reducers/deviceReducer';
-import { getPhy, phyChanged } from '../reducers/settingsReducer';
-import { getIsRunning } from '../reducers/testReducer';
-import { fromPCA } from '../utils/boards';
-import Dropdown from './dropdown/Dropdown';
-import DropdownItem from './dropdown/DropdownItem';
+import chevron from './chevron.svg';
+import useDetectClick from './useDetectClick';
 
-const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
-    const compatibility = fromPCA(boardType);
-    const items = Object.keys(compatibility.phy).map(keyname => (
-        <DropdownItem
-            key={keyname}
-            title={DTM_PHY_STRING[compatibility.phy[keyname]]}
-            eventKey={keyname}
-            onSelect={() => onPhyUpdated(compatibility.phy[keyname])}
-        />
-    ));
+import './Dropdown.scss';
+
+interface DropdownProps {
+    title: string;
+    items?: JSX.Element[];
+    id?: string;
+    disabled?: boolean;
+}
+
+const Dropdown = ({ title, items, id, disabled }: DropdownProps) => {
+    const dropdownRef = useRef(null);
+    const [isActive, setIsActive] = useDetectClick(dropdownRef, false);
+    const onClick = () => setIsActive(!isActive);
 
     return (
-        <Form.Group controlId="formTimeoutSelect">
-            <Form.Label>Physical layer</Form.Label>
-            <Dropdown
-                items={items}
-                title={DTM_PHY_STRING[phy]}
-                id="dropdown-variants-phy-type"
-                disabled={isRunning}
-            />
-        </Form.Group>
-    );
-};
-
-const OtherSettingsView = () => {
-    const phy = useSelector(getPhy);
-    const boardType = useSelector(getBoard);
-    const isRunning = useSelector(getIsRunning);
-
-    const dispatch = useDispatch();
-
-    return (
-        <div className="app-sidepanel-panel">
-            <div className="app-sidepanel-component-inputbox">
-                {phyTypeView(
-                    boardType,
-                    phy,
-                    value => dispatch(phyChanged(value)),
-                    isRunning
-                )}
+        <div className="dropdown-container">
+            <button
+                type="button"
+                className={`dropdown-btn dropdown-btn-${
+                    isActive ? 'active' : 'inactive'
+                }`}
+                id={id}
+                onClick={onClick}
+                disabled={disabled}
+            >
+                <span>{title}</span>
+                <img src={chevron} alt="" />
+            </button>
+            <div
+                ref={dropdownRef}
+                className={`dropdown dropdown-${
+                    isActive ? 'active' : 'inactive'
+                }`}
+            >
+                {items}
             </div>
         </div>
     );
 };
 
-export default OtherSettingsView;
+export default Dropdown;

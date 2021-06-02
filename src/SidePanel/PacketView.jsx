@@ -38,8 +38,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 import React from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import FormControl from 'react-bootstrap/FormControl';
 import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
@@ -53,6 +51,8 @@ import {
     lengthChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
+import MyDropdownButton from './dropdown/Dropdown';
+import DropdownItem from './dropdown/DropdownItem';
 
 import 'react-rangeslider/lib/index.css';
 
@@ -67,33 +67,31 @@ const packetTypeView = (
     const constantCarrierIdx = 3;
     const isVendorPayload = idx =>
         DTM_PKT_STRING[idx] === DTM_PKT_STRING[constantCarrierIdx];
+
     const items = Object.keys(DTM.DTM_PKT)
-        .filter(keyname => keyname !== 'DEFAULT')
-        .map((keyname, idx) => (
-            <Dropdown.Item
+        .filter(key => key !== 'DEFAULT')
+        .map((key, idx) => (
+            <DropdownItem
+                key={key}
+                title={DTM_PKT_STRING[idx]}
                 eventKey={idx}
-                onSelect={evt => {
-                    bitpatternUpdated(evt);
+                onSelect={() => {
+                    bitpatternUpdated(key);
                     if (isVendorPayload(idx)) {
                         lengthUpdated(VENDOR_PAYLOAD_LENGTH);
                     }
                 }}
-                key={keyname}
-            >
-                {DTM_PKT_STRING[idx]}
-            </Dropdown.Item>
+            />
         ));
+
     return (
         <div>
             <FormLabel>Packet type</FormLabel>
-            <DropdownButton
-                variant="light"
+            <MyDropdownButton
                 title={DTM_PKT_STRING[pkgType]}
-                id="dropdown-variants-packet-type"
+                items={[items]}
                 disabled={isRunning}
-            >
-                {items}
-            </DropdownButton>
+            />
         </div>
     );
 };

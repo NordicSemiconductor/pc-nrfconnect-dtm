@@ -1,0 +1,47 @@
+@import '~pc-nrfconnect-shared/styles';
+
+.dropdown-wrapper {
+    position: relative;
+    width: 100%;
+
+    .dropdown-trigger {
+        width: 100%;
+        height: 32px;
+        padding: 0 8px;
+        background: $gray-700;
+        color: $white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        border: none;
+    }
+    .dropdown-trigger:hover {
+        background: $gray-600;
+    }
+
+    .dropdown {
+        background: $gray-700;
+        color: $white;
+        position: absolute;
+        width: 100%;
+        top: 32px;
+        right: 0;
+        padding: 8px 0;
+        border-top: solid 2px $gray-600;
+        z-index: 1;
+    }
+
+    .dropdown-inactive {
+        display: none;
+    }
+
+    .dropdown-item {
+        color: $white;
+        padding: 4px 8px;
+    }
+
+    .dropdown-item:hover {
+        background: $gray-600;
+    }
+}

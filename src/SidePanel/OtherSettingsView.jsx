@@ -35,8 +35,6 @@
  */
 
 import React from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from 'react-redux';
 import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
@@ -45,30 +43,29 @@ import { getBoard } from '../reducers/deviceReducer';
 import { getPhy, phyChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
+import Dropdown from './dropdown/Dropdown';
+import DropdownItem from './dropdown/DropdownItem';
 
 const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
     const compatibility = fromPCA(boardType);
     const items = Object.keys(compatibility.phy).map(keyname => (
-        <Dropdown.Item
+        <DropdownItem
             key={keyname}
+            title={DTM_PHY_STRING[compatibility.phy[keyname]]}
             eventKey={keyname}
-            onSelect={evt => onPhyUpdated(compatibility.phy[evt])}
-        >
-            {DTM_PHY_STRING[compatibility.phy[keyname]]}
-        </Dropdown.Item>
+            onSelect={eventKey => onPhyUpdated(compatibility.phy[eventKey])}
+        />
     ));
 
     return (
         <Form.Group controlId="formTimeoutSelect">
             <Form.Label>Physical layer</Form.Label>
-            <DropdownButton
-                variant="light"
+            <Dropdown
+                items={items}
                 title={DTM_PHY_STRING[phy]}
                 id="dropdown-variants-phy-type"
                 disabled={isRunning}
-            >
-                {items}
-            </DropdownButton>
+            />
         </Form.Group>
     );
 };

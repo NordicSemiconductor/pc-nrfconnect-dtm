@@ -1,10 +1,10 @@
 @import '~pc-nrfconnect-shared/styles';
 
-.dropdown-wrapper {
+.dropdown-container {
     position: relative;
     width: 100%;
 
-    .dropdown-trigger {
+    .dropdown-btn {
         width: 100%;
         height: 32px;
         padding: 0 8px;
@@ -16,8 +16,12 @@
 
         border: none;
     }
-    .dropdown-trigger:hover {
+    .dropdown-btn:hover {
         background: $gray-600;
+    }
+
+    .dropdown-btn-active img {
+        transform: rotate(180deg);
     }
 
     .dropdown {
@@ -30,6 +34,10 @@
         padding: 8px 0;
         border-top: solid 2px $gray-600;
         z-index: 1;
+    }
+
+    .dropdown-active img {
+        transform: rotate(90deg);
     }
 
     .dropdown-inactive {

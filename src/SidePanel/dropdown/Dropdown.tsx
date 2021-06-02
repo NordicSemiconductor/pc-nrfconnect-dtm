@@ -18,10 +18,12 @@ const Dropdown = ({ title, items, id, disabled }: DropdownProps) => {
     const onClick = () => setIsActive(!isActive);
 
     return (
-        <div className="dropdown-wrapper">
+        <div className="dropdown-container">
             <button
                 type="button"
-                className="dropdown-trigger"
+                className={`dropdown-btn dropdown-btn-${
+                    isActive ? 'active' : 'inactive'
+                }`}
                 id={id}
                 onClick={onClick}
                 disabled={disabled}

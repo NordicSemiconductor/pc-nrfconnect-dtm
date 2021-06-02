@@ -43,7 +43,7 @@ import appReducer from './reducers';
 import SidePanel from './SidePanel';
 import Transmitter from './Transmitter';
 
-import '../resources/css/index.scss';
+import './index.scss';
 
 export default () => (
     <App

@@ -34,7 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { useRef } from 'react';
+import React, { FC, useRef } from 'react';
 
 import chevron from './chevron.svg';
 import useDetectClick from './useDetectClick';
@@ -43,12 +43,11 @@ import './Dropdown.scss';
 
 interface DropdownProps {
     title: string;
-    items?: JSX.Element[];
     id?: string;
     disabled?: boolean;
 }
 
-const Dropdown = ({ title, items, id, disabled }: DropdownProps) => {
+const Dropdown: FC<DropdownProps> = ({ title, id, disabled, children }) => {
     const dropdownRef = useRef(null);
     const [isActive, setIsActive] = useDetectClick(dropdownRef, false);
     const onClick = () => setIsActive(!isActive);
@@ -73,7 +72,7 @@ const Dropdown = ({ title, items, id, disabled }: DropdownProps) => {
                     isActive ? 'active' : 'inactive'
                 }`}
             >
-                {items}
+                {children}
             </div>
         </div>
     );

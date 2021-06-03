@@ -57,13 +57,21 @@ import 'react-rangeslider/lib/index.css';
 
 const VENDOR_PAYLOAD_LENGTH = 1;
 
-const PacketTypeView = (
+interface PacketTypeViewProps {
+    bitpatternUpdated: (pkgType: number) => void;
+    lengthUpdated: (newLength: number) => void;
+    selectedPkgType: string;
+    isRunning: boolean;
+    isVendorPayload: (pkgType: number) => boolean;
+}
+
+const PacketTypeView = ({
     bitpatternUpdated,
     lengthUpdated,
     selectedPkgType,
     isRunning,
-    isVendorPayload
-) => {
+    isVendorPayload,
+}: PacketTypeViewProps) => {
     const items = Object.keys(DTM.DTM_PKT)
         .filter(key => key !== 'DEFAULT')
         .map((key, pkgType) => (
@@ -92,7 +100,17 @@ const PacketTypeView = (
     );
 };
 
-const PacketLengthView = (currentLength, changedFunc, isRunning) => {
+interface PacketLengthView {
+    changedFunc: (newLength: number) => void;
+    currentLength: number;
+    isRunning: boolean;
+}
+
+const PacketLengthView = ({
+    changedFunc,
+    currentLength,
+    isRunning,
+}: PacketLengthView) => {
     const range = { min: 1, max: 255 };
     return (
         <>
@@ -134,8 +152,10 @@ const PacketView = () => {
         <>
             <div className="app-sidepanel-component-inputbox">
                 <PacketTypeView
-                    value={value => dispatch(bitpatternChanged(value))}
-                    lengthChangedAction={lengthChangedAction}
+                    bitpatternUpdated={value =>
+                        dispatch(bitpatternChanged(value))
+                    }
+                    lengthUpdated={lengthChangedAction}
                     selectedPkgType={pkgType}
                     isRunning={isRunning}
                     isVendorPayload={isVendorPayload}
@@ -145,8 +165,8 @@ const PacketView = () => {
             {!isVendorPayload(pkgType) && (
                 <div className="app-sidepanel-component-inputbox">
                     <PacketLengthView
-                        packetLength={packetLength}
-                        lengthChangedAction={lengthChangedAction}
+                        currentLength={packetLength}
+                        changedFunc={lengthChangedAction}
                         isRunning={isRunning}
                     />
                 </div>

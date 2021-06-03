@@ -60,11 +60,12 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
         <Form.Group controlId="formTimeoutSelect">
             <Form.Label>Physical layer</Form.Label>
             <Dropdown
-                items={items}
                 title={DTM_PHY_STRING[phy]}
                 id="dropdown-variants-phy-type"
                 disabled={isRunning}
-            />
+            >
+                {items}
+            </Dropdown>
         </Form.Group>
     );
 };

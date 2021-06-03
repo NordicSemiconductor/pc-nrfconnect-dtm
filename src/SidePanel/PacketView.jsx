@@ -41,7 +41,7 @@ import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM';
-import { Group, NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
+import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
 import {
     bitpatternChanged,
@@ -50,29 +50,29 @@ import {
     lengthChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
-import MyDropdownButton from './dropdown/Dropdown';
+import Dropdown from './dropdown/Dropdown';
 import DropdownItem from './dropdown/DropdownItem';
 
 import 'react-rangeslider/lib/index.css';
 
 const VENDOR_PAYLOAD_LENGTH = 1;
 
-const packetTypeView = (
+const PacketTypeView = (
     bitpatternUpdated,
     lengthUpdated,
-    pkgType,
+    selectedPkgType,
     isRunning,
     isVendorPayload
 ) => {
     const items = Object.keys(DTM.DTM_PKT)
         .filter(key => key !== 'DEFAULT')
-        .map((key, packageType) => (
+        .map((key, pkgType) => (
             <DropdownItem
                 key={key}
-                title={DTM_PKT_STRING[packageType]}
+                title={DTM_PKT_STRING[pkgType]}
                 onSelect={() => {
-                    bitpatternUpdated(packageType);
-                    if (isVendorPayload(packageType)) {
+                    bitpatternUpdated(pkgType);
+                    if (isVendorPayload(pkgType)) {
                         lengthUpdated(VENDOR_PAYLOAD_LENGTH);
                     }
                 }}
@@ -82,16 +82,17 @@ const packetTypeView = (
     return (
         <>
             <FormLabel>Packet type</FormLabel>
-            <MyDropdownButton
-                title={DTM_PKT_STRING[pkgType]}
-                items={[items]}
+            <Dropdown
+                title={DTM_PKT_STRING[selectedPkgType]}
                 disabled={isRunning}
-            />
+            >
+                {items}
+            </Dropdown>
         </>
     );
 };
 
-const packetLengthView = (currentLength, changedFunc, isRunning) => {
+const PacketLengthView = (currentLength, changedFunc, isRunning) => {
     const range = { min: 1, max: 255 };
     return (
         <>
@@ -132,22 +133,22 @@ const PacketView = () => {
     return (
         <>
             <div className="app-sidepanel-component-inputbox">
-                {packetTypeView(
-                    value => dispatch(bitpatternChanged(value)),
-                    lengthChangedAction,
-                    pkgType,
-                    isRunning,
-                    isVendorPayload
-                )}
+                <PacketTypeView
+                    value={value => dispatch(bitpatternChanged(value))}
+                    lengthChangedAction={lengthChangedAction}
+                    selectedPkgType={pkgType}
+                    isRunning={isRunning}
+                    isVendorPayload={isVendorPayload}
+                />
             </div>
 
             {!isVendorPayload(pkgType) && (
                 <div className="app-sidepanel-component-inputbox">
-                    {packetLengthView(
-                        packetLength,
-                        lengthChangedAction,
-                        isRunning
-                    )}
+                    <PacketLengthView
+                        packetLength={packetLength}
+                        lengthChangedAction={lengthChangedAction}
+                        isRunning={isRunning}
+                    />
                 </div>
             )}
         </>

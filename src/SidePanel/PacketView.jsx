@@ -74,9 +74,8 @@ const packetTypeView = (
             <DropdownItem
                 key={key}
                 title={DTM_PKT_STRING[idx]}
-                eventKey={idx}
                 onSelect={() => {
-                    bitpatternUpdated(key);
+                    bitpatternUpdated(idx);
                     if (isVendorPayload(idx)) {
                         lengthUpdated(VENDOR_PAYLOAD_LENGTH);
                     }

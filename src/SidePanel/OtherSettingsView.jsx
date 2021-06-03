@@ -52,7 +52,6 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
         <DropdownItem
             key={keyname}
             title={DTM_PHY_STRING[compatibility.phy[keyname]]}
-            eventKey={keyname}
             onSelect={() => onPhyUpdated(compatibility.phy[keyname])}
         />
     ));

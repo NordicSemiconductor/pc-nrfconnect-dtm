@@ -55,16 +55,18 @@ const RunTestView = () => {
     };
 
     return (
-        <div className="app-sidepanel-panel">
+        <>
             <Button
-                variant="primary"
-                size="lg"
+                className={`w-100 trigger-btn ${
+                    isRunning ? 'active-anim' : ''
+                }`}
+                variant="set"
                 disabled={disabled}
                 onClick={onClick}
             >
                 {label}
             </Button>
-        </div>
+        </>
     );
 };
 

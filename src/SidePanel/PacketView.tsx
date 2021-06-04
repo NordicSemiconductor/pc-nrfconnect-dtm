@@ -50,8 +50,7 @@ import {
     lengthChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
-import Dropdown from './dropdown/Dropdown';
-import DropdownItem from './dropdown/DropdownItem';
+import { Dropdown, DropdownItem } from './dropdown';
 
 import 'react-rangeslider/lib/index.css';
 
@@ -89,8 +88,8 @@ const PacketTypeView = ({
 
     return (
         <>
-            <FormLabel>Packet type</FormLabel>
             <Dropdown
+                label="Packet type"
                 title={DTM_PKT_STRING[selectedPkgType]}
                 disabled={isRunning}
             >

@@ -43,8 +43,7 @@ import { getBoard } from '../reducers/deviceReducer';
 import { getPhy, phyChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
-import Dropdown from './dropdown/Dropdown';
-import DropdownItem from './dropdown/DropdownItem';
+import { Dropdown, DropdownItem } from './dropdown';
 
 const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
     const compatibility = fromPCA(boardType);
@@ -58,8 +57,8 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
 
     return (
         <Form.Group controlId="formTimeoutSelect">
-            <Form.Label>Physical layer</Form.Label>
             <Dropdown
+                label="Physical layer"
                 title={DTM_PHY_STRING[phy]}
                 id="dropdown-variants-phy-type"
                 disabled={isRunning}

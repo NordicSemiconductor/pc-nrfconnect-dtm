@@ -104,9 +104,7 @@ const ChannelView = () => {
 
     return (
         <>
-            <>
-                <ToggleChannelModeView isRunning={isRunning} />
-            </>
+            <ToggleChannelModeView isRunning={isRunning} />
 
             {channelMode === DTM_CHANNEL_MODE.single && (
                 <>

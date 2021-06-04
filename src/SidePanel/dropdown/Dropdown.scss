@@ -36,6 +36,10 @@
 
 @import '~pc-nrfconnect-shared/styles';
 
+.dropdown-label {
+    font-size: 10px;
+}
+
 .dropdown-container {
     position: relative;
     width: 100%;
@@ -52,22 +56,19 @@
 
         border: none;
     }
-    .dropdown-btn:hover {
-        background: $gray-600;
-    }
 
     .dropdown-btn-active img {
         transform: rotate(180deg);
     }
 
-    .dropdown {
+    .dropdown-content {
         background: $gray-700;
         color: $white;
         position: absolute;
         width: 100%;
         top: 32px;
         right: 0;
-        padding: 8px 0;
+        padding: 0;
         border-top: solid 2px $gray-600;
         z-index: 1;
     }
@@ -83,9 +84,13 @@
     .dropdown-item {
         color: $white;
         padding: 4px 8px;
+        height: 24px;
     }
 
-    .dropdown-item:hover {
+    .dropdown-btn:hover,
+    .dropdown-btn:focus,
+    .dropdown-item:hover,
+    .dropdown-item:focus {
         background: $gray-600;
     }
 }

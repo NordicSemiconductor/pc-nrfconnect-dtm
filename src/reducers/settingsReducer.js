@@ -51,7 +51,7 @@ const InitialState = {
     highChannel: 26,
     sweepTime: 0,
     bitpattern: 0,
-    length: 1,
+    length: 37,
     txPower: Math.max(0, Constants.dbmValues.indexOf(0)),
     phy: DTM.DTM_PARAMETER.PHY_LE_1M,
     modulationMode: DTM.DTM_PARAMETER.STANDARD_MODULATION_INDEX,

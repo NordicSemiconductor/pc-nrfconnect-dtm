@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 
-export const useDetectClick = (element, initialState) => {
+export const useDetectClick = (
+    element: React.MutableRefObject<HTMLElement | null>,
+    initialState: boolean
+) => {
     const [isActive, setIsActive] = useState(initialState);
 
     useEffect(() => {
-        const clickEvent = e => setIsActive(!isActive);
+        const clickEvent = () => setIsActive(!isActive);
 
         if (isActive) {
             window.addEventListener('click', clickEvent);
@@ -15,7 +18,7 @@ export const useDetectClick = (element, initialState) => {
         };
     }, [isActive, element]);
 
-    return [isActive, setIsActive];
+    return [isActive, setIsActive] as const;
 };
 
 export default useDetectClick;

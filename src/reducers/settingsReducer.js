@@ -36,6 +36,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import { DTM } from 'nrf-dtm-js/src/DTM';
+import { bleChannels } from 'pc-nrfconnect-shared';
 
 import * as Constants from '../utils/constants';
 
@@ -47,8 +48,7 @@ export const DTM_CHANNEL_MODE = {
 const InitialState = {
     channelMode: DTM_CHANNEL_MODE.single,
     singleChannel: 19,
-    lowChannel: 11,
-    highChannel: 26,
+    channelRange: [bleChannels.min, bleChannels.max],
     sweepTime: 0,
     bitpattern: 0,
     length: 37,
@@ -68,11 +68,8 @@ const settingsSlice = createSlice({
         dtmSingleChannelChanged(state, action) {
             state.singleChannel = action.payload;
         },
-        dtmLowChannelChanged(state, action) {
-            state.lowChannel = action.payload;
-        },
-        dtmHighChannelChanged(state, action) {
-            state.highChannel = action.payload;
+        channelRangeChanged(state, action) {
+            state.channelRange = action.payload;
         },
         sweepTimeChanged(state, action) {
             state.sweepTime = action.payload;
@@ -103,8 +100,7 @@ export default settingsSlice.reducer;
 const {
     dtmChannelModeChanged,
     dtmSingleChannelChanged,
-    dtmLowChannelChanged,
-    dtmHighChannelChanged,
+    channelRangeChanged,
     sweepTimeChanged,
     txPowerChanged,
     bitpatternChanged,
@@ -116,8 +112,7 @@ const {
 
 const getChannelMode = state => state.app.settings.channelMode;
 const getSingleChannel = state => state.app.settings.singleChannel;
-const getLowChannel = state => state.app.settings.lowChannel;
-const getHighChannel = state => state.app.settings.highChannel;
+const getChannelRange = state => state.app.settings.channelRange;
 const getSweepTime = state => state.app.settings.sweepTime;
 const getBitpattern = state => state.app.settings.bitpattern;
 const getLength = state => state.app.settings.length;
@@ -129,8 +124,7 @@ const getTimeout = state => state.app.settings.timeout;
 export {
     dtmChannelModeChanged,
     dtmSingleChannelChanged,
-    dtmLowChannelChanged,
-    dtmHighChannelChanged,
+    channelRangeChanged,
     sweepTimeChanged,
     txPowerChanged,
     bitpatternChanged,
@@ -140,8 +134,7 @@ export {
     modulationChanged,
     getChannelMode,
     getSingleChannel,
-    getLowChannel,
-    getHighChannel,
+    getChannelRange,
     getSweepTime,
     getBitpattern,
     getLength,

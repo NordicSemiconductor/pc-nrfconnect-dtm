@@ -44,13 +44,11 @@ import { bleChannels, NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 import PropTypes from 'prop-types';
 
 import {
+    channelRangeChanged,
     DTM_CHANNEL_MODE,
-    dtmHighChannelChanged,
-    dtmLowChannelChanged,
     dtmSingleChannelChanged,
     getChannelMode,
-    getHighChannel,
-    getLowChannel,
+    getChannelRange,
     getSingleChannel,
     getSweepTime,
     sweepTimeChanged,
@@ -98,16 +96,16 @@ const ChannelView = () => {
     const isTransmitterPane = useSelector(isRealTimePane);
     const channelMode = useSelector(getChannelMode);
     const channelSingle = useSelector(getSingleChannel);
-    const channelLow = useSelector(getLowChannel);
-    const channelHigh = useSelector(getHighChannel);
+    const channelRange = useSelector(getChannelRange);
     const sweepTime = useSelector(getSweepTime);
     const isRunning = useSelector(getIsRunning);
 
     const dispatch = useDispatch();
 
-    const channelRange = { min: bleChannels.min, max: bleChannels.max };
-
     const transmitOrReceiveLabel = isTransmitterPane ? 'Transmit' : 'Receive';
+
+    const lowChannel = Math.min(...channelRange);
+    const highChannel = Math.max(...channelRange);
 
     return (
         <>
@@ -119,7 +117,10 @@ const ChannelView = () => {
                         {`${transmitOrReceiveLabel} on channel`}
                         <NumberInlineInput
                             value={channelSingle}
-                            range={channelRange}
+                            range={{
+                                min: lowChannel,
+                                max: bleChannels.max,
+                            }}
                             onChange={value =>
                                 dispatch(
                                     dtmSingleChannelChanged(
@@ -140,7 +141,10 @@ const ChannelView = () => {
                                     )
                                 ),
                         ]}
-                        range={channelRange}
+                        range={{
+                            min: bleChannels.min,
+                            max: highChannel,
+                        }}
                     />
                 </>
             )}
@@ -155,47 +159,60 @@ const ChannelView = () => {
                     <FormLabel htmlFor="channel-slider">
                         {`${transmitOrReceiveLabel} on channels`}
                         <NumberInlineInput
-                            value={channelLow}
-                            range={channelRange}
+                            value={lowChannel}
+                            range={{
+                                min: bleChannels.min,
+                                max: bleChannels.max,
+                            }}
                             onChange={newMinValue =>
                                 dispatch(
-                                    dtmLowChannelChanged(
-                                        isRunning ? channelLow : newMinValue
-                                    )
+                                    channelRangeChanged([
+                                        isRunning ? lowChannel : newMinValue,
+                                        channelRange[1],
+                                    ])
                                 )
                             }
                         />
                         {' to '}
                         <NumberInlineInput
-                            value={channelHigh}
-                            range={channelRange}
+                            value={highChannel}
+                            range={{
+                                min: bleChannels.min,
+                                max: bleChannels.max,
+                            }}
                             onChange={newMaxValue =>
                                 dispatch(
-                                    dtmHighChannelChanged(
-                                        isRunning ? channelHigh : newMaxValue
-                                    )
+                                    channelRangeChanged([
+                                        channelRange[0],
+                                        isRunning ? highChannel : newMaxValue,
+                                    ])
                                 )
                             }
                         />
                     </FormLabel>
                     <Slider
                         id="channel-slider"
-                        values={[channelLow, channelHigh]}
+                        values={channelRange}
+                        range={{
+                            min: bleChannels.min,
+                            max: bleChannels.max,
+                        }}
                         onChange={[
                             newValue =>
                                 dispatch(
-                                    dtmLowChannelChanged(
-                                        isRunning ? channelLow : newValue
-                                    )
+                                    channelRangeChanged([
+                                        isRunning ? lowChannel : newValue,
+                                        channelRange[1],
+                                    ])
                                 ),
                             newValue =>
                                 dispatch(
-                                    dtmHighChannelChanged(
-                                        isRunning ? channelHigh : newValue
-                                    )
+                                    channelRangeChanged([
+                                        channelRange[0],
+                                        isRunning ? highChannel : newValue,
+                                    ])
                                 ),
                         ]}
-                        range={channelRange}
                     />
                 </>
             )}

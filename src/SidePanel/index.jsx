@@ -56,14 +56,14 @@ const AppSidePanelView = () => {
         <SidePanel>
             <RunTestView />
             <ChannelView />
+            {selectedTestMode === 'transmitter' && <TransmitSetupView />}
             <OtherSettingsView />
+            {selectedTestMode === 'transmitter' && <PacketView />}
             <TimeoutView />
-            {selectedTestMode === 'transmitter' && (
-                <>
-                    <PacketView />
-                    <TransmitSetupView />
-                </>
-            )}
+            {/* {selectedTestMode === 'transmitter' && (
+                // <>
+                // </>
+            )} */}
         </SidePanel>
     );
 };

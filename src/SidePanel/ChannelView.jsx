@@ -143,7 +143,7 @@ const ChannelView = () => {
                 </div>
             )}
 
-            <div className="app-sidepanel-component-inputbox">
+            {/* <div className="app-sidepanel-component-inputbox">
                 <Form>
                     <Form.Group controlId="formSweepTimeSelect">
                         <Form.Label>{delayLabel} (ms)</Form.Label>
@@ -163,7 +163,7 @@ const ChannelView = () => {
                         />
                     </Form.Group>
                 </Form>
-            </div>
+            </div> */}
         </div>
     );
 };

@@ -41,6 +41,7 @@ import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import { bleChannels, NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
+import PropTypes from 'prop-types';
 
 import {
     DTM_CHANNEL_MODE,
@@ -85,6 +86,12 @@ const DelaySlider = ({ isRunning, currentValue, changedFunc }) => {
             />
         </>
     );
+};
+
+DelaySlider.propTypes = {
+    isRunning: PropTypes.bool.isRequired,
+    currentValue: PropTypes.number.isRequired,
+    changedFunc: PropTypes.func.isRequired,
 };
 
 const ChannelView = () => {

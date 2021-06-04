@@ -37,10 +37,10 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
-import { colors } from 'pc-nrfconnect-shared';
+import { bleChannels, colors } from 'pc-nrfconnect-shared';
 
 import { getLastReceived } from '../reducers/testReducer';
-import { bleChannels, dbmValues } from '../utils/constants';
+import { dbmValues } from '../utils/constants';
 
 const frequencyBase = 2402;
 const frequencyInterval = 2;

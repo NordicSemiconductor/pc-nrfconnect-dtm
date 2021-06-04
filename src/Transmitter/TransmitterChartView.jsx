@@ -37,11 +37,11 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
-import { colors } from 'pc-nrfconnect-shared';
+import { bleChannels, colors } from 'pc-nrfconnect-shared';
 
 import { getTxPower } from '../reducers/settingsReducer';
 import { getCurrentChannel, getIsRunning } from '../reducers/testReducer';
-import { bleChannels, channelTotal, dbmValues } from '../utils/constants';
+import { dbmValues } from '../utils/constants';
 
 const frequencyBase = 2402;
 const frequencyInterval = 2;
@@ -54,7 +54,7 @@ const chartColors = {
 };
 
 const chartDataTransmit = (currentChannel, txPower) => {
-    const active = Array.from(Array(channelTotal), () => 0);
+    const active = Array.from(Array(bleChannels.length), () => 0);
     if (currentChannel !== undefined) {
         active[currentChannel] = txPower;
     }

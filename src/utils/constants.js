@@ -36,13 +36,3 @@
 
 export const dbmValues = [-40, -20, -16, -12, -8, -4, 0, 2, 3, 4, 5, 6, 7, 8];
 export const compatiblePCAs = ['PCA10040', 'PCA10056'];
-
-const channel37 = 37;
-const channel38 = 38;
-const channel39 = 39;
-const channel38Value = 12;
-export const channelTotal = 40;
-export const bleChannels = Array.from(Array(channel37), (_, x) => x);
-bleChannels.unshift(channel37);
-bleChannels.splice(channel38Value, 0, channel38);
-bleChannels.push(channel39);

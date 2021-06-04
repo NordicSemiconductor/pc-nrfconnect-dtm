@@ -34,63 +34,53 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { useState } from 'react';
-import Form from 'react-bootstrap/Form';
+import React from 'react';
+import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
+import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
 import { getTimeout, timeoutChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 
 const TimeoutSetupView = () => {
+    const range = { min: 0, max: 20 };
+
     const timeout = useSelector(getTimeout);
     const isRunning = useSelector(getIsRunning);
 
     const dispatch = useDispatch();
-    const onTimeoutChanged = time => dispatch(timeoutChanged(time));
 
-    const [enableTimeout, setEnableTimeout] = useState(timeout !== 0);
-    const [timeoutValue, setTimeoutValue] = useState(
-        timeout === 0 ? 1000 : timeout
-    );
-
-    const toggleTimeout = () => {
-        if (enableTimeout) {
-            onTimeoutChanged(0);
-        } else {
-            onTimeoutChanged(timeoutValue);
-        }
-        setEnableTimeout(!enableTimeout);
-    };
-
-    const updateTimeout = time => {
-        onTimeoutChanged(time);
-        setTimeoutValue(time);
-    };
+    const updateTimeout = time => dispatch(timeoutChanged(time));
 
     return (
-        <div className="app-sidepanel-panel">
-            <Form.Group controlId="timeoutEnableCheckbox">
-                <Form.Check
-                    defaultChecked={enableTimeout}
-                    onClick={() => toggleTimeout()}
-                    disabled={isRunning}
-                    label="Enable"
-                />
-            </Form.Group>
-            <Form.Group controlId="formTimeoutSelect">
-                <Form.Label>Timeout (ms)</Form.Label>
-                <Form.Control
-                    onChange={evt => updateTimeout(evt.target.value)}
-                    componentclass="input"
-                    value={timeoutValue}
-                    min={20}
-                    step={10}
-                    type="number"
-                    size="sm"
-                    disabled={!enableTimeout || isRunning}
-                />
-            </Form.Group>
-        </div>
+        <>
+            <FormLabel
+                htmlFor="transit-channel-slider"
+                className="timeout-label"
+            >
+                {timeout === 0 ? (
+                    'No timeout'
+                ) : (
+                    <>
+                        Timeout after
+                        <NumberInlineInput
+                            value={timeout === 0 ? '' : timeout}
+                            range={range}
+                            onChange={val => updateTimeout(val)}
+                            disabled={isRunning}
+                        />
+                        (s)
+                    </>
+                )}
+            </FormLabel>
+            <Slider
+                id="transit-channel-slider"
+                values={[timeout]}
+                onChange={[val => updateTimeout(val)]}
+                range={range}
+                disabled={isRunning}
+            />
+        </>
     );
 };
 

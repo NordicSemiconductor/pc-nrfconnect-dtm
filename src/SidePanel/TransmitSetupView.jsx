@@ -59,9 +59,9 @@ const txPowerView = (
     const range = { min: 0, max: maxDbmRangeValue };
 
     return (
-        <div className="app-sidepanel-component-slider">
+        <>
             <FormLabel htmlFor="transmit-power-slider">
-                <span className="flex-fill">Transmit power</span>
+                Transmit power
                 <NumberInlineInput
                     value={txPowerIdx}
                     range={range}
@@ -82,7 +82,7 @@ const txPowerView = (
                 range={range}
                 disabled={isRunning}
             />
-        </div>
+        </>
     );
 };
 
@@ -94,14 +94,14 @@ const TransmitSetupView = () => {
     const isRunning = useSelector(getIsRunning);
 
     return (
-        <div className="app-sidepanel-panel">
+        <>
             {txPowerView(
                 boardType,
                 txPowerIdx,
                 value => dispatch(txPowerChanged(value)),
                 isRunning
             )}
-        </div>
+        </>
     );
 };
 

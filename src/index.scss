@@ -34,7 +34,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.main-view, .side-panel {
+.main-view,
+.side-panel {
     padding: 10px 15px;
 }
 
@@ -108,17 +109,12 @@
     margin-bottom: 16px;
 }
 
-.form-label {
-    font-weight: bold;
-}
-
-
 .rangeslider.rangeslider-horizontal {
     flex: 1;
     margin: 5px 10px 40px 10px;
     border-radius: 0px;
     .rangeslider__fill {
-        background-color: #0080B7;
+        background-color: #0080b7;
         border-radius: 0px;
     }
     .rangeslider__handle {

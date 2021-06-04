@@ -61,14 +61,10 @@ const ToggleChannelModeView = ({ isRunning }) => {
     );
 
     return (
-        <div>
-            <Group heading="CHANNEL SELECTION">
-                <ButtonGroup className="mb-2 w-100 d-flex flex-row channel-selection">
-                    {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
-                    {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
-                </ButtonGroup>
-            </Group>
-        </div>
+        <ButtonGroup className="w-100 d-flex flex-row channel-selection">
+            {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
+            {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
+        </ButtonGroup>
     );
 };
 

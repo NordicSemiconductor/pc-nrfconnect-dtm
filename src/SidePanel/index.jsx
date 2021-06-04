@@ -37,7 +37,7 @@
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { SidePanel } from 'pc-nrfconnect-shared';
+import { Group, SidePanel } from 'pc-nrfconnect-shared';
 
 import { paneName } from '../utils/panes';
 import ChannelView from './ChannelView';
@@ -53,17 +53,16 @@ const AppSidePanelView = () => {
     const selectedTestMode = useSelector(paneName);
 
     return (
-        <SidePanel>
+        <SidePanel className="sidepanel">
             <RunTestView />
-            <ChannelView />
-            {selectedTestMode === 'transmitter' && <TransmitSetupView />}
-            <OtherSettingsView />
-            {selectedTestMode === 'transmitter' && <PacketView />}
-            <TimeoutView />
-            {/* {selectedTestMode === 'transmitter' && (
-                // <>
-                // </>
-            )} */}
+
+            <Group heading="Channel mode">
+                <ChannelView />
+                {selectedTestMode === 'transmitter' && <TransmitSetupView />}
+                <OtherSettingsView />
+                {selectedTestMode === 'transmitter' && <PacketView />}
+                <TimeoutView />
+            </Group>
         </SidePanel>
     );
 };

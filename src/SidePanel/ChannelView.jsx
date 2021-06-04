@@ -38,9 +38,9 @@
 /* eslint-disable jsx-a11y/label-has-for */
 
 import React from 'react';
-import Form from 'react-bootstrap/Form';
+import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
+import { bleChannels, NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
 import {
     DTM_CHANNEL_MODE,
@@ -55,11 +55,40 @@ import {
     sweepTimeChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
+import { isRealTimePane } from '../utils/panes';
 import ToggleChannelModeView from './ToggleChannelModeView';
 
 import 'react-rangeslider/lib/index.css';
 
+const DelaySlider = ({ isRunning, currentValue, changedFunc }) => {
+    const range = { min: 20, max: 20000 };
+    return (
+        <>
+            <FormLabel htmlFor="sweep-delay-slider">
+                Sweep delay
+                <NumberInlineInput
+                    value={currentValue}
+                    range={range}
+                    onChange={value =>
+                        changedFunc(isRunning ? currentValue : value)
+                    }
+                />{' '}
+                ms
+            </FormLabel>
+            <Slider
+                id="sweep-delay-slider"
+                values={[currentValue]}
+                onChange={[
+                    value => changedFunc(isRunning ? currentValue : value),
+                ]}
+                range={range}
+            />
+        </>
+    );
+};
+
 const ChannelView = () => {
+    const isTransmitterPane = useSelector(isRealTimePane);
     const channelMode = useSelector(getChannelMode);
     const channelSingle = useSelector(getSingleChannel);
     const channelLow = useSelector(getLowChannel);
@@ -69,102 +98,103 @@ const ChannelView = () => {
 
     const dispatch = useDispatch();
 
-    const range = { min: 0, max: 39 };
+    const channelRange = { min: bleChannels.min, max: bleChannels.max };
 
-    const ChannelSlider = (
-        currentValue,
-        changedFunc,
-        title,
-        label = 'channel'
-    ) => (
-        <div title={title}>
-            <Form.Label htmlFor="transit-channel-slider">
-                <span className="flex-fill">Transit on {label}</span>
-                <NumberInlineInput
-                    value={currentValue}
-                    range={range}
-                    onChange={value =>
-                        changedFunc(isRunning ? currentValue : value)
-                    }
-                />
-            </Form.Label>
-            <Slider
-                id="transit-channel-slider"
-                values={[currentValue]}
-                onChange={[
-                    value => changedFunc(isRunning ? currentValue : value),
-                ]}
-                range={range}
-            />
-        </div>
-    );
-
-    const delayLabel =
-        channelMode === DTM_CHANNEL_MODE.sweep
-            ? 'Sweep delay'
-            : 'Update period';
-
-    const isSweepTimeDisabled =
-        channelMode !== DTM_CHANNEL_MODE.sweep ? true : isRunning;
+    const transmitOrReceiveLabel = isTransmitterPane ? 'Transmit' : 'Receive';
 
     return (
-        <div>
-            <div>
+        <>
+            <>
                 <ToggleChannelModeView isRunning={isRunning} />
-            </div>
+            </>
 
             {channelMode === DTM_CHANNEL_MODE.single && (
-                <div className="app-sidepanel-component-slider">
-                    {ChannelSlider(
-                        channelSingle,
-                        channel => dispatch(dtmSingleChannelChanged(channel)),
-                        'Transit on channel'
-                    )}
-                </div>
-            )}
-            {channelMode === DTM_CHANNEL_MODE.sweep && (
-                <div className="app-sidepanel-component-slider">
-                    {ChannelSlider(
-                        channelLow,
-                        channel => dispatch(dtmLowChannelChanged(channel)),
-                        'Transit on low channel',
-                        `low`
-                    )}
-                </div>
-            )}
-            {channelMode === DTM_CHANNEL_MODE.sweep && (
-                <div className="app-sidepanel-component-slider">
-                    {ChannelSlider(
-                        channelHigh,
-                        channel => dispatch(dtmHighChannelChanged(channel)),
-                        'High on high channel',
-                        'high'
-                    )}
-                </div>
-            )}
-
-            {/* <div className="app-sidepanel-component-inputbox">
-                <Form>
-                    <Form.Group controlId="formSweepTimeSelect">
-                        <Form.Label>{delayLabel} (ms)</Form.Label>
-                        <Form.Control
-                            onChange={evt =>
+                <>
+                    <FormLabel htmlFor="channel-slider">
+                        {`${transmitOrReceiveLabel} on channel`}
+                        <NumberInlineInput
+                            value={channelSingle}
+                            range={channelRange}
+                            onChange={value =>
                                 dispatch(
-                                    sweepTimeChanged(Number(evt.target.value))
+                                    dtmSingleChannelChanged(
+                                        isRunning ? channelSingle : value
+                                    )
                                 )
                             }
-                            as="input"
-                            value={sweepTime}
-                            min={20}
-                            step={10}
-                            type="number"
-                            size="sm"
-                            disabled={isSweepTimeDisabled}
                         />
-                    </Form.Group>
-                </Form>
-            </div> */}
-        </div>
+                    </FormLabel>
+                    <Slider
+                        id="channel-slider"
+                        values={[channelSingle]}
+                        onChange={[
+                            value =>
+                                dispatch(
+                                    dtmSingleChannelChanged(
+                                        isRunning ? channelSingle : value
+                                    )
+                                ),
+                        ]}
+                        range={channelRange}
+                    />
+                </>
+            )}
+            {channelMode === DTM_CHANNEL_MODE.sweep && (
+                <>
+                    <DelaySlider
+                        isRunning={isRunning}
+                        currentValue={sweepTime}
+                        changedFunc={value => dispatch(sweepTimeChanged(value))}
+                    />
+
+                    <FormLabel htmlFor="channel-slider">
+                        {`${transmitOrReceiveLabel} on channels`}
+                        <NumberInlineInput
+                            value={channelLow}
+                            range={channelRange}
+                            onChange={newMinValue =>
+                                dispatch(
+                                    dtmLowChannelChanged(
+                                        isRunning ? channelLow : newMinValue
+                                    )
+                                )
+                            }
+                        />
+                        {' to '}
+                        <NumberInlineInput
+                            value={channelHigh}
+                            range={channelRange}
+                            onChange={newMaxValue =>
+                                dispatch(
+                                    dtmHighChannelChanged(
+                                        isRunning ? channelHigh : newMaxValue
+                                    )
+                                )
+                            }
+                        />
+                    </FormLabel>
+                    <Slider
+                        id="channel-slider"
+                        values={[channelLow, channelHigh]}
+                        onChange={[
+                            newValue =>
+                                dispatch(
+                                    dtmLowChannelChanged(
+                                        isRunning ? channelLow : newValue
+                                    )
+                                ),
+                            newValue =>
+                                dispatch(
+                                    dtmHighChannelChanged(
+                                        isRunning ? channelHigh : newValue
+                                    )
+                                ),
+                        ]}
+                        range={channelRange}
+                    />
+                </>
+            )}
+        </>
     );
 };
 

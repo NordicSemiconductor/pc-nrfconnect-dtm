@@ -48,8 +48,7 @@ const frequencyBase = 2402;
 const frequencyInterval = 2;
 
 const chartColors = {
-    inactive: 'rgba(255,99,132,0.2)',
-    active: 'rgba(110,205,172,0.5)',
+    bar: colors.nordicBlue,
     background: colors.gray50,
     label: colors.gray300,
 };
@@ -69,11 +68,11 @@ const chartDataTransmit = (currentChannel, txPower) => {
         {
             label: 'Active transmission power',
             data: active,
-            backgroundColor: chartColors.active,
-            borderColor: chartColors.active,
+            backgroundColor: chartColors.bar,
+            borderColor: chartColors.bar,
             borderWidth: 1,
-            hoverBackgroundColor: chartColors.active,
-            hoverBorderColor: chartColors.active,
+            hoverBackgroundColor: chartColors.bar,
+            hoverBorderColor: chartColors.bar,
         },
         {
             label: 'bgBars',

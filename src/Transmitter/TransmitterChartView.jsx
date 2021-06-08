@@ -39,9 +39,10 @@ import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import { bleChannels, colors } from 'pc-nrfconnect-shared';
 
+import { getBoard } from '../reducers/deviceReducer';
 import { getTxPower } from '../reducers/settingsReducer';
 import { getCurrentChannel, getIsRunning } from '../reducers/testReducer';
-import { dbmValues } from '../utils/constants';
+import { fromPCA } from '../utils/boards';
 
 const frequencyBase = 2402;
 const frequencyInterval = 2;
@@ -89,7 +90,7 @@ const chartDataTransmit = (currentChannel, txPower) => {
     };
 };
 
-const getOptions = () => {
+const getOptions = dBmValues => {
     const options = {
         scaleShowGridLines: true,
         scaleGridLineColor: 'rgba(10,100,100,.05)',
@@ -117,12 +118,12 @@ const getOptions = () => {
                 ticks: {
                     display: true,
                     min: 0,
-                    max: 13,
+                    max: dBmValues.length - 1,
                     suggestedMin: undefined,
                     suggestedMax: undefined,
                     stepSize: 1,
                     callback: value =>
-                        value in dbmValues ? dbmValues[value] : '',
+                        value in dBmValues ? dBmValues[value] : '',
                     fontColor: chartColors.label,
                 },
                 scaleLabel: {
@@ -196,8 +197,8 @@ const getOptions = () => {
             label: (item, data) => {
                 const dataset = data.datasets[item.datasetIndex];
                 const value = dataset.data[item.index];
-                return value in dbmValues
-                    ? `${dataset.label}: ${dbmValues[value]} dbm`
+                return value in dBmValues
+                    ? `${dataset.label}: ${dBmValues[value]} dbm`
                     : '';
             },
         },
@@ -210,6 +211,7 @@ const TransmitterChartView = () => {
     const currentChannel = useSelector(getCurrentChannel);
     const isRunning = useSelector(getIsRunning);
     const txPower = useSelector(getTxPower);
+    const boardType = useSelector(getBoard);
 
     return (
         <Bar
@@ -217,7 +219,7 @@ const TransmitterChartView = () => {
                 isRunning ? currentChannel : undefined,
                 txPower
             )}
-            options={getOptions()}
+            options={getOptions(fromPCA(boardType).txPower)}
             width={600}
             height={250}
         />

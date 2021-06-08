@@ -51,7 +51,7 @@ const RunTestView = () => {
     const disabled = !useSelector(getIsReady);
 
     const onClick = () => {
-        dispatch(isRunning ? endTests : startTests);
+        dispatch(isRunning ? endTests() : startTests());
     };
 
     return (

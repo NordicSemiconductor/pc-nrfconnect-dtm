@@ -58,14 +58,16 @@ export const DTM_TEST_DONE = 'DTM_TEST_DONE';
 
 const dtmStatisticsUpdated = dispatch => event => {
     if (event.type === 'reset') {
-        dispatch(resetChannel);
+        dispatch(resetChannel());
     } else if (event.action === 'started') {
-        dispatch(startedChannel, event.channel);
+        dispatch(startedChannel(event.channel));
     } else if (event.action === 'ended') {
-        dispatch(endedChannel, {
-            channel: event.channel,
-            received: event.packets,
-        });
+        dispatch(
+            endedChannel({
+                channel: event.channel,
+                received: event.packets,
+            })
+        );
     } else if (event.action === 'done') {
         dispatch({
             type: DTM_TEST_DONE,
@@ -212,14 +214,14 @@ export function startTests() {
                 logger.info(
                     `${testTypeStr} test finished successfully${packetsRcvStr}`
                 );
-                dispatch(actionSucceeded, receivedChannels);
+                dispatch(actionSucceeded(receivedChannels));
             } else {
                 logger.info(`End test failed: ${message}`);
-                dispatch(actionFailed, message);
+                dispatch(actionFailed(message));
             }
         });
 
-        dispatch(startedAction);
+        dispatch(startedAction());
     };
 }
 
@@ -230,7 +232,7 @@ export function endTests() {
             if (res !== undefined) {
                 logger.debug(`Test ended: ${res}`);
             }
-            dispatch(stoppedAction);
+            dispatch(stoppedAction());
         });
     };
 }

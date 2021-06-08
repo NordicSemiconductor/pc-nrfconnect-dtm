@@ -37,7 +37,7 @@
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
-import React from 'react';
+import React, { useState } from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
@@ -47,27 +47,35 @@ import { getTxPower, txPowerChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 
-const txPowerView = (
+const TxPowerView = (
     boardType,
     txPowerIdx,
     txPowerUpdatedAction,
     isRunning
 ) => {
-    const compatibility = fromPCA(boardType);
-    const maxDbmRangeValue = compatibility.txPower.length - 1;
+    const dBmValues = fromPCA(boardType).txPower;
+    const maxDbmRange = dBmValues.length - 1;
 
-    const range = { min: 0, max: maxDbmRangeValue };
+    const [txPower, setTxPower] = useState(dBmValues[txPowerIdx]);
 
     return (
         <>
             <FormLabel htmlFor="transmit-power-slider">
                 Transmit power
                 <NumberInlineInput
-                    value={txPowerIdx}
-                    range={range}
-                    onChange={value =>
-                        txPowerUpdatedAction(isRunning ? txPowerIdx : value)
-                    }
+                    value={txPower}
+                    range={{ min: dBmValues[0], max: dBmValues[maxDbmRange] }}
+                    disabled={isRunning}
+                    onChange={value => {
+                        const index = dBmValues.findIndex(e => e === value);
+                        if (index >= 0) txPowerUpdatedAction(index);
+                        setTxPower(value);
+                    }}
+                    onChangeComplete={value => {
+                        const index = dBmValues.findIndex(e => e === value);
+                        if (index < 0) setTxPower(dBmValues[txPowerIdx]);
+                        else txPowerUpdatedAction(index);
+                    }}
                 />{' '}
                 dBm
             </FormLabel>
@@ -76,10 +84,11 @@ const txPowerView = (
                 values={[txPowerIdx]}
                 onChange={[
                     value => {
-                        txPowerUpdatedAction(isRunning ? txPowerIdx : value);
+                        txPowerUpdatedAction(value);
+                        setTxPower(dBmValues[value]);
                     },
                 ]}
-                range={range}
+                range={{ min: 0, max: maxDbmRange }}
                 disabled={isRunning}
             />
         </>
@@ -95,7 +104,7 @@ const TransmitSetupView = () => {
 
     return (
         <>
-            {txPowerView(
+            {TxPowerView(
                 boardType,
                 txPowerIdx,
                 value => dispatch(txPowerChanged(value)),

@@ -163,7 +163,7 @@ export function startTests() {
             testPromise = dtm.sweepTransmitterTest(
                 bitpattern,
                 length,
-                channelRange,
+                ...channelRange,
                 sweepTime,
                 timeout
             );
@@ -188,7 +188,7 @@ export function startTests() {
             testPromise = dtm.sweepReceiverTest(
                 bitpattern,
                 length,
-                channelRange,
+                ...channelRange,
                 sweepTime,
                 timeout
             );

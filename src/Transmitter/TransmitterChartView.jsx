@@ -192,15 +192,15 @@ const getOptions = dBmValues => {
     };
     options.tooltips = {
         enabled: true,
-        callbacks: {
-            label: (item, data) => {
-                const dataset = data.datasets[item.datasetIndex];
-                const value = dataset.data[item.index];
-                return value in dBmValues
-                    ? `${dataset.label}: ${dBmValues[value]} dbm`
-                    : '';
-            },
-        },
+        // callbacks: {
+        //     label: (item, data) => {
+        //         const dataset = data.datasets[item.datasetIndex];
+        //         const value = dataset.data[item.index];
+        //         return value in dBmValues
+        //             ? `${dataset.label}: ${dBmValues[value]} dbm`
+        //             : '';
+        //     },
+        // },
     };
 
     return options;

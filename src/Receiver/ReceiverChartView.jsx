@@ -52,8 +52,10 @@ const chartColors = {
 };
 
 const bleChannelsUpdated = bleChannels.map(
+    // Modifying here will update the label of frequency
     (channel, index) =>
-        `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
+        // `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
+        'Lalala'
 );
 
 const ChartView = () => {
@@ -189,13 +191,26 @@ const ChartView = () => {
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: 'MHz',
+                                // elString: 'MHz',
                                 fontColor: chartColors.label,
                                 fontSize: 14,
                                 padding: { top: 10 },
                             },
                         },
                     ],
+                },
+                tooltips: {
+                    enabled: true,
+                    callbacks: {
+                        label: (item, data) => {
+                            // const dataset = data.datasets[item.datasetIndex];
+                            // const value = dataset.data[item.index];
+                            // return value in dBmValues
+                            //     ? `${dataset.label}: ${dBmValues[value]} dbm`
+                            //     : '';
+                            return 'remove or set false here to disable bgBars';
+                        },
+                    },
                 },
             }}
             width={600}

@@ -69,6 +69,7 @@ const dtmStatisticsUpdated = dispatch => event => {
             })
         );
     } else if (event.action === 'done') {
+        // This event is not being triggered nor does this dispatch do anything
         dispatch({
             type: DTM_TEST_DONE,
         });

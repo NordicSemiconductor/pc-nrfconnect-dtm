@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import { bleChannels, colors } from 'pc-nrfconnect-shared';
 
-import { getLastReceived } from '../reducers/testReducer';
+import { getIsRunning, getLastReceived } from '../reducers/testReducer';
 import { dbmValues } from '../utils/constants';
 
 const frequencyBase = 2402;
@@ -53,7 +53,12 @@ const chartColors = {
 
 const ChartView = () => {
     const lastReceived = useSelector(getLastReceived);
+    const isRunning = useSelector(getIsRunning);
     const [maxY, setMaxY] = useState(0);
+
+    useEffect(() => {
+        if (isRunning) setMaxY(10);
+    }, [isRunning]);
 
     return (
         <Bar

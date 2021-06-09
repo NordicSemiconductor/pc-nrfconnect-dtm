@@ -54,8 +54,6 @@ const AppSidePanelView = () => {
 
     return (
         <SidePanel className="sidepanel">
-            <RunTestView />
-
             <Group heading="Channel mode">
                 <ChannelView />
                 {selectedTestMode === 'transmitter' && <TransmitSetupView />}
@@ -63,6 +61,7 @@ const AppSidePanelView = () => {
                 {selectedTestMode === 'transmitter' && <PacketView />}
                 <TimeoutView />
             </Group>
+            <RunTestView />
         </SidePanel>
     );
 };

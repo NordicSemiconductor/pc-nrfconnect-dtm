@@ -51,6 +51,11 @@ const chartColors = {
     label: colors.gray300,
 };
 
+const bleChannelsUpdated = bleChannels.map(
+    (channel, index) =>
+        `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
+);
+
 const ChartView = () => {
     const lastReceived = useSelector(getLastReceived);
     const isRunning = useSelector(getIsRunning);
@@ -63,7 +68,7 @@ const ChartView = () => {
     return (
         <Bar
             data={{
-                labels: bleChannels,
+                labels: bleChannelsUpdated,
                 datasets: [
                     {
                         label: 'Received packets',
@@ -78,7 +83,8 @@ const ChartView = () => {
                         label: 'bgBars',
                         backgroundColor: chartColors.background,
                         borderWidth: 0,
-                        data: Array(bleChannels.length).fill(maxY),
+                        data: Array(bleChannelsUpdated.length).fill(maxY),
+                        display: false,
                     },
                 ],
             }}

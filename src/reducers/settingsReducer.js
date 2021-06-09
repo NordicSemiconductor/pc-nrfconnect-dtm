@@ -55,7 +55,7 @@ const InitialState = {
     txPower: Math.max(0, Constants.dbmValues.indexOf(0)),
     phy: DTM.DTM_PARAMETER.PHY_LE_1M,
     modulationMode: DTM.DTM_PARAMETER.STANDARD_MODULATION_INDEX,
-    timeout: 0,
+    timeoutms: 0,
 };
 
 const settingsSlice = createSlice({
@@ -84,7 +84,7 @@ const settingsSlice = createSlice({
             state.length = action.payload;
         },
         timeoutChanged(state, action) {
-            state.timeout = action.payload;
+            state.timeoutms = action.payload * 1000;
         },
         phyChanged(state, action) {
             state.phy = action.payload;
@@ -119,7 +119,7 @@ const getLength = state => state.app.settings.length;
 const getTxPower = state => state.app.settings.txPower;
 const getPhy = state => state.app.settings.phy;
 const getModulation = state => state.app.settings.modulationMode;
-const getTimeout = state => state.app.settings.timeout;
+const getTimeout = state => state.app.settings.timeoutms;
 
 export {
     dtmChannelModeChanged,

@@ -129,7 +129,7 @@ export function startTests() {
             singleChannel,
             channelRange,
             sweepTime,
-            timeout,
+            timeoutms,
             channelMode,
         } = settings;
 
@@ -157,7 +157,7 @@ export function startTests() {
                 bitpattern,
                 length,
                 singleChannel,
-                timeout
+                timeoutms
             );
         } else if (testMode === 'transmitter' && channelMode === sweep) {
             testPromise = dtm.sweepTransmitterTest(
@@ -165,7 +165,7 @@ export function startTests() {
                 length,
                 ...channelRange,
                 sweepTime,
-                timeout
+                timeoutms
             );
         } else if (testMode === 'receiver' && channelMode === single) {
             // TODO: Figure out the importance of execution of single channel test,
@@ -182,7 +182,7 @@ export function startTests() {
                 singleChannel,
                 singleChannel,
                 sweepTime,
-                timeout
+                timeoutms
             );
         } else {
             testPromise = dtm.sweepReceiverTest(
@@ -190,7 +190,7 @@ export function startTests() {
                 length,
                 ...channelRange,
                 sweepTime,
-                timeout
+                timeoutms
             );
         }
 

@@ -64,7 +64,7 @@ const TimeoutSetupView = () => {
                     <>
                         Timeout after
                         <NumberInlineInput
-                            value={timeout === 0 ? '' : timeout}
+                            value={timeout === 0 ? '' : timeout / 1000}
                             range={range}
                             onChange={val => updateTimeout(val)}
                             disabled={isRunning}
@@ -75,7 +75,7 @@ const TimeoutSetupView = () => {
             </FormLabel>
             <Slider
                 id="transit-channel-slider"
-                values={[timeout]}
+                values={[timeout / 1000]}
                 onChange={[val => updateTimeout(val)]}
                 range={range}
                 disabled={isRunning}

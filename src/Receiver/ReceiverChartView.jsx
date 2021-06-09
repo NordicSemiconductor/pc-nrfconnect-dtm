@@ -191,7 +191,7 @@ const ChartView = () => {
                             },
                             scaleLabel: {
                                 display: true,
-                                // elString: 'MHz',
+                                labelString: 'MHz',
                                 fontColor: chartColors.label,
                                 fontSize: 14,
                                 padding: { top: 10 },

@@ -34,7 +34,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import { bleChannels, colors } from 'pc-nrfconnect-shared';
@@ -51,160 +51,142 @@ const chartColors = {
     label: colors.gray300,
 };
 
-const chartDataReceive = history => {
-    const datasets = [];
-
-    const bleChannelsUpdated = bleChannels.map(
-        (channel, index) =>
-            `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
-    );
-
-    if (history !== undefined) {
-        datasets.push({
-            label: 'Received packets',
-            data: [...history],
-            backgroundColor: chartColors.bar,
-            borderColor: chartColors.bar,
-            borderWidth: 1,
-            hoverBackgroundColor: chartColors.bar,
-            hoverBorderColor: chartColors.bar,
-        });
-        datasets.push({
-            label: 'bgBars',
-            backgroundColor: chartColors.background,
-            borderWidth: 0,
-            data: Array(bleChannelsUpdated.length).fill(
-                datasets[0].data.length
-            ),
-        });
-    }
-    return {
-        labels: bleChannelsUpdated,
-        datasets,
-    };
-};
-
-const getOptions = () => {
-    const options = {
-        scaleShowGridLines: true,
-        scaleGridLineColor: 'rgba(10,100,100,.05)',
-        scaleGridLineWidth: 1,
-        scaleShowHorizontalLines: true,
-        scaleShowVerticalLines: true,
-        bezierCurve: true,
-        bezierCurveTension: 0.4,
-        pointDot: true,
-        pointDotRadius: 4,
-        pointDotStrokeWidth: 1,
-        pointHitDetectionRadius: 20,
-        datasetStroke: true,
-        datasetStrokeWidth: 2,
-        datasetFill: true,
-        maintainAspectRatio: false,
-        legend: { display: false },
-    };
-
-    options.tooltips = {
-        enabled: true,
-        callbacks: {
-            label: (item, data) => {
-                const dataset = data.datasets[item.datasetIndex];
-                const value = dataset.data[item.index];
-                return value in dbmValues
-                    ? `${dataset.label}: ${dbmValues[value]} dbm`
-                    : '';
-            },
-        },
-    };
-
-    options.animation = null;
-    options.scales = {
-        yAxes: [
-            {
-                ticks: {
-                    min: undefined,
-                    max: undefined,
-                    suggestedMin: 0,
-                    suggestedMax: 10,
-                    stepSize: undefined,
-                    callback: value => value,
-                    fontColor: chartColors.label,
-                },
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Received packets',
-                    fontColor: chartColors.label,
-                    fontSize: 14,
-                },
-                gridLines: {
-                    display: false,
-                    drawBorder: false,
-                },
-            },
-        ],
-        xAxes: [
-            {
-                type: 'category',
-                position: 'top',
-                offset: true,
-                stacked: true,
-                gridLines: {
-                    display: false,
-                },
-                ticks: {
-                    callback: (_, index) =>
-                        String(bleChannels[index]).padStart(2, '0'),
-                    minRotation: 0,
-                    maxRotation: 0,
-                    labelOffset: 0,
-                    autoSkipPadding: 5,
-                    fontColor: chartColors.label,
-                },
-                scaleLabel: {
-                    display: true,
-                    labelString: 'BLE channel',
-                    fontColor: chartColors.label,
-                    fontSize: 14,
-                },
-            },
-            {
-                type: 'category',
-                position: 'bottom',
-                offset: true,
-                stacked: true,
-                gridLines: {
-                    offsetGridLines: true,
-                    display: false,
-                    drawBorder: false,
-                },
-                ticks: {
-                    callback: (_, index) =>
-                        frequencyBase + index * frequencyInterval,
-                    minRotation: 90,
-                    labelOffset: 0,
-                    autoSkipPadding: 5,
-                    fontColor: chartColors.label,
-                },
-                scaleLabel: {
-                    display: true,
-                    labelString: 'MHz',
-                    fontColor: chartColors.label,
-                    fontSize: 14,
-                    padding: { top: 10 },
-                },
-            },
-        ],
-    };
-    return options;
-};
-
 const ChartView = () => {
     const lastReceived = useSelector(getLastReceived);
+    const [maxY, setMaxY] = useState(0);
 
     return (
         <Bar
-            data={chartDataReceive(lastReceived)}
-            options={getOptions()}
+            data={{
+                labels: bleChannels,
+                datasets: [
+                    {
+                        label: 'Received packets',
+                        data: [...lastReceived],
+                        backgroundColor: chartColors.bar,
+                        borderColor: chartColors.bar,
+                        borderWidth: 1,
+                        hoverBackgroundColor: chartColors.bar,
+                        hoverBorderColor: chartColors.bar,
+                    },
+                    {
+                        label: 'bgBars',
+                        backgroundColor: chartColors.background,
+                        borderWidth: 0,
+                        data: Array(bleChannels.length).fill(maxY),
+                    },
+                ],
+            }}
+            options={{
+                scaleShowGridLines: true,
+                scaleGridLineColor: 'rgba(10,100,100,.05)',
+                scaleGridLineWidth: 1,
+                scaleShowHorizontalLines: true,
+                scaleShowVerticalLines: true,
+                bezierCurve: true,
+                bezierCurveTension: 0.4,
+                pointDot: true,
+                pointDotRadius: 4,
+                pointDotStrokeWidth: 1,
+                pointHitDetectionRadius: 20,
+                datasetStroke: true,
+                datasetStrokeWidth: 2,
+                datasetFill: true,
+                maintainAspectRatio: false,
+                legend: { display: false },
+
+                enabled: true,
+                callbacks: {
+                    label: (item, data) => {
+                        const dataset = data.datasets[item.datasetIndex];
+                        const value = dataset.data[item.index];
+                        return value in dbmValues
+                            ? `${dataset.label}: ${dbmValues[value]} dbm`
+                            : '';
+                    },
+                },
+                animation: null,
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                min: undefined,
+                                max: undefined,
+                                suggestedMin: 0,
+                                suggestedMax: 10,
+                                stepSize: undefined,
+                                callback: (value, _, values) => {
+                                    setMaxY(values[0]);
+                                    return value;
+                                },
+                                fontColor: chartColors.label,
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Received packets',
+                                fontColor: chartColors.label,
+                                fontSize: 14,
+                            },
+                            gridLines: {
+                                display: false,
+                                drawBorder: false,
+                            },
+                        },
+                    ],
+                    xAxes: [
+                        {
+                            type: 'category',
+                            position: 'top',
+                            offset: true,
+                            stacked: true,
+                            gridLines: {
+                                display: false,
+                            },
+                            ticks: {
+                                callback: (_, index) =>
+                                    String(bleChannels[index]).padStart(2, '0'),
+                                minRotation: 0,
+                                maxRotation: 0,
+                                labelOffset: 0,
+                                autoSkipPadding: 5,
+                                fontColor: chartColors.label,
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'BLE channel',
+                                fontColor: chartColors.label,
+                                fontSize: 14,
+                            },
+                        },
+                        {
+                            type: 'category',
+                            position: 'bottom',
+                            offset: true,
+                            stacked: true,
+                            gridLines: {
+                                offsetGridLines: true,
+                                display: false,
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                callback: (_, index) =>
+                                    frequencyBase + index * frequencyInterval,
+                                minRotation: 90,
+                                labelOffset: 0,
+                                autoSkipPadding: 5,
+                                fontColor: chartColors.label,
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'MHz',
+                                fontColor: chartColors.label,
+                                fontSize: 14,
+                                padding: { top: 10 },
+                            },
+                        },
+                    ],
+                },
+            }}
             width={600}
             height={250}
         />

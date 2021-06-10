@@ -164,7 +164,7 @@ const ChartView = () => {
                                 fontColor: chartColors.label,
                             },
                             scaleLabel: {
-                                display: true,
+                                display: false,
                                 labelString: 'BLE channel',
                                 fontColor: chartColors.label,
                                 fontSize: 14,

@@ -36,7 +36,9 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-const InitialState = {
+import { RootState, WarningState } from './types';
+
+const InitialState: WarningState = {
     compatibleDeviceWarning: '',
     communicationError: '',
 };
@@ -63,9 +65,10 @@ export default warningSlice.reducer;
 const { incompatibleDevice, communicationError, clearAllWarnings } =
     warningSlice.actions;
 
-const getCompatibleDeviceWaring = state =>
+const getCompatibleDeviceWaring = (state: RootState) =>
     state.app.warning.compatibleDeviceWarning;
-const getCommunicationError = state => state.app.warning.communicationError;
+const getCommunicationError = (state: RootState) =>
+    state.app.warning.communicationError;
 
 export {
     incompatibleDevice,

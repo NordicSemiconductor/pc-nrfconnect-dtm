@@ -36,7 +36,9 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-const InitialState = {
+import { RootState, TestState } from './types';
+
+const InitialState: TestState = {
     isRunning: false,
     lastStatusMessage: '',
     lastReceived: new Array(40).fill(0),
@@ -101,12 +103,13 @@ const {
     endedChannel,
 } = testSlice.actions;
 
-const getIsRunning = state => state.app.test.isRunning;
-const getLastStatusMessage = state => state.app.test.lastStatusMessage;
-const getLastReceived = state => state.app.test.lastReceived;
-const getCurrentChannel = state => state.app.test.currentChannel;
-const getLastChannel = state => state.app.test.lastChannel;
-const getUpdate = state => state.app.test.update;
+const getIsRunning = (state: RootState) => state.app.test.isRunning;
+const getLastStatusMessage = (state: RootState) =>
+    state.app.test.lastStatusMessage;
+const getLastReceived = (state: RootState) => state.app.test.lastReceived;
+const getCurrentChannel = (state: RootState) => state.app.test.currentChannel;
+const getLastChannel = (state: RootState) => state.app.test.lastChannel;
+const getUpdate = (state: RootState) => state.app.test.update;
 
 export {
     startedAction,

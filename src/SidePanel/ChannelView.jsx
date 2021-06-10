@@ -114,7 +114,7 @@ const ChannelView = () => {
                     <FormLabel htmlFor="channel-slider">
                         {`${transmitOrReceiveLabel} on channel`}
                         <NumberInlineInput
-                            value={channelSingle}
+                            value={bleChannels[channelSingle]}
                             range={{
                                 min: lowChannel,
                                 max: bleChannels.max,

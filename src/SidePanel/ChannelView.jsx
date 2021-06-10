@@ -64,7 +64,7 @@ const DelaySlider = ({ isRunning, currentValue, changedFunc }) => {
     return (
         <>
             <FormLabel htmlFor="sweep-delay-slider">
-                Sweep delay
+                Transmit delay
                 <NumberInlineInput
                     value={currentValue}
                     range={range}

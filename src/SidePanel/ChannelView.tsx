@@ -57,7 +57,17 @@ import { getIsRunning } from '../reducers/testReducer';
 import { isRealTimePane } from '../utils/panes';
 import ToggleChannelModeView from './ToggleChannelModeView';
 
-const DelaySlider = ({ isRunning, currentValue, changedFunc }) => {
+interface DelaySliderProps {
+    isRunning: boolean;
+    currentValue: number;
+    changedFunc: (value: number) => void;
+}
+
+const DelaySlider = ({
+    isRunning,
+    currentValue,
+    changedFunc,
+}: DelaySliderProps) => {
     const range = { min: 20, max: 20000 };
     return (
         <>

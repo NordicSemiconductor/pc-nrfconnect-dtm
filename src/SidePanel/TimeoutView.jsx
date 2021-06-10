@@ -69,7 +69,7 @@ const TimeoutSetupView = () => {
                             onChange={val => updateTimeout(val)}
                             disabled={isRunning}
                         />
-                        (s)
+                        s
                     </>
                 )}
             </FormLabel>

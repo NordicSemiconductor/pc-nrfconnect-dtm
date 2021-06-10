@@ -57,8 +57,6 @@ import { getIsRunning } from '../reducers/testReducer';
 import { isRealTimePane } from '../utils/panes';
 import ToggleChannelModeView from './ToggleChannelModeView';
 
-import 'react-rangeslider/lib/index.css';
-
 const DelaySlider = ({ isRunning, currentValue, changedFunc }) => {
     const range = { min: 20, max: 20000 };
     return (

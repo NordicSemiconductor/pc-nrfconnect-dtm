@@ -108,35 +108,3 @@
 .app-sidepanel-panel {
     margin-bottom: 16px;
 }
-
-.rangeslider.rangeslider-horizontal {
-    flex: 1;
-    margin: 5px 10px 40px 10px;
-    border-radius: 0px;
-    .rangeslider__fill {
-        background-color: #0080b7;
-        border-radius: 0px;
-    }
-    .rangeslider__handle {
-        width: 10px;
-        border-radius: 0px;
-        box-shadow: none;
-        transform: translate(-50%, -50%);
-        &:after {
-            display: none;
-        }
-    }
-    .rangeslider__handle:focus {
-        outline: none;
-    }
-    .rangeslider__labels .rangeslider__label-item {
-        transform: translate(-50%, 0);
-    }
-
-    li.rangeslider__label-item:nth-child(2) {
-        background: white;
-        z-index: 100;
-        padding: 0 10px;
-        font-weight: bold;
-    }
-}

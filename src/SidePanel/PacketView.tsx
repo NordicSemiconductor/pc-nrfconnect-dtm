@@ -52,8 +52,6 @@ import {
 import { getIsRunning } from '../reducers/testReducer';
 import { Dropdown, DropdownItem } from './dropdown';
 
-import 'react-rangeslider/lib/index.css';
-
 const VENDOR_PAYLOAD_LENGTH = 1;
 
 interface PacketTypeViewProps {

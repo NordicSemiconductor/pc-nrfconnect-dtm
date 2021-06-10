@@ -34,42 +34,54 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
 import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import { Group } from 'pc-nrfconnect-shared';
-import PropTypes from 'prop-types';
+import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
-import channelModeChanged from '../actions/settingsActions';
-import { DTM_CHANNEL_MODE, getChannelMode } from '../reducers/settingsReducer';
+import { getTimeout, timeoutChanged } from '../reducers/settingsReducer';
+import { getIsRunning } from '../reducers/testReducer';
 
-const ToggleChannelModeView = ({ isRunning }) => {
-    const selected = useSelector(getChannelMode);
+const TimeoutSetupView = () => {
+    const range = { min: 0, max: 20 };
+
+    const timeout = useSelector(getTimeout);
+    const isRunning = useSelector(getIsRunning);
 
     const dispatch = useDispatch();
 
-    const selectionButton = (type, text) => (
-        <Button
-            variant={selected === type ? 'set' : 'unset'}
-            onClick={() => dispatch(channelModeChanged(type))}
-            active={selected === type}
-            disabled={isRunning}
-        >
-            {text}
-        </Button>
-    );
+    const updateTimeout = (time: number) => dispatch(timeoutChanged(time));
 
     return (
-        <ButtonGroup className="w-100 d-flex flex-row channel-selection">
-            {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
-            {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
-        </ButtonGroup>
+        <>
+            <FormLabel
+                htmlFor="transit-channel-slider"
+                className="timeout-label"
+            >
+                {timeout === 0 ? (
+                    'No timeout'
+                ) : (
+                    <>
+                        Timeout after
+                        <NumberInlineInput
+                            value={timeout / 1000}
+                            range={range}
+                            onChange={val => updateTimeout(val)}
+                            disabled={isRunning}
+                        />
+                        s
+                    </>
+                )}
+            </FormLabel>
+            <Slider
+                id="transit-channel-slider"
+                values={[timeout / 1000]}
+                onChange={[val => updateTimeout(val)]}
+                range={range}
+                disabled={isRunning}
+            />
+        </>
     );
 };
 
-ToggleChannelModeView.propTypes = {
-    isRunning: PropTypes.bool.isRequired,
-};
-
-export default ToggleChannelModeView;
+export default TimeoutSetupView;

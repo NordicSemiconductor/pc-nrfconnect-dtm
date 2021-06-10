@@ -47,12 +47,12 @@ import { getTxPower, txPowerChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 
-const TxPowerView = (
-    boardType,
-    txPowerIdx,
-    txPowerUpdatedAction,
-    isRunning
-) => {
+const TxPowerView = () => {
+    const txPowerIdx = useSelector(getTxPower);
+    const boardType = useSelector(getBoard);
+    const isRunning = useSelector(getIsRunning);
+    const dispatch = useDispatch();
+
     const dBmValues = fromPCA(boardType).txPower;
     const maxDbmRange = dBmValues.length - 1;
 
@@ -68,13 +68,13 @@ const TxPowerView = (
                     disabled={isRunning}
                     onChange={value => {
                         const index = dBmValues.findIndex(e => e === value);
-                        if (index >= 0) txPowerUpdatedAction(index);
+                        if (index >= 0) dispatch(txPowerChanged(index));
                         setTxPower(value);
                     }}
                     onChangeComplete={value => {
                         const index = dBmValues.findIndex(e => e === value);
                         if (index < 0) setTxPower(dBmValues[txPowerIdx]);
-                        else txPowerUpdatedAction(index);
+                        else dispatch(txPowerChanged(index));
                     }}
                 />{' '}
                 dBm
@@ -84,7 +84,7 @@ const TxPowerView = (
                 values={[txPowerIdx]}
                 onChange={[
                     value => {
-                        txPowerUpdatedAction(value);
+                        dispatch(txPowerChanged(value));
                         setTxPower(dBmValues[value]);
                     },
                 ]}
@@ -95,23 +95,4 @@ const TxPowerView = (
     );
 };
 
-const TransmitSetupView = () => {
-    const dispatch = useDispatch();
-
-    const txPowerIdx = useSelector(getTxPower);
-    const boardType = useSelector(getBoard);
-    const isRunning = useSelector(getIsRunning);
-
-    return (
-        <>
-            {TxPowerView(
-                boardType,
-                txPowerIdx,
-                value => dispatch(txPowerChanged(value)),
-                isRunning
-            )}
-        </>
-    );
-};
-
-export default TransmitSetupView;
+export default TxPowerView;

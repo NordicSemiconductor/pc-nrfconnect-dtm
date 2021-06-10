@@ -34,54 +34,47 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// eslint-disable-next-line import/no-unresolved
 import React from 'react';
-import FormLabel from 'react-bootstrap/FormLabel';
+import { Button, ButtonGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
+import { Group } from 'pc-nrfconnect-shared';
+import PropTypes from 'prop-types';
 
-import { getTimeout, timeoutChanged } from '../reducers/settingsReducer';
-import { getIsRunning } from '../reducers/testReducer';
+import channelModeChanged from '../actions/settingsActions';
+import { DTM_CHANNEL_MODE, getChannelMode } from '../reducers/settingsReducer';
 
-const TimeoutSetupView = () => {
-    const range = { min: 0, max: 20 };
+interface ToggleChannelModeViewProps {
+    isRunning: boolean;
+}
 
-    const timeout = useSelector(getTimeout);
-    const isRunning = useSelector(getIsRunning);
+const ToggleChannelModeView = ({ isRunning }: ToggleChannelModeViewProps) => {
+    const selected = useSelector(getChannelMode);
 
     const dispatch = useDispatch();
 
-    const updateTimeout = time => dispatch(timeoutChanged(time));
+    const selectionButton = (type: string, text: string) => (
+        <Button
+            // @ts-ignore -- Doesn't seem to be an easy way to use custom variants with TS
+            variant={selected === type ? 'set' : 'unset'}
+            onClick={() => dispatch(channelModeChanged(type))}
+            active={selected === type}
+            disabled={isRunning}
+        >
+            {text}
+        </Button>
+    );
 
     return (
-        <>
-            <FormLabel
-                htmlFor="transit-channel-slider"
-                className="timeout-label"
-            >
-                {timeout === 0 ? (
-                    'No timeout'
-                ) : (
-                    <>
-                        Timeout after
-                        <NumberInlineInput
-                            value={timeout === 0 ? '' : timeout / 1000}
-                            range={range}
-                            onChange={val => updateTimeout(val)}
-                            disabled={isRunning}
-                        />
-                        s
-                    </>
-                )}
-            </FormLabel>
-            <Slider
-                id="transit-channel-slider"
-                values={[timeout / 1000]}
-                onChange={[val => updateTimeout(val)]}
-                range={range}
-                disabled={isRunning}
-            />
-        </>
+        <ButtonGroup className="w-100 d-flex flex-row channel-selection">
+            {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
+            {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
+        </ButtonGroup>
     );
 };
 
-export default TimeoutSetupView;
+ToggleChannelModeView.propTypes = {
+    isRunning: PropTypes.bool.isRequired,
+};
+
+export default ToggleChannelModeView;

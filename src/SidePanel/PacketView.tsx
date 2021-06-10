@@ -147,26 +147,19 @@ const PacketView = () => {
 
     return (
         <>
-            <div className="app-sidepanel-component-inputbox">
-                <PacketTypeView
-                    bitpatternUpdated={value =>
-                        dispatch(bitpatternChanged(value))
-                    }
-                    lengthUpdated={lengthChangedAction}
-                    selectedPkgType={pkgType}
-                    isRunning={isRunning}
-                    isVendorPayload={isVendorPayload}
-                />
-            </div>
-
+            <PacketTypeView
+                bitpatternUpdated={value => dispatch(bitpatternChanged(value))}
+                lengthUpdated={lengthChangedAction}
+                selectedPkgType={pkgType}
+                isRunning={isRunning}
+                isVendorPayload={isVendorPayload}
+            />
             {!isVendorPayload(pkgType) && (
-                <div className="app-sidepanel-component-inputbox">
-                    <PacketLengthView
-                        currentLength={packetLength}
-                        changedFunc={lengthChangedAction}
-                        isRunning={isRunning}
-                    />
-                </div>
+                <PacketLengthView
+                    currentLength={packetLength}
+                    changedFunc={lengthChangedAction}
+                    isRunning={isRunning}
+                />
             )}
         </>
     );

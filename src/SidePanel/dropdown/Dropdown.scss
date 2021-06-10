@@ -36,13 +36,14 @@
 
 @import '~pc-nrfconnect-shared/styles';
 
-.dropdown-label {
-    font-size: 10px;
-}
-
 .dropdown-container {
     position: relative;
     width: 100%;
+
+    .dropdown-label {
+        font-size: 10px;
+        margin-bottom: 4px !important;
+    }
 
     .dropdown-btn {
         width: 100%;

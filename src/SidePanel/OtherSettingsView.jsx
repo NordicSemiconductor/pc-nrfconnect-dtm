@@ -78,14 +78,12 @@ const OtherSettingsView = () => {
 
     return (
         <div className="app-sidepanel-panel">
-            <div className="app-sidepanel-component-inputbox">
-                {phyTypeView(
-                    boardType,
-                    phy,
-                    value => dispatch(phyChanged(value)),
-                    isRunning
-                )}
-            </div>
+            {phyTypeView(
+                boardType,
+                phy,
+                value => dispatch(phyChanged(value)),
+                isRunning
+            )}
         </div>
     );
 };

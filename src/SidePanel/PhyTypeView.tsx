@@ -35,7 +35,7 @@
  */
 
 import React from 'react';
-import Form from 'react-bootstrap/Form';
+import FormGroup from 'react-bootstrap/FormGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
@@ -45,18 +45,23 @@ import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 import { Dropdown, DropdownItem } from './dropdown';
 
-const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
+const PhyTypeView = () => {
+    const phy = useSelector(getPhy);
+    const boardType = useSelector(getBoard);
+    const isRunning = useSelector(getIsRunning);
+    const dispatch = useDispatch();
     const compatibility = fromPCA(boardType);
+
     const items = Object.keys(compatibility.phy).map(keyname => (
         <DropdownItem
             key={keyname}
             title={DTM_PHY_STRING[compatibility.phy[keyname]]}
-            onSelect={() => onPhyUpdated(compatibility.phy[keyname])}
+            onSelect={() => dispatch(phyChanged(compatibility.phy[keyname]))}
         />
     ));
 
     return (
-        <Form.Group controlId="formTimeoutSelect">
+        <FormGroup controlId="formTimeoutSelect">
             <Dropdown
                 label="Physical layer"
                 title={DTM_PHY_STRING[phy]}
@@ -65,27 +70,8 @@ const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
             >
                 {items}
             </Dropdown>
-        </Form.Group>
+        </FormGroup>
     );
 };
 
-const OtherSettingsView = () => {
-    const phy = useSelector(getPhy);
-    const boardType = useSelector(getBoard);
-    const isRunning = useSelector(getIsRunning);
-
-    const dispatch = useDispatch();
-
-    return (
-        <div className="app-sidepanel-panel">
-            {phyTypeView(
-                boardType,
-                phy,
-                value => dispatch(phyChanged(value)),
-                isRunning
-            )}
-        </div>
-    );
-};
-
-export default OtherSettingsView;
+export default PhyTypeView;

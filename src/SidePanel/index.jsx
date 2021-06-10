@@ -41,8 +41,8 @@ import { Group, SidePanel } from 'pc-nrfconnect-shared';
 
 import { paneName } from '../utils/panes';
 import ChannelView from './ChannelView';
-import OtherSettingsView from './OtherSettingsView';
 import PacketView from './PacketView';
+import PhyTypeView from './PhyTypeView';
 import RunTestView from './RunTestView';
 import TimeoutView from './TimeoutView';
 import TransmitSetupView from './TransmitSetupView';
@@ -57,7 +57,7 @@ const AppSidePanelView = () => {
             <Group heading="Channel mode">
                 <ChannelView />
                 {selectedTestMode === 'transmitter' && <TransmitSetupView />}
-                <OtherSettingsView />
+                <PhyTypeView />
                 {selectedTestMode === 'transmitter' && <PacketView />}
                 <TimeoutView />
             </Group>

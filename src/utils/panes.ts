@@ -36,11 +36,15 @@
 
 import { currentPane } from 'pc-nrfconnect-shared';
 
+import { RootState } from '../reducers/types';
+
 export const TRANSMITTER = 0;
 export const RECEIVER = 1;
 
-export const isRealTimePane = state => currentPane(state) === TRANSMITTER;
-export const isDataLoggerPane = state => currentPane(state) === RECEIVER;
+export const isRealTimePane = (state: RootState) =>
+    currentPane(state) === TRANSMITTER;
+export const isDataLoggerPane = (state: RootState) =>
+    currentPane(state) === RECEIVER;
 
-export const paneName = state =>
+export const paneName = (state: RootState) =>
     isRealTimePane(state) ? 'transmitter' : 'receiver';

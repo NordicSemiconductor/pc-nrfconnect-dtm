@@ -37,10 +37,13 @@
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
+import { Chart } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { bleChannels, colors } from 'pc-nrfconnect-shared';
 
 import { getIsRunning, getLastReceived } from '../reducers/testReducer';
-import { dbmValues } from '../utils/constants';
+
+Chart.plugins.register(ChartDataLabels);
 
 const frequencyBase = 2402;
 const frequencyInterval = 2;
@@ -50,6 +53,11 @@ const chartColors = {
     background: colors.gray50,
     label: colors.gray300,
 };
+
+const bleChannelsUpdated = bleChannels.map(
+    (channel, index) =>
+        `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
+);
 
 const ChartView = () => {
     const lastReceived = useSelector(getLastReceived);
@@ -63,7 +71,7 @@ const ChartView = () => {
     return (
         <Bar
             data={{
-                labels: bleChannels,
+                labels: bleChannelsUpdated,
                 datasets: [
                     {
                         label: 'Received packets',
@@ -73,12 +81,21 @@ const ChartView = () => {
                         borderWidth: 1,
                         hoverBackgroundColor: chartColors.bar,
                         hoverBorderColor: chartColors.bar,
+                        datalabels: {
+                            color: chartColors.bar,
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: v => (v <= 0 ? '' : v),
+                            offset: -3,
+                            font: { size: 9 },
+                        },
                     },
                     {
                         label: 'bgBars',
                         backgroundColor: chartColors.background,
                         borderWidth: 0,
-                        data: Array(bleChannels.length).fill(maxY),
+                        data: Array(bleChannelsUpdated.length).fill(maxY),
+                        datalabels: { display: false },
                     },
                 ],
             }}
@@ -99,17 +116,7 @@ const ChartView = () => {
                 datasetFill: true,
                 maintainAspectRatio: false,
                 legend: { display: false },
-
-                enabled: true,
-                callbacks: {
-                    label: (item, data) => {
-                        const dataset = data.datasets[item.datasetIndex];
-                        const value = dataset.data[item.index];
-                        return value in dbmValues
-                            ? `${dataset.label}: ${dbmValues[value]} dbm`
-                            : '';
-                    },
-                },
+                tooltips: { enabled: false },
                 animation: null,
                 scales: {
                     yAxes: [

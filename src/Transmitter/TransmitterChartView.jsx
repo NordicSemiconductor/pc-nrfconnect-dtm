@@ -73,6 +73,7 @@ const chartDataTransmit = (currentChannel, txPower) => {
             borderWidth: 1,
             hoverBackgroundColor: chartColors.bar,
             hoverBorderColor: chartColors.bar,
+            datalabels: { display: false },
         },
         {
             label: 'bgBars',
@@ -80,6 +81,7 @@ const chartDataTransmit = (currentChannel, txPower) => {
             borderWidth: 0,
             data: Array(bleChannelsUpdated.length).fill(active.length),
             display: false,
+            datalabels: { display: false },
         },
     ];
 
@@ -191,16 +193,7 @@ const getOptions = dBmValues => {
         ],
     };
     options.tooltips = {
-        enabled: true,
-        callbacks: {
-            label: (item, data) => {
-                const dataset = data.datasets[item.datasetIndex];
-                const value = dataset.data[item.index];
-                return value in dBmValues
-                    ? `${dataset.label}: ${dBmValues[value]} dbm`
-                    : '';
-            },
-        },
+        enabled: false,
     };
 
     return options;

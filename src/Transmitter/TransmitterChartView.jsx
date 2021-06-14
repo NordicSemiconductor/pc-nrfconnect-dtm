@@ -37,21 +37,16 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
-import { bleChannels, colors } from 'pc-nrfconnect-shared';
+import { bleChannels } from 'pc-nrfconnect-shared';
 
 import { getBoard } from '../reducers/deviceReducer';
 import { getTxPower } from '../reducers/settingsReducer';
 import { getCurrentChannel, getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
+import chartColors from '../utils/chartColors';
 
 const frequencyBase = 2402;
 const frequencyInterval = 2;
-
-const chartColors = {
-    bar: colors.nordicBlue,
-    background: colors.gray50,
-    label: colors.gray300,
-};
 
 const chartDataTransmit = (currentChannel, txPower) => {
     const active = Array.from(Array(bleChannels.length), () => 0);

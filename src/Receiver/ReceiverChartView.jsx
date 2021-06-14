@@ -39,20 +39,15 @@ import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import { Chart } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { bleChannels, colors } from 'pc-nrfconnect-shared';
+import { bleChannels } from 'pc-nrfconnect-shared';
 
 import { getIsRunning, getLastReceived } from '../reducers/testReducer';
+import chartColors from '../utils/chartColors';
 
 Chart.plugins.register(ChartDataLabels);
 
 const frequencyBase = 2402;
 const frequencyInterval = 2;
-
-const chartColors = {
-    bar: colors.nordicBlue,
-    background: colors.gray50,
-    label: colors.gray300,
-};
 
 const bleChannelsUpdated = bleChannels.map(
     (channel, index) =>

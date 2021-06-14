@@ -33,36 +33,24 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-// eslint-disable-next-line import/no-unresolved
-import React from 'react';
-import Alert from 'react-bootstrap/Alert';
-import { useSelector } from 'react-redux';
 
 import {
-    getCommunicationError,
-    getCompatibleDeviceWaring,
-} from './reducers/warningReducer';
+    DTM_CHANNEL_MODE,
+    dtmChannelModeChanged,
+    sweepTimeChanged,
+} from '../reducers/settingsReducer';
+import { TDispatch } from '../reducers/types';
 
-const warningIcon = <span className="mdi mdi-sign warning-sign" />;
+function channelModeChanged(buttonClicked: string) {
+    return (dispatch: TDispatch) => {
+        if (buttonClicked === DTM_CHANNEL_MODE.single) {
+            dispatch(sweepTimeChanged(0));
+        }
+        if (buttonClicked === DTM_CHANNEL_MODE.sweep) {
+            dispatch(sweepTimeChanged(30));
+        }
+        dispatch(dtmChannelModeChanged(buttonClicked));
+    };
+}
 
-const combineWarnings = warnings =>
-    warnings
-        .filter(str => str.length !== 0)
-        .map((s, index) => (
-            <Alert variant="danger" key={`warning-${index + 1}`}>
-                <span>{warningIcon}</span>
-                {s}
-            </Alert>
-        ));
-
-const WarningView = () => {
-    const compatibleDeviceWarning = useSelector(getCompatibleDeviceWaring);
-    const communicationError = useSelector(getCommunicationError);
-    return (
-        <div className="warning-view">
-            {combineWarnings([compatibleDeviceWarning, communicationError])}
-        </div>
-    );
-};
-
-export default WarningView;
+export default channelModeChanged;

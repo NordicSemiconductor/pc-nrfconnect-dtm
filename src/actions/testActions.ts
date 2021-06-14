@@ -48,6 +48,7 @@ import {
     startedChannel,
     stoppedAction,
 } from '../reducers/testReducer';
+import { RootState, SettingsState, TDispatch } from '../reducers/types';
 import { communicationError } from '../reducers/warningReducer';
 import * as Constants from '../utils/constants';
 import { paneName } from '../utils/panes';
@@ -56,7 +57,7 @@ import { clearCommunicationErrorWarning } from './warningActions';
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
 export const DTM_TEST_DONE = 'DTM_TEST_DONE';
 
-const dtmStatisticsUpdated = dispatch => event => {
+const dtmStatisticsUpdated = (dispatch: TDispatch) => event => {
     if (event.type === 'reset') {
         dispatch(resetChannel());
     } else if (event.action === 'started') {
@@ -78,7 +79,7 @@ const dtmStatisticsUpdated = dispatch => event => {
 
 let dtm;
 
-async function setupTest(settings) {
+async function setupTest(settings: SettingsState) {
     const setupResult = res =>
         typeof res === 'object' &&
         res.length >= 2 &&
@@ -122,7 +123,7 @@ async function setupTest(settings) {
 }
 
 export function startTests() {
-    return async (dispatch, getState) => {
+    return async (dispatch: TDispatch, getState: () => RootState) => {
         const { settings } = getState().app;
         const {
             bitpattern,
@@ -228,7 +229,7 @@ export function startTests() {
 
 export function endTests() {
     logger.info('Ending test');
-    return dispatch => {
+    return (dispatch: TDispatch) => {
         dtm.endTest().then(res => {
             if (res !== undefined) {
                 logger.debug(`Test ended: ${res}`);
@@ -238,9 +239,9 @@ export function endTests() {
     };
 }
 
-export function selectDevice(portPath, board) {
+export function selectDevice(portPath: string, board: string) {
     dtm = new DTM(portPath);
-    return dispatch => {
+    return (dispatch: TDispatch) => {
         dtm.on('update', dtmStatisticsUpdated(dispatch));
         dtm.on('transport', msg => {
             logger.debug(msg);
@@ -255,7 +256,7 @@ export function selectDevice(portPath, board) {
 }
 
 export function deselectDevice() {
-    return (dispatch, getState) => {
+    return (dispatch: TDispatch, getState: () => RootState) => {
         const { test } = getState().app;
         if (test.isRunning) {
             dispatch(endTests());

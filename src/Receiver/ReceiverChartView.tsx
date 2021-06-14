@@ -80,7 +80,7 @@ const ChartView = () => {
                             color: chartColors.bar,
                             anchor: 'end',
                             align: 'end',
-                            formatter: v => (v <= 0 ? '' : v),
+                            formatter: (v: number) => (v <= 0 ? '' : v),
                             offset: -3,
                             font: { size: 9 },
                         },
@@ -95,24 +95,10 @@ const ChartView = () => {
                 ],
             }}
             options={{
-                scaleShowGridLines: true,
-                scaleGridLineColor: 'rgba(10,100,100,.05)',
-                scaleGridLineWidth: 1,
-                scaleShowHorizontalLines: true,
-                scaleShowVerticalLines: true,
-                bezierCurve: true,
-                bezierCurveTension: 0.4,
-                pointDot: true,
-                pointDotRadius: 4,
-                pointDotStrokeWidth: 1,
-                pointHitDetectionRadius: 20,
-                datasetStroke: true,
-                datasetStrokeWidth: 2,
-                datasetFill: true,
                 maintainAspectRatio: false,
                 legend: { display: false },
                 tooltips: { enabled: false },
-                animation: null,
+                animation: undefined,
                 scales: {
                     yAxes: [
                         {
@@ -122,7 +108,11 @@ const ChartView = () => {
                                 suggestedMin: 0,
                                 suggestedMax: 10,
                                 stepSize: undefined,
-                                callback: (value, _, values) => {
+                                callback: (
+                                    value: number,
+                                    _: unknown,
+                                    values: number[]
+                                ) => {
                                     setMaxY(values[0]);
                                     return value;
                                 },
@@ -150,7 +140,7 @@ const ChartView = () => {
                                 display: false,
                             },
                             ticks: {
-                                callback: (_, index) =>
+                                callback: (_: unknown, index: number) =>
                                     String(bleChannels[index]).padStart(2, '0'),
                                 minRotation: 0,
                                 maxRotation: 0,
@@ -159,7 +149,7 @@ const ChartView = () => {
                                 fontColor: chartColors.label,
                             },
                             scaleLabel: {
-                                display: false,
+                                display: true,
                                 labelString: 'BLE channel',
                                 fontColor: chartColors.label,
                                 fontSize: 14,
@@ -176,7 +166,7 @@ const ChartView = () => {
                                 drawBorder: false,
                             },
                             ticks: {
-                                callback: (_, index) =>
+                                callback: (_: unknown, index: number) =>
                                     frequencyBase + index * frequencyInterval,
                                 minRotation: 90,
                                 labelOffset: 0,

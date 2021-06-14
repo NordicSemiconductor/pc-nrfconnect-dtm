@@ -57,30 +57,37 @@ import { clearCommunicationErrorWarning } from './warningActions';
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
 export const DTM_TEST_DONE = 'DTM_TEST_DONE';
 
-const dtmStatisticsUpdated = (dispatch: TDispatch) => event => {
-    if (event.type === 'reset') {
-        dispatch(resetChannel());
-    } else if (event.action === 'started') {
-        dispatch(startedChannel(event.channel));
-    } else if (event.action === 'ended') {
-        dispatch(
-            endedChannel({
-                channel: event.channel,
-                received: event.packets,
-            })
-        );
-    } else if (event.action === 'done') {
-        // This event is not being triggered nor does this dispatch do anything
-        dispatch({
-            type: DTM_TEST_DONE,
-        });
-    }
-};
+const dtmStatisticsUpdated =
+    (dispatch: TDispatch) =>
+    (event: {
+        type: string;
+        action: string;
+        channel: number;
+        packets: number;
+    }) => {
+        if (event.type === 'reset') {
+            dispatch(resetChannel());
+        } else if (event.action === 'started') {
+            dispatch(startedChannel(event.channel));
+        } else if (event.action === 'ended') {
+            dispatch(
+                endedChannel({
+                    channel: event.channel,
+                    received: event.packets,
+                })
+            );
+        } else if (event.action === 'done') {
+            // This event is not being triggered nor does this dispatch do anything
+            dispatch({
+                type: DTM_TEST_DONE,
+            });
+        }
+    };
 
-let dtm;
+let dtm: any;
 
 async function setupTest(settings: SettingsState) {
-    const setupResult = res =>
+    const setupResult = (res: number[] | undefined) =>
         typeof res === 'object' &&
         res.length >= 2 &&
         res[0] === 0 &&
@@ -196,32 +203,40 @@ export function startTests() {
             );
         }
 
-        testPromise.then(status => {
-            const { success, received, receivedPerChannel, message } = status;
-            if (success) {
-                let receivedChannels = receivedPerChannel;
-                if (receivedChannels === undefined) {
-                    receivedChannels = new Array(40).fill(0);
+        testPromise.then(
+            (status: {
+                success: boolean;
+                received: number;
+                receivedPerChannel: number[];
+                message: string;
+            }) => {
+                const { success, received, receivedPerChannel, message } =
+                    status;
+                if (success) {
+                    let receivedChannels = receivedPerChannel;
+                    if (receivedChannels === undefined) {
+                        receivedChannels = new Array(40).fill(0);
 
-                    if (received !== undefined) {
-                        receivedChannels[singleChannel] = received;
+                        if (received !== undefined) {
+                            receivedChannels[singleChannel] = received;
+                        }
                     }
+                    const testTypeStr =
+                        testMode === 'transmitter' ? 'Transmitter' : 'Receiver';
+                    const packetsRcvStr =
+                        testMode === 'transmitter'
+                            ? ''
+                            : `. Received ${received} packets.`;
+                    logger.info(
+                        `${testTypeStr} test finished successfully${packetsRcvStr}`
+                    );
+                    dispatch(actionSucceeded(receivedChannels));
+                } else {
+                    logger.info(`End test failed: ${message}`);
+                    dispatch(actionFailed(message));
                 }
-                const testTypeStr =
-                    testMode === 'transmitter' ? 'Transmitter' : 'Receiver';
-                const packetsRcvStr =
-                    testMode === 'transmitter'
-                        ? ''
-                        : `. Received ${received} packets.`;
-                logger.info(
-                    `${testTypeStr} test finished successfully${packetsRcvStr}`
-                );
-                dispatch(actionSucceeded(receivedChannels));
-            } else {
-                logger.info(`End test failed: ${message}`);
-                dispatch(actionFailed(message));
             }
-        });
+        );
 
         dispatch(startedAction());
     };
@@ -230,7 +245,7 @@ export function startTests() {
 export function endTests() {
     logger.info('Ending test');
     return (dispatch: TDispatch) => {
-        dtm.endTest().then(res => {
+        dtm.endTest().then((res: string) => {
             if (res !== undefined) {
                 logger.debug(`Test ended: ${res}`);
             }
@@ -243,10 +258,10 @@ export function selectDevice(portPath: string, board: string) {
     dtm = new DTM(portPath);
     return (dispatch: TDispatch) => {
         dtm.on('update', dtmStatisticsUpdated(dispatch));
-        dtm.on('transport', msg => {
+        dtm.on('transport', (msg: string) => {
             logger.debug(msg);
         });
-        dtm.on('log', param => {
+        dtm.on('log', (param: { message: string }) => {
             logger.info(param.message);
         });
         dispatch(dtmBoardSelected(board));

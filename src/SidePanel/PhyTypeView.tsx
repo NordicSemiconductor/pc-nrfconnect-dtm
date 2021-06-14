@@ -52,11 +52,11 @@ const PhyTypeView = () => {
     const dispatch = useDispatch();
     const compatibility = fromPCA(boardType);
 
-    const items = Object.keys(compatibility.phy).map(keyname => (
+    const items = Object.values(compatibility.phy).map((value: number) => (
         <DropdownItem
-            key={keyname}
-            title={DTM_PHY_STRING[compatibility.phy[keyname]]}
-            onSelect={() => dispatch(phyChanged(compatibility.phy[keyname]))}
+            key={value}
+            title={DTM_PHY_STRING[value]}
+            onSelect={() => dispatch(phyChanged(value))}
         />
     ));
 

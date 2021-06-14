@@ -23,7 +23,7 @@ const nRF52832 = {
 
 const nRF52840 = { ...defaultDevice };
 
-function fromPCA(board: string) {
+function fromPCA(board: string | null) {
     switch (board) {
         case 'PCA10056':
             return nRF52840;

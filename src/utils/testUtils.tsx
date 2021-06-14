@@ -34,6 +34,9 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* eslint-disable max-classes-per-file */
+/* eslint-disable class-methods-use-this */
+
 import React, { FC } from 'react';
 import { Provider } from 'react-redux';
 import { render, RenderOptions } from '@testing-library/react';
@@ -67,14 +70,18 @@ jest.mock('nrf-dtm-js/src/DTM', () => {
     };
 });
 
-window.ResizeObserver = function ResizeObserverStub() {
-    this.observe = () => {};
-    this.disconnect = () => {};
+window.ResizeObserver = class {
+    observe() {}
+    disconnect() {}
+    unobserve() {}
 };
 
-window.MutationObserver = function MutationObserverStub() {
-    this.observe = () => {};
-    this.disconnect = () => {};
+window.MutationObserver = class {
+    observe() {}
+    disconnect() {}
+    takeRecords() {
+        return [];
+    }
 };
 
 const customRender = (

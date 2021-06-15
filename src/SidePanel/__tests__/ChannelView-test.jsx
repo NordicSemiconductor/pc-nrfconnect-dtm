@@ -47,7 +47,7 @@ import ChannelView from '../ChannelView';
 
 describe('Initial state', () => {
     test('should have single channel selected', () => {
-        render(<ChannelView />);
+        render(<ChannelView paneName="transmitter" />);
 
         const singleBtn = screen.getByRole(`button`, { name: /single/i });
 
@@ -55,7 +55,7 @@ describe('Initial state', () => {
     });
 
     test('should have sweep channel not selected', () => {
-        render(<ChannelView />);
+        render(<ChannelView paneName="transmitter" />);
 
         const sweepBtn = screen.getByRole(`button`, { name: /sweep/i });
 
@@ -65,7 +65,7 @@ describe('Initial state', () => {
 
 describe('Select sweep', () => {
     test('should have sweep channel selected', () => {
-        render(<ChannelView />);
+        render(<ChannelView paneName="transmitter" />);
 
         const sweepBtn = screen.getByRole('button', { name: /sweep/i });
         userEvent.click(sweepBtn);
@@ -74,7 +74,7 @@ describe('Select sweep', () => {
     });
 
     test('should render two channel sliders', async () => {
-        render(<ChannelView />);
+        render(<ChannelView paneName="transmitter" />);
 
         userEvent.click(screen.getByRole('button', { name: /sweep/i }));
 

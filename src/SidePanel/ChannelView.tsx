@@ -100,8 +100,13 @@ DelaySlider.propTypes = {
     changedFunc: PropTypes.func.isRequired,
 };
 
-const ChannelView = () => {
-    const isTransmitterPane = useSelector(isRealTimePane);
+interface Props {
+    paneName: 'transmitter' | 'receiver';
+}
+
+const ChannelView: React.FC<Props> = ({ paneName }) => {
+    const transmitOrReceiveLabel =
+        paneName === 'transmitter' ? 'Transmit' : 'Receive';
     const channelMode = useSelector(getChannelMode);
     const channelSingle = useSelector(getSingleChannel);
     const channelRange = useSelector(getChannelRange);
@@ -109,8 +114,6 @@ const ChannelView = () => {
     const isRunning = useSelector(getIsRunning);
 
     const dispatch = useDispatch();
-
-    const transmitOrReceiveLabel = isTransmitterPane ? 'Transmit' : 'Receive';
 
     const lowChannel = Math.min(...channelRange);
     const highChannel = Math.max(...channelRange);

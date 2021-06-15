@@ -80,6 +80,7 @@ describe('Select sweep', () => {
 
         const sliders = await screen.findAllByRole('slider');
 
-        expect(sliders.length).toBe(2);
+        // Normal and double (2x) slider
+        expect(sliders.length).toBe(3);
     });
 });

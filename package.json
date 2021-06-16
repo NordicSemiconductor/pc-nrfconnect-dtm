@@ -51,7 +51,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
     "@types/chart.js": "^2.9.32",
-    "electron-store": "^5.1.1"
+    "electron-store": "^5.1.1",
+    "npm": "^6.14.13"
   },
   "bundledDependencies": [
     "electron-store"

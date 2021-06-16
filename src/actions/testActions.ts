@@ -57,32 +57,32 @@ import { clearCommunicationErrorWarning } from './warningActions';
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
 export const DTM_TEST_DONE = 'DTM_TEST_DONE';
 
-const dtmStatisticsUpdated =
-    (dispatch: TDispatch) =>
-    (event: {
-        type: string;
-        action: string;
-        channel: number;
-        packets: number;
-    }) => {
-        if (event.type === 'reset') {
-            dispatch(resetChannel());
-        } else if (event.action === 'started') {
-            dispatch(startedChannel(event.channel));
-        } else if (event.action === 'ended') {
-            dispatch(
-                endedChannel({
-                    channel: event.channel,
-                    received: event.packets,
-                })
-            );
-        } else if (event.action === 'done') {
-            // This event is not being triggered nor does this dispatch do anything
-            dispatch({
-                type: DTM_TEST_DONE,
-            });
-        }
-    };
+type ChannelEvent = {
+    type: string;
+    action: string;
+    channel: number;
+    packets: number;
+};
+
+const dtmStatisticsUpdated = (dispatch: TDispatch) => (event: ChannelEvent) => {
+    if (event.type === 'reset') {
+        dispatch(resetChannel());
+    } else if (event.action === 'started') {
+        dispatch(startedChannel(event.channel));
+    } else if (event.action === 'ended') {
+        dispatch(
+            endedChannel({
+                channel: event.channel,
+                received: event.packets,
+            })
+        );
+    } else if (event.action === 'done') {
+        // This event is not being triggered nor does this dispatch do anything
+        dispatch({
+            type: DTM_TEST_DONE,
+        });
+    }
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let dtm: any;

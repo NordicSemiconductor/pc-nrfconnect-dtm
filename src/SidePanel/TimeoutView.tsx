@@ -34,22 +34,54 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    DTM_CHANNEL_MODE,
-    dtmChannelModeChanged,
-    sweepTimeChanged,
-} from '../reducers/settingsReducer';
+import React from 'react';
+import FormLabel from 'react-bootstrap/FormLabel';
+import { useDispatch, useSelector } from 'react-redux';
+import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
-function channelModeChanged(buttonClicked) {
-    return dispatch => {
-        if (buttonClicked === DTM_CHANNEL_MODE.single) {
-            dispatch(sweepTimeChanged(0));
-        }
-        if (buttonClicked === DTM_CHANNEL_MODE.sweep) {
-            dispatch(sweepTimeChanged(30));
-        }
-        dispatch(dtmChannelModeChanged(buttonClicked));
-    };
-}
+import { getTimeout, timeoutChanged } from '../reducers/settingsReducer';
+import { getIsRunning } from '../reducers/testReducer';
 
-export default channelModeChanged;
+const TimeoutSetupView = () => {
+    const range = { min: 0, max: 20 };
+
+    const timeout = useSelector(getTimeout);
+    const isRunning = useSelector(getIsRunning);
+
+    const dispatch = useDispatch();
+
+    const updateTimeout = (time: number) => dispatch(timeoutChanged(time));
+
+    return (
+        <>
+            <FormLabel
+                htmlFor="transit-channel-slider"
+                className="timeout-label"
+            >
+                {timeout === 0 ? (
+                    'No timeout'
+                ) : (
+                    <>
+                        Timeout after
+                        <NumberInlineInput
+                            value={timeout / 1000}
+                            range={range}
+                            onChange={val => updateTimeout(val)}
+                            disabled={isRunning}
+                        />
+                        s
+                    </>
+                )}
+            </FormLabel>
+            <Slider
+                id="transit-channel-slider"
+                values={[timeout / 1000]}
+                onChange={[val => updateTimeout(val)]}
+                range={range}
+                disabled={isRunning}
+            />
+        </>
+    );
+};
+
+export default TimeoutSetupView;

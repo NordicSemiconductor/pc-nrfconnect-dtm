@@ -54,10 +54,19 @@ import {
     sweepTimeChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
-import { isRealTimePane } from '../utils/panes';
 import ToggleChannelModeView from './ToggleChannelModeView';
 
-const DelaySlider = ({ isRunning, currentValue, changedFunc }) => {
+interface DelaySliderProps {
+    isRunning: boolean;
+    currentValue: number;
+    changedFunc: (value: number) => void;
+}
+
+const DelaySlider = ({
+    isRunning,
+    currentValue,
+    changedFunc,
+}: DelaySliderProps) => {
     const range = { min: 20, max: 20000 };
     return (
         <>
@@ -90,8 +99,13 @@ DelaySlider.propTypes = {
     changedFunc: PropTypes.func.isRequired,
 };
 
-const ChannelView = () => {
-    const isTransmitterPane = useSelector(isRealTimePane);
+interface Props {
+    paneName: 'transmitter' | 'receiver';
+}
+
+const ChannelView: React.FC<Props> = ({ paneName }) => {
+    const transmitOrReceiveLabel =
+        paneName === 'transmitter' ? 'Transmit' : 'Receive';
     const channelMode = useSelector(getChannelMode);
     const channelSingle = useSelector(getSingleChannel);
     const channelRange = useSelector(getChannelRange);
@@ -99,8 +113,6 @@ const ChannelView = () => {
     const isRunning = useSelector(getIsRunning);
 
     const dispatch = useDispatch();
-
-    const transmitOrReceiveLabel = isTransmitterPane ? 'Transmit' : 'Receive';
 
     const lowChannel = Math.min(...channelRange);
     const highChannel = Math.max(...channelRange);

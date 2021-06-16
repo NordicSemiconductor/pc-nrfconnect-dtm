@@ -57,7 +57,7 @@ const VENDOR_PAYLOAD_LENGTH = 1;
 interface PacketTypeViewProps {
     bitpatternUpdated: (pkgType: number) => void;
     lengthUpdated: (newLength: number) => void;
-    selectedPkgType: string;
+    selectedPkgType: number;
     isRunning: boolean;
     isVendorPayload: (pkgType: number) => boolean;
 }
@@ -135,14 +135,15 @@ const PacketLengthView = ({
 };
 
 const PacketView = () => {
-    const pkgType = useSelector(getBitpattern).toString();
+    const pkgType = useSelector(getBitpattern);
     const packetLength = useSelector(getLength);
     const isRunning = useSelector(getIsRunning);
 
     const dispatch = useDispatch();
 
-    const lengthChangedAction = value => dispatch(lengthChanged(value));
-    const isVendorPayload = type =>
+    const lengthChangedAction = (value: number) =>
+        dispatch(lengthChanged(value));
+    const isVendorPayload = (type: number) =>
         DTM_PKT_STRING[type] === DTM_PKT_STRING[DTM.DTM_PKT.PAYLOAD_VENDOR];
 
     return (

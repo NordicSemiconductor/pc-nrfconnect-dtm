@@ -33,36 +33,47 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
-import Alert from 'react-bootstrap/Alert';
-import { useSelector } from 'react-redux';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import {
-    getCommunicationError,
-    getCompatibleDeviceWaring,
-} from './reducers/warningReducer';
+import channelModeChanged from '../actions/settingsActions';
+import { DTM_CHANNEL_MODE, getChannelMode } from '../reducers/settingsReducer';
 
-const warningIcon = <span className="mdi mdi-sign warning-sign" />;
+interface ToggleChannelModeViewProps {
+    isRunning: boolean;
+}
 
-const combineWarnings = warnings =>
-    warnings
-        .filter(str => str.length !== 0)
-        .map((s, index) => (
-            <Alert variant="danger" key={`warning-${index + 1}`}>
-                <span>{warningIcon}</span>
-                {s}
-            </Alert>
-        ));
+const ToggleChannelModeView = ({ isRunning }: ToggleChannelModeViewProps) => {
+    const selected = useSelector(getChannelMode);
 
-const WarningView = () => {
-    const compatibleDeviceWarning = useSelector(getCompatibleDeviceWaring);
-    const communicationError = useSelector(getCommunicationError);
+    const dispatch = useDispatch();
+
+    const selectionButton = (type: string, text: string) => (
+        <Button
+            // @ts-ignore -- Doesn't seem to be an easy way to use custom variants with TS
+            variant={selected === type ? 'set' : 'unset'}
+            onClick={() => dispatch(channelModeChanged(type))}
+            active={selected === type}
+            disabled={isRunning}
+        >
+            {text}
+        </Button>
+    );
+
     return (
-        <div className="warning-view">
-            {combineWarnings([compatibleDeviceWarning, communicationError])}
-        </div>
+        <ButtonGroup className="w-100 d-flex flex-row channel-selection">
+            {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
+            {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
+        </ButtonGroup>
     );
 };
 
-export default WarningView;
+ToggleChannelModeView.propTypes = {
+    isRunning: PropTypes.bool.isRequired,
+};
+
+export default ToggleChannelModeView;

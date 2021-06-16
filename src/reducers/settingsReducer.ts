@@ -39,13 +39,14 @@ import { DTM } from 'nrf-dtm-js/src/DTM';
 import { bleChannels } from 'pc-nrfconnect-shared';
 
 import * as Constants from '../utils/constants';
+import { RootState, SettingsState } from './types';
 
 export const DTM_CHANNEL_MODE = {
     single: 'DTM_CHANNEL_MODE_SINGLE_ACTION',
     sweep: 'DTM_CHANNEL_MODE_SWEEP_ACTION',
 };
 
-const InitialState = {
+const InitialState: SettingsState = {
     channelMode: DTM_CHANNEL_MODE.single,
     singleChannel: 19,
     channelRange: [bleChannels.min, bleChannels.max],
@@ -110,16 +111,16 @@ const {
     modulationChanged,
 } = settingsSlice.actions;
 
-const getChannelMode = state => state.app.settings.channelMode;
-const getSingleChannel = state => state.app.settings.singleChannel;
-const getChannelRange = state => state.app.settings.channelRange;
-const getSweepTime = state => state.app.settings.sweepTime;
-const getBitpattern = state => state.app.settings.bitpattern;
-const getLength = state => state.app.settings.length;
-const getTxPower = state => state.app.settings.txPower;
-const getPhy = state => state.app.settings.phy;
-const getModulation = state => state.app.settings.modulationMode;
-const getTimeout = state => state.app.settings.timeoutms;
+const getChannelMode = (state: RootState) => state.app.settings.channelMode;
+const getSingleChannel = (state: RootState) => state.app.settings.singleChannel;
+const getChannelRange = (state: RootState) => state.app.settings.channelRange;
+const getSweepTime = (state: RootState) => state.app.settings.sweepTime;
+const getBitpattern = (state: RootState) => state.app.settings.bitpattern;
+const getLength = (state: RootState) => state.app.settings.length;
+const getTxPower = (state: RootState) => state.app.settings.txPower;
+const getPhy = (state: RootState) => state.app.settings.phy;
+const getModulation = (state: RootState) => state.app.settings.modulationMode;
+const getTimeout = (state: RootState) => state.app.settings.timeoutms;
 
 export {
     dtmChannelModeChanged,

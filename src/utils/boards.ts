@@ -1,3 +1,4 @@
+// @ts-ignore nrf-dtm-js does not contain types
 import { DTM } from 'nrf-dtm-js/src/DTM';
 
 import * as Constants from './constants';
@@ -22,7 +23,7 @@ const nRF52832 = {
 
 const nRF52840 = { ...defaultDevice };
 
-function fromPCA(board) {
+function fromPCA(board: string | null) {
     switch (board) {
         case 'PCA10056':
             return nRF52840;

@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,64 +34,35 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@import '~pc-nrfconnect-shared/styles';
+// eslint-disable-next-line import/no-unresolved
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Group, SidePanel } from 'pc-nrfconnect-shared';
 
-.dropdown-container {
-    position: relative;
-    width: 100%;
+import { paneName } from '../utils/panes';
+import ChannelView from './ChannelView';
+import PacketView from './PacketView';
+import PhyTypeView from './PhyTypeView';
+import RunTestView from './RunTestView';
+import TimeoutView from './TimeoutView';
+import TransmitSetupView from './TransmitSetupView';
 
-    .dropdown-label {
-        font-size: 10px;
-        margin-bottom: 4px !important;
-    }
+import './sidepanel.scss';
 
-    .dropdown-btn {
-        width: 100%;
-        height: 32px;
-        padding: 0 8px;
-        background: $gray-700;
-        color: $white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+const AppSidePanelView = () => {
+    const selectedTestMode = useSelector(paneName);
 
-        border: none;
-    }
-
-    .dropdown-btn-active img {
-        transform: rotate(180deg);
-    }
-
-    .dropdown-content {
-        background: $gray-700;
-        color: $white;
-        position: absolute;
-        width: 100%;
-        top: 48px;
-        right: 0;
-        padding: 0;
-        border-top: solid 2px $gray-600;
-        z-index: 1;
-    }
-
-    .dropdown-active img {
-        transform: rotate(90deg);
-    }
-
-    .dropdown-inactive {
-        display: none;
-    }
-
-    .dropdown-item {
-        color: $white;
-        padding: 4px 8px;
-        height: 24px;
-    }
-
-    .dropdown-btn:hover,
-    .dropdown-btn:focus,
-    .dropdown-item:hover,
-    .dropdown-item:focus {
-        background: $gray-600;
-    }
-}
+    return (
+        <SidePanel className="sidepanel">
+            <Group heading="Channel mode">
+                <ChannelView paneName={selectedTestMode} />
+                {selectedTestMode === 'transmitter' && <TransmitSetupView />}
+                <PhyTypeView />
+                {selectedTestMode === 'transmitter' && <PacketView />}
+                <TimeoutView />
+            </Group>
+            <RunTestView />
+        </SidePanel>
+    );
+};
+export default AppSidePanelView;

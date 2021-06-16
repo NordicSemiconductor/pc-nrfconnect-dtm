@@ -33,14 +33,36 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+// eslint-disable-next-line import/no-unresolved
+import React from 'react';
+import Alert from 'react-bootstrap/Alert';
+import { useSelector } from 'react-redux';
 
-import { currentPane } from 'pc-nrfconnect-shared';
+import {
+    getCommunicationError,
+    getCompatibleDeviceWaring,
+} from './reducers/warningReducer';
 
-export const TRANSMITTER = 0;
-export const RECEIVER = 1;
+const warningIcon = <span className="mdi mdi-sign warning-sign" />;
 
-export const isRealTimePane = state => currentPane(state) === TRANSMITTER;
-export const isDataLoggerPane = state => currentPane(state) === RECEIVER;
+const combineWarnings = (warnings: string[]) =>
+    warnings
+        .filter(str => str.length !== 0)
+        .map((s, index) => (
+            <Alert variant="danger" key={`warning-${index + 1}`}>
+                <span>{warningIcon}</span>
+                {s}
+            </Alert>
+        ));
 
-export const paneName = state =>
-    isRealTimePane(state) ? 'transmitter' : 'receiver';
+const WarningView = () => {
+    const compatibleDeviceWarning = useSelector(getCompatibleDeviceWaring);
+    const communicationError = useSelector(getCommunicationError);
+    return (
+        <div className="warning-view">
+            {combineWarnings([compatibleDeviceWarning, communicationError])}
+        </div>
+    );
+};
+
+export default WarningView;

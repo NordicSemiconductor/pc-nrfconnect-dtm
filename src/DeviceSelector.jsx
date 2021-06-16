@@ -3,6 +3,7 @@ import path from 'path';
 import { DeviceSelector, getAppDir, logger } from 'pc-nrfconnect-shared';
 
 import { deselectDevice, selectDevice } from './actions/testActions';
+import { deviceDeselected } from './reducers/deviceReducer';
 import { clearAllWarnings } from './reducers/warningReducer';
 import { compatiblePCAs } from './utils/constants';
 
@@ -52,6 +53,7 @@ function mapDispatchToProps(dispatch) {
         },
         onDeviceDeselected: () => {
             dispatch(deselectDevice());
+            dispatch(deviceDeselected());
             dispatch(clearAllWarnings());
         },
         onDeviceIsReady: device => {

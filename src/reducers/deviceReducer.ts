@@ -36,41 +36,60 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-const InitialState = {
-    compatibleDeviceWarning: '',
-    communicationError: '',
+import { DeviceState, RootState } from './types';
+
+const InitialState: DeviceState = {
+    serialNumber: null,
+    dtm: null,
+    board: null,
+    isReady: false,
 };
 
-const warningSlice = createSlice({
-    name: 'warning',
+const deviceSlice = createSlice({
+    name: 'device',
     initialState: InitialState,
     reducers: {
-        incompatibleDevice(state, action) {
-            state.compatibleDeviceWarning = action.payload;
+        deviceSelected(state, action) {
+            state.serialNumber = action.payload;
         },
-        communicationError(state, action) {
-            state.communicationError = action.payload;
+        deviceDeselected(state) {
+            state.isReady = InitialState.isReady;
         },
-        clearAllWarnings(state) {
-            state.compatibleDeviceWarning = '';
-            state.communicationError = '';
+        deviceReady(state) {
+            state.isReady = true;
+        },
+        dtmInit(state, action) {
+            state.dtm = action.payload;
+        },
+        dtmBoardSelected(state, action) {
+            state.board = action.payload;
         },
     },
 });
 
-export default warningSlice.reducer;
+export default deviceSlice.reducer;
 
-const { incompatibleDevice, communicationError, clearAllWarnings } =
-    warningSlice.actions;
+const {
+    deviceSelected,
+    deviceDeselected,
+    deviceReady,
+    dtmInit,
+    dtmBoardSelected,
+} = deviceSlice.actions;
 
-const getCompatibleDeviceWaring = state =>
-    state.app.warning.compatibleDeviceWarning;
-const getCommunicationError = state => state.app.warning.communicationError;
+const getSerialNumber = (state: RootState) => state.app.device.serialNumber;
+const getDtm = (state: RootState) => state.app.device.dtm;
+const getBoard = (state: RootState) => state.app.device.board;
+const getIsReady = (state: RootState) => state.app.device.isReady;
 
 export {
-    incompatibleDevice,
-    communicationError,
-    clearAllWarnings,
-    getCompatibleDeviceWaring,
-    getCommunicationError,
+    deviceSelected,
+    deviceDeselected,
+    deviceReady,
+    dtmInit,
+    dtmBoardSelected,
+    getSerialNumber,
+    getDtm,
+    getBoard,
+    getIsReady,
 };

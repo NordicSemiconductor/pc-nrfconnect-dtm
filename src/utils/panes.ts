@@ -34,42 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { Group } from 'pc-nrfconnect-shared';
-import PropTypes from 'prop-types';
+import { currentPane } from 'pc-nrfconnect-shared';
 
-import channelModeChanged from '../actions/settingsActions';
-import { DTM_CHANNEL_MODE, getChannelMode } from '../reducers/settingsReducer';
+import { RootState } from '../reducers/types';
 
-const ToggleChannelModeView = ({ isRunning }) => {
-    const selected = useSelector(getChannelMode);
+export const TRANSMITTER = 0;
+export const RECEIVER = 1;
 
-    const dispatch = useDispatch();
+export const isRealTimePane = (state: RootState) =>
+    currentPane(state) === TRANSMITTER;
+export const isDataLoggerPane = (state: RootState) =>
+    currentPane(state) === RECEIVER;
 
-    const selectionButton = (type, text) => (
-        <Button
-            variant={selected === type ? 'set' : 'unset'}
-            onClick={() => dispatch(channelModeChanged(type))}
-            active={selected === type}
-            disabled={isRunning}
-        >
-            {text}
-        </Button>
-    );
-
-    return (
-        <ButtonGroup className="w-100 d-flex flex-row channel-selection">
-            {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
-            {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
-        </ButtonGroup>
-    );
-};
-
-ToggleChannelModeView.propTypes = {
-    isRunning: PropTypes.bool.isRequired,
-};
-
-export default ToggleChannelModeView;
+export const paneName = (state: RootState) =>
+    isRealTimePane(state) ? 'transmitter' : 'receiver';

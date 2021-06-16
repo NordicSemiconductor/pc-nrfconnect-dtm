@@ -34,60 +34,44 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createSlice } from '@reduxjs/toolkit';
+import React from 'react';
+import FormGroup from 'react-bootstrap/FormGroup';
+import { useDispatch, useSelector } from 'react-redux';
+import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
-const InitialState = {
-    serialNumber: null,
-    dtm: null,
-    board: null,
-    isReady: false,
+import { getBoard } from '../reducers/deviceReducer';
+import { getPhy, phyChanged } from '../reducers/settingsReducer';
+import { getIsRunning } from '../reducers/testReducer';
+import { fromPCA } from '../utils/boards';
+import { Dropdown, DropdownItem } from './dropdown';
+
+const PhyTypeView = () => {
+    const phy = useSelector(getPhy);
+    const boardType = useSelector(getBoard);
+    const isRunning = useSelector(getIsRunning);
+    const dispatch = useDispatch();
+    const compatibility = fromPCA(boardType);
+
+    const items = Object.values(compatibility.phy).map((value: number) => (
+        <DropdownItem
+            key={value}
+            title={DTM_PHY_STRING[value]}
+            onSelect={() => dispatch(phyChanged(value))}
+        />
+    ));
+
+    return (
+        <FormGroup controlId="formTimeoutSelect">
+            <Dropdown
+                label="Physical layer"
+                title={DTM_PHY_STRING[phy]}
+                id="dropdown-variants-phy-type"
+                disabled={isRunning}
+            >
+                {items}
+            </Dropdown>
+        </FormGroup>
+    );
 };
 
-const deviceSlice = createSlice({
-    name: 'device',
-    initialState: InitialState,
-    reducers: {
-        deviceSelected(state, action) {
-            state.serialNumber = action.payload;
-        },
-        deviceDeselected() {
-            return new InitialState();
-        },
-        deviceReady(state) {
-            state.isReady = true;
-        },
-        dtmInit(state, action) {
-            state.dtm = action.payload;
-        },
-        dtmBoardSelected(state, action) {
-            state.board = action.payload;
-        },
-    },
-});
-
-export default deviceSlice.reducer;
-
-const {
-    deviceSelected,
-    deviceDeselected,
-    deviceReady,
-    dtmInit,
-    dtmBoardSelected,
-} = deviceSlice.actions;
-
-const getSerialNumber = state => state.app.device.serialNumber;
-const getDtm = state => state.app.device.dtm;
-const getBoard = state => state.app.device.board;
-const getIsReady = state => state.app.device.isReady;
-
-export {
-    deviceSelected,
-    deviceDeselected,
-    deviceReady,
-    dtmInit,
-    dtmBoardSelected,
-    getSerialNumber,
-    getDtm,
-    getBoard,
-    getIsReady,
-};
+export default PhyTypeView;

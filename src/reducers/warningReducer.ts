@@ -34,35 +34,46 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Group, SidePanel } from 'pc-nrfconnect-shared';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { paneName } from '../utils/panes';
-import ChannelView from './ChannelView';
-import OtherSettingsView from './OtherSettingsView';
-import PacketView from './PacketView';
-import RunTestView from './RunTestView';
-import TimeoutView from './TimeoutView';
-import TransmitSetupView from './TransmitSetupView';
+import { RootState, WarningState } from './types';
 
-import './sidepanel.scss';
-
-const AppSidePanelView = () => {
-    const selectedTestMode = useSelector(paneName);
-
-    return (
-        <SidePanel className="sidepanel">
-            <Group heading="Channel mode">
-                <ChannelView />
-                {selectedTestMode === 'transmitter' && <TransmitSetupView />}
-                <OtherSettingsView />
-                {selectedTestMode === 'transmitter' && <PacketView />}
-                <TimeoutView />
-            </Group>
-            <RunTestView />
-        </SidePanel>
-    );
+const InitialState: WarningState = {
+    compatibleDeviceWarning: '',
+    communicationError: '',
 };
-export default AppSidePanelView;
+
+const warningSlice = createSlice({
+    name: 'warning',
+    initialState: InitialState,
+    reducers: {
+        incompatibleDevice(state, action) {
+            state.compatibleDeviceWarning = action.payload;
+        },
+        communicationError(state, action) {
+            state.communicationError = action.payload;
+        },
+        clearAllWarnings(state) {
+            state.compatibleDeviceWarning = '';
+            state.communicationError = '';
+        },
+    },
+});
+
+export default warningSlice.reducer;
+
+const { incompatibleDevice, communicationError, clearAllWarnings } =
+    warningSlice.actions;
+
+const getCompatibleDeviceWaring = (state: RootState) =>
+    state.app.warning.compatibleDeviceWarning;
+const getCommunicationError = (state: RootState) =>
+    state.app.warning.communicationError;
+
+export {
+    incompatibleDevice,
+    communicationError,
+    clearAllWarnings,
+    getCompatibleDeviceWaring,
+    getCommunicationError,
+};

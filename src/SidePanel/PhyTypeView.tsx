@@ -35,7 +35,6 @@
  */
 
 import React from 'react';
-import FormGroup from 'react-bootstrap/FormGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
@@ -61,16 +60,14 @@ const PhyTypeView = () => {
     ));
 
     return (
-        <FormGroup controlId="formTimeoutSelect">
-            <Dropdown
-                label="Physical layer"
-                title={DTM_PHY_STRING[phy]}
-                id="dropdown-variants-phy-type"
-                disabled={isRunning}
-            >
-                {items}
-            </Dropdown>
-        </FormGroup>
+        <Dropdown
+            label="Physical layer"
+            title={DTM_PHY_STRING[phy]}
+            id="dropdown-variants-phy-type"
+            disabled={isRunning}
+        >
+            {items}
+        </Dropdown>
     );
 };
 

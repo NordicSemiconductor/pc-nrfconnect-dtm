@@ -53,7 +53,7 @@ const TimeoutSetupView = () => {
     const updateTimeout = (time: number) => dispatch(timeoutChanged(time));
 
     return (
-        <>
+        <div className="slider-container">
             <FormLabel
                 htmlFor="transit-channel-slider"
                 className="timeout-label"
@@ -80,7 +80,7 @@ const TimeoutSetupView = () => {
                 range={range}
                 disabled={isRunning}
             />
-        </>
+        </div>
     );
 };
 

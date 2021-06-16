@@ -69,7 +69,7 @@ const DelaySlider = ({
 }: DelaySliderProps) => {
     const range = { min: 20, max: 20000 };
     return (
-        <>
+        <div className="slider-container">
             <FormLabel htmlFor="sweep-delay-slider">
                 Transmit delay
                 <NumberInlineInput
@@ -89,7 +89,7 @@ const DelaySlider = ({
                 ]}
                 range={range}
             />
-        </>
+        </div>
     );
 };
 
@@ -122,7 +122,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
             <ToggleChannelModeView isRunning={isRunning} />
 
             {channelMode === DTM_CHANNEL_MODE.single && (
-                <>
+                <div className="slider-container">
                     <FormLabel htmlFor="channel-slider">
                         {`${transmitOrReceiveLabel} on channel`}
                         <NumberInlineInput
@@ -156,7 +156,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                             max: highChannel,
                         }}
                     />
-                </>
+                </div>
             )}
             {channelMode === DTM_CHANNEL_MODE.sweep && (
                 <>
@@ -166,64 +166,70 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                         changedFunc={value => dispatch(sweepTimeChanged(value))}
                     />
 
-                    <FormLabel htmlFor="channel-slider">
-                        {`${transmitOrReceiveLabel} on channel`}
-                        <NumberInlineInput
-                            value={bleChannels[lowChannel]}
+                    <div className="slider-container">
+                        <FormLabel htmlFor="channel-slider">
+                            {`${transmitOrReceiveLabel} on channel`}
+                            <NumberInlineInput
+                                value={bleChannels[lowChannel]}
+                                range={{
+                                    min: bleChannels.min,
+                                    max: bleChannels.max,
+                                }}
+                                onChange={newMinValue =>
+                                    dispatch(
+                                        channelRangeChanged([
+                                            isRunning
+                                                ? lowChannel
+                                                : newMinValue,
+                                            channelRange[1],
+                                        ])
+                                    )
+                                }
+                            />
+                            {' to '}
+                            <NumberInlineInput
+                                value={highChannel}
+                                range={{
+                                    min: bleChannels.min,
+                                    max: bleChannels.max,
+                                }}
+                                onChange={newMaxValue =>
+                                    dispatch(
+                                        channelRangeChanged([
+                                            channelRange[0],
+                                            isRunning
+                                                ? highChannel
+                                                : newMaxValue,
+                                        ])
+                                    )
+                                }
+                            />
+                        </FormLabel>
+                        <Slider
+                            id="channel-slider"
+                            values={channelRange}
                             range={{
                                 min: bleChannels.min,
                                 max: bleChannels.max,
                             }}
-                            onChange={newMinValue =>
-                                dispatch(
-                                    channelRangeChanged([
-                                        isRunning ? lowChannel : newMinValue,
-                                        channelRange[1],
-                                    ])
-                                )
-                            }
+                            onChange={[
+                                newValue =>
+                                    dispatch(
+                                        channelRangeChanged([
+                                            isRunning ? lowChannel : newValue,
+                                            channelRange[1],
+                                        ])
+                                    ),
+                                newValue =>
+                                    dispatch(
+                                        channelRangeChanged([
+                                            channelRange[0],
+                                            isRunning ? highChannel : newValue,
+                                        ])
+                                    ),
+                            ]}
                         />
-                        {' to '}
-                        <NumberInlineInput
-                            value={highChannel}
-                            range={{
-                                min: bleChannels.min,
-                                max: bleChannels.max,
-                            }}
-                            onChange={newMaxValue =>
-                                dispatch(
-                                    channelRangeChanged([
-                                        channelRange[0],
-                                        isRunning ? highChannel : newMaxValue,
-                                    ])
-                                )
-                            }
-                        />
-                    </FormLabel>
-                    <Slider
-                        id="channel-slider"
-                        values={channelRange}
-                        range={{
-                            min: bleChannels.min,
-                            max: bleChannels.max,
-                        }}
-                        onChange={[
-                            newValue =>
-                                dispatch(
-                                    channelRangeChanged([
-                                        isRunning ? lowChannel : newValue,
-                                        channelRange[1],
-                                    ])
-                                ),
-                            newValue =>
-                                dispatch(
-                                    channelRangeChanged([
-                                        channelRange[0],
-                                        isRunning ? highChannel : newValue,
-                                    ])
-                                ),
-                        ]}
-                    />
+                    </div>
                 </>
             )}
         </>

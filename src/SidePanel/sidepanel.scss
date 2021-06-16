@@ -58,6 +58,11 @@
         align-items: baseline;
     }
 
+    // Give som space before sliders
+    :not(.slider-container) + .slider-container {
+        margin-top: 16px;
+    }
+
     // Channel Selection Radio Button
     .channel-selection {
         margin-bottom: 16px !important;

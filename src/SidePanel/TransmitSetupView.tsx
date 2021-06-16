@@ -59,7 +59,7 @@ const TxPowerView = () => {
     const [txPower, setTxPower] = useState(dBmValues[txPowerIdx]);
 
     return (
-        <>
+        <div className="slider-container">
             <FormLabel htmlFor="transmit-power-slider">
                 Transmit power
                 <NumberInlineInput
@@ -91,7 +91,7 @@ const TxPowerView = () => {
                 range={{ min: 0, max: maxDbmRange }}
                 disabled={isRunning}
             />
-        </>
+        </div>
     );
 };
 

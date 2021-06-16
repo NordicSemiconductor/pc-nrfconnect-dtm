@@ -38,7 +38,6 @@
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Group } from 'pc-nrfconnect-shared';
 import PropTypes from 'prop-types';
 
 import channelModeChanged from '../actions/settingsActions';

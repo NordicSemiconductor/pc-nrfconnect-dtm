@@ -38,14 +38,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { RootState, WarningState } from './types';
 
-const InitialState: WarningState = {
+const initialState: WarningState = {
     compatibleDeviceWarning: '',
     communicationError: '',
 };
 
 const warningSlice = createSlice({
     name: 'warning',
-    initialState: InitialState,
+    initialState,
     reducers: {
         incompatibleDevice(state, action) {
             state.compatibleDeviceWarning = action.payload;

@@ -38,7 +38,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { RootState, TestState } from './types';
 
-const InitialState: TestState = {
+const initialState: TestState = {
     isRunning: false,
     lastStatusMessage: '',
     lastReceived: new Array(40).fill(0),
@@ -49,7 +49,7 @@ const InitialState: TestState = {
 
 const testSlice = createSlice({
     name: 'test',
-    initialState: InitialState,
+    initialState,
     reducers: {
         startedAction(state) {
             state.isRunning = true;

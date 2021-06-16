@@ -46,7 +46,7 @@ export const DTM_CHANNEL_MODE = {
     sweep: 'DTM_CHANNEL_MODE_SWEEP_ACTION',
 };
 
-const InitialState: SettingsState = {
+const initialState: SettingsState = {
     channelMode: DTM_CHANNEL_MODE.single,
     singleChannel: 19,
     channelRange: [bleChannels.min, bleChannels.max],
@@ -61,7 +61,7 @@ const InitialState: SettingsState = {
 
 const settingsSlice = createSlice({
     name: 'settings',
-    initialState: InitialState,
+    initialState,
     reducers: {
         dtmChannelModeChanged(state, action) {
             state.channelMode = action.payload;

@@ -38,7 +38,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { DeviceState, RootState } from './types';
 
-const InitialState: DeviceState = {
+const initialState: DeviceState = {
     serialNumber: null,
     dtm: null,
     board: null,
@@ -47,13 +47,13 @@ const InitialState: DeviceState = {
 
 const deviceSlice = createSlice({
     name: 'device',
-    initialState: InitialState,
+    initialState,
     reducers: {
         deviceSelected(state, action) {
             state.serialNumber = action.payload;
         },
         deviceDeselected(state) {
-            state.isReady = InitialState.isReady;
+            state.isReady = initialState.isReady;
         },
         deviceReady(state) {
             state.isReady = true;

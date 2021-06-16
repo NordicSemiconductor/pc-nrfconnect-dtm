@@ -64,6 +64,13 @@ type ChannelEvent = {
     packets: number;
 };
 
+type TestStatus = {
+    success: boolean;
+    received: number;
+    receivedPerChannel: number[];
+    message: string;
+};
+
 const dtmStatisticsUpdated = (dispatch: TDispatch) => (event: ChannelEvent) => {
     if (event.type === 'reset') {
         dispatch(resetChannel());
@@ -76,11 +83,6 @@ const dtmStatisticsUpdated = (dispatch: TDispatch) => (event: ChannelEvent) => {
                 received: event.packets,
             })
         );
-    } else if (event.action === 'done') {
-        // This event is not being triggered nor does this dispatch do anything
-        dispatch({
-            type: DTM_TEST_DONE,
-        });
     }
 };
 
@@ -202,40 +204,32 @@ export function startTests() {
             );
         }
 
-        testPromise.then(
-            (status: {
-                success: boolean;
-                received: number;
-                receivedPerChannel: number[];
-                message: string;
-            }) => {
-                const { success, received, receivedPerChannel, message } =
-                    status;
-                if (success) {
-                    let receivedChannels = receivedPerChannel;
-                    if (receivedChannels === undefined) {
-                        receivedChannels = new Array(40).fill(0);
+        testPromise.then((status: TestStatus) => {
+            const { success, received, receivedPerChannel, message } = status;
+            if (success) {
+                let receivedChannels = receivedPerChannel;
+                if (receivedChannels === undefined) {
+                    receivedChannels = new Array(40).fill(0);
 
-                        if (received !== undefined) {
-                            receivedChannels[singleChannel] = received;
-                        }
+                    if (received !== undefined) {
+                        receivedChannels[singleChannel] = received;
                     }
-                    const testTypeStr =
-                        testMode === 'transmitter' ? 'Transmitter' : 'Receiver';
-                    const packetsRcvStr =
-                        testMode === 'transmitter'
-                            ? ''
-                            : `. Received ${received} packets.`;
-                    logger.info(
-                        `${testTypeStr} test finished successfully${packetsRcvStr}`
-                    );
-                    dispatch(actionSucceeded(receivedChannels));
-                } else {
-                    logger.info(`End test failed: ${message}`);
-                    dispatch(actionFailed(message));
                 }
+                const testTypeStr =
+                    testMode === 'transmitter' ? 'Transmitter' : 'Receiver';
+                const packetsRcvStr =
+                    testMode === 'transmitter'
+                        ? ''
+                        : `. Received ${received} packets.`;
+                logger.info(
+                    `${testTypeStr} test finished successfully${packetsRcvStr}`
+                );
+                dispatch(actionSucceeded(receivedChannels));
+            } else {
+                logger.info(`End test failed: ${message}`);
+                dispatch(actionFailed(message));
             }
-        );
+        });
 
         dispatch(startedAction());
     };

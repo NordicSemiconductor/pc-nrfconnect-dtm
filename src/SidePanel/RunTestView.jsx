@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -38,6 +38,8 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
 
+import playSvg from '../../resources/play-circle.svg';
+import stopSvg from '../../resources/stop-circle.svg';
 import { endTests, startTests } from '../actions/testActions';
 import { getIsReady } from '../reducers/deviceReducer';
 import { getIsRunning } from '../reducers/testReducer';
@@ -47,24 +49,26 @@ const RunTestView = () => {
 
     const isRunning = useSelector(getIsRunning);
     const label = isRunning ? 'Stop test' : 'Start test';
+    const src = isRunning ? stopSvg : playSvg;
 
     const disabled = !useSelector(getIsReady);
 
     const onClick = () => {
-        dispatch(isRunning ? endTests : startTests);
+        dispatch(isRunning ? endTests() : startTests());
     };
 
     return (
-        <div className="app-sidepanel-panel">
-            <Button
-                variant="primary"
-                size="lg"
-                disabled={disabled}
-                onClick={onClick}
-            >
-                {label}
-            </Button>
-        </div>
+        <Button
+            className={`w-100 secondary-btn start-stop  ${
+                isRunning ? 'active-animation' : ''
+            }`}
+            variant="secondary"
+            disabled={disabled}
+            onClick={onClick}
+        >
+            <img alt="" src={src} />
+            {label}
+        </Button>
     );
 };
 

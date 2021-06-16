@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,18 +34,64 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+@import '~pc-nrfconnect-shared/styles';
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+.dropdown-container {
+    position: relative;
+    width: 100%;
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+    .dropdown-label {
+        font-size: 10px;
+        margin-bottom: 4px !important;
+    }
 
-export default rootReducer;
+    .dropdown-btn {
+        width: 100%;
+        height: 32px;
+        padding: 0 8px;
+        background: $gray-700;
+        color: $white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        border: none;
+    }
+
+    .dropdown-btn-active img {
+        transform: rotate(180deg);
+    }
+
+    .dropdown-content {
+        background: $gray-700;
+        color: $white;
+        position: absolute;
+        width: 100%;
+        top: 32px;
+        right: 0;
+        padding: 0;
+        border-top: solid 2px $gray-600;
+        z-index: 1;
+    }
+
+    .dropdown-active img {
+        transform: rotate(90deg);
+    }
+
+    .dropdown-inactive {
+        display: none;
+    }
+
+    .dropdown-item {
+        color: $white;
+        padding: 4px 8px;
+        height: 24px;
+    }
+
+    .dropdown-btn:hover,
+    .dropdown-btn:focus,
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background: $gray-600;
+    }
+}

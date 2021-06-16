@@ -33,19 +33,95 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+@import '~pc-nrfconnect-shared/styles';
 
-import { combineReducers } from 'redux';
+.sidepanel {
+    .inline-input {
+        font-size: 13px;
+    }
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+    // BUTTONS
+    .btn-set {
+        color: $gray-700;
+        background-color: $white;
+        border-color: $gray-700;
+    }
+    .btn-unset {
+        color: $white;
+        background-color: $gray-700;
+        border-color: $gray-700;
+    }
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+    .form-label {
+        margin-bottom: 0;
+        display: flex;
+        align-items: baseline;
+    }
 
-export default rootReducer;
+    // Channel Selection Radio Button
+    .channel-selection {
+        margin-bottom: 16px !important;
+        padding: 4px;
+        background-color: $gray-700;
+        button {
+            padding: 4px;
+            border-radius: 4px !important;
+        }
+        .btn:disabled {
+            opacity: initial;
+        }
+        .dot {
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            width: 6px;
+            height: 6px;
+            border-radius: 3px;
+        }
+    }
+
+    // Timeout Slider Label
+    .timeout-label {
+        height: 21px;
+        display: flex;
+        align-items: center;
+    }
+
+    .start-stop {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 24px;
+
+        img {
+            height: 20px;
+            width: 20px;
+            margin-right: 8px;
+        }
+    }
+
+    .btn.active-animation {
+        overflow: hidden;
+        position: relative;
+
+        &::after {
+            content: '';
+            background: $gray-700;
+            height: 2px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            animation: snake 4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+    }
+
+    @keyframes snake {
+        0% {
+            transform: translate(-100%);
+        }
+        100% {
+            transform: translate(100%);
+        }
+    }
+}

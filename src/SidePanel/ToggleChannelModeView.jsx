@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -38,9 +38,10 @@
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Group } from 'pc-nrfconnect-shared';
 import PropTypes from 'prop-types';
 
-import { channelModeChanged } from '../actions/settingsActions';
+import channelModeChanged from '../actions/settingsActions';
 import { DTM_CHANNEL_MODE, getChannelMode } from '../reducers/settingsReducer';
 
 const ToggleChannelModeView = ({ isRunning }) => {
@@ -50,7 +51,7 @@ const ToggleChannelModeView = ({ isRunning }) => {
 
     const selectionButton = (type, text) => (
         <Button
-            variant="light"
+            variant={selected === type ? 'set' : 'unset'}
             onClick={() => dispatch(channelModeChanged(type))}
             active={selected === type}
             disabled={isRunning}
@@ -60,12 +61,10 @@ const ToggleChannelModeView = ({ isRunning }) => {
     );
 
     return (
-        <div className="app-sidepanel-panel">
-            <ButtonGroup>
-                {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
-                {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
-            </ButtonGroup>
-        </div>
+        <ButtonGroup className="w-100 d-flex flex-row channel-selection">
+            {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
+            {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
+        </ButtonGroup>
     );
 };
 

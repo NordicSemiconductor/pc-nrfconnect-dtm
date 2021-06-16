@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -40,7 +40,7 @@ import {
     sweepTimeChanged,
 } from '../reducers/settingsReducer';
 
-export function channelModeChanged(buttonClicked) {
+function channelModeChanged(buttonClicked) {
     return dispatch => {
         if (buttonClicked === DTM_CHANNEL_MODE.single) {
             dispatch(sweepTimeChanged(0));
@@ -51,3 +51,5 @@ export function channelModeChanged(buttonClicked) {
         dispatch(dtmChannelModeChanged(buttonClicked));
     };
 }
+
+export default channelModeChanged;

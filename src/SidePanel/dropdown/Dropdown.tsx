@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,18 +34,59 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+import React, { FC, useRef } from 'react';
+import FormLabel from 'react-bootstrap/FormLabel';
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+import chevron from './chevron.svg';
+import useDetectClick from './useDetectClick';
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+import './Dropdown.scss';
 
-export default rootReducer;
+interface DropdownProps {
+    title: string;
+    id?: string;
+    disabled?: boolean;
+    label?: string;
+}
+
+const Dropdown: FC<DropdownProps> = ({
+    title,
+    id,
+    disabled,
+    label,
+    children,
+}) => {
+    const dropdownRef = useRef(null);
+    const [isActive, setIsActive] = useDetectClick(dropdownRef, false);
+    const onClick = () => setIsActive(!isActive);
+
+    return (
+        <>
+            <div className="dropdown-container">
+                <FormLabel className="dropdown-label">{label}</FormLabel>
+                <button
+                    type="button"
+                    className={`dropdown-btn dropdown-btn-${
+                        isActive ? 'active' : 'inactive'
+                    }`}
+                    id={id}
+                    onClick={onClick}
+                    disabled={disabled}
+                >
+                    <span>{title}</span>
+                    <img src={chevron} alt="" />
+                </button>
+                <div
+                    ref={dropdownRef}
+                    className={`dropdown-content dropdown-${
+                        isActive ? 'active' : 'inactive'
+                    }`}
+                >
+                    {children}
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default Dropdown;

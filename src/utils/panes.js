@@ -34,18 +34,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+import { currentPane } from 'pc-nrfconnect-shared';
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+export const TRANSMITTER = 0;
+export const RECEIVER = 1;
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+export const isRealTimePane = state => currentPane(state) === TRANSMITTER;
+export const isDataLoggerPane = state => currentPane(state) === RECEIVER;
 
-export default rootReducer;
+export const paneName = state =>
+    isRealTimePane(state) ? 'transmitter' : 'receiver';

@@ -34,18 +34,38 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+import React from 'react';
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+import { deviceReady } from '../reducers/deviceReducer';
+import RunTestView from '../SidePanel/RunTestView';
+import { render, screen } from '../utils/testUtils';
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
+jest.mock('nrf-dtm-js/src/DTM', () => {
+    return {
+        DTM: {
+            DTM_PARAMETER: {
+                PHY_LE_1M: 0x01,
+            },
+        },
+    };
 });
 
-export default rootReducer;
+describe('Initial state with unselected device', () => {
+    it('should render start button disabled', async () => {
+        render(<RunTestView />);
+
+        const startButton = screen.getByRole('button', { name: /start test/i });
+
+        expect(startButton).toBeDisabled();
+    });
+});
+
+describe('State with selected device', () => {
+    it('should render start button enabled', async () => {
+        render(<RunTestView />, [deviceReady()]);
+
+        const startButton = screen.getByRole('button', { name: /start test/i });
+
+        expect(startButton).toBeEnabled();
+    });
+});

@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -37,50 +37,61 @@
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
-import React from 'react';
+import React, { useState } from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
-import Slider from 'react-rangeslider';
 import { useDispatch, useSelector } from 'react-redux';
+import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
 import { getBoard } from '../reducers/deviceReducer';
 import { getTxPower, txPowerChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 
-import 'react-rangeslider/lib/index.css';
-
-const txPowerView = (
+const TxPowerView = (
     boardType,
     txPowerIdx,
     txPowerUpdatedAction,
     isRunning
 ) => {
-    const compatibility = fromPCA(boardType);
-    const maxDbmRangeValue = compatibility.txPower.length - 1;
+    const dBmValues = fromPCA(boardType).txPower;
+    const maxDbmRange = dBmValues.length - 1;
 
-    const label = {};
-    label[0] = `${compatibility.txPower[0]}`;
-    label[maxDbmRangeValue] = `${compatibility.txPower[maxDbmRangeValue]}`;
+    const [txPower, setTxPower] = useState(dBmValues[txPowerIdx]);
+
     return (
-        <div className="app-sidepanel-component-slider">
-            <FormLabel>
-                {`TX Power [${compatibility.txPower[txPowerIdx]} dBm]`}
+        <>
+            <FormLabel htmlFor="transmit-power-slider">
+                Transmit power
+                <NumberInlineInput
+                    value={txPower}
+                    range={{ min: dBmValues[0], max: dBmValues[maxDbmRange] }}
+                    disabled={isRunning}
+                    onChange={value => {
+                        const index = dBmValues.findIndex(e => e === value);
+                        if (index >= 0) txPowerUpdatedAction(index);
+                        setTxPower(value);
+                    }}
+                    onChangeComplete={value => {
+                        const index = dBmValues.findIndex(e => e === value);
+                        if (index < 0) setTxPower(dBmValues[txPowerIdx]);
+                        else txPowerUpdatedAction(index);
+                    }}
+                />{' '}
+                dBm
             </FormLabel>
             <Slider
-                value={txPowerIdx}
-                onChange={value => {
-                    if (!isRunning) {
-                        return txPowerUpdatedAction(value);
-                    }
-                    return txPowerUpdatedAction(txPowerIdx);
-                }}
-                max={maxDbmRangeValue}
-                min={0}
-                labels={label}
+                id="transmit-power-slider"
+                values={[txPowerIdx]}
+                onChange={[
+                    value => {
+                        txPowerUpdatedAction(value);
+                        setTxPower(dBmValues[value]);
+                    },
+                ]}
+                range={{ min: 0, max: maxDbmRange }}
                 disabled={isRunning}
-                format={i => `${compatibility.txPower[i]} dBm`}
             />
-        </div>
+        </>
     );
 };
 
@@ -92,14 +103,14 @@ const TransmitSetupView = () => {
     const isRunning = useSelector(getIsRunning);
 
     return (
-        <div className="app-sidepanel-panel">
-            {txPowerView(
+        <>
+            {TxPowerView(
                 boardType,
                 txPowerIdx,
                 value => dispatch(txPowerChanged(value)),
                 isRunning
             )}
-        </div>
+        </>
     );
 };
 

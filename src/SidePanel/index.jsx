@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -37,42 +37,32 @@
 // eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { SidePanel } from 'pc-nrfconnect-shared';
+import { Group, SidePanel } from 'pc-nrfconnect-shared';
 
-import { getDtm } from '../reducers/deviceReducer';
-import {
-    DTM_TEST_MODE_BUTTON,
-    getChannelMode,
-    getTestMode,
-} from '../reducers/settingsReducer';
+import { paneName } from '../utils/panes';
 import ChannelView from './ChannelView';
 import OtherSettingsView from './OtherSettingsView';
 import PacketView from './PacketView';
 import RunTestView from './RunTestView';
 import TimeoutView from './TimeoutView';
-import ToggleTestModeView from './ToggleTestModeView';
 import TransmitSetupView from './TransmitSetupView';
 
+import './sidepanel.scss';
+
 const AppSidePanelView = () => {
-    const dtm = useSelector(getDtm);
-    const selectedTestMode = useSelector(getTestMode);
-    const channelMode = useSelector(getChannelMode);
+    const selectedTestMode = useSelector(paneName);
 
     return (
-        <SidePanel>
+        <SidePanel className="sidepanel">
+            <Group heading="Channel mode">
+                <ChannelView />
+                {selectedTestMode === 'transmitter' && <TransmitSetupView />}
+                <OtherSettingsView />
+                {selectedTestMode === 'transmitter' && <PacketView />}
+                <TimeoutView />
+            </Group>
             <RunTestView />
-            <ToggleTestModeView />
-            <ChannelView />
-            <OtherSettingsView />
-            <TimeoutView />
-            {selectedTestMode === DTM_TEST_MODE_BUTTON.transmitter && (
-                <>
-                    <PacketView />
-                    <TransmitSetupView />
-                </>
-            )}
         </SidePanel>
     );
 };
-
 export default AppSidePanelView;

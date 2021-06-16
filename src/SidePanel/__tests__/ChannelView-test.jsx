@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,27 +34,52 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
+// import React from 'react';
+
+// import { render } from '../../utils/testUtils';
+// import ChannelView from '../ChannelView';
+
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Main } from 'pc-nrfconnect-shared';
+import userEvent from '@testing-library/user-event';
 
-import { getDtm } from '../reducers/deviceReducer';
-import { getChannelMode, getTestMode } from '../reducers/settingsReducer';
-import ChartView from './ChartView';
-import WarningView from './WarningView';
+import { render, screen } from '../../utils/testUtils';
+import ChannelView from '../ChannelView';
 
-const AppMainView = () => {
-    const dtm = useSelector(getDtm);
-    const selectedTestMode = useSelector(getTestMode);
-    const channelMode = useSelector(getChannelMode);
+describe('Initial state', () => {
+    test('should have single channel selected', () => {
+        render(<ChannelView />);
 
-    return (
-        <Main>
-            <WarningView />
-            <ChartView />
-        </Main>
-    );
-};
+        const singleBtn = screen.getByRole(`button`, { name: /single/i });
 
-export default AppMainView;
+        expect(singleBtn).toHaveClass('active');
+    });
+
+    test('should have sweep channel not selected', () => {
+        render(<ChannelView />);
+
+        const sweepBtn = screen.getByRole(`button`, { name: /sweep/i });
+
+        expect(sweepBtn).not.toHaveClass('active');
+    });
+});
+
+describe('Select sweep', () => {
+    test('should have sweep channel selected', () => {
+        render(<ChannelView />);
+
+        const sweepBtn = screen.getByRole('button', { name: /sweep/i });
+        userEvent.click(sweepBtn);
+
+        expect(sweepBtn).toHaveClass('active');
+    });
+
+    test('should render two channel sliders', async () => {
+        render(<ChannelView />);
+
+        userEvent.click(screen.getByRole('button', { name: /sweep/i }));
+
+        const sliders = await screen.findAllByRole('slider');
+
+        expect(sliders.length).toBe(2);
+    });
+});

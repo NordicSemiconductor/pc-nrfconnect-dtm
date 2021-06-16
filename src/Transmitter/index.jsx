@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -33,36 +33,18 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-// eslint-disable-next-line import/no-unresolved
+
 import React from 'react';
-import Alert from 'react-bootstrap/Alert';
-import { useSelector } from 'react-redux';
+import { Main } from 'pc-nrfconnect-shared';
 
-import {
-    getCommunicationError,
-    getCompatibleDeviceWaring,
-} from '../reducers/warningReducer';
+import WarningView from '../WarningView';
+import TransmitterChartView from './TransmitterChartView';
 
-const warningIcon = <span className="mdi mdi-sign warning-sign" />;
+const AppMainView = () => (
+    <Main>
+        <WarningView />
+        <TransmitterChartView />
+    </Main>
+);
 
-const combineWarnings = warnings =>
-    warnings
-        .filter(str => str.length !== 0)
-        .map((s, index) => (
-            <Alert variant="danger" key={`warning-${index + 1}`}>
-                <span>{warningIcon}</span>
-                {s}
-            </Alert>
-        ));
-
-const WarningView = () => {
-    const compatibleDeviceWarning = useSelector(getCompatibleDeviceWaring);
-    const communicationError = useSelector(getCommunicationError);
-    return (
-        <div className="warning-view">
-            {combineWarnings([compatibleDeviceWarning, communicationError])}
-        </div>
-    );
-};
-
-export default WarningView;
+export default AppMainView;

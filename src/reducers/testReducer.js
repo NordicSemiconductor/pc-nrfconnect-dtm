@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -62,6 +62,7 @@ const testSlice = createSlice({
         actionSucceeded(state, action) {
             state.lastReceived = action.payload;
             state.lastStatusMessage = 'Test ended successfully';
+            state.isRunning = false;
             state.update += 1;
         },
         actionFailed(state, action) {

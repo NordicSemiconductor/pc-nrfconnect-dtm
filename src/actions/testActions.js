@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,18 +34,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    DTM,
-    DTM_MODULATION_STRING,
-    DTM_PHY_STRING,
-} from 'nrf-dtm-js/src/DTM.js';
+import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 import { logger } from 'pc-nrfconnect-shared';
 
 import { deviceReady, dtmBoardSelected } from '../reducers/deviceReducer';
-import {
-    DTM_CHANNEL_MODE,
-    DTM_TEST_MODE_BUTTON,
-} from '../reducers/settingsReducer';
+import { DTM_CHANNEL_MODE } from '../reducers/settingsReducer';
 import {
     actionFailed,
     actionSucceeded,
@@ -57,6 +50,7 @@ import {
 } from '../reducers/testReducer';
 import { communicationError } from '../reducers/warningReducer';
 import * as Constants from '../utils/constants';
+import { paneName } from '../utils/panes';
 import { clearCommunicationErrorWarning } from './warningActions';
 
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
@@ -64,15 +58,18 @@ export const DTM_TEST_DONE = 'DTM_TEST_DONE';
 
 const dtmStatisticsUpdated = dispatch => event => {
     if (event.type === 'reset') {
-        dispatch(resetChannel);
+        dispatch(resetChannel());
     } else if (event.action === 'started') {
-        dispatch(startedChannel, event.channel);
+        dispatch(startedChannel(event.channel));
     } else if (event.action === 'ended') {
-        dispatch(endedChannel, {
-            channel: event.channel,
-            received: event.packets,
-        });
+        dispatch(
+            endedChannel({
+                channel: event.channel,
+                received: event.packets,
+            })
+        );
     } else if (event.action === 'done') {
+        // This event is not being triggered nor does this dispatch do anything
         dispatch({
             type: DTM_TEST_DONE,
         });
@@ -131,15 +128,14 @@ export function startTests() {
             bitpattern,
             length,
             singleChannel,
-            lowChannel,
-            highChannel,
+            channelRange,
             sweepTime,
-            timeout,
-            testMode,
+            timeoutms,
             channelMode,
         } = settings;
 
-        const { transmitter, receiver } = DTM_TEST_MODE_BUTTON;
+        const testMode = paneName(getState());
+
         const { single, sweep } = DTM_CHANNEL_MODE;
 
         logger.info('Running device setup');
@@ -157,23 +153,22 @@ export function startTests() {
         logger.info('Starting test');
 
         let testPromise;
-        if (testMode === transmitter && channelMode === single) {
+        if (testMode === 'transmitter' && channelMode === single) {
             testPromise = dtm.singleChannelTransmitterTest(
                 bitpattern,
                 length,
                 singleChannel,
-                timeout
+                timeoutms
             );
-        } else if (testMode === transmitter && channelMode === sweep) {
+        } else if (testMode === 'transmitter' && channelMode === sweep) {
             testPromise = dtm.sweepTransmitterTest(
                 bitpattern,
                 length,
-                lowChannel,
-                highChannel,
+                ...channelRange,
                 sweepTime,
-                timeout
+                timeoutms
             );
-        } else if (testMode === receiver && channelMode === single) {
+        } else if (testMode === 'receiver' && channelMode === single) {
             // TODO: Figure out the importance of execution of single channel test,
             //   this solution does not give continuous upate, but probably captures more packets.
             // testPromise = dtm.singleChannelReceiverTest(
@@ -188,16 +183,15 @@ export function startTests() {
                 singleChannel,
                 singleChannel,
                 sweepTime,
-                timeout
+                timeoutms
             );
         } else {
             testPromise = dtm.sweepReceiverTest(
                 bitpattern,
                 length,
-                lowChannel,
-                highChannel,
+                ...channelRange,
                 sweepTime,
-                timeout
+                timeoutms
             );
         }
 
@@ -213,22 +207,22 @@ export function startTests() {
                     }
                 }
                 const testTypeStr =
-                    testMode === transmitter ? 'Transmitter' : 'Receiver';
+                    testMode === 'transmitter' ? 'Transmitter' : 'Receiver';
                 const packetsRcvStr =
-                    testMode === transmitter
+                    testMode === 'transmitter'
                         ? ''
                         : `. Received ${received} packets.`;
                 logger.info(
                     `${testTypeStr} test finished successfully${packetsRcvStr}`
                 );
-                dispatch(actionSucceeded, receivedChannels);
+                dispatch(actionSucceeded(receivedChannels));
             } else {
                 logger.info(`End test failed: ${message}`);
-                dispatch(actionFailed, message);
+                dispatch(actionFailed(message));
             }
         });
 
-        dispatch(startedAction);
+        dispatch(startedAction());
     };
 }
 
@@ -239,7 +233,7 @@ export function endTests() {
             if (res !== undefined) {
                 logger.debug(`Test ended: ${res}`);
             }
-            dispatch(stoppedAction);
+            dispatch(stoppedAction());
         });
     };
 }

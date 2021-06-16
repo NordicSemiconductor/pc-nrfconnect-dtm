@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -35,69 +35,55 @@
  */
 
 import React from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from 'react-redux';
-import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM.js';
+import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
 import { getBoard } from '../reducers/deviceReducer';
-import {
-    getModulation,
-    getPhy,
-    modulationChanged,
-    phyChanged,
-} from '../reducers/settingsReducer';
+import { getPhy, phyChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
+import { Dropdown, DropdownItem } from './dropdown';
 
 const phyTypeView = (boardType, phy, onPhyUpdated, isRunning) => {
     const compatibility = fromPCA(boardType);
     const items = Object.keys(compatibility.phy).map(keyname => (
-        <Dropdown.Item
+        <DropdownItem
             key={keyname}
-            eventKey={keyname}
-            onSelect={evt => onPhyUpdated(compatibility.phy[evt])}
-        >
-            {DTM_PHY_STRING[compatibility.phy[keyname]]}
-        </Dropdown.Item>
+            title={DTM_PHY_STRING[compatibility.phy[keyname]]}
+            onSelect={() => onPhyUpdated(compatibility.phy[keyname])}
+        />
     ));
 
     return (
         <Form.Group controlId="formTimeoutSelect">
-            <Form.Label>Physical layer</Form.Label>
-            <DropdownButton
-                variant="light"
+            <Dropdown
+                label="Physical layer"
                 title={DTM_PHY_STRING[phy]}
                 id="dropdown-variants-phy-type"
                 disabled={isRunning}
             >
                 {items}
-            </DropdownButton>
+            </Dropdown>
         </Form.Group>
     );
 };
 
 const OtherSettingsView = () => {
     const phy = useSelector(getPhy);
-    const modulation = useSelector(getModulation);
     const boardType = useSelector(getBoard);
     const isRunning = useSelector(getIsRunning);
 
     const dispatch = useDispatch();
 
-    const onModulationUpdated = value => dispatch(modulationChanged(value));
-
     return (
         <div className="app-sidepanel-panel">
-            <div className="app-sidepanel-component-inputbox">
-                {phyTypeView(
-                    boardType,
-                    phy,
-                    value => dispatch(phyChanged(value)),
-                    isRunning
-                )}
-            </div>
+            {phyTypeView(
+                boardType,
+                phy,
+                value => dispatch(phyChanged(value)),
+                isRunning
+            )}
         </div>
     );
 };

@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,45 +34,59 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// eslint-disable-next-line import/no-unresolved
-import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-
+import React, { FC } from 'react';
+import { Provider } from 'react-redux';
+import { render, RenderOptions } from '@testing-library/react';
 import {
-    DTM_TEST_MODE_BUTTON,
-    dtmTestModeChanged,
-    getTestMode,
-} from '../reducers/settingsReducer';
-import { getIsRunning } from '../reducers/testReducer';
+    AnyAction,
+    applyMiddleware,
+    combineReducers,
+    createStore,
+} from 'redux';
+import thunk from 'redux-thunk';
 
-const ToggleTestModeView = () => {
-    const selected = useSelector(getTestMode);
-    const isRunning = useSelector(getIsRunning);
+import reducer from '../reducers';
 
-    const dispatch = useDispatch();
-
-    const selectionButton = (type, text) => (
-        <Button
-            variant="light"
-            onClick={() => dispatch(dtmTestModeChanged(type))}
-            active={selected === type}
-            disabled={isRunning}
-        >
-            {text}
-        </Button>
+const createPreparedStore = (actions: AnyAction[]) => {
+    const store = createStore(
+        combineReducers({ app: reducer }),
+        applyMiddleware(thunk)
     );
-    return (
-        <div className="app-sidepanel-panel">
-            <ButtonGroup>
-                {selectionButton(
-                    DTM_TEST_MODE_BUTTON.transmitter,
-                    'Transmitter'
-                )}
-                {selectionButton(DTM_TEST_MODE_BUTTON.receiver, 'Receiver')}
-            </ButtonGroup>
-        </div>
-    );
+    actions.forEach(store.dispatch);
+
+    return store;
 };
 
-export default ToggleTestModeView;
+jest.mock('nrf-dtm-js/src/DTM', () => {
+    return {
+        DTM: {
+            DTM_PARAMETER: {
+                PHY_LE_1M: 0x01,
+            },
+        },
+    };
+});
+
+window.ResizeObserver = function ResizeObserverStub() {
+    this.observe = () => {};
+    this.disconnect = () => {};
+};
+
+window.MutationObserver = function MutationObserverStub() {
+    this.observe = () => {};
+    this.disconnect = () => {};
+};
+
+const customRender = (
+    element: React.ReactElement,
+    actions: AnyAction[] = [],
+    options: RenderOptions = {}
+) => {
+    const Wrapper: FC = props => {
+        return <Provider store={createPreparedStore(actions)} {...props} />;
+    };
+    return render(element, { wrapper: Wrapper, ...options });
+};
+
+export * from '@testing-library/react';
+export { customRender as render };

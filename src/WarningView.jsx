@@ -33,19 +33,36 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+// eslint-disable-next-line import/no-unresolved
+import React from 'react';
+import Alert from 'react-bootstrap/Alert';
+import { useSelector } from 'react-redux';
 
-import { combineReducers } from 'redux';
+import {
+    getCommunicationError,
+    getCompatibleDeviceWaring,
+} from './reducers/warningReducer';
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+const warningIcon = <span className="mdi mdi-sign warning-sign" />;
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+const combineWarnings = warnings =>
+    warnings
+        .filter(str => str.length !== 0)
+        .map((s, index) => (
+            <Alert variant="danger" key={`warning-${index + 1}`}>
+                <span>{warningIcon}</span>
+                {s}
+            </Alert>
+        ));
 
-export default rootReducer;
+const WarningView = () => {
+    const compatibleDeviceWarning = useSelector(getCompatibleDeviceWaring);
+    const communicationError = useSelector(getCommunicationError);
+    return (
+        <div className="warning-view">
+            {combineWarnings([compatibleDeviceWarning, communicationError])}
+        </div>
+    );
+};
+
+export default WarningView;

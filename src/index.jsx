@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -38,11 +38,12 @@ import React from 'react';
 import { App } from 'pc-nrfconnect-shared';
 
 import DeviceSelector from './DeviceSelector';
-import Main from './Readings';
+import Receiver from './Receiver';
 import appReducer from './reducers';
 import SidePanel from './SidePanel';
+import Transmitter from './Transmitter';
 
-import '../resources/css/index.scss';
+import './index.scss';
 
 export default () => (
     <App
@@ -50,6 +51,12 @@ export default () => (
         deviceSelect={<DeviceSelector />}
         sidePanel={<SidePanel />}
         showLogByDefault={false}
-        panes={[['Main', Main]]}
+        panes={[
+            {
+                name: 'Transmitter',
+                Main: Transmitter,
+            },
+            { name: 'Receiver', Main: Receiver },
+        ]}
     />
 );

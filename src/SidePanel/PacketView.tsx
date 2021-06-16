@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -38,13 +38,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 import React from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import FormControl from 'react-bootstrap/FormControl';
-import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM.js';
+import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM';
+import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
 import {
     bitpatternChanged,
@@ -53,77 +50,87 @@ import {
     lengthChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
-
-import 'react-rangeslider/lib/index.css';
+import { Dropdown, DropdownItem } from './dropdown';
 
 const VENDOR_PAYLOAD_LENGTH = 1;
 
-const packetTypeView = (
+interface PacketTypeViewProps {
+    bitpatternUpdated: (pkgType: number) => void;
+    lengthUpdated: (newLength: number) => void;
+    selectedPkgType: string;
+    isRunning: boolean;
+    isVendorPayload: (pkgType: number) => boolean;
+}
+
+const PacketTypeView = ({
     bitpatternUpdated,
     lengthUpdated,
-    pkgType,
-    isRunning
-) => {
-    const constantCarrierIdx = 3;
-    const isVendorPayload = idx =>
-        DTM_PKT_STRING[idx] === DTM_PKT_STRING[constantCarrierIdx];
+    selectedPkgType,
+    isRunning,
+    isVendorPayload,
+}: PacketTypeViewProps) => {
     const items = Object.keys(DTM.DTM_PKT)
-        .filter(keyname => keyname !== 'DEFAULT')
-        .map((keyname, idx) => (
-            <Dropdown.Item
-                eventKey={idx}
-                onSelect={evt => {
-                    bitpatternUpdated(evt);
-                    if (isVendorPayload(idx)) {
+        .filter(key => key !== 'DEFAULT')
+        .map((key, pkgType) => (
+            <DropdownItem
+                key={key}
+                title={DTM_PKT_STRING[pkgType]}
+                onSelect={() => {
+                    bitpatternUpdated(pkgType);
+                    if (isVendorPayload(pkgType)) {
                         lengthUpdated(VENDOR_PAYLOAD_LENGTH);
                     }
                 }}
-                key={keyname}
-            >
-                {DTM_PKT_STRING[idx]}
-            </Dropdown.Item>
+            />
         ));
+
     return (
-        <div>
-            <FormLabel>Packet type</FormLabel>
-            <DropdownButton
-                variant="light"
-                title={DTM_PKT_STRING[pkgType]}
-                id="dropdown-variants-packet-type"
+        <>
+            <Dropdown
+                label="Packet type"
+                title={DTM_PKT_STRING[selectedPkgType]}
                 disabled={isRunning}
             >
                 {items}
-            </DropdownButton>
-        </div>
+            </Dropdown>
+        </>
     );
 };
 
-const packetLengthView = (currentLength, changedFunc, pkgType, isRunning) => {
-    const isVendorPayload =
-        parseInt(pkgType, 10) === DTM.DTM_PKT.PAYLOAD_VENDOR;
-    const lengthChangedAction = evt => {
-        const length = !isVendorPayload
-            ? Math.min(255, Math.max(0, evt.target.value))
-            : VENDOR_PAYLOAD_LENGTH;
-        changedFunc(length);
-    };
+interface PacketLengthView {
+    changedFunc: (newLength: number) => void;
+    currentLength: number;
+    isRunning: boolean;
+}
+
+const PacketLengthView = ({
+    changedFunc,
+    currentLength,
+    isRunning,
+}: PacketLengthView) => {
+    const range = { min: 1, max: 255 };
     return (
-        <div>
-            <FormGroup controlId="formPacketLength">
-                <FormLabel>Packet length (bytes)</FormLabel>
-                <FormControl
-                    onChange={lengthChangedAction}
-                    disabled={isVendorPayload || isRunning}
-                    componentclass="input"
+        <>
+            <FormLabel htmlFor="packet-length-slider">
+                Packet length
+                <NumberInlineInput
                     value={currentLength}
-                    min={1}
-                    max={255}
-                    step={1}
-                    type="number"
-                    size="sm"
-                />
-            </FormGroup>
-        </div>
+                    range={range}
+                    onChange={value =>
+                        changedFunc(isRunning ? currentLength : value)
+                    }
+                />{' '}
+                Bytes
+            </FormLabel>
+            <Slider
+                id="packet-length-slider"
+                values={[currentLength]}
+                onChange={[
+                    value => changedFunc(isRunning ? currentLength : value),
+                ]}
+                range={range}
+            />
+        </>
     );
 };
 
@@ -135,26 +142,26 @@ const PacketView = () => {
     const dispatch = useDispatch();
 
     const lengthChangedAction = value => dispatch(lengthChanged(value));
+    const isVendorPayload = type =>
+        DTM_PKT_STRING[type] === DTM_PKT_STRING[DTM.DTM_PKT.PAYLOAD_VENDOR];
 
     return (
-        <div className="app-sidepanel-panel">
-            <div className="app-sidepanel-component-inputbox">
-                {packetTypeView(
-                    value => dispatch(bitpatternChanged(value)),
-                    lengthChangedAction,
-                    pkgType,
-                    isRunning
-                )}
-            </div>
-            <div className="app-sidepanel-component-inputbox">
-                {packetLengthView(
-                    packetLength,
-                    lengthChangedAction,
-                    pkgType,
-                    isRunning
-                )}
-            </div>
-        </div>
+        <>
+            <PacketTypeView
+                bitpatternUpdated={value => dispatch(bitpatternChanged(value))}
+                lengthUpdated={lengthChangedAction}
+                selectedPkgType={pkgType}
+                isRunning={isRunning}
+                isVendorPayload={isVendorPayload}
+            />
+            {!isVendorPayload(pkgType) && (
+                <PacketLengthView
+                    currentLength={packetLength}
+                    changedFunc={lengthChangedAction}
+                    isRunning={isRunning}
+                />
+            )}
+        </>
     );
 };
 

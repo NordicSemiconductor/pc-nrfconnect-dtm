@@ -34,18 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+import React from 'react';
+import { Main } from 'pc-nrfconnect-shared';
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+import WarningView from '../WarningView';
+import ReceiverChartView from './ReceiverChartView';
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+const AppMainView = () => (
+    <Main>
+        <WarningView />
+        <ReceiverChartView />
+    </Main>
+);
 
-export default rootReducer;
+export default AppMainView;

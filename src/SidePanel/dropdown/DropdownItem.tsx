@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -34,18 +34,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { combineReducers } from 'redux';
+import React from 'react';
 
-import device from './deviceReducer';
-import settings from './settingsReducer';
-import test from './testReducer';
-import warning from './warningReducer';
+interface DropdownItemProps {
+    title: string;
+    onSelect?: () => void;
+}
 
-const rootReducer = combineReducers({
-    device,
-    settings,
-    test,
-    warning,
-});
+const DropdownItem = ({ title, onSelect }: DropdownItemProps) => (
+    <button type="button" className="dropdown-item" onClick={onSelect}>
+        {title}
+    </button>
+);
 
-export default rootReducer;
+export default DropdownItem;

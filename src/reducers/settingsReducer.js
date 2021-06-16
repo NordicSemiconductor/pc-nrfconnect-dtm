@@ -1,4 +1,4 @@
-/* Copyright (c) 2015 - 2018, Nordic Semiconductor ASA
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -35,14 +35,10 @@
  */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { DTM } from 'nrf-dtm-js/src/DTM.js';
+import { DTM } from 'nrf-dtm-js/src/DTM';
+import { bleChannels } from 'pc-nrfconnect-shared';
 
 import * as Constants from '../utils/constants';
-
-export const DTM_TEST_MODE_BUTTON = {
-    transmitter: 0,
-    receiver: 1,
-};
 
 export const DTM_CHANNEL_MODE = {
     single: 'DTM_CHANNEL_MODE_SINGLE_ACTION',
@@ -50,38 +46,30 @@ export const DTM_CHANNEL_MODE = {
 };
 
 const InitialState = {
-    testMode: DTM_TEST_MODE_BUTTON.transmitter,
     channelMode: DTM_CHANNEL_MODE.single,
     singleChannel: 19,
-    lowChannel: 11,
-    highChannel: 26,
+    channelRange: [bleChannels.min, bleChannels.max],
     sweepTime: 0,
     bitpattern: 0,
-    length: 1,
+    length: 37,
     txPower: Math.max(0, Constants.dbmValues.indexOf(0)),
     phy: DTM.DTM_PARAMETER.PHY_LE_1M,
     modulationMode: DTM.DTM_PARAMETER.STANDARD_MODULATION_INDEX,
-    timeout: 0,
+    timeoutms: 0,
 };
 
 const settingsSlice = createSlice({
     name: 'settings',
     initialState: InitialState,
     reducers: {
-        dtmTestModeChanged(state, action) {
-            state.testMode = action.payload;
-        },
         dtmChannelModeChanged(state, action) {
             state.channelMode = action.payload;
         },
         dtmSingleChannelChanged(state, action) {
             state.singleChannel = action.payload;
         },
-        dtmLowChannelChanged(state, action) {
-            state.lowChannel = action.payload;
-        },
-        dtmHighChannelChanged(state, action) {
-            state.highChannel = action.payload;
+        channelRangeChanged(state, action) {
+            state.channelRange = action.payload;
         },
         sweepTimeChanged(state, action) {
             state.sweepTime = action.payload;
@@ -96,7 +84,7 @@ const settingsSlice = createSlice({
             state.length = action.payload;
         },
         timeoutChanged(state, action) {
-            state.timeout = action.payload;
+            state.timeoutms = action.payload * 1000;
         },
         phyChanged(state, action) {
             state.phy = action.payload;
@@ -110,11 +98,9 @@ const settingsSlice = createSlice({
 export default settingsSlice.reducer;
 
 const {
-    dtmTestModeChanged,
     dtmChannelModeChanged,
     dtmSingleChannelChanged,
-    dtmLowChannelChanged,
-    dtmHighChannelChanged,
+    channelRangeChanged,
     sweepTimeChanged,
     txPowerChanged,
     bitpatternChanged,
@@ -124,25 +110,21 @@ const {
     modulationChanged,
 } = settingsSlice.actions;
 
-const getTestMode = state => state.app.settings.testMode;
 const getChannelMode = state => state.app.settings.channelMode;
 const getSingleChannel = state => state.app.settings.singleChannel;
-const getLowChannel = state => state.app.settings.lowChannel;
-const getHighChannel = state => state.app.settings.highChannel;
+const getChannelRange = state => state.app.settings.channelRange;
 const getSweepTime = state => state.app.settings.sweepTime;
 const getBitpattern = state => state.app.settings.bitpattern;
 const getLength = state => state.app.settings.length;
 const getTxPower = state => state.app.settings.txPower;
 const getPhy = state => state.app.settings.phy;
 const getModulation = state => state.app.settings.modulationMode;
-const getTimeout = state => state.app.settings.timeout;
+const getTimeout = state => state.app.settings.timeoutms;
 
 export {
-    dtmTestModeChanged,
     dtmChannelModeChanged,
     dtmSingleChannelChanged,
-    dtmLowChannelChanged,
-    dtmHighChannelChanged,
+    channelRangeChanged,
     sweepTimeChanged,
     txPowerChanged,
     bitpatternChanged,
@@ -150,11 +132,9 @@ export {
     timeoutChanged,
     phyChanged,
     modulationChanged,
-    getTestMode,
     getChannelMode,
     getSingleChannel,
-    getLowChannel,
-    getHighChannel,
+    getChannelRange,
     getSweepTime,
     getBitpattern,
     getLength,

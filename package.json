@@ -37,6 +37,7 @@
   "devDependencies": {
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.1.9",
+    "@types/chart.js": "^2.9.32",
     "@types/react": "16.14.6",
     "@types/react-dom": "^17.0.6",
     "@types/react-redux": "^7.1.16",
@@ -51,7 +52,6 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
-    "@types/chart.js": "^2.9.32",
     "electron-store": "^5.1.1"
   },
   "bundledDependencies": [

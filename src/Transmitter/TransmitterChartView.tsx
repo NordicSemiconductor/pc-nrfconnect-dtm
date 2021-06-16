@@ -45,8 +45,8 @@ import { getCurrentChannel, getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 import chartColors from '../utils/chartColors';
 
-const frequencyBase = 2402;
-const frequencyInterval = 2;
+const FREQUENCY_BASE = 2402;
+const FREQUENCY_INTERVAL = 2;
 
 const chartDataTransmit = (
     currentChannel: number | undefined,
@@ -59,7 +59,7 @@ const chartDataTransmit = (
 
     const bleChannelsUpdated = bleChannels.map(
         (channel, index) =>
-            `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
+            `${channel} | ${FREQUENCY_BASE + index * FREQUENCY_INTERVAL} MHz`
     );
 
     const datasets = [
@@ -169,7 +169,7 @@ const TransmitterChartView = () => {
                             },
                             ticks: {
                                 callback: (_: unknown, index: number) =>
-                                    frequencyBase + index * frequencyInterval,
+                                    FREQUENCY_BASE + index * FREQUENCY_INTERVAL,
                                 minRotation: 90,
                                 labelOffset: 0,
                                 autoSkipPadding: 5,

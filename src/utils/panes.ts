@@ -41,10 +41,8 @@ import { RootState } from '../reducers/types';
 export const TRANSMITTER = 0;
 export const RECEIVER = 1;
 
-export const isRealTimePane = (state: RootState) =>
+export const isTransmitterPane = (state: RootState) =>
     currentPane(state) === TRANSMITTER;
-export const isDataLoggerPane = (state: RootState) =>
-    currentPane(state) === RECEIVER;
 
 export const paneName = (state: RootState) =>
-    isRealTimePane(state) ? 'transmitter' : 'receiver';
+    isTransmitterPane(state) ? 'transmitter' : 'receiver';

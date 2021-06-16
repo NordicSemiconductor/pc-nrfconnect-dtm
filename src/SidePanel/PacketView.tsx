@@ -85,15 +85,13 @@ const PacketTypeView = ({
         ));
 
     return (
-        <>
-            <Dropdown
-                label="Packet type"
-                title={DTM_PKT_STRING[selectedPkgType]}
-                disabled={isRunning}
-            >
-                {items}
-            </Dropdown>
-        </>
+        <Dropdown
+            label="Packet type"
+            title={DTM_PKT_STRING[selectedPkgType]}
+            disabled={isRunning}
+        >
+            {items}
+        </Dropdown>
     );
 };
 

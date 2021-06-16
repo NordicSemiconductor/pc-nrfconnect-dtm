@@ -57,63 +57,60 @@ import { clearCommunicationErrorWarning } from './warningActions';
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
 export const DTM_TEST_DONE = 'DTM_TEST_DONE';
 
-const dtmStatisticsUpdated =
-    (dispatch: TDispatch) =>
-    (event: {
-        type: string;
-        action: string;
-        channel: number;
-        packets: number;
-    }) => {
-        if (event.type === 'reset') {
-            dispatch(resetChannel());
-        } else if (event.action === 'started') {
-            dispatch(startedChannel(event.channel));
-        } else if (event.action === 'ended') {
-            dispatch(
-                endedChannel({
-                    channel: event.channel,
-                    received: event.packets,
-                })
-            );
-        } else if (event.action === 'done') {
-            // This event is not being triggered nor does this dispatch do anything
-            dispatch({
-                type: DTM_TEST_DONE,
-            });
-        }
-    };
+type ChannelEvent = {
+    type: string;
+    action: string;
+    channel: number;
+    packets: number;
+};
+
+type TestStatus = {
+    success: boolean;
+    received: number;
+    receivedPerChannel: number[];
+    message: string;
+};
+
+const dtmStatisticsUpdated = (dispatch: TDispatch) => (event: ChannelEvent) => {
+    if (event.type === 'reset') {
+        dispatch(resetChannel());
+    } else if (event.action === 'started') {
+        dispatch(startedChannel(event.channel));
+    } else if (event.action === 'ended') {
+        dispatch(
+            endedChannel({
+                channel: event.channel,
+                received: event.packets,
+            })
+        );
+    }
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let dtm: any;
 
 async function setupTest(settings: SettingsState) {
-    const setupResult = (res: number[] | undefined) =>
-        typeof res === 'object' &&
-        res.length >= 2 &&
-        res[0] === 0 &&
-        res[1] === 0;
     let res = await dtm.setupReset();
-    if (!setupResult(res)) {
+    if (!validateResult(res)) {
         logger.info('DTM setup reset command failed');
         return false;
     }
     const { txPower, length, modulationMode, phy } = settings;
 
     res = await dtm.setTxPower(Constants.dbmValues[txPower]);
-    if (!setupResult(res)) {
+    if (!validateResult(res)) {
         logger.info(
             `DTM setup tx power command failed with ${Constants.dbmValues[txPower]} dbm`
         );
     }
 
     res = await dtm.setupLength(length);
-    if (!setupResult(res)) {
+    if (!validateResult(res)) {
         logger.info(`DTM setup length command failed with length ${length}`);
     }
 
     res = await dtm.setupModulation(modulationMode);
-    if (!setupResult(res)) {
+    if (!validateResult(res)) {
         logger.info(
             'DTM setup modulation command failed with parameter ' +
                 `${DTM_MODULATION_STRING[modulationMode]}`
@@ -121,7 +118,7 @@ async function setupTest(settings: SettingsState) {
     }
 
     res = await dtm.setupPhy(phy);
-    if (!setupResult(res)) {
+    if (!validateResult(res)) {
         logger.info(
             `DTM setup physical command failed with parameter ${DTM_PHY_STRING[phy]}`
         );
@@ -129,6 +126,9 @@ async function setupTest(settings: SettingsState) {
 
     return true;
 }
+
+const validateResult = (res: number[] | undefined) =>
+    typeof res === 'object' && res.length >= 2 && res[0] === 0 && res[1] === 0;
 
 export function startTests() {
     return async (dispatch: TDispatch, getState: () => RootState) => {
@@ -204,40 +204,32 @@ export function startTests() {
             );
         }
 
-        testPromise.then(
-            (status: {
-                success: boolean;
-                received: number;
-                receivedPerChannel: number[];
-                message: string;
-            }) => {
-                const { success, received, receivedPerChannel, message } =
-                    status;
-                if (success) {
-                    let receivedChannels = receivedPerChannel;
-                    if (receivedChannels === undefined) {
-                        receivedChannels = new Array(40).fill(0);
+        testPromise.then((status: TestStatus) => {
+            const { success, received, receivedPerChannel, message } = status;
+            if (success) {
+                let receivedChannels = receivedPerChannel;
+                if (receivedChannels === undefined) {
+                    receivedChannels = new Array(40).fill(0);
 
-                        if (received !== undefined) {
-                            receivedChannels[singleChannel] = received;
-                        }
+                    if (received !== undefined) {
+                        receivedChannels[singleChannel] = received;
                     }
-                    const testTypeStr =
-                        testMode === 'transmitter' ? 'Transmitter' : 'Receiver';
-                    const packetsRcvStr =
-                        testMode === 'transmitter'
-                            ? ''
-                            : `. Received ${received} packets.`;
-                    logger.info(
-                        `${testTypeStr} test finished successfully${packetsRcvStr}`
-                    );
-                    dispatch(actionSucceeded(receivedChannels));
-                } else {
-                    logger.info(`End test failed: ${message}`);
-                    dispatch(actionFailed(message));
                 }
+                const testTypeStr =
+                    testMode === 'transmitter' ? 'Transmitter' : 'Receiver';
+                const packetsRcvStr =
+                    testMode === 'transmitter'
+                        ? ''
+                        : `. Received ${received} packets.`;
+                logger.info(
+                    `${testTypeStr} test finished successfully${packetsRcvStr}`
+                );
+                dispatch(actionSucceeded(receivedChannels));
+            } else {
+                logger.info(`End test failed: ${message}`);
+                dispatch(actionFailed(message));
             }
-        );
+        });
 
         dispatch(startedAction());
     };

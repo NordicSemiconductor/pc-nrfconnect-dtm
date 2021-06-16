@@ -1,0 +1,132 @@
+/* Copyright (c) 2015 - 2021, Nordic Semiconductor ASA
+ *
+ * All rights reserved.
+ *
+ * Use in source and binary forms, redistribution in binary form only, with
+ * or without modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions in binary form, except as embedded into a Nordic
+ *    Semiconductor ASA integrated circuit in a product or a software update for
+ *    such product, must reproduce the above copyright notice, this list of
+ *    conditions and the following disclaimer in the documentation and/or other
+ *    materials provided with the distribution.
+ *
+ * 2. Neither the name of Nordic Semiconductor ASA nor the names of its
+ *    contributors may be used to endorse or promote products derived from this
+ *    software without specific prior written permission.
+ *
+ * 3. This software, with or without modification, must only be used with a Nordic
+ *    Semiconductor ASA integrated circuit.
+ *
+ * 4. Any software provided in binary form under this license must not be reverse
+ *    engineered, decompiled, modified and/or disassembled.
+ *
+ * THIS SOFTWARE IS PROVIDED BY NORDIC SEMICONDUCTOR ASA "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL NORDIC SEMICONDUCTOR ASA OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+ * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+@import '~pc-nrfconnect-shared/styles';
+
+.sidepanel {
+    .inline-input {
+        font-size: 13px;
+    }
+
+    // BUTTONS
+    .btn-set {
+        color: $gray-700;
+        background-color: $white;
+        border-color: $gray-700;
+    }
+    .btn-unset {
+        color: $white;
+        background-color: $gray-700;
+        border-color: $gray-700;
+    }
+
+    .form-label {
+        margin-bottom: 0;
+        display: flex;
+        align-items: baseline;
+    }
+
+    // Give som space before sliders
+    :not(.slider-container) + .slider-container {
+        margin-top: 16px;
+    }
+
+    // Channel Selection Radio Button
+    .channel-selection {
+        margin-bottom: 16px !important;
+        padding: 4px;
+        background-color: $gray-700;
+        button {
+            padding: 4px;
+            border-radius: 4px !important;
+        }
+        .btn:disabled {
+            opacity: initial;
+        }
+        .dot {
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            width: 6px;
+            height: 6px;
+            border-radius: 3px;
+        }
+    }
+
+    // Timeout Slider Label
+    .timeout-label {
+        height: 21px;
+        display: flex;
+        align-items: center;
+    }
+
+    .start-stop {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 24px;
+
+        img {
+            height: 20px;
+            width: 20px;
+            margin-right: 8px;
+        }
+    }
+
+    .btn.active-animation {
+        overflow: hidden;
+        position: relative;
+
+        &::after {
+            content: '';
+            background: $gray-700;
+            height: 2px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            animation: snake 4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+    }
+
+    @keyframes snake {
+        0% {
+            transform: translate(-100%);
+        }
+        100% {
+            transform: translate(100%);
+        }
+    }
+}

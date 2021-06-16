@@ -10,7 +10,7 @@
   "author": "Nordic Semiconductor ASA",
   "license": "SEE LICENSE IN LICENSE",
   "engines": {
-    "nrfconnect": "^3.2.0"
+    "nrfconnect": "^3.7.0"
   },
   "main": "dist/bundle.js",
   "files": [
@@ -25,9 +25,9 @@
     "webpack": "nrfconnect-scripts build-dev",
     "build": "nrfconnect-scripts build-prod",
     "nordic-publish": "nrfconnect-scripts nordic-publish",
-    "lint": "nrfconnect-scripts lint lib index.jsx",
+    "lint": "nrfconnect-scripts lint src",
     "lint-init": "nrfconnect-scripts lint-init",
-    "lintfix": "nrfconnect-scripts lint --fix lib index.jsx",
+    "lintfix": "nrfconnect-scripts lint --fix src",
     "test": "nrfconnect-scripts test",
     "test-watch": "nrfconnect-scripts test --watch",
     "clean": "npm run clean-dist && npm run clean-modules",
@@ -35,26 +35,28 @@
     "clean-modules": "rimraf \"node_modules/!(rimraf|.bin)\""
   },
   "devDependencies": {
-    "chart.js": "^2.8.0",
-    "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js",
-    "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#semver:^4.15.0",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^13.1.9",
+    "@types/react": "16.14.6",
+    "@types/react-dom": "^17.0.6",
+    "@types/react-redux": "^7.1.16",
+    "chart.js": "^2.9.4",
+    "chartjs-plugin-datalabels": "^1.0.0",
+    "nrf-dtm-js": "github:NordicPlayground/nrf-dtm-js",
+    "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.23.1",
     "react": "16.13.1",
     "react-chartjs-2": "^2.7.6",
     "react-dom": "16.13.1",
-    "react-rangeslider": "^2.2.0",
     "react-redux": "7.2.0"
   },
   "dependencies": {
-    "electron-store": "^3.2.0"
+    "@reduxjs/toolkit": "^1.5.1",
+    "@types/chart.js": "^2.9.32",
+    "electron-store": "^5.1.1"
   },
   "bundledDependencies": [
     "electron-store"
   ],
-  "jest": {
-    "moduleNameMapper": {
-      "nrfconnect/core": "<rootDir>/mocks/coreMock.js"
-    }
-  },
   "eslintConfig": {
     "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc.json"
   },

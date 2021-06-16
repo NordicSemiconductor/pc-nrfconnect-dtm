@@ -46,12 +46,12 @@ import chartColors from '../utils/chartColors';
 
 Chart.plugins.register(ChartDataLabels);
 
-const frequencyBase = 2402;
-const frequencyInterval = 2;
+const FREQUENCY_BASE = 2402;
+const FREQUENCY_INTERVAL = 2;
 
 const bleChannelsUpdated = bleChannels.map(
     (channel, index) =>
-        `${channel} | ${frequencyBase + index * frequencyInterval} MHz`
+        `${channel} | ${FREQUENCY_BASE + index * FREQUENCY_INTERVAL} MHz`
 );
 
 const ChartView = () => {
@@ -167,7 +167,7 @@ const ChartView = () => {
                             },
                             ticks: {
                                 callback: (_: unknown, index: number) =>
-                                    frequencyBase + index * frequencyInterval,
+                                    FREQUENCY_BASE + index * FREQUENCY_INTERVAL,
                                 minRotation: 90,
                                 labelOffset: 0,
                                 autoSkipPadding: 5,

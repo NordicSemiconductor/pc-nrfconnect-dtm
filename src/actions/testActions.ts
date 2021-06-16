@@ -88,32 +88,27 @@ const dtmStatisticsUpdated = (dispatch: TDispatch) => (event: ChannelEvent) => {
 let dtm: any;
 
 async function setupTest(settings: SettingsState) {
-    const setupResult = (res: number[] | undefined) =>
-        typeof res === 'object' &&
-        res.length >= 2 &&
-        res[0] === 0 &&
-        res[1] === 0;
     let res = await dtm.setupReset();
-    if (!setupResult(res)) {
+    if (!validateResult(res)) {
         logger.info('DTM setup reset command failed');
         return false;
     }
     const { txPower, length, modulationMode, phy } = settings;
 
     res = await dtm.setTxPower(Constants.dbmValues[txPower]);
-    if (!setupResult(res)) {
+    if (!validateResult(res)) {
         logger.info(
             `DTM setup tx power command failed with ${Constants.dbmValues[txPower]} dbm`
         );
     }
 
     res = await dtm.setupLength(length);
-    if (!setupResult(res)) {
+    if (!validateResult(res)) {
         logger.info(`DTM setup length command failed with length ${length}`);
     }
 
     res = await dtm.setupModulation(modulationMode);
-    if (!setupResult(res)) {
+    if (!validateResult(res)) {
         logger.info(
             'DTM setup modulation command failed with parameter ' +
                 `${DTM_MODULATION_STRING[modulationMode]}`
@@ -121,7 +116,7 @@ async function setupTest(settings: SettingsState) {
     }
 
     res = await dtm.setupPhy(phy);
-    if (!setupResult(res)) {
+    if (!validateResult(res)) {
         logger.info(
             `DTM setup physical command failed with parameter ${DTM_PHY_STRING[phy]}`
         );
@@ -129,6 +124,9 @@ async function setupTest(settings: SettingsState) {
 
     return true;
 }
+
+const validateResult = (res: number[] | undefined) =>
+    typeof res === 'object' && res.length >= 2 && res[0] === 0 && res[1] === 0;
 
 export function startTests() {
     return async (dispatch: TDispatch, getState: () => RootState) => {

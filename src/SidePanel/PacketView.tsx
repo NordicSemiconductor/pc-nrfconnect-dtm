@@ -110,7 +110,7 @@ const PacketLengthView = ({
 }: PacketLengthView) => {
     const range = { min: 1, max: 255 };
     return (
-        <>
+        <div className="slider-container">
             <FormLabel htmlFor="packet-length-slider">
                 Packet length
                 <NumberInlineInput
@@ -130,7 +130,7 @@ const PacketLengthView = ({
                 ]}
                 range={range}
             />
-        </>
+        </div>
     );
 };
 

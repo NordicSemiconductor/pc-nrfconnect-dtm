@@ -61,16 +61,14 @@ const PhyTypeView = () => {
     ));
 
     return (
-        <FormGroup controlId="formTimeoutSelect">
-            <Dropdown
-                label="Physical layer"
-                title={DTM_PHY_STRING[phy]}
-                id="dropdown-variants-phy-type"
-                disabled={isRunning}
-            >
-                {items}
-            </Dropdown>
-        </FormGroup>
+        <Dropdown
+            label="Physical layer"
+            title={DTM_PHY_STRING[phy]}
+            id="dropdown-variants-phy-type"
+            disabled={isRunning}
+        >
+            {items}
+        </Dropdown>
     );
 };
 

@@ -80,17 +80,19 @@ export default {
         },
     },
 
-    decorateMainView: MainView => () => (
-        <MainView cssClass="main-view">
-            <AppMainView />
-        </MainView>
-    ),
+    decorateMainView: MainView => () =>
+        (
+            <MainView cssClass="main-view">
+                <AppMainView />
+            </MainView>
+        ),
 
-    decorateSidePanel: SidePanel => () => (
-        <SidePanel>
-            <AppSidePanelView cssClass="side-panel" />
-        </SidePanel>
-    ),
+    decorateSidePanel: SidePanel => () =>
+        (
+            <SidePanel>
+                <AppSidePanelView cssClass="side-panel" />
+            </SidePanel>
+        ),
 
     mapDeviceSelectorState: (state, props) => ({
         portIndicatorStatus:

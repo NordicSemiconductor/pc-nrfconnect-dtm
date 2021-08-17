@@ -1,3 +1,9 @@
+## Unreleased
+### Changed
+- New UI design.
+- Split Transmitter and Receiver into seperate panes.
+- Timeout updates UI after completion.
+
 ## 1.1.7 - 2021-02-22
 ### Removed
 - Live view of captured packets in receive mode.

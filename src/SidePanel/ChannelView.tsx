@@ -188,7 +188,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                             />
                             {' to '}
                             <NumberInlineInput
-                                value={highChannel}
+                                value={bleChannels[highChannel]}
                                 range={{
                                     min: bleChannels.min,
                                     max: bleChannels.max,

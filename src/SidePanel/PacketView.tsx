@@ -41,7 +41,7 @@ import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM';
-import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
+import { Dropdown, NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
 import {
     bitpatternChanged,
@@ -50,7 +50,6 @@ import {
     lengthChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
-import { Dropdown, DropdownItem } from './dropdown';
 
 const VENDOR_PAYLOAD_LENGTH = 1;
 
@@ -71,27 +70,21 @@ const PacketTypeView = ({
 }: PacketTypeViewProps) => {
     const items = Object.keys(DTM.DTM_PKT)
         .filter(key => key !== 'DEFAULT')
-        .map((key, pkgType) => (
-            <DropdownItem
-                key={key}
-                title={DTM_PKT_STRING[pkgType]}
-                onSelect={() => {
-                    bitpatternUpdated(pkgType);
-                    if (isVendorPayload(pkgType)) {
-                        lengthUpdated(VENDOR_PAYLOAD_LENGTH);
-                    }
-                }}
-            />
-        ));
+        .map((key, pkgType) => DTM_PKT_STRING[pkgType]);
 
     return (
         <Dropdown
             label="Packet type"
-            title={DTM_PKT_STRING[selectedPkgType]}
+            items={items}
+            defaultIndex={2}
             disabled={isRunning}
-        >
-            {items}
-        </Dropdown>
+            onSelect={(pkgType: number) => {
+                bitpatternUpdated(pkgType);
+                if (isVendorPayload(pkgType)) {
+                    lengthUpdated(VENDOR_PAYLOAD_LENGTH);
+                }
+            }}
+        />
     );
 };
 

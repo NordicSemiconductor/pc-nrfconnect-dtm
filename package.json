@@ -44,7 +44,6 @@
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^1.0.0",
     "nrf-dtm-js": "github:NordicPlayground/nrf-dtm-js",
-    "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v4.23.1",
     "react": "16.13.1",
     "react-chartjs-2": "^2.7.6",
     "react-dom": "16.13.1",
@@ -52,7 +51,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
-    "electron-store": "^5.1.1"
+    "electron-store": "^5.1.1",
+    "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#feat/state-selector"
   },
   "bundledDependencies": [
     "electron-store"

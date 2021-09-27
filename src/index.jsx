@@ -50,7 +50,6 @@ export default () => (
         appReducer={appReducer}
         deviceSelect={<DeviceSelector />}
         sidePanel={<SidePanel />}
-        showLogByDefault={false}
         panes={[
             {
                 name: 'Transmitter',

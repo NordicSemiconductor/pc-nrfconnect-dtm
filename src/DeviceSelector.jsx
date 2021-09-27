@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
+ */
+
 import { connect } from 'react-redux';
 import path from 'path';
 import { DeviceSelector, getAppDir, logger } from 'pc-nrfconnect-shared';

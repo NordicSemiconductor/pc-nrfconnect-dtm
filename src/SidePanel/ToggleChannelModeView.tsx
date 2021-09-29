@@ -35,7 +35,11 @@ const ToggleChannelModeView = ({ isRunning }: ToggleChannelModeViewProps) => {
     );
 
     return (
-        <ButtonGroup className="w-100 d-flex flex-row channel-selection">
+        <ButtonGroup
+            className={`w-100 d-flex flex-row channel-selection ${
+                isRunning ? 'disabled' : ''
+            }`}
+        >
             {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
             {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
         </ButtonGroup>

@@ -45,6 +45,7 @@ const DelaySlider = ({
                 <NumberInlineInput
                     value={currentValue}
                     range={range}
+                    disabled={isRunning}
                     onChange={value =>
                         changedFunc(isRunning ? currentValue : value)
                     }
@@ -54,6 +55,7 @@ const DelaySlider = ({
             <Slider
                 id="sweep-delay-slider"
                 values={[currentValue]}
+                disabled={isRunning}
                 onChange={[
                     value => changedFunc(isRunning ? currentValue : value),
                 ]}
@@ -101,6 +103,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                                 min: lowChannel,
                                 max: bleChannels.max,
                             }}
+                            disabled={isRunning}
                             onChange={value =>
                                 dispatch(
                                     dtmSingleChannelChanged(
@@ -113,6 +116,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                     <Slider
                         id="channel-slider"
                         values={[channelSingle]}
+                        disabled={isRunning}
                         onChange={[
                             value =>
                                 dispatch(
@@ -145,6 +149,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                                     min: bleChannels.min,
                                     max: bleChannels.max,
                                 }}
+                                disabled={isRunning}
                                 onChange={newMinValue =>
                                     dispatch(
                                         channelRangeChanged([
@@ -163,6 +168,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                                     min: bleChannels.min,
                                     max: bleChannels.max,
                                 }}
+                                disabled={isRunning}
                                 onChange={newMaxValue =>
                                     dispatch(
                                         channelRangeChanged([
@@ -182,6 +188,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                                 min: bleChannels.min,
                                 max: bleChannels.max,
                             }}
+                            disabled={isRunning}
                             onChange={[
                                 newValue =>
                                     dispatch(

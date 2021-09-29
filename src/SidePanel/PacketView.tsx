@@ -84,6 +84,7 @@ const PacketLengthView = ({
                 <NumberInlineInput
                     value={currentLength}
                     range={range}
+                    disabled={isRunning}
                     onChange={value =>
                         changedFunc(isRunning ? currentLength : value)
                     }
@@ -93,6 +94,7 @@ const PacketLengthView = ({
             <Slider
                 id="packet-length-slider"
                 values={[currentLength]}
+                disabled={isRunning}
                 onChange={[
                     value => changedFunc(isRunning ? currentLength : value),
                 ]}

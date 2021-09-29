@@ -5,7 +5,7 @@
  */
 
 import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
-import { logger } from 'pc-nrfconnect-shared';
+import { Device, logger } from 'pc-nrfconnect-shared';
 
 import { deviceReady, dtmBoardSelected } from '../reducers/deviceReducer';
 import { DTM_CHANNEL_MODE } from '../reducers/settingsReducer';
@@ -217,18 +217,15 @@ export function endTests() {
     };
 }
 
-export function selectDevice(portPath: string, board: string) {
-    dtm = new DTM(portPath);
+export function selectDevice(device: Device) {
+    dtm = new DTM(device.serialport?.comName, device.boardVersion);
     return (dispatch: TDispatch) => {
         dtm.on('update', dtmStatisticsUpdated(dispatch));
-        dtm.on('transport', (msg: string) => {
-            logger.debug(msg);
-        });
+        dtm.on('transport', logger.debug);
         dtm.on('log', (param: { message: string }) => {
             logger.info(param.message);
         });
-        dispatch(dtmBoardSelected(board));
-
+        dispatch(dtmBoardSelected(device.boardVersion));
         dispatch(deviceReady());
     };
 }

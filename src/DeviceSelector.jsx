@@ -55,10 +55,10 @@ function mapDispatchToProps(dispatch) {
                     `Validating firmware for device with s/n ${serialNumber}`
                 );
             } else {
+                logger.info('No firmware defined for selected device');
                 logger.info(
-                    'Could not find appropriate firmware, test might not work as expected'
+                    'Please make sure the device has been programmed with a supported firmware'
                 );
-                dispatch(selectDevice(device.serialport.comName, boardVersion));
             }
         },
         onDeviceDeselected: () => {

@@ -6,10 +6,16 @@
 
 import { connect } from 'react-redux';
 import path from 'path';
-import { DeviceSelector, getAppDir, logger } from 'pc-nrfconnect-shared';
+import {
+    Device,
+    DeviceSelector,
+    getAppDir,
+    logger,
+} from 'pc-nrfconnect-shared';
 
 import { deselectDevice, selectDevice } from './actions/testActions';
 import { deviceDeselected } from './reducers/deviceReducer';
+import { TDispatch } from './reducers/types';
 import { clearAllWarnings } from './reducers/warningReducer';
 import { compatiblePCAs } from './utils/constants';
 
@@ -45,21 +51,20 @@ const mapStateToProps = () => ({
     deviceSetup,
 });
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: TDispatch) {
     return {
-        onDeviceSelected: device => {
-            const { serialNumber, boardVersion } = device;
+        onDeviceSelected: (device: Device) => {
             dispatch(clearAllWarnings());
-            if (compatiblePCAs.includes(boardVersion)) {
+            if (compatiblePCAs.includes(device.boardVersion ?? '')) {
                 logger.info(
-                    `Validating firmware for device with s/n ${serialNumber}`
+                    `Validating firmware for device with s/n ${device.serialNumber}`
                 );
             } else {
                 logger.info('No firmware defined for selected device');
                 logger.info(
                     'Please make sure the device has been programmed with a supported firmware'
                 );
-                dispatch(selectDevice(device.serialport.comName, boardVersion));
+                dispatch(selectDevice(device));
             }
         },
         onDeviceDeselected: () => {
@@ -67,10 +72,9 @@ function mapDispatchToProps(dispatch) {
             dispatch(deviceDeselected());
             dispatch(clearAllWarnings());
         },
-        onDeviceIsReady: device => {
-            const { serialport, boardVersion } = device;
+        onDeviceIsReady: (device: Device) => {
             logger.info('Device selected successfully');
-            dispatch(selectDevice(serialport.comName, boardVersion));
+            dispatch(selectDevice(device));
         },
     };
 }

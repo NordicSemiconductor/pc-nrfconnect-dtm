@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2021 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
+ */
+
 import { connect } from 'react-redux';
 import path from 'path';
 import { DeviceSelector, getAppDir, logger } from 'pc-nrfconnect-shared';
@@ -6,8 +12,6 @@ import { deselectDevice, selectDevice } from './actions/testActions';
 import { deviceDeselected } from './reducers/deviceReducer';
 import { clearAllWarnings } from './reducers/warningReducer';
 import { compatiblePCAs } from './utils/constants';
-
-const portPath = serialPort => serialPort.path || serialPort.comName;
 
 const deviceListing = {
     serialport: true,
@@ -33,6 +37,7 @@ const deviceSetup = {
             fwIdAddress: 0x6000,
         },
     },
+    allowCustomDevice: true,
 };
 
 const mapStateToProps = () => ({
@@ -49,6 +54,12 @@ function mapDispatchToProps(dispatch) {
                 logger.info(
                     `Validating firmware for device with s/n ${serialNumber}`
                 );
+            } else {
+                logger.info('No firmware defined for selected device');
+                logger.info(
+                    'Please make sure the device has been programmed with a supported firmware'
+                );
+                dispatch(selectDevice(device.serialport.comName, boardVersion));
             }
         },
         onDeviceDeselected: () => {
@@ -57,9 +68,9 @@ function mapDispatchToProps(dispatch) {
             dispatch(clearAllWarnings());
         },
         onDeviceIsReady: device => {
-            const { serialport: port, boardVersion } = device;
+            const { serialport, boardVersion } = device;
             logger.info('Device selected successfully');
-            dispatch(selectDevice(portPath(port), boardVersion));
+            dispatch(selectDevice(serialport.comName, boardVersion));
         },
     };
 }

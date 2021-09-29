@@ -21,7 +21,7 @@ jest.mock('nrf-dtm-js/src/DTM', () => {
 });
 
 describe('Initial state with unselected device', () => {
-    it('should render start button disabled', async () => {
+    it('should render start button disabled', () => {
         render(<RunTestView />);
 
         const startButton = screen.getByRole('button', { name: /start test/i });
@@ -31,7 +31,7 @@ describe('Initial state with unselected device', () => {
 });
 
 describe('State with selected device', () => {
-    it('should render start button enabled', async () => {
+    it('should render start button enabled', () => {
         render(<RunTestView />, [deviceReady()]);
 
         const startButton = screen.getByRole('button', { name: /start test/i });

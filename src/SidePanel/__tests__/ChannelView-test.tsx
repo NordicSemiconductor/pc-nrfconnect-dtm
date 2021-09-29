@@ -4,11 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-// import React from 'react';
-
-// import { render } from '../../utils/testUtils';
-// import ChannelView from '../ChannelView';
-
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 

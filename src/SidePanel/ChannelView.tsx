@@ -123,7 +123,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                         ]}
                         range={{
                             min: bleChannels.min,
-                            max: highChannel,
+                            max: bleChannels.max,
                         }}
                     />
                 </div>

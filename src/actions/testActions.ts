@@ -218,7 +218,7 @@ export function endTests() {
 }
 
 export function selectDevice(device: Device) {
-    dtm = new DTM(device.serialport?.comName, device.boardVersion);
+    dtm = new DTM(device.serialport?.comName);
     return (dispatch: TDispatch) => {
         dtm.on('update', dtmStatisticsUpdated(dispatch));
         dtm.on('transport', (msg: string) => logger.debug(msg));

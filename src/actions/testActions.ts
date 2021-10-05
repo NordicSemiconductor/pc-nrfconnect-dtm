@@ -221,7 +221,7 @@ export function selectDevice(device: Device) {
     dtm = new DTM(device.serialport?.comName, device.boardVersion);
     return (dispatch: TDispatch) => {
         dtm.on('update', dtmStatisticsUpdated(dispatch));
-        dtm.on('transport', logger.debug);
+        dtm.on('transport', (msg: string) => logger.debug(msg));
         dtm.on('log', (param: { message: string }) => {
             logger.info(param.message);
         });

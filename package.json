@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@nordicsemiconductor/nrf-device-lib-js": "^0.3.14",
+    "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.1.9",
     "@types/chart.js": "^2.9.32",
@@ -50,9 +51,6 @@
     "react-chartjs-2": "^2.7.6",
     "react-dom": "16.13.1",
     "react-redux": "7.2.0"
-  },
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.5.1"
   },
   "eslintConfig": {
     "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc.json"

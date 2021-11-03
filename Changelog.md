@@ -1,5 +1,6 @@
-## Unreleased
+## 2.0.0 - 2021-11-01
 ### Changed
+- Establish compatibility with nRF Connect for Desktop 3.8
 - New UI design.
 - Split Transmitter and Receiver into seperate panes.
 - Timeout updates UI after completion.

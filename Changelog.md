@@ -1,3 +1,7 @@
+## 2.0.1 - 2021-11-29
+### Fixed
+- Device busy error after de- and reselecting a device.
+
 ## 2.0.0 - 2021-11-01
 ### Changed
 - Establish compatibility with nRF Connect for Desktop 3.8

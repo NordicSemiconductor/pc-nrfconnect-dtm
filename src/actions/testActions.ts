@@ -237,6 +237,7 @@ export function deselectDevice() {
             dispatch(endTests());
         }
         dispatch(dtmBoardSelected(null));
+        dtm.dtmTransport.close();
         dtm = null;
     };
 }

@@ -37,7 +37,7 @@ const DelaySlider = ({
     currentValue,
     changedFunc,
 }: DelaySliderProps) => {
-    const range = { min: 20, max: 20000 };
+    const range = { min: 20, max: 20000, decimals: 0 };
     return (
         <div className="slider-container">
             <FormLabel htmlFor="sweep-delay-slider">
@@ -102,6 +102,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                             range={{
                                 min: lowChannel,
                                 max: bleChannels.max,
+                                decimals: 0,
                             }}
                             disabled={isRunning}
                             onChange={value =>
@@ -128,6 +129,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                         range={{
                             min: bleChannels.min,
                             max: bleChannels.max,
+                            decimals: 0,
                         }}
                     />
                 </div>
@@ -148,6 +150,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                                 range={{
                                     min: bleChannels.min,
                                     max: bleChannels.max,
+                                    decimals: 0,
                                 }}
                                 disabled={isRunning}
                                 onChange={newMinValue =>
@@ -167,6 +170,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                                 range={{
                                     min: bleChannels.min,
                                     max: bleChannels.max,
+                                    decimals: 0,
                                 }}
                                 disabled={isRunning}
                                 onChange={newMaxValue =>
@@ -187,6 +191,7 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                             range={{
                                 min: bleChannels.min,
                                 max: bleChannels.max,
+                                decimals: 0,
                             }}
                             disabled={isRunning}
                             onChange={[

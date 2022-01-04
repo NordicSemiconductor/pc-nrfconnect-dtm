@@ -1,6 +1,8 @@
-## 2.0.1 - 2021-11-29
+## 2.0.1 - 2022-01-04
 ### Fixed
 - Device busy error after de- and reselecting a device.
+### Changed
+- New icon.
 
 ## 2.0.0 - 2021-11-01
 ### Changed

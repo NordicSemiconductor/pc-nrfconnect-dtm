@@ -34,6 +34,22 @@
         margin-top: 16px;
     }
 
+    // Serialport Selection
+    .serialport-selection {
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+
+        label {
+            margin-bottom: 0;
+        }
+
+        input {
+            margin-right: 8px;
+        }
+    }
+
     // Channel Selection Radio Button
     .channel-selection {
         margin-bottom: 16px !important;

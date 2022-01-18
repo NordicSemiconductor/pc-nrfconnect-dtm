@@ -14,6 +14,7 @@ import ChannelView from './ChannelView';
 import PacketView from './PacketView';
 import PhyTypeView from './PhyTypeView';
 import RunTestView from './RunTestView';
+import Serialports from './Serialports';
 import TimeoutView from './TimeoutView';
 import TransmitSetupView from './TransmitSetupView';
 
@@ -24,6 +25,7 @@ const AppSidePanelView = () => {
 
     return (
         <SidePanel className="sidepanel">
+            <Serialports />
             <Group heading="Channel mode">
                 <ChannelView paneName={selectedTestMode} />
                 {selectedTestMode === 'transmitter' && <TransmitSetupView />}

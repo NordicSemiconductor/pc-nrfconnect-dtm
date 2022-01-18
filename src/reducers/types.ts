@@ -13,6 +13,8 @@ export interface DeviceState {
     dtm: null;
     board: string | null;
     isReady: boolean;
+    serialports: string[];
+    selectedSerialport: string | null;
 }
 
 export interface SettingsState {

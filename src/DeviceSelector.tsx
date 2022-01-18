@@ -13,8 +13,12 @@ import {
     logger,
 } from 'pc-nrfconnect-shared';
 
-import { deselectDevice, selectDevice } from './actions/testActions';
-import { deviceDeselected } from './reducers/deviceReducer';
+import { deselectDevice, setupDtm } from './actions/testActions';
+import {
+    deviceDeselected,
+    dtmBoardSelected,
+    serialportSelected,
+} from './reducers/deviceReducer';
 import { TDispatch } from './reducers/types';
 import { clearAllWarnings } from './reducers/warningReducer';
 import { compatiblePCAs } from './utils/constants';
@@ -35,6 +39,14 @@ const deviceSetup = {
             fwIdAddress: 0x6000,
         },
         pca10056: {
+            fw: path.resolve(
+                getAppDir(),
+                'firmware/direct_test_mode_pca10056.hex'
+            ),
+            fwVersion: 'dtm-fw-1.0.0',
+            fwIdAddress: 0x6000,
+        },
+        pca10090: {
             fw: path.resolve(
                 getAppDir(),
                 'firmware/direct_test_mode_pca10056.hex'
@@ -64,7 +76,6 @@ function mapDispatchToProps(dispatch: TDispatch) {
                 logger.info(
                     'Please make sure the device has been programmed with a supported firmware'
                 );
-                dispatch(selectDevice(device));
             }
         },
         onDeviceDeselected: () => {
@@ -74,7 +85,26 @@ function mapDispatchToProps(dispatch: TDispatch) {
         },
         onDeviceIsReady: (device: Device) => {
             logger.info('Device selected successfully');
-            dispatch(selectDevice(device));
+            const selectedSerialport =
+                device.serialPorts.length === 3
+                    ? device.serialPorts[1].comName
+                    : device.serialPorts[0].comName;
+
+            dispatch(serialportSelected(selectedSerialport as string));
+            dispatch(
+                dtmBoardSelected({
+                    board: device.boardVersion,
+                    serialports: device.serialPorts.map(
+                        port => port.comName ?? ''
+                    ),
+                })
+            );
+            dispatch(
+                setupDtm(
+                    selectedSerialport as string,
+                    device.boardVersion as string
+                )
+            );
         },
     };
 }

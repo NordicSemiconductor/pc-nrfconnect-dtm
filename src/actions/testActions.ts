@@ -5,9 +5,9 @@
  */
 
 import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
-import { Device, logger } from 'pc-nrfconnect-shared';
+import { logger } from 'pc-nrfconnect-shared';
 
-import { deviceReady, dtmBoardSelected } from '../reducers/deviceReducer';
+import { deviceReady } from '../reducers/deviceReducer';
 import { DTM_CHANNEL_MODE } from '../reducers/settingsReducer';
 import {
     actionFailed,
@@ -217,15 +217,14 @@ export function endTests() {
     };
 }
 
-export function selectDevice(device: Device) {
-    dtm = new DTM(device.serialport?.comName, device.boardVersion);
+export function setupDtm(comName: string, boardVersion: string) {
+    dtm = new DTM(comName, boardVersion);
     return (dispatch: TDispatch) => {
         dtm.on('update', dtmStatisticsUpdated(dispatch));
         dtm.on('transport', (msg: string) => logger.debug(msg));
         dtm.on('log', (param: { message: string }) => {
             logger.info(param.message);
         });
-        dispatch(dtmBoardSelected(device.boardVersion));
         dispatch(deviceReady());
     };
 }
@@ -236,8 +235,8 @@ export function deselectDevice() {
         if (test.isRunning) {
             dispatch(endTests());
         }
-        dispatch(dtmBoardSelected(null));
-        dtm.dtmTransport.close();
+
+        if (getState().app.test.update > 0) dtm.dtmTransport.close();
         dtm = null;
     };
 }

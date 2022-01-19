@@ -37,7 +37,6 @@ export interface TestState {
         channel: number;
         received: number;
     };
-    update: number;
 }
 
 export interface WarningState {

@@ -28,7 +28,6 @@ export interface SettingsState {
 
 export interface TestState {
     isRunning: boolean;
-    lastStatusMessage: string;
     lastReceived: Array<number>;
     currentChannel: number | undefined;
     lastChannel: {

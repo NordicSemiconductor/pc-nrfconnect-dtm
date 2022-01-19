@@ -10,7 +10,6 @@ import { ThunkDispatch } from 'redux-thunk';
 
 export interface DeviceState {
     serialNumber: string | null;
-    dtm: null;
     board: string | null;
     isReady: boolean;
 }

@@ -64,7 +64,6 @@ function mapDispatchToProps(dispatch: TDispatch) {
                 logger.info(
                     'Please make sure the device has been programmed with a supported firmware'
                 );
-                dispatch(selectDevice(device));
             }
         },
         onDeviceDeselected: () => {

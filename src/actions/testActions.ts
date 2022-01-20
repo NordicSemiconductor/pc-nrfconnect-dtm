@@ -10,7 +10,6 @@ import { Device, logger } from 'pc-nrfconnect-shared';
 import { deviceReady, dtmBoardSelected } from '../reducers/deviceReducer';
 import { DTM_CHANNEL_MODE } from '../reducers/settingsReducer';
 import {
-    actionFailed,
     actionSucceeded,
     endedChannel,
     resetChannel,
@@ -197,7 +196,6 @@ export function startTests() {
                 dispatch(actionSucceeded(receivedChannels));
             } else {
                 logger.info(`End test failed: ${message}`);
-                dispatch(actionFailed(message));
             }
         });
 

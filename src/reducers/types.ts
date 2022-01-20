@@ -9,8 +9,6 @@ import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 export interface DeviceState {
-    serialNumber: string | null;
-    dtm: null;
     board: string | null;
     isReady: boolean;
 }
@@ -30,14 +28,12 @@ export interface SettingsState {
 
 export interface TestState {
     isRunning: boolean;
-    lastStatusMessage: string;
     lastReceived: Array<number>;
     currentChannel: number | undefined;
     lastChannel: {
         channel: number;
         received: number;
     };
-    update: number;
 }
 
 export interface WarningState {

@@ -1,3 +1,8 @@
+## 2.0.2 - 2022-21-04
+
+## Fixed
+- DTM did not display all serialport devices.
+
 ## 2.0.1 - 2022-01-04
 ### Fixed
 - Device busy error after de- and reselecting a device.

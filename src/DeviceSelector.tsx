@@ -20,7 +20,7 @@ import { clearAllWarnings } from './reducers/warningReducer';
 import { compatiblePCAs } from './utils/constants';
 
 const deviceListing = {
-    serialport: true,
+    serialPort: true,
     jlink: true,
 };
 

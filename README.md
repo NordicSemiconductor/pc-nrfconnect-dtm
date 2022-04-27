@@ -1,6 +1,6 @@
 # nRF Connect Direct Test Mode
 
-[![Build Status](https://dev.azure.com/NordicSemiconductor/Wayland/_apis/build/status/pc-nrfconnect-dtm?branchName=master)](https://dev.azure.com/NordicSemiconductor/Wayland/_build/latest?definitionId=19&branchName=master)
+[![Build Status](https://dev.azure.com/NordicSemiconductor/Wayland/_apis/build/status/pc-nrfconnect-dtm?branchName=main)](https://dev.azure.com/NordicSemiconductor/Wayland/_build/latest?definitionId=19&branchName=main)
 [![License](https://img.shields.io/badge/license-Modified%20BSD%20License-blue.svg)](LICENSE)
 
 *nRF Connect Direct Test Mode* lets you perform RF PHY testing of Bluetooth Low Energy devices with the Bluetooth specified Direct Test Mode. See the [Bluetooth Core specification](https://www.bluetooth.com/specifications/bluetooth-core-specification/) (volume 6, part F) for more information on the Direct Test Mode specification.

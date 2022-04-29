@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-// @ts-ignore nrf-dtm-js does not contain types
 import { DTM } from 'nrf-dtm-js/src/DTM';
 
 import * as Constants from './constants';

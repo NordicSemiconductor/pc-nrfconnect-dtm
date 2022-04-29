@@ -32,7 +32,6 @@
         "nordic-publish": "nordic-publish"
     },
     "devDependencies": {
-        "@nordicsemiconductor/nrf-device-lib-js": "^0.3.14",
         "@reduxjs/toolkit": "^1.5.1",
         "@testing-library/react": "^11.2.7",
         "@testing-library/user-event": "^13.1.9",
@@ -42,6 +41,7 @@
         "@types/react-redux": "^7.1.16",
         "chart.js": "^2.9.4",
         "chartjs-plugin-datalabels": "^1.0.0",
+        "jest": "^27.5.1",
         "nrf-dtm-js": "github:NordicPlayground/nrf-dtm-js",
         "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v6.0.2",
         "react": "16.13.1",

@@ -4,6 +4,4 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-module.exports = require('pc-nrfconnect-shared/config/jest.config')([
-    'serialport',
-]);
+module.exports = require('pc-nrfconnect-shared/config/jest.config')();

@@ -41,6 +41,7 @@
         "@types/react-redux": "^7.1.16",
         "chart.js": "^2.9.4",
         "chartjs-plugin-datalabels": "^1.0.0",
+        "electron-store": "^8.0.1",
         "jest": "^27.5.1",
         "nrf-dtm-js": "github:NordicPlayground/nrf-dtm-js",
         "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v6.0.5",

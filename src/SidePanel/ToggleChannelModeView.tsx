@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-// eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +23,6 @@ const ToggleChannelModeView = ({ isRunning }: ToggleChannelModeViewProps) => {
 
     const selectionButton = (type: string, text: string) => (
         <Button
-            // @ts-ignore -- Doesn't seem to be an easy way to use custom variants with TS
             variant={selected === type ? 'set' : 'unset'}
             onClick={() => dispatch(channelModeChanged(type))}
             active={selected === type}

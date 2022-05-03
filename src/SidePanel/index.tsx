@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-// eslint-disable-next-line import/no-unresolved
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Group, SidePanel } from 'pc-nrfconnect-shared';

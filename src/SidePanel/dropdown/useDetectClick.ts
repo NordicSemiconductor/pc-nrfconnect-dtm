@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from 'react';
 
-export const useDetectClick = (
+const useDetectClick = (
     element: React.MutableRefObject<HTMLElement | null>,
     initialState: boolean
 ) => {

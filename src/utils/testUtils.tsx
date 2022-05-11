@@ -30,15 +30,13 @@ const createPreparedStore = (actions: AnyAction[]) => {
     return store;
 };
 
-jest.mock('nrf-dtm-js/src/DTM', () => {
-    return {
-        DTM: {
-            DTM_PARAMETER: {
-                PHY_LE_1M: 0x01,
-            },
+jest.mock('nrf-dtm-js/src/DTM', () => ({
+    DTM: {
+        DTM_PARAMETER: {
+            PHY_LE_1M: 0x01,
         },
-    };
-});
+    },
+}));
 
 window.ResizeObserver = class {
     observe() {}
@@ -59,9 +57,9 @@ const customRender = (
     actions: AnyAction[] = [],
     options: RenderOptions = {}
 ) => {
-    const Wrapper: FC = props => {
-        return <Provider store={createPreparedStore(actions)} {...props} />;
-    };
+    const Wrapper: FC = props => (
+        <Provider store={createPreparedStore(actions)} {...props} />
+    );
     return render(element, { wrapper: Wrapper, ...options });
 };
 

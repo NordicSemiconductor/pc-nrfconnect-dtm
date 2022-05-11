@@ -31,31 +31,29 @@ const Dropdown: FC<DropdownProps> = ({
     const onClick = () => setIsActive(!isActive);
 
     return (
-        <>
-            <div className="dropdown-container">
-                <FormLabel className="dropdown-label">{label}</FormLabel>
-                <button
-                    type="button"
-                    className={`dropdown-btn dropdown-btn-${
-                        isActive ? 'active' : 'inactive'
-                    }`}
-                    id={id}
-                    onClick={onClick}
-                    disabled={disabled}
-                >
-                    <span>{title}</span>
-                    <img src={chevron} alt="" />
-                </button>
-                <div
-                    ref={dropdownRef}
-                    className={`dropdown-content dropdown-${
-                        isActive ? 'active' : 'inactive'
-                    }`}
-                >
-                    {children}
-                </div>
+        <div className="dropdown-container">
+            <FormLabel className="dropdown-label">{label}</FormLabel>
+            <button
+                type="button"
+                className={`dropdown-btn dropdown-btn-${
+                    isActive ? 'active' : 'inactive'
+                }`}
+                id={id}
+                onClick={onClick}
+                disabled={disabled}
+            >
+                <span>{title}</span>
+                <img src={chevron} alt="" />
+            </button>
+            <div
+                ref={dropdownRef}
+                className={`dropdown-content dropdown-${
+                    isActive ? 'active' : 'inactive'
+                }`}
+            >
+                {children}
             </div>
-        </>
+        </div>
     );
 };
 

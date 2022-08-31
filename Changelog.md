@@ -1,6 +1,12 @@
+## 2.0.3 -
+
+### Changed
+
+-   Increased required launcher version to 3.12.
+
 ## 2.0.2 - 2022-21-04
 
-## Fixed
+### Fixed
 
 -   DTM did not display all serialport devices.
 

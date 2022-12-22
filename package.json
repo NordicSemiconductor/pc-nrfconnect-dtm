@@ -21,9 +21,11 @@
         "LICENSE"
     ],
     "scripts": {
-        "dev": "webpack watch --mode development",
-        "webpack": "webpack build --mode development",
-        "build": "webpack build",
+        "watch": "run-p --silent --continue-on-error watch:*",
+        "watch:build": "run-esbuild --watch",
+        "watch:types": "tsc --noEmit --pretty --watch --preserveWatchOutput",
+        "build:dev": "run-esbuild",
+        "build:prod": "run-esbuild --prod",
         "test": "jest",
         "check": "run-p --silent --continue-on-error --print-label check:*",
         "check:lint": "eslint --color .",
@@ -36,9 +38,8 @@
         "@types/chart.js": "^2.9.32",
         "chart.js": "^2.9.4",
         "chartjs-plugin-datalabels": "^1.0.0",
-        "jest": "^27.5.1",
-        "nrf-dtm-js": "https://github.com/NordicPlayground/nrf-dtm-js",
-        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v6.6.1",
+        "nrf-dtm-js": "https://github.com/NordicPlayground/nrf-dtm-js#serialport10",
+        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v6.13.2",
         "react-chartjs-2": "^2.7.6"
     },
     "dependencies": {},

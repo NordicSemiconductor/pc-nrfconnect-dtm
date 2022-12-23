@@ -1,3 +1,9 @@
+## 2.0.4 - Unreleased
+
+## Changed
+
+-   Increased required launcher version to 3.13.
+
 ## 2.0.3 - 2022-09-05
 
 ### Changed

@@ -2,13 +2,13 @@
 
 ## Changed
 
--   Increased required launcher version to v4.0.0.
+-   Increased required nRF Connect for Desktop version to v4.0.0.
 
 ## 2.0.3 - 2022-09-05
 
 ### Changed
 
--   Increased required launcher version to 3.12.
+-   Increased required nRF Connect for Desktop version to 3.12.
 
 ## 2.0.2 - 2022-21-04
 

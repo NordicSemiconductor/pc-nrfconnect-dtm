@@ -24,7 +24,7 @@ const deviceListing = {
     jlink: true,
 };
 
-const deviceSetup = {
+export const deviceSetup = {
     jprog: {
         pca10040: {
             fw: path.resolve(

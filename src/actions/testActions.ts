@@ -205,13 +205,9 @@ export function startTests() {
 
 export function endTests() {
     logger.info('Ending test');
-    return (dispatch: TDispatch) => {
-        dtm.endTest().then((res: string) => {
-            if (res !== undefined) {
-                logger.debug(`Test ended: ${res}`);
-            }
-            dispatch(stoppedAction());
-        });
+    return async (dispatch: TDispatch) => {
+        await dtm.endTest();
+        dispatch(stoppedAction());
     };
 }
 
@@ -229,14 +225,14 @@ export function selectDevice(device: Device) {
 }
 
 export function deselectDevice() {
-    return (dispatch: TDispatch, getState: () => RootState) => {
+    return async (dispatch: TDispatch, getState: () => RootState) => {
         const { test } = getState().app;
         if (test.isRunning) {
             dispatch(endTests());
         }
         dispatch(dtmBoardSelected(null));
 
-        if (dtm.dtmTransport.port.isOpen) dtm.dtmTransport.close();
+        if (dtm.dtmTransport.port.isOpen) await dtm.dtmTransport.close();
         dtm = null;
     };
 }

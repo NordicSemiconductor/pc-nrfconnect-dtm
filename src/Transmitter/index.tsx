@@ -12,8 +12,12 @@ import TransmitterChartView from './TransmitterChartView';
 
 const AppMainView = () => (
     <Main>
-        <WarningView />
-        <TransmitterChartView />
+        <div className="d-flex flex-column h-100">
+            <WarningView />
+            <div className="position-relative flex-grow-1 overflow-hidden">
+                <TransmitterChartView />
+            </div>
+        </div>
     </Main>
 );
 

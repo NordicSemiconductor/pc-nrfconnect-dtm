@@ -5,7 +5,7 @@
 
 _nRF Connect Direct Test Mode_ lets you perform RF PHY testing of Bluetooth Low
 Energy devices with the Bluetooth specified Direct Test Mode. See the
-[Bluetooth Core specification](https://www.bluetooth.com/specifications/bluetooth-core-specification/)
+[Bluetooth Core specification](https://www.bluetooth.com/specifications/specs/core-specification-5-3/)
 (volume 6, part F) for more information on the Direct Test Mode specification.
 
 ![screenshot](resources/screenshot.gif)

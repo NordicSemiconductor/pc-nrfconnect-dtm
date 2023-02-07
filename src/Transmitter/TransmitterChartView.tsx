@@ -74,6 +74,7 @@ const TransmitterChartView = () => {
             )}
             options={{
                 maintainAspectRatio: false,
+                responsive: true,
                 legend: { display: false },
                 animation: undefined,
                 scales: {
@@ -159,8 +160,6 @@ const TransmitterChartView = () => {
                     enabled: false,
                 },
             }}
-            width={600}
-            height={250}
         />
     );
 };

@@ -3,6 +3,8 @@
 ## Changed
 
 -   Increased required nRF Connect for Desktop version to v4.0.0.
+-   If the firmware is wrong and the device is readback protected, offer a
+    solution that recovers the device.
 
 ## 2.0.3 - 2022-09-05
 

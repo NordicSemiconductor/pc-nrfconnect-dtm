@@ -69,6 +69,7 @@ const ChartView = () => {
                 legend: { display: false },
                 tooltips: { enabled: false },
                 animation: undefined,
+                responsive: true,
                 scales: {
                     yAxes: [
                         {

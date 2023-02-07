@@ -12,8 +12,13 @@ import ReceiverChartView from './ReceiverChartView';
 
 const AppMainView = () => (
     <Main>
+        <div className="d-flex flex-column h-100">
+            <WarningView />
+            <div className="position-relative flex-grow-1 overflow-hidden">
+                <ReceiverChartView />
+            </div>
+        </div>
         <WarningView />
-        <ReceiverChartView />
     </Main>
 );
 

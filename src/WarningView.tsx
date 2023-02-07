@@ -6,7 +6,12 @@
 
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Alert, Button, selectedDevice, getReadbackProtection } from 'pc-nrfconnect-shared';
+import {
+    Alert,
+    Button,
+    getReadbackProtection,
+    selectedDevice,
+} from 'pc-nrfconnect-shared';
 
 import {
     getCommunicationError,
@@ -24,7 +29,6 @@ const WarningView = () => {
 
     return (
         <>
-            
             {compatibleDeviceWarning && (
                 <Alert variant="warning" label="">
                     {compatibleDeviceWarning}

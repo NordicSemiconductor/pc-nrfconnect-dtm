@@ -6,6 +6,7 @@
 
 import {
     deviceControlRecover,
+    deviceControlReset,
     firmwareProgram,
 } from '@nordicsemiconductor/nrf-device-lib-js';
 import {
@@ -15,13 +16,14 @@ import {
     logger,
 } from 'pc-nrfconnect-shared';
 
-import { deselectDevice } from '../actions/testActions';
+import { deselectDevice, selectDevice } from '../actions/testActions';
 import { deviceSetup } from '../DeviceSelector';
 import { deviceDeselected } from '../reducers/deviceReducer';
 import { TDispatch } from '../reducers/types';
+import { clearAllWarnings } from '../reducers/warningReducer';
 
 export const recoverHex = (device: Device, dispatch: TDispatch) => async () => {
-    dispatch(deselectDevice());
+    await dispatch(deselectDevice());
     dispatch(deviceDeselected());
     logger.info('Recovering device');
     const context = getDeviceLibContext();
@@ -61,6 +63,9 @@ export const recoverHex = (device: Device, dispatch: TDispatch) => async () => {
                 'NRFDL_DEVICE_CORE_APPLICATION'
             );
         });
+        await deviceControlReset(context, device.id);
+        dispatch(clearAllWarnings());
+        dispatch(selectDevice(device));
     } catch (error) {
         logger.error(describeError(error));
     }

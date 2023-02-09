@@ -18,7 +18,6 @@ const AppMainView = () => (
                 <ReceiverChartView />
             </div>
         </div>
-        <WarningView />
     </Main>
 );
 

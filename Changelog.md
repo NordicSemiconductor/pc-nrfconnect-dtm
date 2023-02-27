@@ -1,3 +1,11 @@
+## Unreleased
+
+## Fixed
+
+-   While receiving in sweep mode, the transmitter tab wrongly showed a sweep
+    pattern. Now the tab of the non-active mode states that only the other tab
+    shows results.
+
 ## 2.0.4 - 2023-02-13
 
 ## Changed

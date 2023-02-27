@@ -60,6 +60,9 @@ const {
 const getIsRunning = (state: RootState) => state.app.test.mode != null;
 const getIsInTransmitterMode = (state: RootState) =>
     state.app.test.mode === 'transmitter';
+const getIsInReceiverMode = (state: RootState) =>
+    state.app.test.mode === 'receiver';
+const getMode = (state: RootState) => state.app.test.mode;
 const getLastReceived = (state: RootState) => state.app.test.lastReceived;
 const getCurrentChannel = (state: RootState) => state.app.test.currentChannel;
 const getLastChannel = (state: RootState) => state.app.test.lastChannel;
@@ -73,6 +76,8 @@ export {
     endedChannel,
     getIsRunning,
     getIsInTransmitterMode,
+    getIsInReceiverMode,
+    getMode,
     getLastReceived,
     getCurrentChannel,
     getLastChannel,

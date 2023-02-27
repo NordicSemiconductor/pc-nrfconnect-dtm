@@ -4,12 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { RootState, TestState } from './types';
+import { Mode, RootState, TestState } from './types';
 
 const initialState: TestState = {
-    isRunning: false,
     lastReceived: new Array(40).fill(0),
     currentChannel: undefined,
     lastChannel: { channel: 0, received: 0 },
@@ -19,16 +18,16 @@ const testSlice = createSlice({
     name: 'test',
     initialState,
     reducers: {
-        startedAction(state) {
-            state.isRunning = true;
+        startedAction(state, { payload: mode }: PayloadAction<Mode>) {
+            state.mode = mode;
             state.lastReceived = new Array(40).fill(0);
         },
         stoppedAction(state) {
-            state.isRunning = false;
+            state.mode = undefined;
         },
         actionSucceeded(state, action) {
             state.lastReceived = action.payload;
-            state.isRunning = false;
+            state.mode = undefined;
         },
         startedChannel(state, action) {
             state.currentChannel = action.payload;
@@ -58,7 +57,9 @@ const {
     endedChannel,
 } = testSlice.actions;
 
-const getIsRunning = (state: RootState) => state.app.test.isRunning;
+const getIsRunning = (state: RootState) => state.app.test.mode != null;
+const getIsInTransmitterMode = (state: RootState) =>
+    state.app.test.mode === 'transmitter';
 const getLastReceived = (state: RootState) => state.app.test.lastReceived;
 const getCurrentChannel = (state: RootState) => state.app.test.currentChannel;
 const getLastChannel = (state: RootState) => state.app.test.lastChannel;
@@ -71,6 +72,7 @@ export {
     resetChannel,
     endedChannel,
     getIsRunning,
+    getIsInTransmitterMode,
     getLastReceived,
     getCurrentChannel,
     getLastChannel,

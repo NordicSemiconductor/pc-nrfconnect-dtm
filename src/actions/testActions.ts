@@ -228,7 +228,7 @@ export function startTests() {
             }
         });
 
-        dispatch(startedAction());
+        dispatch(startedAction(testMode));
     };
 }
 

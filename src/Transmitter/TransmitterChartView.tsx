@@ -11,9 +11,14 @@ import { bleChannels } from 'pc-nrfconnect-shared';
 
 import { getBoard } from '../reducers/deviceReducer';
 import { getTxPower } from '../reducers/settingsReducer';
-import { getCurrentChannel, getIsRunning } from '../reducers/testReducer';
+import {
+    getCurrentChannel,
+    getIsInReceiverMode,
+    getIsRunning,
+} from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 import chartColors from '../utils/chartColors';
+import WrongMode from '../utils/WrongMode';
 
 const FREQUENCY_BASE = 2402;
 const FREQUENCY_INTERVAL = 2;
@@ -62,9 +67,14 @@ const chartDataTransmit = (
 const TransmitterChartView = () => {
     const currentChannel = useSelector(getCurrentChannel);
     const isRunning = useSelector(getIsRunning);
+    const isInReceiverMode = useSelector(getIsInReceiverMode);
     const txPower = useSelector(getTxPower);
     const boardType = useSelector(getBoard);
     const dBmValues = fromPCA(boardType).txPower;
+
+    if (isInReceiverMode) {
+        return <WrongMode />;
+    }
 
     return (
         <Bar

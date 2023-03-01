@@ -26,8 +26,10 @@ export interface SettingsState {
     timeoutms: number;
 }
 
+export type Mode = 'transmitter' | 'receiver';
+
 export interface TestState {
-    isRunning: boolean;
+    mode?: Mode;
     lastReceived: Array<number>;
     currentChannel: number | undefined;
     lastChannel: {

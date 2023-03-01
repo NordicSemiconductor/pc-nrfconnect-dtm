@@ -11,8 +11,13 @@ import { Chart } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { bleChannels } from 'pc-nrfconnect-shared';
 
-import { getIsRunning, getLastReceived } from '../reducers/testReducer';
+import {
+    getIsInTransmitterMode,
+    getIsRunning,
+    getLastReceived,
+} from '../reducers/testReducer';
 import chartColors from '../utils/chartColors';
+import WrongMode from '../utils/WrongMode';
 
 Chart.plugins.register(ChartDataLabels);
 
@@ -27,11 +32,16 @@ const bleChannelsUpdated = bleChannels.map(
 const ChartView = () => {
     const lastReceived = useSelector(getLastReceived);
     const isRunning = useSelector(getIsRunning);
+    const isInTransmitterMode = useSelector(getIsInTransmitterMode);
     const [maxY, setMaxY] = useState(0);
 
     useEffect(() => {
         if (isRunning) setMaxY(10);
     }, [isRunning]);
+
+    if (isInTransmitterMode) {
+        return <WrongMode />;
+    }
 
     return (
         <Bar

@@ -8,16 +8,29 @@ import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 import { Device, logger } from 'pc-nrfconnect-shared';
 
 import { deviceReady, dtmBoardSelected } from '../reducers/deviceReducer';
-import { DTM_CHANNEL_MODE } from '../reducers/settingsReducer';
+import {
+    DTM_CHANNEL_MODE,
+    getBitpattern,
+    getChannelMode,
+    getChannelRange,
+    getLength,
+    getModulation,
+    getPhy,
+    getSingleChannel,
+    getSweepTime,
+    getTimeout,
+    getTxPower,
+} from '../reducers/settingsReducer';
 import {
     actionSucceeded,
     endedChannel,
+    getIsRunning,
     resetChannel,
     startedAction,
     startedChannel,
     stoppedAction,
 } from '../reducers/testReducer';
-import { RootState, SettingsState, TDispatch } from '../reducers/types';
+import { RootState, TDispatch } from '../reducers/types';
 import { communicationError } from '../reducers/warningReducer';
 import * as Constants from '../utils/constants';
 import { paneName } from '../utils/panes';
@@ -58,13 +71,22 @@ const dtmStatisticsUpdated = (dispatch: TDispatch) => (event: ChannelEvent) => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let dtm: any;
 
-async function setupTest(settings: SettingsState) {
+async function setupTest({
+    txPower,
+    length,
+    modulationMode,
+    phy,
+}: {
+    txPower: number;
+    length: number;
+    modulationMode: number;
+    phy: number;
+}) {
     let res = await dtm.setupReset();
     if (!validateResult(res)) {
         logger.info('DTM setup reset command failed');
         return false;
     }
-    const { txPower, length, modulationMode, phy } = settings;
 
     res = await dtm.setTxPower(Constants.dbmValues[txPower]);
     if (!validateResult(res)) {
@@ -101,23 +123,30 @@ const validateResult = (res: number[] | undefined) =>
 
 export function startTests() {
     return async (dispatch: TDispatch, getState: () => RootState) => {
-        const { settings } = getState().app;
-        const {
-            bitpattern,
-            length,
-            singleChannel,
-            channelRange,
-            sweepTime,
-            timeoutms,
-            channelMode,
-        } = settings;
+        const state = getState();
+
+        const bitpattern = getBitpattern(state);
+        const length = getLength(state);
+        const singleChannel = getSingleChannel(state);
+        const channelRange = getChannelRange(state);
+        const sweepTime = getSweepTime(state);
+        const timeoutms = getTimeout(state);
+        const channelMode = getChannelMode(state);
+        const txPower = getTxPower(state);
+        const modulationMode = getModulation(state);
+        const phy = getPhy(state);
 
         const testMode = paneName(getState());
 
         const { single, sweep } = DTM_CHANNEL_MODE;
 
         logger.info('Running device setup');
-        const setupSuccess = await setupTest(settings);
+        const setupSuccess = await setupTest({
+            txPower,
+            length,
+            modulationMode,
+            phy,
+        });
         if (!setupSuccess) {
             const message =
                 'Can not communicate with device. ' +
@@ -199,7 +228,7 @@ export function startTests() {
             }
         });
 
-        dispatch(startedAction());
+        dispatch(startedAction(testMode));
     };
 }
 
@@ -226,8 +255,8 @@ export function selectDevice(device: Device) {
 
 export function deselectDevice() {
     return async (dispatch: TDispatch, getState: () => RootState) => {
-        const { test } = getState().app;
-        if (test.isRunning) {
+        const isRunning = getIsRunning(getState());
+        if (isRunning) {
             dispatch(endTests());
         }
         dispatch(dtmBoardSelected(null));

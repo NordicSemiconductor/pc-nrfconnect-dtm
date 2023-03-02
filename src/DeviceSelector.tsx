@@ -14,7 +14,11 @@ import {
 } from 'pc-nrfconnect-shared';
 
 import { deselectDevice, selectDevice } from './actions/testActions';
-import { deviceDeselected } from './reducers/deviceReducer';
+import {
+    deviceDeselected,
+    dtmBoardSelected,
+    serialportSelected,
+} from './reducers/deviceReducer';
 import { TDispatch } from './reducers/types';
 import { clearAllWarnings } from './reducers/warningReducer';
 import { compatiblePCAs } from './utils/constants';
@@ -73,7 +77,26 @@ function mapDispatchToProps(dispatch: TDispatch) {
         },
         onDeviceIsReady: (device: Device) => {
             logger.info('Device selected successfully');
-            dispatch(selectDevice(device));
+
+            if (
+                !device.serialport ||
+                !device.serialPorts ||
+                device.serialPorts.length === 0
+            ) {
+                logger.error(`Missing serial port information`);
+                return;
+            }
+
+            dispatch(
+                dtmBoardSelected({
+                    board: device.boardVersion,
+                    serialports: device.serialPorts.map(
+                        port => port.comName ?? ''
+                    ),
+                })
+            );
+            dispatch(serialportSelected(device.serialPorts[0].comName));
+            dispatch(selectDevice());
         },
     };
 }

@@ -65,7 +65,7 @@ export const recoverHex = (device: Device, dispatch: TDispatch) => async () => {
         });
         await deviceControlReset(context, device.id);
         dispatch(clearAllWarnings());
-        dispatch(selectDevice(device));
+        dispatch(selectDevice());
     } catch (error) {
         logger.error(describeError(error));
     }

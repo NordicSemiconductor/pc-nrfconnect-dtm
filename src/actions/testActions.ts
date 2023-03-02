@@ -5,9 +5,9 @@
  */
 
 import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
-import { Device, logger } from 'pc-nrfconnect-shared';
+import { logger } from 'pc-nrfconnect-shared';
 
-import { deviceReady, dtmBoardSelected } from '../reducers/deviceReducer';
+import { deviceReady } from '../reducers/deviceReducer';
 import {
     DTM_CHANNEL_MODE,
     getBitpattern,
@@ -240,15 +240,17 @@ export function endTests() {
     };
 }
 
-export function selectDevice(device: Device) {
-    dtm = new DTM(device.serialport?.comName, device.boardVersion);
-    return (dispatch: TDispatch) => {
+export function selectDevice() {
+    return (dispatch: TDispatch, getState: () => RootState) => {
+        dtm = new DTM(
+            getState().app.device.selectedSerialport,
+            getState().app.device.board
+        );
         dtm.on('update', dtmStatisticsUpdated(dispatch));
         dtm.on('transport', (msg: string) => logger.debug(msg));
         dtm.on('log', (param: { message: string }) => {
             logger.info(param.message);
         });
-        dispatch(dtmBoardSelected(device.boardVersion));
         dispatch(deviceReady());
     };
 }
@@ -259,7 +261,6 @@ export function deselectDevice() {
         if (isRunning) {
             dispatch(endTests());
         }
-        dispatch(dtmBoardSelected(null));
 
         if (dtm.dtmTransport.port.isOpen) await dtm.dtmTransport.close();
         dtm = null;

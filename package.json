@@ -41,7 +41,7 @@
         "chart.js": "^2.9.4",
         "chartjs-plugin-datalabels": "^1.0.0",
         "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js#serialport10",
-        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v6.18.14",
+        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v18",
         "react-chartjs-2": "^2.7.6"
     },
     "dependencies": {},

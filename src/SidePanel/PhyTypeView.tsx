@@ -6,13 +6,13 @@
 
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
+import { DTM, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
+import { Dropdown } from 'pc-nrfconnect-shared';
 
 import { getBoard } from '../reducers/deviceReducer';
 import { getPhy, phyChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
-import { Dropdown, DropdownItem } from './dropdown';
 
 const PhyTypeView = () => {
     const phy = useSelector(getPhy);
@@ -21,23 +21,23 @@ const PhyTypeView = () => {
     const dispatch = useDispatch();
     const compatibility = fromPCA(boardType);
 
-    const items = Object.values(compatibility.phy).map((value: number) => (
-        <DropdownItem
-            key={value}
-            title={DTM_PHY_STRING[value]}
-            onSelect={() => dispatch(phyChanged(value))}
-        />
-    ));
+    const items = Object.entries(compatibility.phy).map(([key, phyType]) => ({
+        label: DTM_PHY_STRING[phyType],
+        value: key,
+    }));
 
     return (
         <Dropdown
             label="Physical layer"
-            title={DTM_PHY_STRING[phy]}
-            id="dropdown-variants-phy-type"
+            items={items}
             disabled={isRunning}
-        >
-            {items}
-        </Dropdown>
+            onSelect={item => {
+                dispatch(phyChanged(DTM.DTM_PARAMETER[item.value]));
+            }}
+            selectedItem={
+                items.find(e => DTM.DTM_PARAMETER[e.value] === phy) ?? items[0]
+            }
+        />
     );
 };
 

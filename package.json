@@ -18,7 +18,8 @@
         "dist/",
         "firmware/*.hex",
         "resources/icon.*",
-        "LICENSE"
+        "LICENSE",
+        "Changelog.md"
     ],
     "scripts": {
         "watch": "run-p --silent --continue-on-error watch:*",

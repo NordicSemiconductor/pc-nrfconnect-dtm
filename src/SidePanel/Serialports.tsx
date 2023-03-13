@@ -26,11 +26,11 @@ export default () => {
 
     if (availablePorts.length <= 1 || selectedSerialport === null) return null;
 
-    const updateSerialPort = ({ value: port }: { value: string }) => {
+    const updateSerialPort = async ({ value: port }: { value: string }) => {
         dispatch(serialportSelected(port));
 
         if (board === null) return;
-        dispatch(deselectDevice());
+        await dispatch(deselectDevice());
         dispatch(selectDevice());
     };
 

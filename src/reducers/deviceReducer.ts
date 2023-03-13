@@ -24,8 +24,8 @@ const deviceSlice = createSlice({
             state.serialports = [];
             state.isReady = initialState.isReady;
         },
-        deviceReady(state) {
-            state.isReady = true;
+        setDeviceReady(state, action) {
+            state.isReady = action.payload;
         },
         dtmBoardSelected(state, action) {
             state.board = action.payload.board;
@@ -40,8 +40,12 @@ const deviceSlice = createSlice({
 
 export default deviceSlice.reducer;
 
-const { deviceDeselected, deviceReady, dtmBoardSelected, serialportSelected } =
-    deviceSlice.actions;
+const {
+    deviceDeselected,
+    setDeviceReady,
+    dtmBoardSelected,
+    serialportSelected,
+} = deviceSlice.actions;
 
 const getBoard = (state: RootState) => state.app.device.board;
 const getIsReady = (state: RootState) => state.app.device.isReady;
@@ -51,7 +55,7 @@ const getSelectedSerialport = (state: RootState) =>
 
 export {
     deviceDeselected,
-    deviceReady,
+    setDeviceReady,
     dtmBoardSelected,
     serialportSelected,
     getBoard,

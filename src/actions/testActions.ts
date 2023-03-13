@@ -7,7 +7,7 @@
 import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 import { logger } from 'pc-nrfconnect-shared';
 
-import { deviceReady } from '../reducers/deviceReducer';
+import { setDeviceReady } from '../reducers/deviceReducer';
 import {
     DTM_CHANNEL_MODE,
     getBitpattern,
@@ -251,7 +251,7 @@ export function selectDevice() {
         dtm.on('log', (param: { message: string }) => {
             logger.info(param.message);
         });
-        dispatch(deviceReady());
+        dispatch(setDeviceReady(true));
     };
 }
 

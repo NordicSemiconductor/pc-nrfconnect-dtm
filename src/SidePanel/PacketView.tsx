@@ -8,7 +8,7 @@ import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM';
-import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
+import { Dropdown, NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
 import {
     bitpatternChanged,
@@ -17,7 +17,6 @@ import {
     lengthChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
-import { Dropdown, DropdownItem } from './dropdown';
 
 const VENDOR_PAYLOAD_LENGTH = 1;
 
@@ -36,25 +35,27 @@ const PacketTypeView = ({
     isRunning,
     isVendorPayload,
 }: PacketTypeViewProps) => {
-    const items = Object.keys(DTM.DTM_PKT)
-        .filter(key => key !== 'DEFAULT')
-        .map((key, pkgType) => (
-            <DropdownItem
-                key={key}
-                title={DTM_PKT_STRING[pkgType]}
-                onSelect={() => {
-                    bitpatternUpdated(pkgType);
-                    if (isVendorPayload(pkgType)) {
-                        lengthUpdated(VENDOR_PAYLOAD_LENGTH);
-                    }
-                }}
-            />
-        ));
+    const items = Object.entries(DTM.DTM_PKT)
+        .filter(([key]) => key !== 'DEFAULT')
+        .map(([key, pkgType]: [string, unknown]) => ({
+            label: DTM_PKT_STRING[pkgType as number],
+            value: key,
+        }));
 
     return (
         <Dropdown
             label="Packet type"
-            title={DTM_PKT_STRING[selectedPkgType]}
+            items={items}
+            selectedItem={
+                items.find(e => DTM.DTM_PKT[e.value] === selectedPkgType) ??
+                items[0]
+            }
+            onSelect={item => {
+                bitpatternUpdated(DTM.DTM_PKT[item.value]);
+                if (isVendorPayload(DTM.DTM_PKT[item.value])) {
+                    lengthUpdated(VENDOR_PAYLOAD_LENGTH);
+                }
+            }}
             disabled={isRunning}
         >
             {items}

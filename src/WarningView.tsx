@@ -43,7 +43,10 @@ const WarningView = () => {
                                 The selected device has readback protection
                                 enabled. You can try to re-program it using this
                                 button.
-                                <Button onClick={recoverHex(device, dispatch)}>
+                                <Button
+                                    onClick={recoverHex(device, dispatch)}
+                                    variant="secondary"
+                                >
                                     Program
                                 </Button>
                             </>

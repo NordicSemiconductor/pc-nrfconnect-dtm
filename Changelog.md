@@ -1,5 +1,9 @@
 ## Unreleased
 
+## Added
+
+-   Port selection for devices with multiple serialports.
+
 ## Fixed
 
 -   While receiving in sweep mode, the transmitter tab wrongly showed a sweep

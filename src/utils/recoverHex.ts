@@ -18,13 +18,13 @@ import {
 
 import { deselectDevice, selectDevice } from '../actions/testActions';
 import { deviceSetup } from '../DeviceSelector';
-import { deviceDeselected } from '../reducers/deviceReducer';
+import { setDeviceReady } from '../reducers/deviceReducer';
 import { TDispatch } from '../reducers/types';
 import { clearAllWarnings } from '../reducers/warningReducer';
 
 export const recoverHex = (device: Device, dispatch: TDispatch) => async () => {
     await dispatch(deselectDevice());
-    dispatch(deviceDeselected());
+    await dispatch(setDeviceReady(true));
     logger.info('Recovering device');
     const context = getDeviceLibContext();
     await deviceControlRecover(
@@ -65,7 +65,8 @@ export const recoverHex = (device: Device, dispatch: TDispatch) => async () => {
         });
         await deviceControlReset(context, device.id);
         dispatch(clearAllWarnings());
-        dispatch(selectDevice(device));
+        dispatch(selectDevice());
+        dispatch(setDeviceReady(true));
     } catch (error) {
         logger.error(describeError(error));
     }

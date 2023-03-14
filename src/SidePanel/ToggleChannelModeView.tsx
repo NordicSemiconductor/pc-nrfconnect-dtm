@@ -5,8 +5,8 @@
  */
 
 import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { StateSelector } from 'pc-nrfconnect-shared';
 import PropTypes from 'prop-types';
 
 import channelModeChanged from '../actions/settingsActions';
@@ -21,26 +21,20 @@ const ToggleChannelModeView = ({ isRunning }: ToggleChannelModeViewProps) => {
 
     const dispatch = useDispatch();
 
-    const selectionButton = (type: string, text: string) => (
-        <Button
-            variant={selected === type ? 'set' : 'unset'}
-            onClick={() => dispatch(channelModeChanged(type))}
-            active={selected === type}
-            disabled={isRunning}
-        >
-            {text}
-        </Button>
-    );
+    const items = [
+        { key: 'Single', value: DTM_CHANNEL_MODE.single },
+        { key: 'Sweep', value: DTM_CHANNEL_MODE.sweep },
+    ];
 
     return (
-        <ButtonGroup
-            className={`w-100 d-flex flex-row channel-selection ${
-                isRunning ? 'disabled' : ''
-            }`}
-        >
-            {selectionButton(DTM_CHANNEL_MODE.single, 'Single')}
-            {selectionButton(DTM_CHANNEL_MODE.sweep, 'Sweep')}
-        </ButtonGroup>
+        <StateSelector
+            items={items.map(e => e.key)}
+            disabled={isRunning}
+            onSelect={index => dispatch(channelModeChanged(items[index].value))}
+            selectedItem={
+                selected === DTM_CHANNEL_MODE.single ? 'Single' : 'Sweep'
+            }
+        />
     );
 };
 

@@ -5,11 +5,9 @@
  */
 
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
+import { StartStopButton } from 'pc-nrfconnect-shared';
 
-import playSvg from '../../resources/play-circle.svg';
-import stopSvg from '../../resources/stop-circle.svg';
 import { endTests, startTests } from '../actions/testActions';
 import { getIsReady } from '../reducers/deviceReducer';
 import { getIsRunning } from '../reducers/testReducer';
@@ -18,8 +16,6 @@ const RunTestView = () => {
     const dispatch = useDispatch();
 
     const isRunning = useSelector(getIsRunning);
-    const label = isRunning ? 'Stop test' : 'Start test';
-    const src = isRunning ? stopSvg : playSvg;
 
     const disabled = !useSelector(getIsReady);
 
@@ -28,17 +24,13 @@ const RunTestView = () => {
     };
 
     return (
-        <Button
-            className={`w-100 secondary-btn start-stop  ${
-                isRunning ? 'active-animation' : ''
-            }`}
-            variant="secondary"
-            disabled={disabled}
+        <StartStopButton
+            startText="Start test"
+            stopText="Stop test"
             onClick={onClick}
-        >
-            <img alt="" src={src} />
-            {label}
-        </Button>
+            disabled={disabled}
+            started={isRunning}
+        />
     );
 };
 

@@ -11,6 +11,8 @@ import { ThunkDispatch } from 'redux-thunk';
 export interface DeviceState {
     board: string | null;
     isReady: boolean;
+    serialports: string[];
+    selectedSerialport: string | null;
 }
 
 export interface SettingsState {

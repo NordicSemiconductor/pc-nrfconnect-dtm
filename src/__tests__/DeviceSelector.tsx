@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import { deviceReady } from '../reducers/deviceReducer';
+import { setDeviceReady } from '../reducers/deviceReducer';
 import RunTestView from '../SidePanel/RunTestView';
 import { render, screen } from '../utils/testUtils';
 
@@ -30,7 +30,7 @@ describe('Initial state with unselected device', () => {
 
 describe('State with selected device', () => {
     it('should render start button enabled', () => {
-        render(<RunTestView />, [deviceReady()]);
+        render(<RunTestView />, [setDeviceReady(true)]);
 
         const startButton = screen.getByRole('button', { name: /start test/i });
 

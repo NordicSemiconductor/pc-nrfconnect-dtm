@@ -1,6 +1,6 @@
 {
     "name": "pc-nrfconnect-dtm",
-    "version": "2.0.4",
+    "version": "2.1.0",
     "displayName": "Direct Test Mode",
     "description": "RF PHY testing of Bluetooth Low Energy devices",
     "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-dtm",
@@ -42,7 +42,7 @@
         "chart.js": "^2.9.4",
         "chartjs-plugin-datalabels": "^1.0.0",
         "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js#serialport10",
-        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v18",
+        "pc-nrfconnect-shared": "git+https://github.com/NordicSemiconductor/pc-nrfconnect-shared.git#v21",
         "react-chartjs-2": "^2.7.6"
     },
     "dependencies": {},

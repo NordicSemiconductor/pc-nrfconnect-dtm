@@ -40,7 +40,7 @@ export default () => {
     }));
 
     return (
-        <Group heading="Serialport trace capture">
+        <Group heading="Serialport">
             <div className="serialport-selection">
                 <Dropdown
                     disabled={isRunning}

@@ -149,7 +149,7 @@ export function startTests() {
         });
         if (!setupSuccess) {
             const message =
-                'Can not communicate with device. ' +
+                'Can not communicate with the device. ' +
                 'Make sure it is not in use by another application ' +
                 'and that it has a Direct Test Mode compatible firmware.';
             logger.info(message);

@@ -7,7 +7,7 @@
 import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 import { logger } from 'pc-nrfconnect-shared';
 
-import { setDeviceReady } from '../reducers/deviceReducer';
+import { getSerialports, setDeviceReady } from '../reducers/deviceReducer';
 import {
     DTM_CHANNEL_MODE,
     getBitpattern,
@@ -147,11 +147,16 @@ export function startTests() {
             modulationMode,
             phy,
         });
-        if (!setupSuccess) {
+        if (setupSuccess) {
             const message =
                 'Can not communicate with the device. ' +
-                'Make sure it is not in use by another application ' +
-                'and that it has a Direct Test Mode compatible firmware.';
+                'Make sure it is not in use by another application' +
+                `${
+                    getSerialports(state)?.length > 1
+                        ? ', that the correct serialport has been selected'
+                        : ''
+                }` +
+                ' and that it has a Direct Test Mode compatible firmware.';
             logger.info(message);
             dispatch(communicationError(message));
             return;

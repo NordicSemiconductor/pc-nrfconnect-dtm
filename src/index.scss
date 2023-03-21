@@ -4,3 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+@import '~pc-nrfconnect-shared/styles';
+
+.alert-program {
+    margin-left: 8px;
+    border: 0 !important;
+    color: $nordic-blue !important;
+}

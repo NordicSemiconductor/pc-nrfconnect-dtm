@@ -3,12 +3,14 @@
 ## Added
 
 -   Port selection for devices with multiple serialports.
+-   Selected ports are remembered per device.
 
 ## Fixed
 
 -   While receiving in sweep mode, the transmitter tab wrongly showed a sweep
     pattern. Now the tab of the non-active mode states that only the other tab
     shows results.
+-   Devices were sometimes mistakenly detected as having readback protection.
 
 ## 2.0.4 - 2023-02-13
 

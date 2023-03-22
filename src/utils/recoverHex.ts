@@ -25,7 +25,7 @@ import { clearAllWarnings } from '../reducers/warningReducer';
 
 export const recoverHex = (device: Device) => async (dispatch: TDispatch) => {
     await dispatch(deselectDevice());
-    await dispatch(setDeviceReady(true));
+    dispatch(setDeviceReady(true));
     logger.info('Recovering device');
     const context = getDeviceLibContext();
     await deviceControlRecover(

@@ -11,14 +11,14 @@ import WarningView from '../WarningView';
 import TransmitterChartView from './TransmitterChartView';
 
 const AppMainView = () => (
-    <Main>
-        <div className="d-flex flex-column h-100">
-            <WarningView />
-            <div className="position-relative flex-grow-1 overflow-hidden">
+    <div className="d-flex flex-column h-100">
+        <WarningView />
+        <div className="position-relative flex-grow-1 overflow-hidden">
+            <Main>
                 <TransmitterChartView />
-            </div>
+            </Main>
         </div>
-    </Main>
+    </div>
 );
 
 export default AppMainView;

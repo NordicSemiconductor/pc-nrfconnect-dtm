@@ -47,7 +47,7 @@ const WarningView = () => {
                                 Unable to verify compatible firmware because the
                                 selected device has readback protection enabled.
                                 <Button
-                                    onClick={() => recoverHex(device, dispatch)}
+                                    onClick={() => dispatch(recoverHex(device))}
                                     variant="secondary"
                                     className="alert-program"
                                 >

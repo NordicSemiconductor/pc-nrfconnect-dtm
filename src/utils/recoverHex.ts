@@ -23,7 +23,7 @@ import { setDeviceReady } from '../reducers/deviceReducer';
 import { TDispatch } from '../reducers/types';
 import { clearAllWarnings } from '../reducers/warningReducer';
 
-export const recoverHex = (device: Device, dispatch: TDispatch) => async () => {
+export const recoverHex = (device: Device) => async (dispatch: TDispatch) => {
     await dispatch(deselectDevice());
     await dispatch(setDeviceReady(true));
     logger.info('Recovering device');

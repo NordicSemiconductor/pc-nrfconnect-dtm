@@ -95,7 +95,13 @@ function mapDispatchToProps(dispatch: TDispatch) {
                     ),
                 })
             );
-            dispatch(serialportSelected(device.serialPorts[0].comName));
+
+            if (device.persistedSerialPortOptions) {
+                dispatch(
+                    serialportSelected(device.persistedSerialPortOptions.path)
+                );
+            }
+
             dispatch(selectDevice());
         },
     };

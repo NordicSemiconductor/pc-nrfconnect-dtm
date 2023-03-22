@@ -6,7 +6,12 @@
 
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown, Group, truncateMiddle } from 'pc-nrfconnect-shared';
+import {
+    Dropdown,
+    Group,
+    persistSerialPortOptions,
+    truncateMiddle,
+} from 'pc-nrfconnect-shared';
 
 import { deselectDevice, selectDevice } from '../actions/testActions';
 import {
@@ -29,6 +34,8 @@ export default () => {
     const updateSerialPort = async ({ value: port }: { value: string }) => {
         dispatch(serialportSelected(port));
 
+        // baudRate isn't used but required by types
+        dispatch(persistSerialPortOptions({ path: port, baudRate: 9600 }));
         if (board === null) return;
         await dispatch(deselectDevice());
         dispatch(selectDevice());

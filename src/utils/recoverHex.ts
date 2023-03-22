@@ -14,6 +14,7 @@ import {
     Device,
     getDeviceLibContext,
     logger,
+    updateHasReadbackProtection,
 } from 'pc-nrfconnect-shared';
 
 import { deselectDevice, selectDevice } from '../actions/testActions';
@@ -64,6 +65,7 @@ export const recoverHex = (device: Device, dispatch: TDispatch) => async () => {
             );
         });
         await deviceControlReset(context, device.id);
+        await dispatch(updateHasReadbackProtection());
         dispatch(clearAllWarnings());
         dispatch(selectDevice());
         dispatch(setDeviceReady(true));

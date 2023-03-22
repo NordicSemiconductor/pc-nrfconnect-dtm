@@ -42,7 +42,7 @@ const WarningView = () => {
                         </div>
                     </Alert>
                     {device && readbackProtection === 'protected' && (
-                        <Alert variant="danger" label="">
+                        <Alert variant="warning" label="">
                             <div className="d-flex align-items-center">
                                 Unable to verify compatible firmware because the
                                 selected device has readback protection enabled.

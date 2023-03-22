@@ -3,7 +3,7 @@
 ## Added
 
 -   Port selection for devices with multiple serialports.
--   Selected ports are remembered per device.
+-   Selected ports are persisted per device.
 
 ## Fixed
 

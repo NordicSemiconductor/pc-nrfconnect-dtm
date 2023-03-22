@@ -147,7 +147,7 @@ export function startTests() {
             modulationMode,
             phy,
         });
-        if (setupSuccess) {
+        if (!setupSuccess) {
             const message =
                 'Can not communicate with the device. ' +
                 'Make sure it is not in use by another application' +

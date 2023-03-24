@@ -57,9 +57,7 @@ const PacketTypeView = ({
                 }
             }}
             disabled={isRunning}
-        >
-            {items}
-        </Dropdown>
+        />
     );
 };
 

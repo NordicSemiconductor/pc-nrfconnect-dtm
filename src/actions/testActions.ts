@@ -5,7 +5,7 @@
  */
 
 import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
-import { logger } from 'pc-nrfconnect-shared';
+import { AppThunk, logger } from 'pc-nrfconnect-shared';
 
 import { getSerialports, setDeviceReady } from '../reducers/deviceReducer';
 import {
@@ -30,7 +30,7 @@ import {
     startedChannel,
     stoppedAction,
 } from '../reducers/testReducer';
-import { RootState, TDispatch } from '../reducers/types';
+import { RootState } from '../reducers/types';
 import { communicationError } from '../reducers/warningReducer';
 import * as Constants from '../utils/constants';
 import { paneName } from '../utils/panes';
@@ -53,20 +53,21 @@ type TestStatus = {
     message: string;
 };
 
-const dtmStatisticsUpdated = (dispatch: TDispatch) => (event: ChannelEvent) => {
-    if (event.type === 'reset') {
-        dispatch(resetChannel());
-    } else if (event.action === 'started') {
-        dispatch(startedChannel(event.channel));
-    } else if (event.action === 'ended') {
-        dispatch(
-            endedChannel({
-                channel: event.channel,
-                received: event.packets,
-            })
-        );
-    }
-};
+const dtmStatisticsUpdated =
+    (): AppThunk => dispatch => (event: ChannelEvent) => {
+        if (event.type === 'reset') {
+            dispatch(resetChannel());
+        } else if (event.action === 'started') {
+            dispatch(startedChannel(event.channel));
+        } else if (event.action === 'ended') {
+            dispatch(
+                endedChannel({
+                    channel: event.channel,
+                    received: event.packets,
+                })
+            );
+        }
+    };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let dtm: any;
@@ -121,8 +122,8 @@ async function setupTest({
 const validateResult = (res: number[] | undefined) =>
     typeof res === 'object' && res.length >= 2 && res[0] === 0 && res[1] === 0;
 
-export function startTests() {
-    return async (dispatch: TDispatch, getState: () => RootState) => {
+export const startTests =
+    (): AppThunk<RootState> => async (dispatch, getState) => {
         const state = getState();
 
         const bitpattern = getBitpattern(state);
@@ -235,33 +236,29 @@ export function startTests() {
 
         dispatch(startedAction(testMode));
     };
-}
 
-export function endTests() {
-    logger.info('Ending test');
-    return async (dispatch: TDispatch) => {
+export const endTests =
+    (): AppThunk<RootState, Promise<void>> => async dispatch => {
+        logger.info('Ending test');
         await dtm.endTest();
         dispatch(stoppedAction());
     };
-}
 
-export function selectDevice() {
-    return (dispatch: TDispatch, getState: () => RootState) => {
-        dtm = new DTM(
-            getState().app.device.selectedSerialport,
-            getState().app.device.board
-        );
-        dtm.on('update', dtmStatisticsUpdated(dispatch));
-        dtm.on('transport', (msg: string) => logger.debug(msg));
-        dtm.on('log', (param: { message: string }) => {
-            logger.info(param.message);
-        });
-        dispatch(setDeviceReady(true));
-    };
-}
+export const selectDevice = (): AppThunk<RootState> => (dispatch, getState) => {
+    dtm = new DTM(
+        getState().app.device.selectedSerialport,
+        getState().app.device.board
+    );
+    dtm.on('update', dispatch(dtmStatisticsUpdated()));
+    dtm.on('transport', (msg: string) => logger.debug(msg));
+    dtm.on('log', (param: { message: string }) => {
+        logger.info(param.message);
+    });
+    dispatch(setDeviceReady(true));
+};
 
-export function deselectDevice() {
-    return async (dispatch: TDispatch, getState: () => RootState) => {
+export const deselectDevice =
+    (): AppThunk<RootState, Promise<void>> => async (dispatch, getState) => {
         const isRunning = getIsRunning(getState());
         if (isRunning) {
             dispatch(endTests());
@@ -270,4 +267,3 @@ export function deselectDevice() {
         if (dtm.dtmTransport.port.isOpen) await dtm.dtmTransport.close();
         dtm = null;
     };
-}

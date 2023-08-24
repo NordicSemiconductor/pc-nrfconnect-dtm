@@ -5,8 +5,6 @@
  */
 
 import { NrfConnectState } from 'pc-nrfconnect-shared';
-import { AnyAction } from 'redux';
-import { ThunkDispatch } from 'redux-thunk';
 
 export interface DeviceState {
     board: string | null;
@@ -53,5 +51,3 @@ interface AppState {
 }
 
 export type RootState = NrfConnectState<AppState>;
-
-export type TDispatch = ThunkDispatch<RootState, null, AnyAction>;

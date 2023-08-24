@@ -8,7 +8,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     Alert,
-    Button,
     getReadbackProtection,
     selectedDevice,
 } from 'pc-nrfconnect-shared';
@@ -46,12 +45,12 @@ const WarningView = () => {
                             <div className="d-flex align-items-center flex-wrap readback-protection-warning">
                                 Unable to verify compatible firmware because the
                                 selected device has readback protection enabled.
-                                <Button
+                                <button
+                                    type="button"
                                     onClick={() => dispatch(recoverHex(device))}
-                                    variant="custom"
                                 >
                                     Program compatible firmware
-                                </Button>
+                                </button>
                             </div>
                         </Alert>
                     )}

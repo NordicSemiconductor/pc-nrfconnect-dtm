@@ -13,11 +13,11 @@ import {
     selectedDevice,
 } from 'pc-nrfconnect-shared';
 
+import { recoverHex } from './DeviceSelector';
 import {
     getCommunicationError,
     getCompatibleDeviceWarning,
 } from './reducers/warningReducer';
-import { recoverHex } from './utils/recoverHex';
 
 const WarningView = () => {
     const compatibleDeviceWarning = useSelector(getCompatibleDeviceWarning);

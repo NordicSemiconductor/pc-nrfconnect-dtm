@@ -7,7 +7,10 @@
 import React, { useState } from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
+import {
+    NumberInlineInput,
+    Slider,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { getBoard } from '../reducers/deviceReducer';
 import { getTxPower, txPowerChanged } from '../reducers/settingsReducer';

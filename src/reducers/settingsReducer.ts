@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { bleChannels } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { createSlice } from '@reduxjs/toolkit';
 import { DTM } from 'nrf-dtm-js/src/DTM';
-import { bleChannels } from 'pc-nrfconnect-shared';
 
 import * as Constants from '../utils/constants';
 import { RootState, SettingsState } from './types';

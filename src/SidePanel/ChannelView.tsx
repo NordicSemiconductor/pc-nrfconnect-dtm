@@ -7,7 +7,11 @@
 import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import { bleChannels, NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
+import {
+    bleChannels,
+    NumberInlineInput,
+    Slider,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 import PropTypes from 'prop-types';
 
 import {

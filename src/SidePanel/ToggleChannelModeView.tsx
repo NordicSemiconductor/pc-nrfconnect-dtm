@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StateSelector } from 'pc-nrfconnect-shared';
+import { StateSelector } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import PropTypes from 'prop-types';
 
 import channelModeChanged from '../actions/settingsActions';

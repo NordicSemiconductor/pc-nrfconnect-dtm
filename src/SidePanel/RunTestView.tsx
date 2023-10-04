@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StartStopButton } from 'pc-nrfconnect-shared';
+import { StartStopButton } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { endTests, startTests } from '../actions/testActions';
 import { getIsReady } from '../reducers/deviceReducer';

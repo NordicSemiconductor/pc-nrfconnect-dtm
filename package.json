@@ -1,6 +1,6 @@
 {
     "name": "pc-nrfconnect-dtm",
-    "version": "2.1.0",
+    "version": "3.0.0",
     "displayName": "Direct Test Mode",
     "description": "RF PHY testing of Bluetooth Low Energy devices",
     "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-dtm",
@@ -12,6 +12,14 @@
     "license": "SEE LICENSE IN LICENSE",
     "engines": {
         "nrfconnect": ">=4.0.0"
+    },
+    "nrfConnectForDesktop": {
+        "nrfutil": {
+            "device": [
+                "1.4.5"
+            ]
+        },
+        "html": "dist/index.html"
     },
     "main": "dist/bundle.js",
     "files": [
@@ -37,16 +45,15 @@
         "prepare": "husky install"
     },
     "devDependencies": {
+        "@nordicsemiconductor/pc-nrfconnect-shared": "^117.0.0",
+        "chart.js": "^4.0.1",
+        "chartjs-plugin-datalabels": "2.2.0",
+        "react-chartjs-2": "^5.0.1",
         "@testing-library/user-event": "^13.1.9",
-        "@types/chart.js": "^2.9.32",
-        "chart.js": "^2.9.4",
-        "chartjs-plugin-datalabels": "^1.0.0",
-        "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js#serialport10",
-        "pc-nrfconnect-shared": "github:NordicSemiconductor/pc-nrfconnect-shared#v31",
-        "react-chartjs-2": "^2.7.6"
+        "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js#serialport10"
     },
     "eslintConfig": {
-        "extends": "./node_modules/pc-nrfconnect-shared/config/eslintrc"
+        "extends": "./node_modules/@nordicsemiconductor/pc-nrfconnect-shared/config/eslintrc"
     },
-    "prettier": "./node_modules/pc-nrfconnect-shared/config/prettier.config.js"
+    "prettier": "@nordicsemiconductor/pc-nrfconnect-shared/config/prettier.config.js"
 }

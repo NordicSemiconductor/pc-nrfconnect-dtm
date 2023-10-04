@@ -7,8 +7,12 @@
 import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+    Dropdown,
+    NumberInlineInput,
+    Slider,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM';
-import { Dropdown, NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
 
 import {
     bitpatternChanged,

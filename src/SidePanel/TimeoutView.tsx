@@ -7,7 +7,10 @@
 import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import { NumberInlineInput, Slider } from 'pc-nrfconnect-shared';
+import {
+    NumberInlineInput,
+    Slider,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { getTimeout, timeoutChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';

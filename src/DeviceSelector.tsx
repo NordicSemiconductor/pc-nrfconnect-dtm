@@ -4,14 +4,18 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { connect } from 'react-redux';
-import path from 'path';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import {
     Device,
     DeviceSelector,
+    DeviceSetupConfig,
     getAppDir,
+    jprogDeviceSetup,
     logger,
-} from 'pc-nrfconnect-shared';
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { DeviceTraits } from '@nordicsemiconductor/pc-nrfconnect-shared/typings/generated/nrfutil';
+import path from 'path';
 
 import { deselectDevice, selectDevice } from './actions/testActions';
 import {
@@ -19,92 +23,95 @@ import {
     dtmBoardSelected,
     serialportSelected,
 } from './reducers/deviceReducer';
-import { TDispatch } from './reducers/types';
 import { clearAllWarnings } from './reducers/warningReducer';
 import { compatiblePCAs } from './utils/constants';
 
-const deviceListing = {
+const deviceListing: DeviceTraits = {
     serialPorts: true,
     jlink: true,
 };
 
-export const deviceSetup = {
-    jprog: {
-        pca10040: {
-            fw: path.resolve(
-                getAppDir(),
-                'firmware/direct_test_mode_pca10040.hex'
-            ),
-            fwVersion: 'dtm-fw-1.0.0',
-            fwIdAddress: 0x6000,
-        },
-        pca10056: {
-            fw: path.resolve(
-                getAppDir(),
-                'firmware/direct_test_mode_pca10056.hex'
-            ),
-            fwVersion: 'dtm-fw-1.0.0',
-            fwIdAddress: 0x6000,
-        },
-    },
+export const deviceSetupConfig: DeviceSetupConfig = {
+    deviceSetups: [
+        jprogDeviceSetup([
+            {
+                key: 'pca10040',
+                fw: path.resolve(
+                    getAppDir(),
+                    'firmware/direct_test_mode_pca10040.hex'
+                ),
+                fwVersion: 'dtm-fw-1.0.0',
+                fwIdAddress: 0x6000,
+            },
+            {
+                key: 'pca10056',
+                fw: path.resolve(
+                    getAppDir(),
+                    'firmware/direct_test_mode_pca10056.hex'
+                ),
+                fwVersion: 'dtm-fw-1.0.0',
+                fwIdAddress: 0x6000,
+            },
+        ]),
+    ],
     allowCustomDevice: true,
 };
 
-const mapStateToProps = () => ({
-    deviceListing,
-    deviceSetup,
-});
+export default () => {
+    const dispatch = useDispatch();
+    return (
+        <DeviceSelector
+            deviceListing={deviceListing}
+            deviceSetupConfig={deviceSetupConfig}
+            onDeviceSelected={(device: Device) => {
+                dispatch(clearAllWarnings());
+                if (compatiblePCAs.includes(device.boardVersion ?? '')) {
+                    logger.info(
+                        `Validating firmware for device with s/n ${device.serialNumber}`
+                    );
+                } else {
+                    logger.info('No firmware defined for selected device');
+                    logger.info(
+                        'Please make sure the device has been programmed with a supported firmware'
+                    );
+                }
+            }}
+            onDeviceDeselected={() => {
+                dispatch(deselectDevice());
+                dispatch(deviceDeselected());
+                dispatch(clearAllWarnings());
+            }}
+            onDeviceIsReady={(device: Device) => {
+                logger.info('Device selected successfully');
 
-function mapDispatchToProps(dispatch: TDispatch) {
-    return {
-        onDeviceSelected: (device: Device) => {
-            dispatch(clearAllWarnings());
-            if (compatiblePCAs.includes(device.boardVersion ?? '')) {
-                logger.info(
-                    `Validating firmware for device with s/n ${device.serialNumber}`
-                );
-            } else {
-                logger.info('No firmware defined for selected device');
-                logger.info(
-                    'Please make sure the device has been programmed with a supported firmware'
-                );
-            }
-        },
-        onDeviceDeselected: () => {
-            dispatch(deselectDevice());
-            dispatch(deviceDeselected());
-            dispatch(clearAllWarnings());
-        },
-        onDeviceIsReady: (device: Device) => {
-            logger.info('Device selected successfully');
+                if (
+                    !device.serialport ||
+                    !device.serialPorts ||
+                    device.serialPorts.length === 0
+                ) {
+                    logger.error(`Missing serial port information`);
+                    return;
+                }
 
-            if (
-                !device.serialport ||
-                !device.serialPorts ||
-                device.serialPorts.length === 0
-            ) {
-                logger.error(`Missing serial port information`);
-                return;
-            }
-
-            dispatch(
-                dtmBoardSelected({
-                    board: device.boardVersion,
-                    serialports: device.serialPorts.map(
-                        port => port.comName ?? ''
-                    ),
-                })
-            );
-
-            if (device.persistedSerialPortOptions) {
                 dispatch(
-                    serialportSelected(device.persistedSerialPortOptions.path)
+                    dtmBoardSelected({
+                        board: device.boardVersion,
+                        serialports: device.serialPorts.map(
+                            port => port.comName ?? ''
+                        ),
+                    })
                 );
-            }
 
-            dispatch(selectDevice());
-        },
-    };
-}
+                if (device.persistedSerialPortOptions) {
+                    dispatch(
+                        serialportSelected(
+                            device.persistedSerialPortOptions.path
+                        )
+                    );
+                }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DeviceSelector);
+                dispatch(selectDevice());
+            }}
+        />
+    );
+};

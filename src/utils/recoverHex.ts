@@ -5,71 +5,34 @@
  */
 
 import {
-    deviceControlRecover,
-    deviceControlReset,
-    firmwareProgram,
-} from '@nordicsemiconductor/nrf-device-lib-js';
-import {
-    describeError,
+    AppThunk,
     Device,
-    getDeviceLibContext,
-    logger,
-    updateHasReadbackProtection,
-} from 'pc-nrfconnect-shared';
+    prepareDevice,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { deselectDevice, selectDevice } from '../actions/testActions';
-import { deviceSetup } from '../DeviceSelector';
+import { deviceSetupConfig } from '../DeviceSelector';
 import { setDeviceReady } from '../reducers/deviceReducer';
-import { TDispatch } from '../reducers/types';
+import { RootState } from '../reducers/types';
 import { clearAllWarnings } from '../reducers/warningReducer';
 
-export const recoverHex = (device: Device) => async (dispatch: TDispatch) => {
-    await dispatch(deselectDevice());
-    dispatch(setDeviceReady(true));
-    logger.info('Recovering device');
-    const context = getDeviceLibContext();
-    await deviceControlRecover(
-        context,
-        device.id,
-        'NRFDL_DEVICE_CORE_APPLICATION'
-    );
-    logger.info('Programming the device');
-    try {
-        await new Promise<void>((resolve, reject) => {
-            const jprog =
-                deviceSetup.jprog[
-                    device.jlink?.boardVersion.toLowerCase() as keyof typeof deviceSetup.jprog
-                ];
-
-            if (!jprog)
-                throw new Error('Found no firmware for the selected device');
-
-            firmwareProgram(
-                context,
-                device.id,
-                'NRFDL_FW_FILE',
-                'NRFDL_FW_INTEL_HEX',
-                jprog.fw,
-                error => {
-                    if (error) {
-                        logger.error(`Programming failed: ${error.message}`);
-                        reject(new Error(error.message));
-                    } else {
-                        logger.info('Successfully programmed the device');
-                        resolve();
-                    }
+export const recoverHex =
+    (device: Device): AppThunk<RootState> =>
+    async dispatch => {
+        await dispatch(deselectDevice());
+        dispatch(setDeviceReady(true));
+        dispatch(
+            prepareDevice(
+                device,
+                deviceSetupConfig,
+                () => {
+                    dispatch(clearAllWarnings());
+                    dispatch(selectDevice());
+                    dispatch(setDeviceReady(true));
                 },
                 () => {},
-                undefined,
-                'NRFDL_DEVICE_CORE_APPLICATION'
-            );
-        });
-        await deviceControlReset(context, device.id);
-        await dispatch(updateHasReadbackProtection());
-        dispatch(clearAllWarnings());
-        dispatch(selectDevice());
-        dispatch(setDeviceReady(true));
-    } catch (error) {
-        logger.error(describeError(error));
-    }
-};
+                false,
+                false
+            )
+        );
+    };

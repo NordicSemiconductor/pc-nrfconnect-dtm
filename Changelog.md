@@ -1,3 +1,10 @@
+## 3.0.0 - UNRELEASED
+
+### Changed
+
+-   From **nrf-device-lib-js** to **nrfutil device**, as a backend for
+    interacting with devices.
+
 ## 2.1.0 - 2023-04-03
 
 ## Added

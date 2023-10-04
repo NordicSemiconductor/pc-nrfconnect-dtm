@@ -7,7 +7,7 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
-import { bleChannels } from 'pc-nrfconnect-shared';
+import { bleChannels } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { getBoard } from '../reducers/deviceReducer';
 import { getTxPower } from '../reducers/settingsReducer';
@@ -85,89 +85,99 @@ const TransmitterChartView = () => {
             options={{
                 maintainAspectRatio: false,
                 responsive: true,
-                legend: { display: false },
+                plugins: {
+                    tooltip: {
+                        enabled: false,
+                    },
+                    legend: { display: false },
+                },
                 animation: undefined,
                 scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                display: true,
-                                min: 0,
-                                max: dBmValues.length - 1,
-                                suggestedMin: undefined,
-                                suggestedMax: undefined,
-                                stepSize: 1,
-                                callback: (value: number) =>
-                                    value in dBmValues ? dBmValues[value] : '',
-                                fontColor: chartColors.label,
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Strength (dBm)',
-                                fontColor: chartColors.label,
-                                fontSize: 14,
-                            },
-                            gridLines: {
-                                display: false,
-                                drawBorder: false,
-                            },
+                    y: {
+                        min: 0,
+                        max: dBmValues.length - 1,
+                        suggestedMin: undefined,
+                        suggestedMax: undefined,
+                        ticks: {
+                            display: true,
+                            stepSize: 1,
+                            callback: value =>
+                                value in dBmValues
+                                    ? dBmValues[
+                                          Number.parseInt(value.toString(), 10)
+                                      ]
+                                    : '',
+                            color: chartColors.label,
                         },
-                    ],
-                    xAxes: [
-                        {
-                            type: 'category',
-                            position: 'top',
+                        title: {
+                            display: true,
+                            text: 'Strength (dBm)',
+                            color: chartColors.label,
+                            font: { size: 14 },
+                        },
+                        grid: {
+                            display: false,
+                        },
+                        border: {
+                            display: false,
+                        },
+                    },
+
+                    xAxesTop: {
+                        type: 'category',
+                        position: 'top',
+                        offset: true,
+                        stacked: true,
+                        grid: {
+                            display: false,
+                        },
+                        border: {
+                            display: false,
+                        },
+                        ticks: {
+                            callback: (_: unknown, index: number) =>
+                                String(bleChannels[index]).padStart(2, '0'),
+                            minRotation: 0,
+                            maxRotation: 0,
+                            labelOffset: 0,
+                            autoSkipPadding: 5,
+                            color: chartColors.label,
+                        },
+                        title: {
+                            display: true,
+                            text: 'BLE channel',
+                            color: chartColors.label,
+                            font: { size: 14 },
+                        },
+                    },
+                    x: {
+                        type: 'category',
+                        position: 'bottom',
+                        offset: true,
+                        stacked: true,
+                        grid: {
                             offset: true,
-                            stacked: true,
-                            gridLines: {
-                                display: false,
-                            },
-                            ticks: {
-                                callback: (_: unknown, index: number) =>
-                                    String(bleChannels[index]).padStart(2, '0'),
-                                minRotation: 0,
-                                maxRotation: 0,
-                                labelOffset: 0,
-                                autoSkipPadding: 5,
-                                fontColor: chartColors.label,
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'BLE channel',
-                                fontColor: chartColors.label,
-                                fontSize: 14,
-                            },
+                            display: false,
                         },
-                        {
-                            type: 'category',
-                            position: 'bottom',
-                            offset: true,
-                            stacked: true,
-                            gridLines: {
-                                offsetGridLines: true,
-                                display: false,
-                                drawBorder: false,
-                            },
-                            ticks: {
-                                callback: (_: unknown, index: number) =>
-                                    FREQUENCY_BASE + index * FREQUENCY_INTERVAL,
-                                minRotation: 90,
-                                labelOffset: 0,
-                                autoSkipPadding: 5,
-                                fontColor: chartColors.label,
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'MHz',
-                                fontColor: chartColors.label,
-                                fontSize: 14,
-                                padding: { top: 10 },
-                            },
+                        border: {
+                            display: false,
                         },
-                    ],
-                },
-                tooltips: {
-                    enabled: false,
+                        ticks: {
+                            callback: (_, index) =>
+                                FREQUENCY_BASE + index * FREQUENCY_INTERVAL,
+                            minRotation: 90,
+                            labelOffset: 0,
+                            autoSkipPadding: 5,
+                            color: chartColors.label,
+                        },
+                        title: {
+                            display: true,
+                            text: 'MHz',
+                            color: chartColors.label,
+                            font: { size: 14 },
+                            padding: { top: 10 },
+                        },
+                    },
                 },
             }}
         />

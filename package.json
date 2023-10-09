@@ -46,11 +46,11 @@
     },
     "devDependencies": {
         "@nordicsemiconductor/pc-nrfconnect-shared": "^117.0.0",
+        "@testing-library/user-event": "^13.1.9",
         "chart.js": "^4.0.1",
         "chartjs-plugin-datalabels": "2.2.0",
-        "react-chartjs-2": "^5.0.1",
-        "@testing-library/user-event": "^13.1.9",
-        "nrf-dtm-js": "git+https://github.com/NordicPlayground/nrf-dtm-js#serialport10"
+        "nrf-dtm-js": "github:NordicPlayground/nrf-dtm-js",
+        "react-chartjs-2": "^5.0.1"
     },
     "eslintConfig": {
         "extends": "./node_modules/@nordicsemiconductor/pc-nrfconnect-shared/config/eslintrc"

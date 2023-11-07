@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Group, SidePanel } from 'pc-nrfconnect-shared';
+import { Group, SidePanel } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { paneName } from '../utils/panes';
 import ChannelView from './ChannelView';

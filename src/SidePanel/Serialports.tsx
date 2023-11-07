@@ -11,7 +11,7 @@ import {
     Group,
     persistSerialPortOptions,
     truncateMiddle,
-} from 'pc-nrfconnect-shared';
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { deselectDevice, selectDevice } from '../actions/testActions';
 import {

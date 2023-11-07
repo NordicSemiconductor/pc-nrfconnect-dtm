@@ -7,9 +7,9 @@
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
-import { Chart } from 'chart.js';
+import { bleChannels } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { BarElement, CategoryScale, Chart, LinearScale } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { bleChannels } from 'pc-nrfconnect-shared';
 
 import {
     getIsInTransmitterMode,
@@ -19,7 +19,7 @@ import {
 import chartColors from '../utils/chartColors';
 import WrongMode from '../utils/WrongMode';
 
-Chart.plugins.register(ChartDataLabels);
+Chart.register(ChartDataLabels, BarElement, CategoryScale, LinearScale);
 
 const FREQUENCY_BASE = 2402;
 const FREQUENCY_INTERVAL = 2;
@@ -36,7 +36,7 @@ const ChartView = () => {
     const [maxY, setMaxY] = useState(0);
 
     useEffect(() => {
-        if (isRunning) setMaxY(10);
+        if (isRunning) setMaxY(0);
     }, [isRunning]);
 
     if (isInTransmitterMode) {
@@ -76,93 +76,94 @@ const ChartView = () => {
             }}
             options={{
                 maintainAspectRatio: false,
-                legend: { display: false },
-                tooltips: { enabled: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false },
+                },
                 animation: undefined,
                 responsive: true,
                 scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: undefined,
-                                max: undefined,
-                                suggestedMin: 0,
-                                suggestedMax: 10,
-                                stepSize: undefined,
-                                callback: (
-                                    value: number,
-                                    _: unknown,
-                                    values: number[]
-                                ) => {
-                                    setMaxY(values[0]);
-                                    return value;
-                                },
-                                fontColor: chartColors.label,
+                    y: {
+                        min: 0,
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                        ticks: {
+                            // stepSize: undefined,
+                            callback: (value, _, ticks) => {
+                                setMaxY(ticks[ticks.length - 1].value);
+                                return value;
                             },
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Received packets',
-                                fontColor: chartColors.label,
-                                fontSize: 14,
-                            },
-                            gridLines: {
-                                display: false,
-                                drawBorder: false,
-                            },
+                            color: chartColors.label,
                         },
-                    ],
-                    xAxes: [
-                        {
-                            type: 'category',
-                            position: 'top',
+                        title: {
+                            display: true,
+                            text: 'Received packets',
+                            color: chartColors.label,
+                            font: { size: 14 },
+                        },
+                        grid: {
+                            display: false,
+                        },
+                        border: {
+                            display: false,
+                        },
+                    },
+
+                    xAxisTop: {
+                        type: 'category',
+                        position: 'top',
+                        offset: true,
+                        stacked: true,
+                        grid: {
+                            display: false,
+                        },
+                        border: {
+                            display: false,
+                        },
+                        ticks: {
+                            callback: (_, index) =>
+                                String(bleChannels[index]).padStart(2, '0'),
+                            minRotation: 0,
+                            maxRotation: 0,
+                            labelOffset: 0,
+                            autoSkipPadding: 5,
+                            color: chartColors.label,
+                        },
+                        title: {
+                            display: true,
+                            text: 'BLE channel',
+                            color: chartColors.label,
+                            font: { size: 14 },
+                        },
+                    },
+                    x: {
+                        type: 'category',
+                        position: 'bottom',
+                        offset: true,
+                        stacked: true,
+                        grid: {
                             offset: true,
-                            stacked: true,
-                            gridLines: {
-                                display: false,
-                            },
-                            ticks: {
-                                callback: (_: unknown, index: number) =>
-                                    String(bleChannels[index]).padStart(2, '0'),
-                                minRotation: 0,
-                                maxRotation: 0,
-                                labelOffset: 0,
-                                autoSkipPadding: 5,
-                                fontColor: chartColors.label,
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'BLE channel',
-                                fontColor: chartColors.label,
-                                fontSize: 14,
-                            },
+                            display: false,
                         },
-                        {
-                            type: 'category',
-                            position: 'bottom',
-                            offset: true,
-                            stacked: true,
-                            gridLines: {
-                                offsetGridLines: true,
-                                display: false,
-                                drawBorder: false,
-                            },
-                            ticks: {
-                                callback: (_: unknown, index: number) =>
-                                    FREQUENCY_BASE + index * FREQUENCY_INTERVAL,
-                                minRotation: 90,
-                                labelOffset: 0,
-                                autoSkipPadding: 5,
-                                fontColor: chartColors.label,
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'MHz',
-                                fontColor: chartColors.label,
-                                fontSize: 14,
-                                padding: { top: 10 },
-                            },
+                        border: {
+                            display: false,
                         },
-                    ],
+                        ticks: {
+                            callback: (_, index) =>
+                                FREQUENCY_BASE + index * FREQUENCY_INTERVAL,
+                            minRotation: 90,
+                            labelOffset: 0,
+                            autoSkipPadding: 5,
+                            color: chartColors.label,
+                        },
+                        title: {
+                            display: true,
+                            text: 'MHz',
+                            color: chartColors.label,
+                            font: { size: 14 },
+                            padding: { top: 10 },
+                        },
+                    },
                 },
             }}
             width={600}

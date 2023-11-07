@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { Main } from 'pc-nrfconnect-shared';
+import { Main } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import WarningView from '../WarningView';
 import ReceiverChartView from './ReceiverChartView';

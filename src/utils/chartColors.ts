@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { colors } from 'pc-nrfconnect-shared';
+import { colors } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 const chartColors = {
     bar: colors.nordicBlue,

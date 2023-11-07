@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { App } from 'pc-nrfconnect-shared';
+import { App, render } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import DeviceSelector from './DeviceSelector';
 import Receiver from './Receiver';
@@ -15,7 +15,7 @@ import Transmitter from './Transmitter';
 
 import './index.scss';
 
-export default () => (
+render(
     <App
         appReducer={appReducer}
         deviceSelect={<DeviceSelector />}

@@ -9,10 +9,6 @@ import {
     incompatibleDevice,
 } from '../reducers/warningReducer';
 
-export function clearIncompatibleWarning() {
-    return incompatibleDevice('');
-}
+export const clearIncompatibleWarning = () => incompatibleDevice('');
 
-export function clearCommunicationErrorWarning() {
-    return communicationError('');
-}
+export const clearCommunicationErrorWarning = () => communicationError('');

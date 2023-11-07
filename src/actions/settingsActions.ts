@@ -4,15 +4,16 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
+import { AppThunk } from '@nordicsemiconductor/pc-nrfconnect-shared';
+
 import {
     DTM_CHANNEL_MODE,
     dtmChannelModeChanged,
     sweepTimeChanged,
 } from '../reducers/settingsReducer';
-import { TDispatch } from '../reducers/types';
 
-function channelModeChanged(buttonClicked: string) {
-    return (dispatch: TDispatch) => {
+export default (buttonClicked: string): AppThunk =>
+    dispatch => {
         if (buttonClicked === DTM_CHANNEL_MODE.single) {
             dispatch(sweepTimeChanged(0));
         }
@@ -21,6 +22,3 @@ function channelModeChanged(buttonClicked: string) {
         }
         dispatch(dtmChannelModeChanged(buttonClicked));
     };
-}
-
-export default channelModeChanged;

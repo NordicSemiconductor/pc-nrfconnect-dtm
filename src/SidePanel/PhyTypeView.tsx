@@ -6,8 +6,8 @@
 
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Dropdown } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { DTM, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
-import { Dropdown } from 'pc-nrfconnect-shared';
 
 import { getBoard } from '../reducers/deviceReducer';
 import { getPhy, phyChanged } from '../reducers/settingsReducer';

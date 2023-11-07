@@ -4,9 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { NrfConnectState } from 'pc-nrfconnect-shared';
-import { AnyAction } from 'redux';
-import { ThunkDispatch } from 'redux-thunk';
+import { NrfConnectState } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 export interface DeviceState {
     board: string | null;
@@ -53,5 +51,3 @@ interface AppState {
 }
 
 export type RootState = NrfConnectState<AppState>;
-
-export type TDispatch = ThunkDispatch<RootState, null, AnyAction>;

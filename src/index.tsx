@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { App, render } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import usageData from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/usageData';
 
 import DeviceSelector from './DeviceSelector';
 import Receiver from './Receiver';
@@ -14,6 +15,8 @@ import SidePanel from './SidePanel';
 import Transmitter from './Transmitter';
 
 import './index.scss';
+
+usageData.enableTelemetry();
 
 render(
     <App

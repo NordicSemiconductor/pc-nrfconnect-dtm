@@ -33,7 +33,7 @@ const ChartView = () => {
     const lastReceived = useSelector(getLastReceived);
     const isRunning = useSelector(getIsRunning);
     const isInTransmitterMode = useSelector(getIsInTransmitterMode);
-    const [maxY, setMaxY] = useState(10);
+    const [maxY, setMaxY] = useState(0);
 
     useEffect(() => {
         if (isRunning) setMaxY(0);

@@ -1,6 +1,6 @@
 {
     "name": "pc-nrfconnect-dtm",
-    "version": "3.0.0",
+    "version": "2.2.0",
     "displayName": "Direct Test Mode",
     "description": "RF PHY testing of Bluetooth Low Energy devices",
     "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-dtm",

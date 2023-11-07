@@ -14,7 +14,7 @@ import {
     jprogDeviceSetup,
     logger,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { DeviceTraits } from '@nordicsemiconductor/pc-nrfconnect-shared/typings/generated/nrfutil';
+import { DeviceTraits } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil';
 import path from 'path';
 
 import { deselectDevice, selectDevice } from './actions/testActions';

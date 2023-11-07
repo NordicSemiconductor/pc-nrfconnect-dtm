@@ -31,6 +31,7 @@ export const recoverHex =
                     dispatch(setDeviceReady(true));
                 },
                 () => {},
+                undefined,
                 false,
                 false
             )

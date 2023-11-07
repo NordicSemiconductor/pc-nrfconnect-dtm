@@ -65,7 +65,9 @@ export default () => {
             deviceSetupConfig={deviceSetupConfig}
             onDeviceSelected={(device: Device) => {
                 dispatch(clearAllWarnings());
-                if (compatiblePCAs.includes(device.boardVersion ?? '')) {
+                if (
+                    compatiblePCAs.includes(device.devkit?.boardVersion ?? '')
+                ) {
                     logger.info(
                         `Validating firmware for device with s/n ${device.serialNumber}`
                     );
@@ -84,18 +86,14 @@ export default () => {
             onDeviceIsReady={(device: Device) => {
                 logger.info('Device selected successfully');
 
-                if (
-                    !device.serialport ||
-                    !device.serialPorts ||
-                    device.serialPorts.length === 0
-                ) {
+                if (!device.serialPorts || device.serialPorts.length === 0) {
                     logger.error(`Missing serial port information`);
                     return;
                 }
 
                 dispatch(
                     dtmBoardSelected({
-                        board: device.boardVersion,
+                        board: device.devkit?.boardVersion,
                         serialports: device.serialPorts.map(
                             port => port.comName ?? ''
                         ),

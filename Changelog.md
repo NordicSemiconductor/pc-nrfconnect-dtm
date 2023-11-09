@@ -1,4 +1,4 @@
-## 3.0.0 - UNRELEASED
+## 2.2.0 - UNRELEASED
 
 ### Changed
 

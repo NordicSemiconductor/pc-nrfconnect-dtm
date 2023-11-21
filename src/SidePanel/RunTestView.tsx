@@ -24,13 +24,15 @@ const RunTestView = () => {
     };
 
     return (
-        <StartStopButton
-            startText="Start test"
-            stopText="Stop test"
-            onClick={onClick}
-            disabled={disabled}
-            started={isRunning}
-        />
+        <div>
+            <StartStopButton
+                startText="Start test"
+                stopText="Stop test"
+                onClick={onClick}
+                disabled={disabled}
+                started={isRunning}
+            />
+        </div>
     );
 };
 

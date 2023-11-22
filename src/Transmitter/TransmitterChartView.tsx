@@ -91,7 +91,7 @@ const TransmitterChartView = () => {
                     },
                     legend: { display: false },
                 },
-                animation: undefined,
+                animation: false,
                 scales: {
                     y: {
                         min: 0,

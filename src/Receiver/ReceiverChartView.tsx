@@ -80,7 +80,7 @@ const ChartView = () => {
                     legend: { display: false },
                     tooltip: { enabled: false },
                 },
-                animation: undefined,
+                animation: false,
                 responsive: true,
                 scales: {
                     y: {

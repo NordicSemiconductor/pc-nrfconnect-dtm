@@ -25,6 +25,7 @@ import {
     sweepTimeChanged,
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
+import { isTransmitterPane as getIsTransmitterPane } from '../utils/panes';
 import ToggleChannelModeView from './ToggleChannelModeView';
 
 interface DelaySliderProps {
@@ -39,10 +40,13 @@ const DelaySlider = ({
     changedFunc,
 }: DelaySliderProps) => {
     const range = { min: 20, max: 20000, decimals: 0 };
+    const isTransmitterPane = useSelector(getIsTransmitterPane);
     return (
         <div className="slider-container">
             <FormLabel htmlFor="sweep-delay-slider">
-                Transmit delay
+                {isTransmitterPane
+                    ? 'Transmit period per channel'
+                    : 'Receive period per channel'}
                 <NumberInlineInput
                     value={currentValue}
                     range={range}

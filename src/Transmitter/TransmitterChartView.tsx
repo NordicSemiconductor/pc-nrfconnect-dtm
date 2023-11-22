@@ -70,7 +70,7 @@ const TransmitterChartView = () => {
     const isInReceiverMode = useSelector(getIsInReceiverMode);
     const txPower = useSelector(getTxPower);
     const boardType = useSelector(getBoard);
-    const dBmValues = fromPCA(boardType).txPower;
+    const dBmValues = [-1, ...fromPCA(boardType).txPower];
 
     if (isInReceiverMode) {
         return <WrongMode />;
@@ -80,7 +80,7 @@ const TransmitterChartView = () => {
         <Bar
             data={chartDataTransmit(
                 isRunning ? currentChannel : undefined,
-                txPower
+                txPower + 1
             )}
             options={{
                 maintainAspectRatio: false,
@@ -91,7 +91,7 @@ const TransmitterChartView = () => {
                     },
                     legend: { display: false },
                 },
-                animation: undefined,
+                animation: false,
                 scales: {
                     y: {
                         min: 0,
@@ -101,10 +101,13 @@ const TransmitterChartView = () => {
                         ticks: {
                             display: true,
                             stepSize: 1,
-                            callback: value =>
-                                value in dBmValues
+                            callback: dBmIndex =>
+                                dBmIndex in dBmValues && dBmIndex !== 0
                                     ? dBmValues[
-                                          Number.parseInt(value.toString(), 10)
+                                          Number.parseInt(
+                                              dBmIndex.toString(),
+                                              10
+                                          )
                                       ]
                                     : '',
                             color: chartColors.label,

@@ -9,6 +9,7 @@
 
 import React, { FC } from 'react';
 import { Provider } from 'react-redux';
+import { currentPane } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { render, RenderOptions } from '@testing-library/react';
 import {
     AnyAction,
@@ -62,6 +63,14 @@ const customRender = (
     );
     return render(element, { wrapper: Wrapper, ...options });
 };
+
+jest.mock('@nordicsemiconductor/pc-nrfconnect-shared', () => ({
+    ...jest.requireActual('@nordicsemiconductor/pc-nrfconnect-shared'),
+    currentPane: jest.fn().mockReturnValue(0),
+}));
+export const mockedCurrentPane = currentPane as jest.MockedFunction<
+    typeof currentPane
+>;
 
 export * from '@testing-library/react';
 export { customRender as render };

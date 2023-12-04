@@ -33,26 +33,30 @@ const deviceListing: DeviceTraits = {
 
 export const deviceSetupConfig: DeviceSetupConfig = {
     deviceSetups: [
-        jprogDeviceSetup([
-            {
-                key: 'pca10040',
-                fw: path.resolve(
-                    getAppDir(),
-                    'firmware/direct_test_mode_pca10040.hex'
-                ),
-                fwVersion: 'dtm-fw-1.0.0',
-                fwIdAddress: 0x6000,
-            },
-            {
-                key: 'pca10056',
-                fw: path.resolve(
-                    getAppDir(),
-                    'firmware/direct_test_mode_pca10056.hex'
-                ),
-                fwVersion: 'dtm-fw-1.0.0',
-                fwIdAddress: 0x6000,
-            },
-        ]),
+        jprogDeviceSetup(
+            [
+                {
+                    key: 'pca10040',
+                    fw: path.resolve(
+                        getAppDir(),
+                        'firmware/direct_test_mode_pca10040.hex'
+                    ),
+                    fwVersion: 'dtm-fw-1.0.0',
+                    fwIdAddress: 0x6000,
+                },
+                {
+                    key: 'pca10056',
+                    fw: path.resolve(
+                        getAppDir(),
+                        'firmware/direct_test_mode_pca10056.hex'
+                    ),
+                    fwVersion: 'dtm-fw-1.0.0',
+                    fwIdAddress: 0x6000,
+                },
+            ],
+            false,
+            true
+        ),
     ],
     allowCustomDevice: true,
 };

@@ -5,8 +5,11 @@
  */
 
 import React from 'react';
-import { App, render } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import usageData from '@nordicsemiconductor/pc-nrfconnect-shared/src/utils/usageData';
+import {
+    App,
+    render,
+    telemetry,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import DeviceSelector from './DeviceSelector';
 import Receiver from './Receiver';
@@ -16,7 +19,7 @@ import Transmitter from './Transmitter';
 
 import './index.scss';
 
-usageData.enableTelemetry();
+telemetry.enableTelemetry();
 
 render(
     <App

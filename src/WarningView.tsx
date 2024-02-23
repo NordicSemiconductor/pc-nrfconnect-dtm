@@ -40,20 +40,25 @@ const WarningView = () => {
                             {communicationError}
                         </div>
                     </Alert>
-                    {device && readbackProtection === 'protected' && (
-                        <Alert variant="warning" label="">
-                            <div className="d-flex align-items-center readback-protection-warning flex-wrap">
-                                Unable to verify compatible firmware because the
-                                selected device has readback protection enabled.
-                                <button
-                                    onClick={() => dispatch(recoverHex(device))}
-                                    type="button"
-                                >
-                                    Program compatible firmware
-                                </button>
-                            </div>
-                        </Alert>
-                    )}
+                    {device &&
+                        readbackProtection !==
+                            'NRFDL_PROTECTION_STATUS_NONE' && (
+                            <Alert variant="warning" label="">
+                                <div className="d-flex align-items-center readback-protection-warning flex-wrap">
+                                    Unable to verify compatible firmware because
+                                    the selected device has readback protection
+                                    enabled.
+                                    <button
+                                        onClick={() =>
+                                            dispatch(recoverHex(device))
+                                        }
+                                        type="button"
+                                    >
+                                        Program compatible firmware
+                                    </button>
+                                </div>
+                            </Alert>
+                        )}
                 </>
             )}
         </>

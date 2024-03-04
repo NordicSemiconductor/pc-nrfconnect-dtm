@@ -1,9 +1,9 @@
-## 2.2.1 - UNRELEASED
+## 2.3.0 - UNRELEASED
 
 ## Added
 
--   Persist state of `show log` panel
--   Feedback tab
+-   Persist state of `show log` panel.
+-   Feedback tab.
 
 ### Changed
 

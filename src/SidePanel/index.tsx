@@ -17,15 +17,13 @@ import Serialports from './Serialports';
 import TimeoutView from './TimeoutView';
 import TransmitSetupView from './TransmitSetupView';
 
-import './sidepanel.scss';
-
 const AppSidePanelView = () => {
     const selectedTestMode = useSelector(paneName);
 
     return (
         <SidePanel className="sidepanel">
             <Serialports />
-            <Group heading="Channel mode">
+            <Group heading="Channel mode" gap={4}>
                 <ChannelView paneName={selectedTestMode} />
                 {selectedTestMode === 'transmitter' && <TransmitSetupView />}
                 <PhyTypeView />

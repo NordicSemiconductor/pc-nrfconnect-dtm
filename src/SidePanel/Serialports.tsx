@@ -48,18 +48,16 @@ export default () => {
 
     return (
         <Group heading="Serialport">
-            <div className="serialport-selection">
-                <Dropdown
-                    disabled={isRunning}
-                    onSelect={updateSerialPort}
-                    items={dropdownItems}
-                    selectedItem={
-                        dropdownItems.find(
-                            e => e.value === (selectedSerialport as string)
-                        ) ?? dropdownItems[0]
-                    }
-                />
-            </div>
+            <Dropdown
+                disabled={isRunning}
+                onSelect={updateSerialPort}
+                items={dropdownItems}
+                selectedItem={
+                    dropdownItems.find(
+                        e => e.value === (selectedSerialport as string)
+                    ) ?? dropdownItems[0]
+                }
+            />
         </Group>
     );
 };

@@ -7,7 +7,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { StateSelector } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import PropTypes from 'prop-types';
 
 import channelModeChanged from '../actions/settingsActions';
 import { DTM_CHANNEL_MODE, getChannelMode } from '../reducers/settingsReducer';
@@ -36,10 +35,6 @@ const ToggleChannelModeView = ({ isRunning }: ToggleChannelModeViewProps) => {
             }
         />
     );
-};
-
-ToggleChannelModeView.propTypes = {
-    isRunning: PropTypes.bool.isRequired,
 };
 
 export default ToggleChannelModeView;

@@ -5,12 +5,8 @@
  */
 
 import React from 'react';
-import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    NumberInlineInput,
-    Slider,
-} from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { NumberInput, Slider } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { getTimeout, timeoutChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
@@ -26,26 +22,22 @@ const TimeoutSetupView = () => {
     const updateTimeout = (time: number) => dispatch(timeoutChanged(time));
 
     return (
-        <div className="slider-container">
-            <FormLabel
-                htmlFor="transit-channel-slider"
-                className="timeout-label"
-            >
+        <div className="tw-flex tw-flex-col tw-gap-1">
+            <div className="tw-flex tw-flex-row">
                 {timeout === 0 ? (
-                    'No timeout'
+                    <span>No timeout</span>
                 ) : (
-                    <>
-                        Timeout after
-                        <NumberInlineInput
-                            value={timeout / 1000}
-                            range={range}
-                            onChange={val => updateTimeout(val)}
-                            disabled={isRunning}
-                        />
-                        s
-                    </>
+                    <NumberInput
+                        label="Timeout after"
+                        minWidth
+                        value={timeout / 1000}
+                        range={range}
+                        onChange={val => updateTimeout(val)}
+                        disabled={isRunning}
+                        unit="s"
+                    />
                 )}
-            </FormLabel>
+            </div>
             <Slider
                 id="transit-channel-slider"
                 values={[timeout / 1000]}

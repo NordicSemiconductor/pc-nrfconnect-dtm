@@ -4,13 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React, { useState } from 'react';
-import FormLabel from 'react-bootstrap/FormLabel';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    NumberInlineInput,
-    Slider,
-} from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { NumberInput } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { getBoard } from '../reducers/deviceReducer';
 import { getTxPower, txPowerChanged } from '../reducers/settingsReducer';
@@ -24,44 +20,23 @@ const TxPowerView = () => {
     const dispatch = useDispatch();
 
     const dBmValues = fromPCA(boardType).txPower;
-    const maxDbmRange = dBmValues.length - 1;
-
-    const [txPower, setTxPower] = useState(dBmValues[txPowerIdx]);
 
     return (
-        <div className="slider-container">
-            <FormLabel htmlFor="transmit-power-slider">
-                Transmit power
-                <NumberInlineInput
-                    value={txPower}
-                    range={{ min: dBmValues[0], max: dBmValues[maxDbmRange] }}
-                    disabled={isRunning}
-                    onChange={value => {
-                        const index = dBmValues.findIndex(e => e === value);
-                        if (index >= 0) dispatch(txPowerChanged(index));
-                        setTxPower(value);
-                    }}
-                    onChangeComplete={value => {
-                        const index = dBmValues.findIndex(e => e === value);
-                        if (index < 0) setTxPower(dBmValues[txPowerIdx]);
-                        else dispatch(txPowerChanged(index));
-                    }}
-                />{' '}
-                dBm
-            </FormLabel>
-            <Slider
-                id="transmit-power-slider"
-                values={[txPowerIdx]}
-                onChange={[
-                    value => {
-                        dispatch(txPowerChanged(value));
-                        setTxPower(dBmValues[value]);
-                    },
-                ]}
-                range={{ min: 0, max: maxDbmRange }}
-                disabled={isRunning}
-            />
-        </div>
+        <NumberInput
+            showSlider
+            minWidth
+            unit="dBm"
+            label="Transmit power"
+            value={dBmValues[txPowerIdx]}
+            range={dBmValues}
+            disabled={isRunning}
+            onChange={value => {
+                dispatch(txPowerChanged(dBmValues.indexOf(value)));
+            }}
+            onChangeComplete={value => {
+                dispatch(txPowerChanged(dBmValues.indexOf(value)));
+            }}
+        />
     );
 };
 

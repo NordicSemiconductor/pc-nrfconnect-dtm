@@ -24,7 +24,6 @@ import {
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { isTransmitterPane as getIsTransmitterPane } from '../utils/panes';
-import ToggleChannelModeView from './ToggleChannelModeView';
 
 interface DelaySliderProps {
     isRunning: boolean;
@@ -41,11 +40,7 @@ const DelaySlider = ({
     const isTransmitterPane = useSelector(getIsTransmitterPane);
     return (
         <NumberInput
-            label={
-                isTransmitterPane
-                    ? 'Transmit period per channel'
-                    : 'Receive period per channel'
-            }
+            label={isTransmitterPane ? 'Transmit period' : 'Receive period'}
             showSlider
             minWidth
             range={range}
@@ -53,6 +48,9 @@ const DelaySlider = ({
             unit="ms"
             disabled={isRunning}
             onChange={value => changedFunc(isRunning ? currentValue : value)}
+            title={`Each channel will ${
+                isTransmitterPane ? 'transmit' : 'receive'
+            } for ${currentValue}ms`}
         />
     );
 };
@@ -85,8 +83,6 @@ export default ({ paneName }: Props) => {
 
     return (
         <>
-            <ToggleChannelModeView isRunning={isRunning} />
-
             {channelMode === DTM_CHANNEL_MODE.single && (
                 <NumberInput
                     showSlider

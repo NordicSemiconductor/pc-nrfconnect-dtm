@@ -12,7 +12,7 @@
 ### Fixed
 
 -   Number input controls using `up` and `down` keys work as expected
--   **Transmit channel** range on **Sweep Mode** no longer effect the validation
+-   **Transmit channel** range on **Sweep Mode** no longer affect the validation
     of **Transmit channel** on **Single** mode
 
 ## 2.2.0 - 2023-12-07

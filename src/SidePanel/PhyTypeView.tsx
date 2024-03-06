@@ -14,7 +14,7 @@ import { getPhy, phyChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 
-const PhyTypeView = () => {
+export default () => {
     const phy = useSelector(getPhy);
     const boardType = useSelector(getBoard);
     const isRunning = useSelector(getIsRunning);
@@ -40,5 +40,3 @@ const PhyTypeView = () => {
         />
     );
 };
-
-export default PhyTypeView;

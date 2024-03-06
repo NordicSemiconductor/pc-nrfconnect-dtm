@@ -5,14 +5,12 @@
  */
 
 import React from 'react';
-import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    bleChannels,
     NumberInlineInput,
+    NumberInput,
     Slider,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import PropTypes from 'prop-types';
 
 import {
     channelRangeChanged,
@@ -26,7 +24,6 @@ import {
 } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
 import { isTransmitterPane as getIsTransmitterPane } from '../utils/panes';
-import ToggleChannelModeView from './ToggleChannelModeView';
 
 interface DelaySliderProps {
     isRunning: boolean;
@@ -42,45 +39,32 @@ const DelaySlider = ({
     const range = { min: 20, max: 20000, decimals: 0 };
     const isTransmitterPane = useSelector(getIsTransmitterPane);
     return (
-        <div className="slider-container">
-            <FormLabel htmlFor="sweep-delay-slider">
-                {isTransmitterPane
-                    ? 'Transmit period per channel'
-                    : 'Receive period per channel'}
-                <NumberInlineInput
-                    value={currentValue}
-                    range={range}
-                    disabled={isRunning}
-                    onChange={value =>
-                        changedFunc(isRunning ? currentValue : value)
-                    }
-                />{' '}
-                ms
-            </FormLabel>
-            <Slider
-                id="sweep-delay-slider"
-                values={[currentValue]}
-                disabled={isRunning}
-                onChange={[
-                    value => changedFunc(isRunning ? currentValue : value),
-                ]}
-                range={range}
-            />
-        </div>
+        <NumberInput
+            label={isTransmitterPane ? 'Transmit period' : 'Receive period'}
+            showSlider
+            minWidth
+            range={range}
+            value={currentValue}
+            unit="ms"
+            disabled={isRunning}
+            onChange={value => changedFunc(isRunning ? currentValue : value)}
+            title={`Each channel will ${
+                isTransmitterPane ? 'transmit' : 'receive'
+            } for ${currentValue}ms`}
+        />
     );
-};
-
-DelaySlider.propTypes = {
-    isRunning: PropTypes.bool.isRequired,
-    currentValue: PropTypes.number.isRequired,
-    changedFunc: PropTypes.func.isRequired,
 };
 
 interface Props {
     paneName: 'transmitter' | 'receiver';
 }
 
-const ChannelView: React.FC<Props> = ({ paneName }) => {
+const bleChannelsValues = [
+    37, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 38, 11, 12, 13, 14, 15, 16, 17, 18,
+    19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 39,
+];
+
+export default ({ paneName }: Props) => {
     const transmitOrReceiveLabel =
         paneName === 'transmitter' ? 'Transmit' : 'Receive';
     const channelMode = useSelector(getChannelMode);
@@ -91,53 +75,24 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
 
     const dispatch = useDispatch();
 
-    const lowChannel = Math.min(...channelRange);
-    const highChannel = Math.max(...channelRange);
+    const changeRangesIndexes = channelRange.map(v =>
+        bleChannelsValues.indexOf(v)
+    );
+    const lowChannel = bleChannelsValues[Math.min(...changeRangesIndexes)];
+    const highChannel = bleChannelsValues[Math.max(...changeRangesIndexes)];
 
     return (
         <>
-            <ToggleChannelModeView isRunning={isRunning} />
-
             {channelMode === DTM_CHANNEL_MODE.single && (
-                <div className="slider-container">
-                    <FormLabel htmlFor="channel-slider">
-                        {`${transmitOrReceiveLabel} on channel`}
-                        <NumberInlineInput
-                            value={bleChannels[channelSingle]}
-                            range={{
-                                min: lowChannel,
-                                max: bleChannels.max,
-                                decimals: 0,
-                            }}
-                            disabled={isRunning}
-                            onChange={value =>
-                                dispatch(
-                                    dtmSingleChannelChanged(
-                                        isRunning ? channelSingle : value
-                                    )
-                                )
-                            }
-                        />
-                    </FormLabel>
-                    <Slider
-                        id="channel-slider"
-                        values={[channelSingle]}
-                        disabled={isRunning}
-                        onChange={[
-                            value =>
-                                dispatch(
-                                    dtmSingleChannelChanged(
-                                        isRunning ? channelSingle : value
-                                    )
-                                ),
-                        ]}
-                        range={{
-                            min: bleChannels.min,
-                            max: bleChannels.max,
-                            decimals: 0,
-                        }}
-                    />
-                </div>
+                <NumberInput
+                    showSlider
+                    minWidth
+                    label={`${transmitOrReceiveLabel} on channel`}
+                    range={bleChannelsValues}
+                    value={channelSingle}
+                    disabled={isRunning}
+                    onChange={value => dispatch(dtmSingleChannelChanged(value))}
+                />
             )}
             {channelMode === DTM_CHANNEL_MODE.sweep && (
                 <>
@@ -147,73 +102,60 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
                         changedFunc={value => dispatch(sweepTimeChanged(value))}
                     />
 
-                    <div className="slider-container">
-                        <FormLabel htmlFor="channel-slider">
+                    <div className="tw-flex tw-flex-col tw-gap-1">
+                        <div className="tw-flex tw-flex-row">
                             {`${transmitOrReceiveLabel} on channel`}
                             <NumberInlineInput
-                                value={bleChannels[lowChannel]}
-                                range={{
-                                    min: bleChannels.min,
-                                    max: bleChannels.max,
-                                    decimals: 0,
-                                }}
+                                value={lowChannel}
+                                range={bleChannelsValues}
                                 disabled={isRunning}
-                                onChange={newMinValue =>
+                                onChange={newMinValue => {
+                                    if (newMinValue >= highChannel) return;
                                     dispatch(
                                         channelRangeChanged([
-                                            isRunning
-                                                ? lowChannel
-                                                : newMinValue,
+                                            newMinValue,
                                             channelRange[1],
                                         ])
-                                    )
-                                }
+                                    );
+                                }}
                             />
                             {' to '}
                             <NumberInlineInput
-                                value={bleChannels[highChannel]}
-                                range={{
-                                    min: bleChannels.min,
-                                    max: bleChannels.max,
-                                    decimals: 0,
-                                }}
+                                value={highChannel}
+                                range={bleChannelsValues}
                                 disabled={isRunning}
-                                onChange={newMaxValue =>
+                                onChange={newMaxValue => {
+                                    if (newMaxValue <= lowChannel) return;
                                     dispatch(
                                         channelRangeChanged([
                                             channelRange[0],
-                                            isRunning
-                                                ? highChannel
-                                                : newMaxValue,
+                                            newMaxValue,
                                         ])
-                                    )
-                                }
+                                    );
+                                }}
                             />
-                        </FormLabel>
+                        </div>
                         <Slider
-                            id="channel-slider"
                             values={channelRange}
-                            range={{
-                                min: bleChannels.min,
-                                max: bleChannels.max,
-                                decimals: 0,
-                            }}
+                            range={bleChannelsValues}
                             disabled={isRunning}
                             onChange={[
-                                newValue =>
+                                newValue => {
                                     dispatch(
                                         channelRangeChanged([
-                                            isRunning ? lowChannel : newValue,
+                                            newValue,
                                             channelRange[1],
                                         ])
-                                    ),
-                                newValue =>
+                                    );
+                                },
+                                newValue => {
                                     dispatch(
                                         channelRangeChanged([
                                             channelRange[0],
-                                            isRunning ? highChannel : newValue,
+                                            newValue,
                                         ])
-                                    ),
+                                    );
+                                },
                             ]}
                         />
                     </div>
@@ -222,5 +164,3 @@ const ChannelView: React.FC<Props> = ({ paneName }) => {
         </>
     );
 };
-
-export default ChannelView;

@@ -9,10 +9,16 @@ import userEvent from '@testing-library/user-event';
 
 import { render, screen } from '../../utils/testUtils';
 import ChannelView from '../ChannelView';
+import ToggleChannelModeView from '../ToggleChannelModeView';
 
 describe('Initial state', () => {
     test('should have single channel selected', () => {
-        render(<ChannelView paneName="transmitter" />);
+        render(
+            <>
+                <ChannelView paneName="transmitter" />
+                <ToggleChannelModeView isRunning={false} />
+            </>
+        );
 
         const singleBtn = screen.getByRole(`button`, { name: /single/i });
 
@@ -20,7 +26,12 @@ describe('Initial state', () => {
     });
 
     test('should have sweep channel not selected', () => {
-        render(<ChannelView paneName="transmitter" />);
+        render(
+            <>
+                <ChannelView paneName="transmitter" />
+                <ToggleChannelModeView isRunning={false} />
+            </>
+        );
 
         const sweepBtn = screen.getByRole(`button`, { name: /sweep/i });
 
@@ -30,7 +41,12 @@ describe('Initial state', () => {
 
 describe('Select sweep', () => {
     test('should have sweep channel selected', () => {
-        render(<ChannelView paneName="transmitter" />);
+        render(
+            <>
+                <ChannelView paneName="transmitter" />
+                <ToggleChannelModeView isRunning={false} />
+            </>
+        );
 
         const sweepBtn = screen.getByRole('button', { name: /sweep/i });
         userEvent.click(sweepBtn);
@@ -39,7 +55,12 @@ describe('Select sweep', () => {
     });
 
     test('should render two channel sliders', async () => {
-        render(<ChannelView paneName="transmitter" />);
+        render(
+            <>
+                <ChannelView paneName="transmitter" />
+                <ToggleChannelModeView isRunning={false} />
+            </>
+        );
 
         userEvent.click(screen.getByRole('button', { name: /sweep/i }));
 

@@ -5,12 +5,10 @@
  */
 
 import React from 'react';
-import FormLabel from 'react-bootstrap/FormLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     Dropdown,
-    NumberInlineInput,
-    Slider,
+    NumberInput,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM';
 
@@ -75,34 +73,18 @@ const PacketLengthView = ({
     changedFunc,
     currentLength,
     isRunning,
-}: PacketLengthView) => {
-    const range = { min: 1, max: 255 };
-    return (
-        <div className="slider-container">
-            <FormLabel htmlFor="packet-length-slider">
-                Packet length
-                <NumberInlineInput
-                    value={currentLength}
-                    range={range}
-                    disabled={isRunning}
-                    onChange={value =>
-                        changedFunc(isRunning ? currentLength : value)
-                    }
-                />{' '}
-                Bytes
-            </FormLabel>
-            <Slider
-                id="packet-length-slider"
-                values={[currentLength]}
-                disabled={isRunning}
-                onChange={[
-                    value => changedFunc(isRunning ? currentLength : value),
-                ]}
-                range={range}
-            />
-        </div>
-    );
-};
+}: PacketLengthView) => (
+    <NumberInput
+        showSlider
+        minWidth
+        label="Packet length"
+        unit="Bytes"
+        value={currentLength}
+        range={{ min: 1, max: 255 }}
+        disabled={isRunning}
+        onChange={value => changedFunc(isRunning ? currentLength : value)}
+    />
+);
 
 const PacketView = () => {
     const pkgType = useSelector(getBitpattern);

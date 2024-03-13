@@ -1,19 +1,20 @@
-## 2.3.0 - UNRELEASED
+## 2.3.0 - 2024-03-13
 
 ## Added
 
--   Persist state of `show log` panel.
+-   Persist state of the Show Log panel.
 -   Feedback tab.
 
 ### Changed
 
--   Update nrfutil device to v2.1.1.
+-   Updated `nrfutil device` to v2.1.1.
 
 ### Fixed
 
--   Number input controls using `up` and `down` keys work as expected
--   **Transmit channel** range on **Sweep Mode** no longer affect the validation
-    of **Transmit channel** on **Single** mode
+-   Number input controls using `Up` and `Down` keyboard keys now work as
+    expected.
+-   The Transmit channel range on Sweep Mode no longer affects the validation of
+    the Transmit channel on the Single mode.
 
 ## 2.2.0 - 2023-12-07
 

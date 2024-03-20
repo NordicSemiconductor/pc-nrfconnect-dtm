@@ -107,10 +107,12 @@ export default ({ paneName }: Props) => {
                             {`${transmitOrReceiveLabel} on channel`}
                             <NumberInlineInput
                                 value={lowChannel}
-                                range={bleChannelsValues}
+                                range={bleChannelsValues.slice(
+                                    0,
+                                    bleChannelsValues.indexOf(highChannel)
+                                )}
                                 disabled={isRunning}
                                 onChange={newMinValue => {
-                                    if (newMinValue >= highChannel) return;
                                     dispatch(
                                         channelRangeChanged([
                                             newMinValue,
@@ -122,10 +124,11 @@ export default ({ paneName }: Props) => {
                             {' to '}
                             <NumberInlineInput
                                 value={highChannel}
-                                range={bleChannelsValues}
+                                range={bleChannelsValues.slice(
+                                    bleChannelsValues.indexOf(lowChannel) + 1
+                                )}
                                 disabled={isRunning}
                                 onChange={newMaxValue => {
-                                    if (newMaxValue <= lowChannel) return;
                                     dispatch(
                                         channelRangeChanged([
                                             channelRange[0],

@@ -1,3 +1,9 @@
+## 2.3.1 - UNRELEASED
+
+## Fixed
+
+-   Side panel settings for channel selection did not match the graph responses
+
 ## 2.3.0 - 2024-03-13
 
 ## Added

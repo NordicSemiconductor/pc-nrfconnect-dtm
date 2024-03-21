@@ -138,6 +138,11 @@ export const startTests =
         const modulationMode = getModulation(state);
         const phy = getPhy(state);
 
+        const singleChannelIndexed = bleChannelsValues.indexOf(singleChannel);
+        const channelRangeIndexed = channelRange.map(channel =>
+            bleChannelsValues.indexOf(channel)
+        );
+
         const testMode = paneName(getState());
 
         const { single, sweep } = DTM_CHANNEL_MODE;
@@ -171,16 +176,14 @@ export const startTests =
             testPromise = dtm.singleChannelTransmitterTest(
                 bitpattern,
                 length,
-                bleChannelsValues.indexOf(singleChannel),
+                singleChannelIndexed,
                 timeoutms
             );
         } else if (testMode === 'transmitter' && channelMode === sweep) {
             testPromise = dtm.sweepTransmitterTest(
                 bitpattern,
                 length,
-                ...channelRange.map(channel =>
-                    bleChannelsValues.indexOf(channel)
-                ),
+                ...channelRangeIndexed,
                 sweepTime,
                 timeoutms
             );
@@ -196,8 +199,8 @@ export const startTests =
             testPromise = dtm.sweepReceiverTest(
                 bitpattern,
                 length,
-                singleChannel,
-                singleChannel,
+                singleChannelIndexed,
+                singleChannelIndexed,
                 sweepTime,
                 timeoutms
             );
@@ -205,7 +208,7 @@ export const startTests =
             testPromise = dtm.sweepReceiverTest(
                 bitpattern,
                 length,
-                ...channelRange,
+                ...channelRangeIndexed,
                 sweepTime,
                 timeoutms
             );
@@ -219,7 +222,7 @@ export const startTests =
                     receivedChannels = new Array(40).fill(0);
 
                     if (received !== undefined) {
-                        receivedChannels[singleChannel] = received;
+                        receivedChannels[singleChannelIndexed] = received;
                     }
                 }
                 const testTypeStr =

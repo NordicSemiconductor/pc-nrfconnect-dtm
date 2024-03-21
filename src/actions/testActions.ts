@@ -222,7 +222,7 @@ export const startTests =
                     receivedChannels = new Array(40).fill(0);
 
                     if (received !== undefined) {
-                        receivedChannels[singleChannelIndexed] = received;
+                        receivedChannels[singleChannel] = received;
                     }
                 }
                 const testTypeStr =

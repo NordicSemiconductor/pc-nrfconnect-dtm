@@ -59,7 +59,7 @@ interface Props {
     paneName: 'transmitter' | 'receiver';
 }
 
-const bleChannelsValues = [
+export const bleChannelsValues = [
     37, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 38, 11, 12, 13, 14, 15, 16, 17, 18,
     19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 39,
 ];
@@ -107,10 +107,12 @@ export default ({ paneName }: Props) => {
                             {`${transmitOrReceiveLabel} on channel`}
                             <NumberInlineInput
                                 value={lowChannel}
-                                range={bleChannelsValues}
+                                range={bleChannelsValues.slice(
+                                    0,
+                                    bleChannelsValues.indexOf(highChannel)
+                                )}
                                 disabled={isRunning}
                                 onChange={newMinValue => {
-                                    if (newMinValue >= highChannel) return;
                                     dispatch(
                                         channelRangeChanged([
                                             newMinValue,
@@ -122,10 +124,11 @@ export default ({ paneName }: Props) => {
                             {' to '}
                             <NumberInlineInput
                                 value={highChannel}
-                                range={bleChannelsValues}
+                                range={bleChannelsValues.slice(
+                                    bleChannelsValues.indexOf(lowChannel) + 1
+                                )}
                                 disabled={isRunning}
                                 onChange={newMaxValue => {
-                                    if (newMaxValue <= lowChannel) return;
                                     dispatch(
                                         channelRangeChanged([
                                             channelRange[0],

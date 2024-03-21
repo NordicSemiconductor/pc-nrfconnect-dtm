@@ -32,6 +32,7 @@ import {
 } from '../reducers/testReducer';
 import { RootState } from '../reducers/types';
 import { communicationError } from '../reducers/warningReducer';
+import { bleChannelsValues } from '../SidePanel/ChannelView';
 import * as Constants from '../utils/constants';
 import { paneName } from '../utils/panes';
 import { clearCommunicationErrorWarning } from './warningActions';
@@ -170,14 +171,16 @@ export const startTests =
             testPromise = dtm.singleChannelTransmitterTest(
                 bitpattern,
                 length,
-                singleChannel,
+                bleChannelsValues.indexOf(singleChannel),
                 timeoutms
             );
         } else if (testMode === 'transmitter' && channelMode === sweep) {
             testPromise = dtm.sweepTransmitterTest(
                 bitpattern,
                 length,
-                ...channelRange,
+                ...channelRange.map(channel =>
+                    bleChannelsValues.indexOf(channel)
+                ),
                 sweepTime,
                 timeoutms
             );

@@ -1,3 +1,9 @@
+## 2.3.1 - UNRELEASED
+
+## Fixed
+
+-   Channel selection on the side panel did not match the chart.
+
 ## 2.3.0 - 2024-03-13
 
 ## Added

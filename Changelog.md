@@ -2,7 +2,7 @@
 
 ## Fixed
 
--   Side panel settings for channel selection did not match the graph responses
+-   Channel selection on the side panel did not match the chart.
 
 ## 2.3.0 - 2024-03-13
 

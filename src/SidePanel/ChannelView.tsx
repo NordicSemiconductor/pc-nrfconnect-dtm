@@ -109,7 +109,7 @@ export default ({ paneName }: Props) => {
                                 value={lowChannel}
                                 range={bleChannelsValues.slice(
                                     0,
-                                    bleChannelsValues.indexOf(highChannel)
+                                    bleChannelsValues.indexOf(highChannel) + 1
                                 )}
                                 disabled={isRunning}
                                 onChange={newMinValue => {
@@ -125,7 +125,7 @@ export default ({ paneName }: Props) => {
                             <NumberInlineInput
                                 value={highChannel}
                                 range={bleChannelsValues.slice(
-                                    bleChannelsValues.indexOf(lowChannel) + 1
+                                    bleChannelsValues.indexOf(lowChannel)
                                 )}
                                 disabled={isRunning}
                                 onChange={newMaxValue => {

@@ -139,9 +139,9 @@ export const startTests =
         const phy = getPhy(state);
 
         const singleChannelIndexed = bleChannelsValues.indexOf(singleChannel);
-        const channelRangeIndexed = channelRange.map(channel =>
-            bleChannelsValues.indexOf(channel)
-        );
+        const channelRangeIndexed = channelRange
+            .map(channel => bleChannelsValues.indexOf(channel))
+            .sort();
 
         const testMode = paneName(getState());
 

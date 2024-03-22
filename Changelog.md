@@ -1,12 +1,12 @@
 ## 2.3.1 - UNRELEASED
 
-## Fixed
+### Fixed
 
 -   Channel selection on the side panel did not match the chart.
 
 ## 2.3.0 - 2024-03-13
 
-## Added
+### Added
 
 -   Persist state of the Show Log panel.
 -   Feedback tab.
@@ -31,12 +31,12 @@
 
 ## 2.1.0 - 2023-04-03
 
-## Added
+### Added
 
 -   Port selection for devices with multiple serialports.
 -   Selected ports are persisted per device.
 
-## Fixed
+### Fixed
 
 -   While receiving in sweep mode, the transmitter tab wrongly showed a sweep
     pattern. Now the tab of the non-active mode states that only the other tab
@@ -45,7 +45,7 @@
 
 ## 2.0.4 - 2023-02-13
 
-## Changed
+### Changed
 
 -   Increased required nRF Connect for Desktop version to v4.0.0.
 -   If the firmware is wrong and the device is readback protected, offer a

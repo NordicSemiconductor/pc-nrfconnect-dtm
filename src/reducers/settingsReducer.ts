@@ -18,8 +18,8 @@ export const DTM_CHANNEL_MODE = {
 
 const initialState: SettingsState = {
     channelMode: DTM_CHANNEL_MODE.single,
-    singleChannel: 19,
-    channelRange: [bleChannels.min, bleChannels.max],
+    singleChannel: 17,
+    channelRange: [bleChannels[0], bleChannels[bleChannels.length - 1]],
     sweepTime: 0,
     bitpattern: 0,
     length: 37,

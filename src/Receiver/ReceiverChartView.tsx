@@ -131,7 +131,7 @@ const ChartView = () => {
                         },
                         title: {
                             display: true,
-                            text: 'BLE channel',
+                            text: 'Bluetooth LE channel',
                             color: chartColors.label,
                             font: { size: 14 },
                         },

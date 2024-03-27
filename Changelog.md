@@ -33,7 +33,7 @@
 
 ### Added
 
--   Port selection for devices with multiple serialports.
+-   Port selection for devices with multiple serial ports.
 -   Selected ports are persisted per device.
 
 ### Fixed
@@ -61,7 +61,7 @@
 
 ### Fixed
 
--   DTM did not display all serialport devices.
+-   DTM did not display all serial port devices.
 
 ## 2.0.1 - 2022-01-04
 
@@ -131,7 +131,7 @@
 ### Added
 
 -   Support custom devices and custom firmware.
--   Support for physical serialport on Windows.
+-   Support for physical serial port on Windows.
 
 ## 1.0.0 - 2020-01-08
 

@@ -47,7 +47,7 @@ export default () => {
     }));
 
     return (
-        <Group heading="Serialport">
+        <Group heading="Serial port">
             <Dropdown
                 disabled={isRunning}
                 onSelect={updateSerialPort}

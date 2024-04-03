@@ -156,14 +156,14 @@ export const startTests =
         });
         if (!setupSuccess) {
             const message =
-                'Can not communicate with the device. ' +
+                'Cannot communicate with the device. ' +
                 'Make sure it is not in use by another application' +
                 `${
                     getSerialports(state)?.length > 1
-                        ? ', that the correct serialport has been selected'
+                        ? ', that the correct serial port has been selected'
                         : ''
                 }` +
-                ' and that it has a Direct Test Mode compatible firmware.';
+                ', and that it uses firmware compatible with Direct Test Mode.';
             logger.info(message);
             dispatch(communicationError(message));
             return;

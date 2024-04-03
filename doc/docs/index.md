@@ -23,3 +23,5 @@ nRF Connect Direct Test Mode is installed and updated using [nRF Connect for Des
 
 - nRF52840 DK
 - nRF52833 DK (nRF52 DK)
+
+The application also supports third-party devices that are programmed with the DTM standard protocol and expose access to it through a serial port.

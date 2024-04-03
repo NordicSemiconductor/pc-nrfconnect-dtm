@@ -3,7 +3,7 @@
 In nRF Connect Direct Test Mode, you can control the reception and transmission characteristics of the Bluetooth connection through 2-wire UART, in accordance with the [Bluetooth Core specification](https://www.bluetooth.com/specifications/specs/core-specification-5-3/) (volume 6, part F).
 
 !!! info "Tip"
-     When started, nRF Connect Direct Test Mode will automatically detect if the connected device has the right firmware programmed.
+     If you are using an nRF52840 DK or an nRF52833 DK, nRF Connect Direct Test Mode will automatically detect when started if the connected device has the right firmware programmed and will offer to program it.
 
 It is recommended to use two devices for both scenarios:
 
@@ -20,7 +20,7 @@ It is recommended to use two devices for both scenarios:
 
 To execute transmitting, complete the following steps:
 
-1. Connect the **Device 1** to the computer using a USB cable. The device is assigned a `COM` port (Windows) or `ttyACM` device (Linux), which is visible in the Device Manager.
+1. Connect the **Device 1** to the computer using a USB cable. The device is assigned a `COM` port (Windows), a `ttyACM` device (Linux), or `tty.usbmodem` (macOS), which is visible in the Device Manager.
 1. Program or start (or both) the receiver on the **Device 2**.</br>
 1. Start the Direct Test Mode app in nRF Connect for Desktop.
 1. In the Direct Test Mode app:
@@ -36,7 +36,7 @@ To execute transmitting, complete the following steps:
 
 To execute receiving, complete the following steps:
 
-1. Connect the **Device 1** to the computer using a USB cable. The device is assigned a `COM` port (Windows) or `ttyACM` device (Linux), which is visible in the Device Manager.
+1. Connect the **Device 1** to the computer using a USB cable. The device is assigned a `COM` port (Windows), a `ttyACM` device (Linux), or `tty.usbmodem` (macOS), which is visible in the Device Manager.
 1. Program or start (or both) the transmitter on the **Device 2**.</br>
 1. Start the Direct Test Mode app in nRF Connect for Desktop.
 1. In the Direct Test Mode app:

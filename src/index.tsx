@@ -33,6 +33,5 @@ render(
             },
             { name: 'Receiver', Main: Receiver },
         ]}
-        feedback
     />
 );

@@ -2,8 +2,8 @@
 
 ### Changed
 
--   Moved feedback tab to a dialog which can be opened by going to the about tab
-    and click **Give Feedback**.
+-   Integrated the functionality of the Feedback tab in the **Give Feedback**
+    dialog in the About tab.
 
 ## 2.3.1 - 2024-03-25
 

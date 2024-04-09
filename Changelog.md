@@ -1,3 +1,10 @@
+## 2.4.0 - 2024-04-09
+
+### Changed
+
+-   Integrated the functionality of the Feedback tab in the **Give Feedback**
+    dialog in the About tab.
+
 ## 2.3.1 - 2024-03-25
 
 ### Fixed

@@ -2,7 +2,7 @@
 
 ### Fixed
 
--   Sweep mode would in some casese not use the selected channels.
+-   Sweep mode in some cases wasn't using the selected channels.
 
 ## 2.4.0 - 2024-04-09
 

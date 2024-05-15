@@ -8,11 +8,14 @@ import { currentPane } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { RootState } from '../reducers/types';
 
-export const TRANSMITTER = 0;
-export const RECEIVER = 1;
+// todo: sync with Mode type from 'src/reducers/types.ts'
+export enum Panes {
+    TRANSMITTER = 'Transmitter',
+    RECEIVER = 'Receiver',
+}
 
 export const isTransmitterPane = (state: RootState) =>
-    currentPane(state) === TRANSMITTER;
+    currentPane(state) === Panes.TRANSMITTER;
 
 export const paneName = (state: RootState) =>
     isTransmitterPane(state) ? 'transmitter' : 'receiver';

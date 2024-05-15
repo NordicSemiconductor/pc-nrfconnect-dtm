@@ -1,8 +1,12 @@
-## 2.4.1 - UNRELEASED
+## 2.4.1 - Unreleased
 
 ### Added
 
 -   Support for Apple silicon.
+
+### Fixed
+
+-   Sweep mode in some cases wasn't using the selected channels.
 
 ## 2.4.0 - 2024-04-09
 

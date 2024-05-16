@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NumberInput } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
@@ -20,6 +20,12 @@ const TxPowerView = () => {
     const dispatch = useDispatch();
 
     const dBmValues = fromPCA(boardType).txPower;
+
+    useEffect(() => {
+        if (dBmValues.indexOf(txPowerIdx) === -1) {
+            dispatch(txPowerChanged(dBmValues.length - 1));
+        }
+    }, [dispatch, dBmValues, txPowerIdx]);
 
     return (
         <NumberInput

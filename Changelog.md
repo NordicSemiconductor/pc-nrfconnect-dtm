@@ -7,6 +7,8 @@
 ### Fixed
 
 -   Sweep mode in some cases wasn't using the selected channels.
+-   Transmit power was sometimes set to an invalid value when selecting an nRF52
+    DK.
 
 ## 2.4.0 - 2024-04-09
 
@@ -14,11 +16,6 @@
 
 -   Integrated the functionality of the Feedback tab in the **Give Feedback**
     dialog in the About tab.
-
-### Fixed
-
--   Transmit power was sometimes set to an invalid value when selecting an nRF52
-    DK.
 
 ## 2.3.1 - 2024-03-25
 

@@ -7,7 +7,7 @@
 ### Fixed
 
 -   Sweep mode in some cases wasn't using the selected channels.
--   Transmit power was sometimes set to an invalid value when selecting an nRF52
+-   Transmit power was sometimes set to an invalid value when selecting the nRF52
     DK.
 
 ## 2.4.0 - 2024-04-09

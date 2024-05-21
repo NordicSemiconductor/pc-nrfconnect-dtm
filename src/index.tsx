@@ -16,6 +16,7 @@ import Receiver from './Receiver';
 import appReducer from './reducers';
 import SidePanel from './SidePanel';
 import Transmitter from './Transmitter';
+import { Panes } from './utils/panes';
 
 import './index.scss';
 
@@ -28,10 +29,13 @@ render(
         sidePanel={<SidePanel />}
         panes={[
             {
-                name: 'Transmitter',
+                name: Panes.TRANSMITTER,
                 Main: Transmitter,
             },
-            { name: 'Receiver', Main: Receiver },
+            {
+                name: Panes.RECEIVER,
+                Main: Receiver,
+            },
         ]}
     />
 );

@@ -1,3 +1,15 @@
+## 2.4.1 - 2024-05-21
+
+### Added
+
+-   Support for Apple silicon.
+
+### Fixed
+
+-   Sweep mode in some cases wasn't using the selected channels.
+-   Transmit power was sometimes set to an invalid value when selecting the
+    nRF52 DK.
+
 ## 2.4.0 - 2024-04-09
 
 ### Changed

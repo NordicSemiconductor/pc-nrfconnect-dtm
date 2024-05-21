@@ -141,7 +141,7 @@ export const startTests =
         const singleChannelIndexed = bleChannelsValues.indexOf(singleChannel);
         const channelRangeIndexed = channelRange
             .map(channel => bleChannelsValues.indexOf(channel))
-            .sort();
+            .sort((a, b) => a - b);
 
         const testMode = paneName(getState());
 

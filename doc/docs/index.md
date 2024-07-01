@@ -17,7 +17,7 @@ See the [Bluetooth Core specification](https://www.bluetooth.com/specifications/
 
       ![Testing setup for the Direct Test Mode Bluetooth sample](./screenshots/bt_dtm_dut.svg "Testing setup for the Direct Test Mode Bluetooth sample")
 
-nRF Connect Direct Test Mode is installed and updated using [nRF Connect for Desktop](https://docs.nordicsemi.com/bundle/ug_nrf_connect_desktop/page/struct/nrftools_nrfconnect.html) (v4.4.1 or later).
+nRF Connect Direct Test Mode is installed and updated using [nRF Connect for Desktop](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/index.html) (v4.4.1 or later).
 
 ## Supported devices
 

@@ -1,8 +1,8 @@
 # Overview and user interface
 
-After starting nRF Connect Direct Test Mode, the main application window is displayed.
+After starting the {{app_name}}, the main application window is displayed.
 
-![nRF Connect Direct Test Mode window](./screenshots/dtm_overview.png "nRF Connect Direct Test Mode window")
+![{{app_name}} window](./screenshots/dtm_overview.png "{{app_name}} window")
 
 The available options and information change after you **Select Device**.
 

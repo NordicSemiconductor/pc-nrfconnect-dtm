@@ -25,3 +25,8 @@ The {{app_name}} is installed and updated using [nRF Connect for Desktop](https:
 - nRF52833 DK (nRF52 DK)
 
 The application also supports third-party devices that are programmed with the DTM standard protocol and expose access to it through a serial port.
+
+## Application source code
+
+The code of the application is open source and [available on GitHub](https://github.com/NordicSemiconductor/pc-nrfconnect-dtm).
+Feel free to fork the repository and clone it for secondary development or feature contributions.

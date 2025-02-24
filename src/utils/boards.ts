@@ -30,7 +30,7 @@ const nRF52840 = { ...defaultDevice };
 
 const nRF54L15 = {
     ...defaultDevice,
-    txPower: Constants.dbmValues.filter(tx => tx < -8),
+    txPower: Constants.dbmValues.filter(tx => tx >= -8),
 };
 
 function fromPCA(board: string | null) {

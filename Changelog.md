@@ -1,3 +1,14 @@
+## 2.4.3 - Unreleased
+
+### Changed
+
+-   nRF54L15 DK: Only valid Transmit Power values (-8 dBm to 8 dBm) are now
+    displayed.
+
+### Fixed
+
+-   Issue where the Transmit Power slider would disallow setting valid values.
+
 ## 2.4.2 - 2024-11-11
 
 ### Changed

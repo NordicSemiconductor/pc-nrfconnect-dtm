@@ -22,7 +22,7 @@ const TxPowerView = () => {
     const dBmValues = fromPCA(boardType).txPower;
 
     useEffect(() => {
-        if (dBmValues.indexOf(txPowerIdx) === -1) {
+        if (txPowerIdx === -1) {
             dispatch(txPowerChanged(dBmValues.length - 1));
         }
     }, [dispatch, dBmValues, txPowerIdx]);

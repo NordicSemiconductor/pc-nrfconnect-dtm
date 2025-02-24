@@ -28,12 +28,19 @@ const nRF52832 = {
 
 const nRF52840 = { ...defaultDevice };
 
+const nRF54L15 = {
+    ...defaultDevice,
+    txPower: Constants.dbmValues.filter(tx => tx < -8),
+};
+
 function fromPCA(board: string | null) {
     switch (board) {
         case 'PCA10056':
             return nRF52840;
         case 'PCA10040':
             return nRF52832;
+        case 'PCA10156':
+            return nRF54L15;
         default:
             return defaultDevice;
     }

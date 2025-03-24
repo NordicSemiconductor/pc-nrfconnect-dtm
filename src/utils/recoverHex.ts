@@ -20,7 +20,7 @@ export const recoverHex =
     (device: Device): AppThunk<RootState> =>
     dispatch => {
         dispatch(deselectDevice());
-        dispatch(setDeviceReady(true));
+        dispatch(setDeviceReady(false));
         dispatch(
             prepareDevice(
                 device,

@@ -10,7 +10,7 @@ import {
     prepareDevice,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import { deselectDevice, selectDevice } from '../actions/testActions';
+import { deselectDevice } from '../actions/testActions';
 import { deviceSetupConfig } from '../DeviceSelector';
 import { setDeviceReady } from '../reducers/deviceReducer';
 import { RootState } from '../reducers/types';
@@ -27,7 +27,6 @@ export const recoverHex =
                 deviceSetupConfig,
                 () => {
                     dispatch(clearAllWarnings());
-                    dispatch(selectDevice());
                     dispatch(setDeviceReady(true));
                 },
                 () => {},

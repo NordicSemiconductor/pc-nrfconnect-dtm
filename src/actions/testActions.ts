@@ -4,10 +4,18 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { AppThunk, logger } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    AppThunk,
+    logger,
+    persistSerialPortOptions,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
-import { getSerialports, setDeviceReady } from '../reducers/deviceReducer';
+import {
+    getBoard,
+    getSelectedSerialport,
+    getSerialports,
+} from '../reducers/deviceReducer';
 import {
     DTM_CHANNEL_MODE,
     getBitpattern,
@@ -127,6 +135,10 @@ export const startTests =
     (): AppThunk<RootState> => async (dispatch, getState) => {
         const state = getState();
 
+        // Type is optional but it is defined by deviceselector
+        // It will only ever be replaced by valid values otherwise
+        const port = getSelectedSerialport(state) as string;
+        const board = getBoard(state);
         const bitpattern = getBitpattern(state);
         const length = getLength(state);
         const singleChannel = getSingleChannel(state);
@@ -142,6 +154,13 @@ export const startTests =
         const channelRangeIndexed = channelRange
             .map(channel => bleChannelsValues.indexOf(channel))
             .sort((a, b) => a - b);
+
+        dtm = new DTM(port, board);
+        dtm.on('update', dispatch(dtmStatisticsUpdated));
+        dtm.on('transport', (msg: string) => logger.debug(msg));
+        dtm.on('log', (param: { message: string }) => {
+            logger.info(param.message);
+        });
 
         const testMode = paneName(getState());
 
@@ -247,21 +266,10 @@ export const endTests = (): AppThunk => {
     logger.info('Ending test');
     return async dispatch => {
         await dtm.endTest();
+        if (dtm.dtmTransport.port.isOpen) await dtm.dtmTransport.close();
+        dtm = null;
         dispatch(stoppedAction());
     };
-};
-
-export const selectDevice = (): AppThunk<RootState> => (dispatch, getState) => {
-    dtm = new DTM(
-        getState().app.device.selectedSerialport,
-        getState().app.device.board
-    );
-    dtm.on('update', dispatch(dtmStatisticsUpdated));
-    dtm.on('transport', (msg: string) => logger.debug(msg));
-    dtm.on('log', (param: { message: string }) => {
-        logger.info(param.message);
-    });
-    dispatch(setDeviceReady(true));
 };
 
 export const deselectDevice =
@@ -270,7 +278,4 @@ export const deselectDevice =
         if (isRunning) {
             dispatch(endTests());
         }
-
-        if (dtm.dtmTransport.port.isOpen) await dtm.dtmTransport.close();
-        dtm = null;
     };

@@ -18,8 +18,8 @@ import { clearAllWarnings } from '../reducers/warningReducer';
 
 export const recoverHex =
     (device: Device): AppThunk<RootState> =>
-    async dispatch => {
-        await dispatch(deselectDevice());
+    dispatch => {
+        dispatch(deselectDevice());
         dispatch(setDeviceReady(true));
         dispatch(
             prepareDevice(

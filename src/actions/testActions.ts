@@ -283,7 +283,7 @@ export const endTests = (): AppThunk => {
 };
 
 export const deselectDevice =
-    (): AppThunk<RootState> => async (dispatch, getState) => {
+    (): AppThunk<RootState> => (dispatch, getState) => {
         const isRunning = getIsRunning(getState());
         if (isRunning) {
             dispatch(endTests());

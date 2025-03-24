@@ -12,6 +12,7 @@ import {
 import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
 import {
+    getBaudRate,
     getBoard,
     getSelectedSerialport,
     getSerialports,
@@ -138,7 +139,7 @@ export const startTests =
         // Type is optional but it is defined by deviceselector
         // It will only ever be replaced by valid values otherwise
         const port = getSelectedSerialport(state) as string;
-        const board = getBoard(state);
+        const baudRate = getBaudRate(state);
         const bitpattern = getBitpattern(state);
         const length = getLength(state);
         const singleChannel = getSingleChannel(state);
@@ -155,12 +156,29 @@ export const startTests =
             .map(channel => bleChannelsValues.indexOf(channel))
             .sort((a, b) => a - b);
 
-        dtm = new DTM(port, board);
-        dtm.on('update', dispatch(dtmStatisticsUpdated));
-        dtm.on('transport', (msg: string) => logger.debug(msg));
-        dtm.on('log', (param: { message: string }) => {
-            logger.info(param.message);
-        });
+        const errorMessage =
+            'Cannot communicate with the device. ' +
+            'Make sure it is not in use by another application' +
+            `${
+                getSerialports(state)?.length > 1
+                    ? ', that the correct serial port has been selected'
+                    : ''
+            }` +
+            ', and that it uses firmware compatible with Direct Test Mode.';
+
+        try {
+            dtm = new DTM(port, baudRate);
+            dtm.on('update', dispatch(dtmStatisticsUpdated));
+            dtm.on('transport', (msg: string) => logger.debug(msg));
+            dtm.on('log', (param: { message: string }) => {
+                logger.info(param.message);
+            });
+        } catch (e) {
+            dispatch(endTests());
+            logger.info(errorMessage);
+            dispatch(communicationError(errorMessage));
+            return;
+        }
 
         const testMode = paneName(getState());
 
@@ -174,17 +192,9 @@ export const startTests =
             phy,
         });
         if (!setupSuccess) {
-            const message =
-                'Cannot communicate with the device. ' +
-                'Make sure it is not in use by another application' +
-                `${
-                    getSerialports(state)?.length > 1
-                        ? ', that the correct serial port has been selected'
-                        : ''
-                }` +
-                ', and that it uses firmware compatible with Direct Test Mode.';
-            logger.info(message);
-            dispatch(communicationError(message));
+            dispatch(endTests());
+            logger.info(errorMessage);
+            dispatch(communicationError(errorMessage));
             return;
         }
         dispatch(clearCommunicationErrorWarning());

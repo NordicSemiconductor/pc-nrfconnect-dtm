@@ -4,10 +4,19 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { AppThunk, logger } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    AppThunk,
+    logger,
+    persistSerialPortOptions,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
-import { getSerialports, setDeviceReady } from '../reducers/deviceReducer';
+import {
+    getBaudRate,
+    getBoard,
+    getSelectedSerialport,
+    getSerialports,
+} from '../reducers/deviceReducer';
 import {
     DTM_CHANNEL_MODE,
     getBitpattern,
@@ -127,6 +136,10 @@ export const startTests =
     (): AppThunk<RootState> => async (dispatch, getState) => {
         const state = getState();
 
+        // Type is optional but it is defined by deviceselector
+        // It will only ever be replaced by valid values otherwise
+        const port = getSelectedSerialport(state) as string;
+        const baudRate = getBaudRate(state);
         const bitpattern = getBitpattern(state);
         const length = getLength(state);
         const singleChannel = getSingleChannel(state);
@@ -143,6 +156,30 @@ export const startTests =
             .map(channel => bleChannelsValues.indexOf(channel))
             .sort((a, b) => a - b);
 
+        const errorMessage =
+            'Cannot communicate with the device. ' +
+            'Make sure it is not in use by another application' +
+            `${
+                getSerialports(state)?.length > 1
+                    ? ', that the correct serial port has been selected'
+                    : ''
+            }` +
+            ', and that it uses firmware compatible with Direct Test Mode.';
+
+        try {
+            dtm = new DTM(port, baudRate);
+            dtm.on('update', dispatch(dtmStatisticsUpdated));
+            dtm.on('transport', (msg: string) => logger.debug(msg));
+            dtm.on('log', (param: { message: string }) => {
+                logger.info(param.message);
+            });
+        } catch (e) {
+            dispatch(endTests());
+            logger.info(errorMessage);
+            dispatch(communicationError(errorMessage));
+            return;
+        }
+
         const testMode = paneName(getState());
 
         const { single, sweep } = DTM_CHANNEL_MODE;
@@ -155,17 +192,9 @@ export const startTests =
             phy,
         });
         if (!setupSuccess) {
-            const message =
-                'Cannot communicate with the device. ' +
-                'Make sure it is not in use by another application' +
-                `${
-                    getSerialports(state)?.length > 1
-                        ? ', that the correct serial port has been selected'
-                        : ''
-                }` +
-                ', and that it uses firmware compatible with Direct Test Mode.';
-            logger.info(message);
-            dispatch(communicationError(message));
+            dispatch(endTests());
+            logger.info(errorMessage);
+            dispatch(communicationError(errorMessage));
             return;
         }
         dispatch(clearCommunicationErrorWarning());
@@ -247,30 +276,16 @@ export const endTests = (): AppThunk => {
     logger.info('Ending test');
     return async dispatch => {
         await dtm.endTest();
+        if (dtm.dtmTransport.port.isOpen) await dtm.dtmTransport.close();
+        dtm = null;
         dispatch(stoppedAction());
     };
 };
 
-export const selectDevice = (): AppThunk<RootState> => (dispatch, getState) => {
-    dtm = new DTM(
-        getState().app.device.selectedSerialport,
-        getState().app.device.board
-    );
-    dtm.on('update', dispatch(dtmStatisticsUpdated));
-    dtm.on('transport', (msg: string) => logger.debug(msg));
-    dtm.on('log', (param: { message: string }) => {
-        logger.info(param.message);
-    });
-    dispatch(setDeviceReady(true));
-};
-
 export const deselectDevice =
-    (): AppThunk<RootState> => async (dispatch, getState) => {
+    (): AppThunk<RootState> => (dispatch, getState) => {
         const isRunning = getIsRunning(getState());
         if (isRunning) {
             dispatch(endTests());
         }
-
-        if (dtm.dtmTransport.port.isOpen) await dtm.dtmTransport.close();
-        dtm = null;
     };

@@ -17,11 +17,12 @@ import {
 import { DeviceTraits } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/device';
 import path from 'path';
 
-import { deselectDevice, selectDevice } from './actions/testActions';
+import { deselectDevice } from './actions/testActions';
 import {
     deviceDeselected,
     dtmBoardSelected,
     serialportSelected,
+    setDeviceReady,
 } from './reducers/deviceReducer';
 import { clearAllWarnings } from './reducers/warningReducer';
 import { compatiblePCAs } from './utils/constants';
@@ -112,7 +113,7 @@ export default () => {
                     );
                 }
 
-                dispatch(selectDevice());
+                dispatch(setDeviceReady(true));
             }}
         />
     );

@@ -9,13 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     Dropdown,
     Group,
-    persistSerialPortOptions,
     truncateMiddle,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import { deselectDevice, selectDevice } from '../actions/testActions';
 import {
-    getBoard,
     getSelectedSerialport,
     getSerialports,
     serialportSelected,
@@ -27,19 +24,8 @@ export default () => {
     const availablePorts = useSelector(getSerialports);
     const isRunning = useSelector(getIsRunning);
     const selectedSerialport = useSelector(getSelectedSerialport);
-    const board = useSelector(getBoard);
 
     if (availablePorts.length <= 1 || selectedSerialport === null) return null;
-
-    const updateSerialPort = async ({ value: port }: { value: string }) => {
-        dispatch(serialportSelected(port));
-
-        // baudRate isn't used but required by types
-        dispatch(persistSerialPortOptions({ path: port, baudRate: 9600 }));
-        if (board === null) return;
-        await dispatch(deselectDevice());
-        dispatch(selectDevice());
-    };
 
     const dropdownItems = availablePorts.map(port => ({
         label: truncateMiddle(port, 20, 8),
@@ -50,7 +36,7 @@ export default () => {
         <Group heading="Serial port">
             <Dropdown
                 disabled={isRunning}
-                onSelect={updateSerialPort}
+                onSelect={v => dispatch(serialportSelected(v.value))}
                 items={dropdownItems}
                 selectedItem={
                     dropdownItems.find(

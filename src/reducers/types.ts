@@ -11,6 +11,7 @@ export interface DeviceState {
     isReady: boolean;
     serialports: string[];
     selectedSerialport: string | null;
+    selectedBaudRate: number;
 }
 
 export interface SettingsState {

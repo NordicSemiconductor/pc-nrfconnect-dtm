@@ -13,6 +13,7 @@ const initialState: DeviceState = {
     isReady: false,
     serialports: [],
     selectedSerialport: null,
+    selectedBaudRate: 19200,
 };
 
 const deviceSlice = createSlice({
@@ -35,6 +36,9 @@ const deviceSlice = createSlice({
         serialportSelected(state, action) {
             state.selectedSerialport = action.payload;
         },
+        baudRateSelected(state, action) {
+            state.selectedBaudRate = action.payload;
+        },
     },
 });
 
@@ -45,6 +49,7 @@ const {
     setDeviceReady,
     dtmBoardSelected,
     serialportSelected,
+    baudRateSelected,
 } = deviceSlice.actions;
 
 const getBoard = (state: RootState) => state.app.device.board;
@@ -52,14 +57,17 @@ const getIsReady = (state: RootState) => state.app.device.isReady;
 const getSerialports = (state: RootState) => state.app.device.serialports;
 const getSelectedSerialport = (state: RootState) =>
     state.app.device.selectedSerialport;
+const getBaudRate = (state: RootState) => state.app.device.selectedBaudRate;
 
 export {
     deviceDeselected,
     setDeviceReady,
     dtmBoardSelected,
     serialportSelected,
+    baudRateSelected,
     getBoard,
     getIsReady,
     getSerialports,
     getSelectedSerialport,
+    getBaudRate,
 };

@@ -10,6 +10,7 @@ import { Group, SidePanel } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { getIsRunning } from '../reducers/testReducer';
 import { paneName } from '../utils/panes';
+import BaudRate from './BaudRate';
 import ChannelView from './ChannelView';
 import PacketView from './PacketView';
 import PhyTypeView from './PhyTypeView';
@@ -26,6 +27,7 @@ const AppSidePanelView = () => {
     return (
         <SidePanel className="sidepanel">
             <Serialports />
+            <BaudRate />
             <Group heading="Channel mode" gap={4}>
                 <ToggleChannelModeView isRunning={isRunning} />
             </Group>

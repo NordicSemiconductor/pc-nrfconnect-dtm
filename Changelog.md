@@ -1,4 +1,8 @@
-## 2.4.3 - Unreleased
+## 2.5.0 - Unreleased
+
+### Added
+
+-   Drop-down menu for changing the baud rate in order to use custom firmwares.
 
 ### Changed
 

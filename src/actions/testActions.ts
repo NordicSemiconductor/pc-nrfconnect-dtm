@@ -4,16 +4,11 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import {
-    AppThunk,
-    logger,
-    persistSerialPortOptions,
-} from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { AppThunk, logger } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
 import {
     getBaudRate,
-    getBoard,
     getSelectedSerialport,
     getSerialports,
 } from '../reducers/deviceReducer';

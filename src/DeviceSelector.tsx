@@ -25,7 +25,6 @@ import {
     setDeviceReady,
 } from './reducers/deviceReducer';
 import { clearAllWarnings } from './reducers/warningReducer';
-import { compatiblePCAs } from './utils/constants';
 
 const deviceListing: DeviceTraits = {
     serialPorts: true,
@@ -68,17 +67,6 @@ export default () => {
         <DeviceSelector
             deviceListing={deviceListing}
             deviceSetupConfig={deviceSetupConfig}
-            onDeviceSelected={(device: Device) => {
-                dispatch(clearAllWarnings());
-                if (
-                    !compatiblePCAs.includes(device.devkit?.boardVersion ?? '')
-                ) {
-                    logger.info('No firmware defined for selected device');
-                    logger.info(
-                        'Please make sure the device has been programmed with a supported firmware'
-                    );
-                }
-            }}
             onDeviceDeselected={() => {
                 dispatch(deselectDevice());
                 dispatch(deviceDeselected());

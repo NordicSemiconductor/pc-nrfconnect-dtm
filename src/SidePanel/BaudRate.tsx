@@ -17,10 +17,12 @@ export default () => {
     const baudRate = useSelector(getBaudRate);
     const isRunning = useSelector(getIsRunning);
 
-    const dropdownItems = validBaudRates.map(v => ({
-        label: v,
-        value: v,
-    }));
+    const dropdownItems = validBaudRates
+        .map(v => ({
+            label: v,
+            value: v,
+        }))
+        .reverse();
 
     return (
         <Group heading="Baud Rate">

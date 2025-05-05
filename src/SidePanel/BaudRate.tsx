@@ -20,7 +20,7 @@ export default () => {
     const dropdownItems = validBaudRates.map(v => ({
         label: v,
         value: v,
-    }));
+    })).reverse();
 
     return (
         <Group heading="Baud Rate">

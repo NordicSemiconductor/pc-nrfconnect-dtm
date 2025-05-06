@@ -261,7 +261,7 @@ export const startTests =
                 dispatch(actionSucceeded(receivedChannels));
                 dispatch(endTests());
             } else {
-                logger.info(`End test failed: ${message}`);
+                logger.error(`---->?>> End test failed: ${message}`);
             }
         });
 

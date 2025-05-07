@@ -259,10 +259,10 @@ export const startTests =
                     `${testTypeStr} test finished successfully${packetsRcvStr}`
                 );
                 dispatch(actionSucceeded(receivedChannels));
-                dispatch(endTests());
             } else {
                 logger.error(`---->?>> End test failed: ${message}`);
             }
+            dispatch(endTests());
         });
 
         dispatch(startedAction(testMode));

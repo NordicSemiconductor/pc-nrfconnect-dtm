@@ -25,7 +25,6 @@ import {
     setDeviceReady,
 } from './reducers/deviceReducer';
 import { clearAllWarnings } from './reducers/warningReducer';
-import { compatiblePCAs } from './utils/constants';
 
 const deviceListing: DeviceTraits = {
     serialPorts: true,
@@ -68,29 +67,12 @@ export default () => {
         <DeviceSelector
             deviceListing={deviceListing}
             deviceSetupConfig={deviceSetupConfig}
-            onDeviceSelected={(device: Device) => {
-                dispatch(clearAllWarnings());
-                if (
-                    compatiblePCAs.includes(device.devkit?.boardVersion ?? '')
-                ) {
-                    logger.info(
-                        `Validating firmware for device with s/n ${device.serialNumber}`
-                    );
-                } else {
-                    logger.info('No firmware defined for selected device');
-                    logger.info(
-                        'Please make sure the device has been programmed with a supported firmware'
-                    );
-                }
-            }}
             onDeviceDeselected={() => {
                 dispatch(deselectDevice());
                 dispatch(deviceDeselected());
                 dispatch(clearAllWarnings());
             }}
             onDeviceIsReady={(device: Device) => {
-                logger.info('Device selected successfully');
-
                 if (!device.serialPorts || device.serialPorts.length === 0) {
                     logger.error(`Missing serial port information`);
                     return;

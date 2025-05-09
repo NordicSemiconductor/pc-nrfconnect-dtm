@@ -6,6 +6,7 @@
 
 ### Changed
 
+-   Update dependencies to support the nRF Connect for Desktop v5.2.0 release.
 -   nRF54L15 DK: Only valid Transmit Power values (-8 dBm to 8 dBm) are now
     displayed.
 

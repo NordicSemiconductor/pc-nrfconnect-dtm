@@ -262,6 +262,7 @@ export const startTests =
             } else {
                 logger.info(`End test failed: ${message}`);
             }
+            dispatch(endTests());
         });
 
         dispatch(startedAction(testMode));

@@ -21,10 +21,22 @@ The {{app_name}} is installed and updated using [nRF Connect for Desktop](https:
 
 ## Supported devices
 
-- nRF52840 DK
-- nRF52833 DK (nRF52 DK)
+The {{app_name}} can be used with devices programmed with firmware compatible with Direct Test Mode:
 
-The application also supports third-party devices that are programmed with the DTM standard protocol and expose access to it through a serial port.
+* The {{app_name}} provides HEX files with firmware compatible with Direct Test Mode for the following devices:
+
+    - nRF52840 DK
+    - nRF52833 DK (nRF52 DK)
+
+    When using these devices, the {{app_name}} will automatically detect when started if the connected device has the right firmware programmed and will offer to program it.
+
+* You can use other devices from Nordic Semiconductor, as long as they are programmed with firmware compatible with Direct Test Mode.<br/>
+  For example, you can use one of the devices compatible with the [Direct Test Mode Bluetooth sample](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/bluetooth/direct_test_mode/README.html) from the nRF Connect SDK and programmed with this sample. For such devices, the {{app_name}} does not provide the required firmware, which might result in an error ("DTM setup reset command failed") if you do not program them beforehand when [using the app](using_dtm.md).
+
+    !!! note "Note"
+         The [Direct Test Mode Bluetooth sample](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/bluetooth/direct_test_mode/README.html) supports two Device Under Test communication protocols: 2-wire UART and experimental HCI UART interface. The {{app_name}} only supports the 2-wire UART.
+
+* You can also use third-party devices that are programmed with the DTM standard protocol and expose access to it through a serial port.
 
 ## Application source code
 

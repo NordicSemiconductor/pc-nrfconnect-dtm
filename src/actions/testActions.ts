@@ -169,7 +169,8 @@ export const startTests =
                 logger.info(param.message);
             });
         } catch (e) {
-            dispatch(endTests());
+            dtm.endTest();
+            dispatch(cleanup());
             logger.info(errorMessage);
             dispatch(communicationError(errorMessage));
             return;
@@ -187,7 +188,8 @@ export const startTests =
             phy,
         });
         if (!setupSuccess) {
-            dispatch(endTests());
+            dtm.endTest();
+            dispatch(cleanup());
             logger.info(errorMessage);
             dispatch(communicationError(errorMessage));
             return;
@@ -262,20 +264,23 @@ export const startTests =
             } else {
                 logger.info(`End test failed: ${message}`);
             }
-            dispatch(endTests());
+            dispatch(cleanup());
         });
 
         dispatch(startedAction(testMode));
     };
+const cleanup = (): AppThunk<RootState, Promise<void>> => async dispatch => {
+    if (dtm.dtmTransport.port.isOpen) {
+        await dtm.dtmTransport.close();
+        dtm = null;
+        console.log('cleaned');
+    }
+    dispatch(stoppedAction());
+};
 
 export const endTests = (): AppThunk => {
     logger.info('Ending test');
-    return async dispatch => {
-        await dtm.endTest();
-        if (dtm.dtmTransport.port.isOpen) await dtm.dtmTransport.close();
-        dtm = null;
-        dispatch(stoppedAction());
-    };
+    return dtm.endTest();
 };
 
 export const deselectDevice =
@@ -284,4 +289,5 @@ export const deselectDevice =
         if (isRunning) {
             dispatch(endTests());
         }
+        dispatch(cleanup());
     };

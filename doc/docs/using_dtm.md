@@ -26,8 +26,8 @@ To execute transmitting, complete the following steps:
 1. In the Direct Test Mode app:
 
     1. Select the supported device programmed with the firmware compatible with Direct Test Mode.
-    1. Select the [**Serial port**](overview.md#select-device) from the drop-down menu.<br/>The selection should mathch the port assigned in the Device Manager.
-    1. Select the [**Baud rate**](overview.md#select-device) for the connection.
+    1. Optionally, select the [**Serial port**](overview.md#select-device) from the drop-down menu.<br/>The selection should match the port assigned in the Device Manager.
+    1. Optionally, select the [**Baud rate**](overview.md#baud-rate) for the connection.
     1. Select the **Transmitter** tab.
     1. Configure the [transmitter settings](overview.md#transmitter-tab) to the ones matching the **Device 2**.
     1. Start the test.
@@ -44,8 +44,8 @@ To execute receiving, complete the following steps:
 1. In the Direct Test Mode app:
 
     1. Select the supported device programmed with the firmware compatible with Direct Test Mode.
-    1. Select the [**Serial port**](overview.md#select-device) from the drop-down menu.<br/>The selection should mathch the port assigned in the Device Manager.
-    1. Select the [**Baud rate**](overview.md#select-device) for the connection.
+    1. Optionally, select the [**Serial port**](overview.md#select-device) from the drop-down menu.<br/>The selection should match the port assigned in the Device Manager.
+    1. Optionally, select the [**Baud rate**](overview.md#baud-rate) for the connection.
     1. Select the **Receiver** tab.
     1. Configure the [receiver settings](overview.md#receiver-tab) to the ones matching the **Device 2**.
     1. Start the test.

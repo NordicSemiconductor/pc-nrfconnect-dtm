@@ -10,15 +10,19 @@ The available options and information change after you **Select Device**.
 
 Once you connect a device to the system, it becomes visible and available when you click on the **Select device** drop-down list. You can choose a device from the list of connected devices to perform further actions on the device.
 
-## Actions
-
 When you select a device:
 
-* The **Serial port** and the **Baud rate** drop-down menus appear, where you can select the port for testing and the baud rate to use, respectively.
+* The **Serial port** menu appears, where you can select the port for testing, if you do not want to use the default one.
 
-    ![Serial port and Baud rate menus](./screenshots/dtm_transmitter_serial_port_baud_rate.png "Serial port and Baud rate menus")
+    ![Serial port menu](./screenshots/dtm_transmitter_serial_port.png "Serial port menu")
 
 * The **Start test** button becomes available in both the **Transmitter** and **Receiver** tab.
+
+## Baud rate
+
+The **Baud rate** drop-down menu lets you select the baud rate used for the test.
+
+![Baud rate menu](./screenshots/dtm_transmitter_baud_rate.png "Baud rate menu")
 
 ## Transmitter tab
 

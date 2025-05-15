@@ -273,7 +273,6 @@ const cleanup = (): AppThunk<RootState, Promise<void>> => async dispatch => {
     if (dtm.dtmTransport.port.isOpen) {
         await dtm.dtmTransport.close();
         dtm = null;
-        console.log('cleaned');
     }
     dispatch(stoppedAction());
 };

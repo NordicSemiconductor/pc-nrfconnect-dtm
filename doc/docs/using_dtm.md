@@ -1,6 +1,6 @@
 # Configuring and using the application
 
-In the {{app_name}}, you can control the reception and transmission characteristics of the Bluetooth connection through 2-wire UART, in accordance with the [Bluetooth Core specification](https://www.bluetooth.com/specifications/specs/core-specification-5-3/) (volume 6, part F).
+In the {{app_name}}, you can control the reception and transmission characteristics of the Bluetooth® connection through 2-wire UART, in accordance with the [Bluetooth Core specification, volume 6, part F](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-61/out/en/low-energy-controller/direct-test-mode.html).
 
 !!! info "Tip"
      If you are using an nRF52840 DK or an nRF52833 DK, the {{app_name}} will automatically detect when started if the connected device has the right firmware programmed and will offer to program it.
@@ -14,7 +14,7 @@ It is recommended to use two devices for both scenarios:
           The [Direct Test Mode Bluetooth sample](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/bluetooth/direct_test_mode/README.html) supports two Device Under Test communication protocols: 2-wire UART and experimental HCI UART interface. The {{app_name}} only supports the 2-wire UART.
 
 * **Device 2**: One device programmed with the firmware conformant to the Bluetooth specification.</br>
-  This can also be an off-the-shelf product certified for Bluetooth 5.3.
+  This can also be an off-the-shelf product certified for Bluetooth Core 5.3.
 
 ## Transmitting
 
@@ -26,6 +26,8 @@ To execute transmitting, complete the following steps:
 1. In the Direct Test Mode app:
 
     1. Select the supported device programmed with the firmware compatible with Direct Test Mode.
+    1. Select the [**Serial port**](overview.md#select-device) from the drop-down menu.<br/>The selection should mathch the port assigned in the Device Manager.
+    1. Select the [**Baud rate**](overview.md#select-device) for the connection.
     1. Select the **Transmitter** tab.
     1. Configure the [transmitter settings](overview.md#transmitter-tab) to the ones matching the **Device 2**.
     1. Start the test.
@@ -42,6 +44,8 @@ To execute receiving, complete the following steps:
 1. In the Direct Test Mode app:
 
     1. Select the supported device programmed with the firmware compatible with Direct Test Mode.
+    1. Select the [**Serial port**](overview.md#select-device) from the drop-down menu.<br/>The selection should mathch the port assigned in the Device Manager.
+    1. Select the [**Baud rate**](overview.md#select-device) for the connection.
     1. Select the **Receiver** tab.
     1. Configure the [receiver settings](overview.md#receiver-tab) to the ones matching the **Device 2**.
     1. Start the test.

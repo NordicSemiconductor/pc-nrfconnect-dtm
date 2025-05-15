@@ -8,19 +8,25 @@ The available options and information change after you **Select Device**.
 
 ## Select Device
 
-Opens the drop-down with the list of devices connected to the computer. You can choose a device from the list of connected devices to perform further actions on the device such as configuring.
+Once you connect a device to the system, it becomes visible and available when you click on the **Select device** drop-down list. You can choose a device from the list of connected devices to perform further actions on the device.
 
 ## Actions
 
-When you select a device, the serial port drop-down menu appears, where you can select the port for testing.
+When you select a device:
+
+* The **Serial port** and the **Baud rate** drop-down menus appear, where you can select the port for testing and the baud rate to use, respectively.
+
+    ![Serial port and Baud rate menus](./screenshots/dtm_transmitter_serial_port_baud_rate.png "Serial port and Baud rate menus")
+
+* The **Start test** button becomes available in both the **Transmitter** and **Receiver** tab.
 
 ## Transmitter tab
 
 In **Transmitter** tab, you can configure and test the transmission of the Bluetooth packets and verify the fidelity of the transmission.
 
-![Transmitter tab settings](./screenshots/dtm_transmitter_options.png "Transmitter tab settings")
-
 Click **Start test** to start transmitting test packets.
+
+![Transmitter tab settings](./screenshots/dtm_transmitter_options.png "Transmitter tab settings")
 
 The available settings are related to the DTM specification.
 

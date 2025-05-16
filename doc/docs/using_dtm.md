@@ -7,11 +7,8 @@ In the {{app_name}}, you can control the reception and transmission characterist
 
 It is recommended to use two devices for both scenarios:
 
-* **Device 1**: One [supported device](./index.md#supported-devices) programmed with firmware compatible with Direct Test Mode.</br>
-  For example, you can use the [Direct Test Mode Bluetooth sample](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/bluetooth/direct_test_mode/README.html) from the nRF Connect SDK.
-
-    !!! note "Note"
-          The [Direct Test Mode Bluetooth sample](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/bluetooth/direct_test_mode/README.html) supports two Device Under Test communication protocols: 2-wire UART and experimental HCI UART interface. The {{app_name}} only supports the 2-wire UART.
+* **Device 1**: One device programmed with firmware compatible with Direct Test Mode.</br>
+  See [Supported device](./index.md#supported-devices) for more information.
 
 * **Device 2**: One device programmed with the firmware conformant to the Bluetooth specification.</br>
   This can also be an off-the-shelf product certified for Bluetooth Core 5.3.

@@ -277,16 +277,16 @@ const cleanup = (): AppThunk<RootState, Promise<void>> => async dispatch => {
     dispatch(stoppedAction());
 };
 
-export const endTests = (): AppThunk => {
+export const endTests = () => {
     logger.info('Ending test');
-    return dtm.endTest();
+    dtm.endTest();
 };
 
 export const deselectDevice =
     (): AppThunk<RootState> => (dispatch, getState) => {
         const isRunning = getIsRunning(getState());
         if (isRunning) {
-            dispatch(endTests());
+            endTests();
         }
         dispatch(cleanup());
     };

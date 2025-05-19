@@ -10,8 +10,8 @@ import {
     Dropdown,
     NumberInput,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { DTM, DTM_PKT_STRING } from 'nrf-dtm-js/src/DTM';
 
+import { DtmPacketType } from '../dtm/types';
 import {
     bitpatternChanged,
     getBitpattern,
@@ -23,11 +23,11 @@ import { getIsRunning } from '../reducers/testReducer';
 const VENDOR_PAYLOAD_LENGTH = 1;
 
 interface PacketTypeViewProps {
-    bitpatternUpdated: (pkgType: number) => void;
+    bitpatternUpdated: (pkgType: DtmPacketType) => void;
     lengthUpdated: (newLength: number) => void;
     selectedPkgType: number;
     isRunning: boolean;
-    isVendorPayload: (pkgType: number) => boolean;
+    isVendorPayload: (pkgType: DtmPacketType) => boolean;
 }
 
 const PacketTypeView = ({
@@ -37,11 +37,11 @@ const PacketTypeView = ({
     isRunning,
     isVendorPayload,
 }: PacketTypeViewProps) => {
-    const items = Object.entries(DTM.DTM_PKT)
-        .filter(([key]) => key !== 'DEFAULT')
-        .map(([key, pkgType]: [string, unknown]) => ({
-            label: DTM_PKT_STRING[pkgType as number],
-            value: key,
+    const items = Object.entries(DtmPacketType)
+        .filter(([, value]) => typeof value === 'number') // only string keys
+        .map(([label, key]) => ({
+            label: label.replaceAll('_', ''),
+            value: key as DtmPacketType,
         }));
 
     return (
@@ -49,12 +49,11 @@ const PacketTypeView = ({
             label="Packet type"
             items={items}
             selectedItem={
-                items.find(e => DTM.DTM_PKT[e.value] === selectedPkgType) ??
-                items[0]
+                items.find(e => e.value === selectedPkgType) ?? items[0]
             }
             onSelect={item => {
-                bitpatternUpdated(DTM.DTM_PKT[item.value]);
-                if (isVendorPayload(DTM.DTM_PKT[item.value])) {
+                bitpatternUpdated(item.value);
+                if (isVendorPayload(item.value)) {
                     lengthUpdated(VENDOR_PAYLOAD_LENGTH);
                 }
             }}
@@ -95,8 +94,8 @@ const PacketView = () => {
 
     const lengthChangedAction = (value: number) =>
         dispatch(lengthChanged(value));
-    const isVendorPayload = (type: number) =>
-        DTM_PKT_STRING[type] === DTM_PKT_STRING[DTM.DTM_PKT.PAYLOAD_VENDOR];
+    const isVendorPayload = (type: DtmPacketType) =>
+        type === DtmPacketType['Constant carrier'];
 
     return (
         <>

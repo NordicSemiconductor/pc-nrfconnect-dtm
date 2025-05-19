@@ -7,8 +7,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { DTM, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
+import { DtmPhysicalLayer } from '../dtm/types';
 import { getBoard } from '../reducers/deviceReducer';
 import { getPhy, phyChanged } from '../reducers/settingsReducer';
 import { getIsRunning } from '../reducers/testReducer';
@@ -21,9 +21,9 @@ export default () => {
     const dispatch = useDispatch();
     const compatibility = fromPCA(boardType);
 
-    const items = Object.entries(compatibility.phy).map(([key, phyType]) => ({
-        label: DTM_PHY_STRING[phyType],
-        value: key,
+    const items = Object.entries(compatibility.phy).map(([, phyType]) => ({
+        label: DtmPhysicalLayer[phyType],
+        value: phyType,
     }));
 
     return (
@@ -32,11 +32,9 @@ export default () => {
             items={items}
             disabled={isRunning}
             onSelect={item => {
-                dispatch(phyChanged(DTM.DTM_PARAMETER[item.value]));
+                dispatch(phyChanged(item.value));
             }}
-            selectedItem={
-                items.find(e => DTM.DTM_PARAMETER[e.value] === phy) ?? items[0]
-            }
+            selectedItem={items.find(e => e.value === phy) ?? items[0]}
         />
     );
 };

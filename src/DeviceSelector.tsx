@@ -7,6 +7,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
+    AppThunk,
     Device,
     DeviceSelector,
     DeviceSetupConfig,
@@ -17,13 +18,15 @@ import {
 import { DeviceTraits } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/device';
 import path from 'path';
 
-import { deselectDevice } from './actions/testActions';
+import { disposeDTM } from './actions/dtm';
 import {
-    deviceDeselected,
+    deviceDeselected as deviceDeselectedReducer,
     dtmBoardSelected,
     serialportSelected,
     setDeviceReady,
 } from './reducers/deviceReducer';
+import { stoppedAction } from './reducers/testReducer';
+import { RootState } from './reducers/types';
 import { clearAllWarnings } from './reducers/warningReducer';
 
 const deviceListing: DeviceTraits = {
@@ -68,35 +71,43 @@ export default () => {
             deviceListing={deviceListing}
             deviceSetupConfig={deviceSetupConfig}
             onDeviceDeselected={() => {
-                dispatch(deselectDevice());
                 dispatch(deviceDeselected());
                 dispatch(clearAllWarnings());
             }}
             onDeviceIsReady={(device: Device) => {
-                if (!device.serialPorts || device.serialPorts.length === 0) {
-                    logger.error(`Missing serial port information`);
-                    return;
-                }
-
-                dispatch(
-                    dtmBoardSelected({
-                        board: device.devkit?.boardVersion,
-                        serialports: device.serialPorts.map(
-                            port => port.comName ?? ''
-                        ),
-                    })
-                );
-
-                if (device.persistedSerialPortOptions) {
-                    dispatch(
-                        serialportSelected(
-                            device.persistedSerialPortOptions.path
-                        )
-                    );
-                }
-
-                dispatch(setDeviceReady(true));
+                dispatch(onDeviceIsReady(device));
             }}
         />
     );
 };
+
+export const deviceDeselected =
+    (): AppThunk<RootState, Promise<void>> => async dispatch => {
+        dispatch(stoppedAction());
+        dispatch(deviceDeselectedReducer());
+        await disposeDTM().catch(() => {});
+    };
+
+export const onDeviceIsReady =
+    (device: Device): AppThunk<RootState> =>
+    dispatch => {
+        if (!device.serialPorts || device.serialPorts.length === 0) {
+            logger.error(`Missing serial port information`);
+            return;
+        }
+
+        dispatch(
+            dtmBoardSelected({
+                board: device.devkit?.boardVersion,
+                serialports: device.serialPorts.map(port => port.comName ?? ''),
+            })
+        );
+
+        if (device.persistedSerialPortOptions) {
+            dispatch(
+                serialportSelected(device.persistedSerialPortOptions.path)
+            );
+        }
+
+        dispatch(setDeviceReady(true));
+    };

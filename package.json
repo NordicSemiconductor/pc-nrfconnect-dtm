@@ -49,8 +49,8 @@
         "@testing-library/user-event": "^13.1.9",
         "chart.js": "^4.0.1",
         "chartjs-plugin-datalabels": "2.2.0",
-        "nrf-dtm-js": "github:NordicPlayground/nrf-dtm-js",
-        "react-chartjs-2": "^5.0.1"
+        "react-chartjs-2": "^5.0.1",
+        "serialport": "^10.5.0"
     },
     "eslintConfig": {
         "extends": "./node_modules/@nordicsemiconductor/pc-nrfconnect-shared/config/eslintrc"

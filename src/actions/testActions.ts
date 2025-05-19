@@ -5,7 +5,7 @@
  */
 
 import { AppThunk, logger } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
+import { DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
 import {
     getBaudRate,
@@ -39,6 +39,7 @@ import { communicationError } from '../reducers/warningReducer';
 import { bleChannelsValues } from '../SidePanel/ChannelView';
 import * as Constants from '../utils/constants';
 import { paneName } from '../utils/panes';
+import { disposeDTM, getDTM, updateDTM } from './dtm';
 import { clearCommunicationErrorWarning } from './warningActions';
 
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
@@ -74,9 +75,6 @@ const dtmStatisticsUpdated: AppThunk<RootState> =
         }
     };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let dtm: any;
-
 const setupTest = async ({
     txPower,
     length,
@@ -88,6 +86,11 @@ const setupTest = async ({
     modulationMode: number;
     phy: number;
 }) => {
+    const dtm = getDTM();
+    if (!dtm) {
+        throw new Error('DTM object is undefined');
+    }
+
     let res = await dtm.setupReset();
     if (!validateResult(res)) {
         logger.info('DTM setup reset command failed');
@@ -128,7 +131,7 @@ const validateResult = (res: number[] | undefined) =>
     typeof res === 'object' && res.length >= 2 && res[0] === 0 && res[1] === 0;
 
 export const startTests =
-    (): AppThunk<RootState> => async (dispatch, getState) => {
+    (): AppThunk<RootState, Promise<void>> => async (dispatch, getState) => {
         const state = getState();
 
         // Type is optional but it is defined by deviceselector
@@ -162,19 +165,21 @@ export const startTests =
             ', and that it uses firmware compatible with Direct Test Mode.';
 
         try {
-            dtm = new DTM(port, baudRate);
+            await updateDTM({ port: port ?? undefined, baudRate });
+            const dtm = getDTM();
             dtm.on('update', dispatch(dtmStatisticsUpdated));
             dtm.on('transport', (msg: string) => logger.debug(msg));
             dtm.on('log', (param: { message: string }) => {
                 logger.info(param.message);
             });
         } catch (e) {
-            dtm.endTest();
+            endTests();
             dispatch(cleanup());
             logger.info(errorMessage);
             dispatch(communicationError(errorMessage));
             return;
         }
+        const dtm = getDTM();
 
         const testMode = paneName(getState());
 
@@ -188,12 +193,13 @@ export const startTests =
             phy,
         });
         if (!setupSuccess) {
-            dtm.endTest();
+            endTests();
             dispatch(cleanup());
             logger.info(errorMessage);
             dispatch(communicationError(errorMessage));
             return;
         }
+
         dispatch(clearCommunicationErrorWarning());
         logger.info('Starting test');
 
@@ -264,29 +270,26 @@ export const startTests =
             } else {
                 logger.info(`End test failed: ${message}`);
             }
-            dispatch(cleanup());
         });
 
         dispatch(startedAction(testMode));
     };
+
 const cleanup = (): AppThunk<RootState, Promise<void>> => async dispatch => {
-    if (dtm.dtmTransport.port.isOpen) {
-        await dtm.dtmTransport.close();
-        dtm = null;
-    }
+    await disposeDTM();
     dispatch(stoppedAction());
 };
 
 export const endTests = () => {
     logger.info('Ending test');
-    dtm.endTest();
+    getDTM()?.endTest();
 };
 
 export const deselectDevice =
-    (): AppThunk<RootState> => (dispatch, getState) => {
+    (): AppThunk<RootState, Promise<void>> => async (dispatch, getState) => {
         const isRunning = getIsRunning(getState());
         if (isRunning) {
             endTests();
         }
-        dispatch(cleanup());
+        await dispatch(cleanup());
     };

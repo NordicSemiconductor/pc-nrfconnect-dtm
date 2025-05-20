@@ -165,8 +165,7 @@ export const startTests =
             ', and that it uses firmware compatible with Direct Test Mode.';
 
         try {
-            await updateDTM({ port: port ?? undefined, baudRate });
-            const dtm = getDTM();
+            const dtm = await updateDTM({ port: port ?? undefined, baudRate });
             dtm.on('update', dispatch(dtmStatisticsUpdated));
             dtm.on('transport', (msg: string) => logger.debug(msg));
             dtm.on('log', (param: { message: string }) => {

@@ -31,14 +31,6 @@ const createPreparedStore = (actions: AnyAction[]) => {
     return store;
 };
 
-jest.mock('nrf-dtm-js/src/DTM', () => ({
-    DTM: {
-        DTM_PARAMETER: {
-            PHY_LE_1M: 0x01,
-        },
-    },
-}));
-
 window.ResizeObserver = class {
     observe() {}
     disconnect() {}

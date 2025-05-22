@@ -5,27 +5,27 @@
  */
 
 import { bleChannels } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { createSlice } from '@reduxjs/toolkit';
-import { DTM } from 'nrf-dtm-js/src/DTM';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import {
+    ChannelMode,
+    DtmModulationMode,
+    DtmPacketType,
+    DtmPhysicalLayer,
+} from '../dtm/types';
 import * as Constants from '../utils/constants';
 import { RootState, SettingsState } from './types';
 
-export const DTM_CHANNEL_MODE = {
-    single: 'DTM_CHANNEL_MODE_SINGLE_ACTION',
-    sweep: 'DTM_CHANNEL_MODE_SWEEP_ACTION',
-};
-
 const initialState: SettingsState = {
-    channelMode: DTM_CHANNEL_MODE.single,
+    channelMode: ChannelMode.single,
     singleChannel: 17,
     channelRange: [bleChannels[0], bleChannels[bleChannels.length - 1]],
     sweepTime: 0,
     bitpattern: 0,
     length: 37,
     txPower: Math.max(0, Constants.dbmValues.indexOf(0)),
-    phy: DTM.DTM_PARAMETER.PHY_LE_1M,
-    modulationMode: DTM.DTM_PARAMETER.STANDARD_MODULATION_INDEX,
+    phy: DtmPhysicalLayer['LE 1Mbps'],
+    modulationMode: DtmModulationMode.Standard,
     timeoutms: 0,
 };
 
@@ -33,34 +33,34 @@ const settingsSlice = createSlice({
     name: 'settings',
     initialState,
     reducers: {
-        dtmChannelModeChanged(state, action) {
+        dtmChannelModeChanged(state, action: PayloadAction<ChannelMode>) {
             state.channelMode = action.payload;
         },
-        dtmSingleChannelChanged(state, action) {
+        dtmSingleChannelChanged(state, action: PayloadAction<number>) {
             state.singleChannel = action.payload;
         },
-        channelRangeChanged(state, action) {
+        channelRangeChanged(state, action: PayloadAction<[number, number]>) {
             state.channelRange = action.payload;
         },
-        sweepTimeChanged(state, action) {
+        sweepTimeChanged(state, action: PayloadAction<number>) {
             state.sweepTime = action.payload;
         },
-        txPowerChanged(state, action) {
+        txPowerChanged(state, action: PayloadAction<number>) {
             state.txPower = action.payload;
         },
-        bitpatternChanged(state, action) {
+        bitpatternChanged(state, action: PayloadAction<DtmPacketType>) {
             state.bitpattern = action.payload;
         },
-        lengthChanged(state, action) {
+        lengthChanged(state, action: PayloadAction<number>) {
             state.length = action.payload;
         },
-        timeoutChanged(state, action) {
+        timeoutChanged(state, action: PayloadAction<number>) {
             state.timeoutms = action.payload * 1000;
         },
-        phyChanged(state, action) {
+        phyChanged(state, action: PayloadAction<DtmPhysicalLayer>) {
             state.phy = action.payload;
         },
-        modulationChanged(state, action) {
+        modulationChanged(state, action: PayloadAction<DtmModulationMode>) {
             state.modulationMode = action.payload;
         },
     },

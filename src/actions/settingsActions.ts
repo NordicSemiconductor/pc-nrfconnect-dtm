@@ -6,18 +6,18 @@
 
 import { AppThunk } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import { ChannelMode } from '../dtm/types';
 import {
-    DTM_CHANNEL_MODE,
     dtmChannelModeChanged,
     sweepTimeChanged,
 } from '../reducers/settingsReducer';
 
-export default (buttonClicked: string): AppThunk =>
+export default (buttonClicked: ChannelMode): AppThunk =>
     dispatch => {
-        if (buttonClicked === DTM_CHANNEL_MODE.single) {
+        if (buttonClicked === ChannelMode.single) {
             dispatch(sweepTimeChanged(0));
         }
-        if (buttonClicked === DTM_CHANNEL_MODE.sweep) {
+        if (buttonClicked === ChannelMode.sweep) {
             dispatch(sweepTimeChanged(30));
         }
         dispatch(dtmChannelModeChanged(buttonClicked));

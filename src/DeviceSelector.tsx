@@ -25,7 +25,6 @@ import {
     serialportSelected,
     setDeviceReady,
 } from './reducers/deviceReducer';
-import { stoppedAction } from './reducers/testReducer';
 import { RootState } from './reducers/types';
 import { clearAllWarnings } from './reducers/warningReducer';
 
@@ -83,7 +82,6 @@ export default () => {
 
 export const deviceDeselected =
     (): AppThunk<RootState, Promise<void>> => async dispatch => {
-        dispatch(stoppedAction());
         dispatch(deviceDeselectedReducer());
         await disposeDTM().catch(() => {});
     };

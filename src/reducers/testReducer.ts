@@ -6,6 +6,7 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { deviceDeselected } from './deviceReducer';
 import { Mode, RootState, TestState } from './types';
 
 const initialState: TestState = {
@@ -21,9 +22,6 @@ const testSlice = createSlice({
         startedAction(state, { payload: mode }: PayloadAction<Mode>) {
             state.mode = mode;
             state.lastReceived = new Array(40).fill(0);
-        },
-        stoppedAction(state) {
-            state.mode = undefined;
         },
         actionSucceeded(state, action) {
             state.lastReceived = action.payload;
@@ -44,13 +42,17 @@ const testSlice = createSlice({
             state.lastReceived = nextReceivedCount;
         },
     },
+    extraReducers: builder => {
+        builder.addCase(deviceDeselected, state => {
+            state.mode = undefined;
+        });
+    },
 });
 
 export default testSlice.reducer;
 
 const {
     startedAction,
-    stoppedAction,
     actionSucceeded,
     startedChannel,
     resetChannel,
@@ -69,7 +71,6 @@ const getLastChannel = (state: RootState) => state.app.test.lastChannel;
 
 export {
     startedAction,
-    stoppedAction,
     actionSucceeded,
     startedChannel,
     resetChannel,

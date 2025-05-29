@@ -82,8 +82,9 @@ export const startTests =
             }` +
             ', and that it uses firmware compatible with Direct Test Mode.';
 
+        let dtm: DTM | undefined;
         try {
-            const dtm = await dispatch(getDTM());
+            dtm = await dispatch(getDTM());
 
             const testMode = paneName(getState());
 
@@ -172,6 +173,7 @@ export const startTests =
 
             dispatch(startedAction(testMode));
         } catch (e) {
+            dtm?.endTest();
             logger.info(errorMessage);
             dispatch(communicationError(errorMessage));
         }

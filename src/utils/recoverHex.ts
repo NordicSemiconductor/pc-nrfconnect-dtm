@@ -10,8 +10,11 @@ import {
     prepareDevice,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import { deselectDevice } from '../actions/testActions';
-import { deviceSetupConfig } from '../DeviceSelector';
+import {
+    deviceDeselected,
+    deviceSetupConfig,
+    onDeviceIsReady,
+} from '../DeviceSelector';
 import { setDeviceReady } from '../reducers/deviceReducer';
 import { RootState } from '../reducers/types';
 import { clearAllWarnings } from '../reducers/warningReducer';
@@ -19,7 +22,7 @@ import { clearAllWarnings } from '../reducers/warningReducer';
 export const recoverHex =
     (device: Device): AppThunk<RootState> =>
     dispatch => {
-        dispatch(deselectDevice());
+        dispatch(deviceDeselected());
         dispatch(setDeviceReady(false));
         dispatch(
             prepareDevice(
@@ -27,7 +30,7 @@ export const recoverHex =
                 deviceSetupConfig,
                 () => {
                     dispatch(clearAllWarnings());
-                    dispatch(setDeviceReady(true));
+                    dispatch(onDeviceIsReady(device));
                 },
                 () => {},
                 undefined,

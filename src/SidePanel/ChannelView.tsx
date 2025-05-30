@@ -12,9 +12,9 @@ import {
     Slider,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import { ChannelMode } from '../dtm/types';
 import {
     channelRangeChanged,
-    DTM_CHANNEL_MODE,
     dtmSingleChannelChanged,
     getChannelMode,
     getChannelRange,
@@ -83,7 +83,7 @@ export default ({ paneName }: Props) => {
 
     return (
         <>
-            {channelMode === DTM_CHANNEL_MODE.single && (
+            {channelMode === ChannelMode.single && (
                 <NumberInput
                     showSlider
                     minWidth
@@ -94,7 +94,7 @@ export default ({ paneName }: Props) => {
                     onChange={value => dispatch(dtmSingleChannelChanged(value))}
                 />
             )}
-            {channelMode === DTM_CHANNEL_MODE.sweep && (
+            {channelMode === ChannelMode.sweep && (
                 <>
                     <DelaySlider
                         isRunning={isRunning}

@@ -6,6 +6,13 @@
 
 import { NrfConnectState } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
+import {
+    ChannelMode,
+    DtmModulationMode,
+    DtmPacketType,
+    DtmPhysicalLayer,
+} from '../dtm/types';
+
 export interface DeviceState {
     board: string | null;
     isReady: boolean;
@@ -15,15 +22,15 @@ export interface DeviceState {
 }
 
 export interface SettingsState {
-    channelMode: string;
+    channelMode: ChannelMode;
     singleChannel: number;
-    channelRange: number[];
+    channelRange: [number, number];
     sweepTime: number;
-    bitpattern: number;
+    bitpattern: DtmPacketType;
     length: number;
     txPower: number;
-    phy: number;
-    modulationMode: number;
+    phy: DtmPhysicalLayer;
+    modulationMode: DtmModulationMode;
     timeoutms: number;
 }
 

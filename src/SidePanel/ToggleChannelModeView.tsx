@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StateSelector } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import channelModeChanged from '../actions/settingsActions';
-import { DTM_CHANNEL_MODE, getChannelMode } from '../reducers/settingsReducer';
+import { ChannelMode } from '../dtm/types';
+import { getChannelMode } from '../reducers/settingsReducer';
 
 interface ToggleChannelModeViewProps {
     isRunning: boolean;
@@ -21,8 +22,8 @@ const ToggleChannelModeView = ({ isRunning }: ToggleChannelModeViewProps) => {
     const dispatch = useDispatch();
 
     const items = [
-        { key: 'Single', value: DTM_CHANNEL_MODE.single },
-        { key: 'Sweep', value: DTM_CHANNEL_MODE.sweep },
+        { key: 'Single', value: ChannelMode.single },
+        { key: 'Sweep', value: ChannelMode.sweep },
     ];
 
     return (
@@ -30,9 +31,7 @@ const ToggleChannelModeView = ({ isRunning }: ToggleChannelModeViewProps) => {
             items={items.map(e => e.key)}
             disabled={isRunning}
             onSelect={index => dispatch(channelModeChanged(items[index].value))}
-            selectedItem={
-                selected === DTM_CHANNEL_MODE.single ? 'Single' : 'Sweep'
-            }
+            selectedItem={selected === ChannelMode.single ? 'Single' : 'Sweep'}
         />
     );
 };

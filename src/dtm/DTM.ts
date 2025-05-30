@@ -20,6 +20,18 @@ import {
 } from './DTM_transport';
 import { DtmModulationMode, DtmPacketType, DtmPhysicalLayer } from './types';
 
+const validateResult = (res: number[] | undefined) => {
+    if (
+        !Array.isArray(res) ||
+        res.length !== 2 ||
+        (res[0] !== 0 && res[1] !== 0)
+    ) {
+        throw new Error('Invalid result');
+    }
+
+    return res;
+};
+
 type ErrorTestStatus = {
     type: 'error';
     message: string;
@@ -223,7 +235,7 @@ export class DTM {
         const value = dbm & 0x3f;
         const cmd = DTMTransport.createTxPowerCMD(value);
         try {
-            return await this.#dtmTransport.sendCMD(cmd);
+            return validateResult(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error(
                 `DTM setup tx power command failed with ${Constants.dbmValues[dbm]} dbm`
@@ -257,7 +269,7 @@ export class DTM {
             DTM_DC.DEFAULT
         );
         try {
-            return await this.#dtmTransport.sendCMD(cmd);
+            return validateResult(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error('DTM setup reset command failed');
         }
@@ -279,8 +291,7 @@ export class DTM {
             DTM_DC.DEFAULT
         );
         try {
-            const response = await this.#dtmTransport.sendCMD(cmd);
-            return response;
+            return validateResult(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error(
                 `DTM setup length command failed with length ${length}`
@@ -304,8 +315,7 @@ export class DTM {
             DTM_DC.DEFAULT
         );
         try {
-            const response = await this.#dtmTransport.sendCMD(cmd);
-            return response;
+            return validateResult(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error(
                 `DTM setup physical command failed with parameter ${DtmPhysicalLayer[phy]}`
@@ -329,8 +339,7 @@ export class DTM {
             DTM_DC.DEFAULT
         );
         try {
-            const response = await this.#dtmTransport.sendCMD(cmd);
-            return response;
+            return validateResult(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error(
                 'DTM setup modulation command failed with parameter ' +

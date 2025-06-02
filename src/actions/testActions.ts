@@ -5,15 +5,11 @@
  */
 
 import { AppThunk, logger } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { DTM, DTM_MODULATION_STRING, DTM_PHY_STRING } from 'nrf-dtm-js/src/DTM';
 
+import { DTM } from '../dtm/DTM';
+import { ChannelMode } from '../dtm/types';
+import { getSerialports } from '../reducers/deviceReducer';
 import {
-    getBaudRate,
-    getSelectedSerialport,
-    getSerialports,
-} from '../reducers/deviceReducer';
-import {
-    DTM_CHANNEL_MODE,
     getBitpattern,
     getChannelMode,
     getChannelRange,
@@ -25,116 +21,44 @@ import {
     getTimeout,
     getTxPower,
 } from '../reducers/settingsReducer';
-import {
-    actionSucceeded,
-    endedChannel,
-    getIsRunning,
-    resetChannel,
-    startedAction,
-    startedChannel,
-    stoppedAction,
-} from '../reducers/testReducer';
+import { actionSucceeded, startedAction } from '../reducers/testReducer';
 import { RootState } from '../reducers/types';
 import { communicationError } from '../reducers/warningReducer';
 import { bleChannelsValues } from '../SidePanel/ChannelView';
 import * as Constants from '../utils/constants';
 import { paneName } from '../utils/panes';
+import { getDTM } from './dtm';
 import { clearCommunicationErrorWarning } from './warningActions';
 
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
 export const DTM_TEST_DONE = 'DTM_TEST_DONE';
-
-type ChannelEvent = {
-    type: string;
-    action: string;
-    channel: number;
-    packets: number;
-};
-
-type TestStatus = {
-    success: boolean;
-    received: number;
-    receivedPerChannel: number[];
-    message: string;
-};
-
-const dtmStatisticsUpdated: AppThunk<RootState> =
-    dispatch => (event: ChannelEvent) => {
-        if (event.type === 'reset') {
-            dispatch(resetChannel());
-        } else if (event.action === 'started') {
-            dispatch(startedChannel(event.channel));
-        } else if (event.action === 'ended') {
-            dispatch(
-                endedChannel({
-                    channel: event.channel,
-                    received: event.packets,
-                })
-            );
-        }
-    };
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let dtm: any;
 
 const setupTest = async ({
     txPower,
     length,
     modulationMode,
     phy,
+    dtm,
 }: {
     txPower: number;
     length: number;
     modulationMode: number;
     phy: number;
+    dtm: DTM;
 }) => {
-    let res = await dtm.setupReset();
-    if (!validateResult(res)) {
-        logger.info('DTM setup reset command failed');
-        return false;
-    }
-
-    res = await dtm.setTxPower(Constants.dbmValues[txPower]);
-    if (!validateResult(res)) {
-        logger.info(
-            `DTM setup tx power command failed with ${Constants.dbmValues[txPower]} dbm`
-        );
-    }
-
-    res = await dtm.setupLength(length);
-    if (!validateResult(res)) {
-        logger.info(`DTM setup length command failed with length ${length}`);
-    }
-
-    res = await dtm.setupModulation(modulationMode);
-    if (!validateResult(res)) {
-        logger.info(
-            'DTM setup modulation command failed with parameter ' +
-                `${DTM_MODULATION_STRING[modulationMode]}`
-        );
-    }
-
-    res = await dtm.setupPhy(phy);
-    if (!validateResult(res)) {
-        logger.info(
-            `DTM setup physical command failed with parameter ${DTM_PHY_STRING[phy]}`
-        );
-    }
-
-    return true;
+    await dtm.setupReset();
+    await dtm.setTxPower(Constants.dbmValues[txPower]);
+    await dtm.setupLength(length);
+    await dtm.setupModulation(modulationMode);
+    await dtm.setupPhy(phy);
 };
 
-const validateResult = (res: number[] | undefined) =>
-    typeof res === 'object' && res.length >= 2 && res[0] === 0 && res[1] === 0;
-
 export const startTests =
-    (): AppThunk<RootState> => async (dispatch, getState) => {
+    (): AppThunk<RootState, Promise<void>> => async (dispatch, getState) => {
         const state = getState();
 
         // Type is optional but it is defined by deviceselector
         // It will only ever be replaced by valid values otherwise
-        const port = getSelectedSerialport(state) as string;
-        const baudRate = getBaudRate(state);
         const bitpattern = getBitpattern(state);
         const length = getLength(state);
         const singleChannel = getSingleChannel(state);
@@ -147,9 +71,6 @@ export const startTests =
         const phy = getPhy(state);
 
         const singleChannelIndexed = bleChannelsValues.indexOf(singleChannel);
-        const channelRangeIndexed = channelRange
-            .map(channel => bleChannelsValues.indexOf(channel))
-            .sort((a, b) => a - b);
 
         const errorMessage =
             'Cannot communicate with the device. ' +
@@ -161,132 +82,105 @@ export const startTests =
             }` +
             ', and that it uses firmware compatible with Direct Test Mode.';
 
+        let dtm: DTM | undefined;
         try {
-            dtm = new DTM(port, baudRate);
-            dtm.on('update', dispatch(dtmStatisticsUpdated));
-            dtm.on('transport', (msg: string) => logger.debug(msg));
-            dtm.on('log', (param: { message: string }) => {
-                logger.info(param.message);
+            dtm = await dispatch(getDTM());
+
+            const testMode = paneName(getState());
+
+            logger.info('Running device setup');
+            await setupTest({
+                txPower,
+                length,
+                modulationMode,
+                phy,
+                dtm,
             });
-        } catch (e) {
-            dtm.endTest();
-            dispatch(cleanup());
-            logger.info(errorMessage);
-            dispatch(communicationError(errorMessage));
-            return;
-        }
 
-        const testMode = paneName(getState());
+            dispatch(clearCommunicationErrorWarning());
+            logger.info('Starting test');
 
-        const { single, sweep } = DTM_CHANNEL_MODE;
-
-        logger.info('Running device setup');
-        const setupSuccess = await setupTest({
-            txPower,
-            length,
-            modulationMode,
-            phy,
-        });
-        if (!setupSuccess) {
-            dtm.endTest();
-            dispatch(cleanup());
-            logger.info(errorMessage);
-            dispatch(communicationError(errorMessage));
-            return;
-        }
-        dispatch(clearCommunicationErrorWarning());
-        logger.info('Starting test');
-
-        let testPromise;
-        if (testMode === 'transmitter' && channelMode === single) {
-            testPromise = dtm.singleChannelTransmitterTest(
-                bitpattern,
-                length,
-                singleChannelIndexed,
-                timeoutms
-            );
-        } else if (testMode === 'transmitter' && channelMode === sweep) {
-            testPromise = dtm.sweepTransmitterTest(
-                bitpattern,
-                length,
-                ...channelRangeIndexed,
-                sweepTime,
-                timeoutms
-            );
-        } else if (testMode === 'receiver' && channelMode === single) {
-            // TODO: Figure out the importance of execution of single channel test,
-            //   this solution does not give continuous upate, but probably captures more packets.
-            // testPromise = dtm.singleChannelReceiverTest(
-            //     singleChannel,
-            //     timeout,
-            // );
-
-            // This solution works as sweep on a single channel, updates continuously
-            testPromise = dtm.sweepReceiverTest(
-                bitpattern,
-                length,
-                singleChannelIndexed,
-                singleChannelIndexed,
-                sweepTime,
-                timeoutms
-            );
-        } else {
-            testPromise = dtm.sweepReceiverTest(
-                bitpattern,
-                length,
-                ...channelRangeIndexed,
-                sweepTime,
-                timeoutms
-            );
-        }
-
-        testPromise.then((status: TestStatus) => {
-            const { success, received, receivedPerChannel, message } = status;
-            if (success) {
-                let receivedChannels = receivedPerChannel;
-                if (receivedChannels === undefined) {
-                    receivedChannels = new Array(40).fill(0);
-
-                    if (received !== undefined) {
-                        receivedChannels[singleChannelIndexed] = received;
-                    }
-                }
-                const testTypeStr =
-                    testMode === 'transmitter' ? 'Transmitter' : 'Receiver';
-                const packetsRcvStr =
-                    testMode === 'transmitter'
-                        ? ''
-                        : `. Received ${received} packets.`;
-                logger.info(
-                    `${testTypeStr} test finished successfully${packetsRcvStr}`
+            let testPromise;
+            if (
+                testMode === 'transmitter' &&
+                channelMode === ChannelMode.single
+            ) {
+                testPromise = dtm.singleChannelTransmitterTest(
+                    bitpattern,
+                    length,
+                    singleChannelIndexed,
+                    timeoutms
                 );
-                dispatch(actionSucceeded(receivedChannels));
+            } else if (
+                testMode === 'transmitter' &&
+                channelMode === ChannelMode.sweep
+            ) {
+                testPromise = dtm.sweepTransmitterTest(
+                    bitpattern,
+                    length,
+                    bleChannelsValues.indexOf(Math.min(...channelRange)),
+                    bleChannelsValues.indexOf(Math.max(...channelRange)),
+                    sweepTime,
+                    timeoutms
+                );
+            } else if (
+                testMode === 'receiver' &&
+                channelMode === ChannelMode.single
+            ) {
+                // TODO: Figure out the importance of execution of single channel test,
+                //   this solution does not give continuous upate, but probably captures more packets.
+                // testPromise = dtm.singleChannelReceiverTest(
+                //     singleChannel,
+                //     timeout,
+                // );
+
+                // This solution works as sweep on a single channel, updates continuously
+                testPromise = dtm.sweepReceiverTest(
+                    bitpattern,
+                    length,
+                    singleChannelIndexed,
+                    singleChannelIndexed,
+                    sweepTime,
+                    timeoutms
+                );
             } else {
-                logger.info(`End test failed: ${message}`);
+                testPromise = dtm.sweepReceiverTest(
+                    bitpattern,
+                    length,
+                    bleChannelsValues.indexOf(Math.min(...channelRange)),
+                    bleChannelsValues.indexOf(Math.max(...channelRange)),
+                    sweepTime,
+                    timeoutms
+                );
             }
-            dispatch(cleanup());
-        });
 
-        dispatch(startedAction(testMode));
-    };
-const cleanup = (): AppThunk<RootState, Promise<void>> => async dispatch => {
-    if (dtm.dtmTransport.port.isOpen) {
-        await dtm.dtmTransport.close();
-        dtm = null;
-    }
-    dispatch(stoppedAction());
-};
+            testPromise.then(status => {
+                if (status.type === 'error') {
+                    logger.info(`End test failed: ${status.message}`);
+                } else if (status.type === 'transmitter') {
+                    logger.info(`Transmitter test finished successfully.`);
+                    dispatch(actionSucceeded(new Array(40).fill(0)));
+                } else if (status.type === 'receiver') {
+                    dispatch(actionSucceeded(status.receivedPerChannel));
+                    logger.info(
+                        `Transmitter test finished successfully. Received ${status.receivedPerChannel.reduce(
+                            (a, b) => a + b,
+                            0
+                        )} packets.`
+                    );
+                }
+            });
 
-export const endTests = () => {
-    logger.info('Ending test');
-    dtm.endTest();
-};
-
-export const deselectDevice =
-    (): AppThunk<RootState> => (dispatch, getState) => {
-        const isRunning = getIsRunning(getState());
-        if (isRunning) {
-            endTests();
+            dispatch(startedAction(testMode));
+        } catch (e) {
+            dtm?.endTest();
+            logger.info(errorMessage);
+            dispatch(communicationError(errorMessage));
         }
-        dispatch(cleanup());
+    };
+
+export const endTests =
+    (): AppThunk<RootState, Promise<void>> => async dispatch => {
+        logger.info('Ending test');
+        (await dispatch(getDTM())).endTest();
     };

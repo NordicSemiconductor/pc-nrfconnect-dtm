@@ -20,6 +20,7 @@ import path from 'path';
 
 import { disposeDTM } from './actions/dtm';
 import {
+    baudRateSelected,
     deviceDeselected as deviceDeselectedReducer,
     dtmBoardSelected,
     serialportSelected,
@@ -104,6 +105,9 @@ export const onDeviceIsReady =
         if (device.persistedSerialPortOptions) {
             dispatch(
                 serialportSelected(device.persistedSerialPortOptions.path)
+            );
+            dispatch(
+                baudRateSelected(device.persistedSerialPortOptions.baudRate)
             );
         }
 

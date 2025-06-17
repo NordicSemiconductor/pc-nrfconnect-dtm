@@ -83,6 +83,12 @@ class DTMTransport {
     #port: SerialPort;
     #dataBuffer?: Buffer;
     #callback?: (data: Buffer) => void;
+    #sendQueue: {
+        cmd: Buffer;
+        resolve: (value: number[]) => void;
+        reject: (error: Error) => void;
+    }[] = [];
+    #isProcessing = false;
 
     constructor(comName: string, baudRate: number) {
         DTMTransport.#debug('Created');
@@ -314,26 +320,47 @@ class DTMTransport {
         );
     }
 
-    async sendCMD(cmd: Buffer) {
+    #processQueue() {
+        if (this.#isProcessing || this.#sendQueue.length === 0) {
+            return;
+        }
+
+        this.#isProcessing = true;
+        const queueItem = this.#sendQueue.shift();
+        if (!queueItem) return;
+        const { cmd, resolve, reject } = queueItem;
+
+        DTMTransport.#debug(`Sending data: ${cmdToHex(cmd)}`);
+
+        const responseTimeout = setTimeout(() => {
+            this.#callback = undefined;
+            this.#isProcessing = false;
+            reject(new Error('Timeout'));
+            // Process next command in queue
+            this.#processQueue();
+        }, 1000);
+
+        this.#callback = data => {
+            this.#callback = undefined;
+            clearTimeout(responseTimeout);
+            DTMTransport.#debug(`Receiving data: ${cmdToHex(data)}`);
+            this.#isProcessing = false;
+            resolve(Array.from(data));
+            // Process next command in queue
+            this.#processQueue();
+        };
+
+        this.#port.write(cmd);
+    }
+
+    async sendCMD(cmd: Buffer): Promise<number[]> {
         if (!this.#port.isOpen) {
             await this.open();
         }
 
-        DTMTransport.#debug(`Sending data: ${cmdToHex(cmd)}`);
         return new Promise<number[]>((resolve, reject) => {
-            const responseTimeout = setTimeout(() => {
-                this.#callback = undefined;
-                reject(new Error('Timeout'));
-            }, 1000);
-
-            this.#callback = data => {
-                this.#callback = undefined;
-                clearTimeout(responseTimeout);
-                DTMTransport.#debug(`Receiving data: ${cmdToHex(data)}`);
-                resolve(Array.from(data));
-            };
-
-            this.#port.write(cmd);
+            this.#sendQueue.push({ cmd, resolve, reject });
+            this.#processQueue();
         });
     }
 

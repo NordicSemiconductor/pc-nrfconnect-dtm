@@ -21,7 +21,11 @@ import {
     getTimeout,
     getTxPower,
 } from '../reducers/settingsReducer';
-import { actionSucceeded, startedAction } from '../reducers/testReducer';
+import {
+    actionStopped,
+    actionSucceeded,
+    startedAction,
+} from '../reducers/testReducer';
 import { RootState } from '../reducers/types';
 import { communicationError } from '../reducers/warningReducer';
 import { bleChannelsValues } from '../SidePanel/ChannelView';
@@ -157,6 +161,7 @@ export const startTests =
             testPromise.then(status => {
                 if (status.type === 'error') {
                     logger.info(`End test failed: ${status.message}`);
+                    dispatch(actionStopped());
                 } else if (status.type === 'transmitter') {
                     logger.info(`Transmitter test finished successfully.`);
                     dispatch(actionSucceeded(new Array(40).fill(0)));

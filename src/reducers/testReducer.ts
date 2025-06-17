@@ -27,6 +27,9 @@ const testSlice = createSlice({
             state.lastReceived = action.payload;
             state.mode = undefined;
         },
+        actionStopped(state) {
+            state.mode = undefined;
+        },
         startedChannel(state, action) {
             state.currentChannel = action.payload;
         },
@@ -54,6 +57,7 @@ export default testSlice.reducer;
 const {
     startedAction,
     actionSucceeded,
+    actionStopped,
     startedChannel,
     resetChannel,
     endedChannel,
@@ -72,6 +76,7 @@ const getLastChannel = (state: RootState) => state.app.test.lastChannel;
 export {
     startedAction,
     actionSucceeded,
+    actionStopped,
     startedChannel,
     resetChannel,
     endedChannel,

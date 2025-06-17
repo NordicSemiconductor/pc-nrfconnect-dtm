@@ -52,8 +52,8 @@ function channelToFrequency(channel: number) {
     return 2402 + 2 * channel;
 }
 
-function reportSuccess(report: number[]) {
-    return (report[0] & 0x01) === 0;
+function reportSuccess(report: number[] | undefined) {
+    return (report && report[0] & 0x01) === 0;
 }
 
 export class DTM {
@@ -417,6 +417,7 @@ export class DTM {
         const response = await this.#dtmTransport.sendCMD(cmd);
 
         if (!reportSuccess(response)) {
+            this.#isTransmitting = false;
             clearTimeout(this.#timeoutEvent);
             return { type: 'error', message: 'Could not start transmission.' };
         }
@@ -459,7 +460,7 @@ export class DTM {
         if (this.#isTransmitting) {
             // Stop previous transmission
         }
-        this.#isTransmitting = false;
+        this.#isTransmitting = true;
         this.#timeoutEvent = this.startTimeoutEvent(
             () => this.#isTransmitting,
             timeout
@@ -479,14 +480,16 @@ export class DTM {
 
             const cmd = DTM.carrierTestCMD(frequency, length, bitpattern);
             const endEventDataReceivedEvt = this.endEventDataReceived();
-            const sendCMDPromise = this.#dtmTransport.sendCMD(cmd);
+            const sendCMDPromise = this.#dtmTransport
+                .sendCMD(cmd)
+                .catch(() => undefined);
             if (this.#timedOut) {
                 // eslint-disable-next-line
                 continue;
             }
 
-            const response = await sendCMDPromise;
             this.#isTransmitting = true;
+            const response = await sendCMDPromise;
 
             if (!reportSuccess(response)) {
                 this.#isTransmitting = false;
@@ -562,9 +565,12 @@ export class DTM {
             bitpattern
         );
         const endEventDataReceivedEvt = this.endEventDataReceived();
-        const response = await this.#dtmTransport.sendCMD(cmd);
+        const response = await this.#dtmTransport
+            .sendCMD(cmd)
+            .catch(() => undefined);
 
         if (!reportSuccess(response)) {
+            this.#isReceiving = false;
             clearTimeout(this.#timeoutEvent);
             return { type: 'error', message: 'Could not start receiver.' };
         }
@@ -612,7 +618,7 @@ export class DTM {
         if (this.#isReceiving) {
             // Stop previous transmission
         }
-        this.#isReceiving = false;
+        this.#isReceiving = true;
         const packetsReceivedForChannel = new Array(40).fill(0);
         this.#timeoutEvent = this.startTimeoutEvent(
             () => this.#isReceiving,
@@ -636,16 +642,19 @@ export class DTM {
                 bitpattern
             );
             const endEventDataReceivedEvt = this.endEventDataReceived();
-            const responseEvent = this.#dtmTransport.sendCMD(cmd);
+            const responseEvent = this.#dtmTransport
+                .sendCMD(cmd)
+                .catch(() => undefined);
 
             if (this.#timedOut) {
                 // eslint-disable-next-line
                 continue;
             }
-            const response = await responseEvent;
             this.#isReceiving = true;
+            const response = await responseEvent;
 
             if (!reportSuccess(response)) {
+                this.#isReceiving = false;
                 clearTimeout(this.#timeoutEvent);
                 return {
                     type: 'error',

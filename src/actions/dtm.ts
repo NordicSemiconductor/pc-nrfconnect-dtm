@@ -4,7 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { AppThunk } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    AppThunk,
+    persistSerialPortOptions,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { DTM } from '../dtm/DTM';
 import { getBaudRate, getSelectedSerialport } from '../reducers/deviceReducer';
@@ -49,6 +52,8 @@ export const getDTM =
                     })
                 )
             );
+
+            dispatch(persistSerialPortOptions({ path: port, baudRate }));
         }
         return dtm;
     };

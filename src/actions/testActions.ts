@@ -178,7 +178,7 @@ export const startTests =
 
             dispatch(startedAction(testMode));
         } catch (e) {
-            dtm?.endTest();
+            dtm?.endTest().catch(() => undefined);
             logger.info(errorMessage);
             dispatch(communicationError(errorMessage));
         }
@@ -187,5 +187,7 @@ export const startTests =
 export const endTests =
     (): AppThunk<RootState, Promise<void>> => async dispatch => {
         logger.info('Ending test');
-        (await dispatch(getDTM())).endTest();
+        (await dispatch(getDTM()))
+            .endTest()
+            .finally(() => dispatch(actionStopped()));
     };

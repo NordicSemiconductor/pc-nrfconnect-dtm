@@ -141,7 +141,7 @@ export class DTM {
                 this.#timedOut = true;
                 if (rxtxFlag()) {
                     if (!this.#sweepTimedOut) {
-                        this.endCurrentTest();
+                        this.endCurrentTest().catch(() => undefined);
                     }
                 }
             }, timeout);
@@ -157,7 +157,7 @@ export class DTM {
                 this.#sweepTimedOut = true;
                 if (rxtxFlag()) {
                     if (!this.#timedOut) {
-                        this.endCurrentTest();
+                        this.endCurrentTest().catch(() => undefined);
                     }
                 }
             }, timeout);
@@ -672,7 +672,7 @@ export class DTM {
             );
             this.#sweepTimedOut = false;
             if (this.#dbmPayloadtimedOut) {
-                this.endCurrentTest();
+                this.endCurrentTest().catch(() => undefined);
             }
 
             const status = await endEventDataReceivedEvt;

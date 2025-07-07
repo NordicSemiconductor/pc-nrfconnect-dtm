@@ -1,3 +1,9 @@
+## 2.5.1 - 2025-07-07
+
+### Changed
+
+-   Maintenance release to update the dependencies.
+
 ## 2.5.0 - 2025-06-19
 
 ### Added

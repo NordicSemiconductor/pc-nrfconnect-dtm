@@ -1,6 +1,6 @@
 {
     "name": "pc-nrfconnect-dtm",
-    "version": "2.5.0",
+    "version": "2.5.1",
     "displayName": "Direct Test Mode",
     "description": "RF PHY testing of Bluetooth Low Energy devices",
     "homepage": "https://github.com/NordicSemiconductor/pc-nrfconnect-dtm",
@@ -16,10 +16,11 @@
     "nrfConnectForDesktop": {
         "nrfutil": {
             "device": [
-                "2.10.2"
+                "2.12.3"
             ]
         },
-        "html": "dist/index.html"
+        "html": "dist/index.html",
+        "nrfutilCore": "8.0.0"
     },
     "main": "dist/bundle.js",
     "files": [
@@ -45,7 +46,7 @@
         "prepare": "husky install"
     },
     "devDependencies": {
-        "@nordicsemiconductor/pc-nrfconnect-shared": "^211.0.0",
+        "@nordicsemiconductor/pc-nrfconnect-shared": "^218.0.0",
         "@testing-library/user-event": "^13.1.9",
         "chart.js": "^4.0.1",
         "chartjs-plugin-datalabels": "2.2.0",

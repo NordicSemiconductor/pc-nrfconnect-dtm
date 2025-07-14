@@ -1,3 +1,9 @@
+## 2.5.2 - 2025-07-14
+
+### Fixed
+
+-   Issue with selecting devices when logging is set to verbose.
+
 ## 2.5.1 - 2025-07-08
 
 ### Changed

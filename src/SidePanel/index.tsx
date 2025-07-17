@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { Group, SidePanel } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { getIsRunning } from '../reducers/testReducer';
-import { isReceiverPane, isTransmitterPane, paneName } from '../utils/panes';
+import { isReceiverPane, isTransmitterPane } from '../utils/panes';
 import BaudRate from './BaudRate';
 import ChannelView from './ChannelView';
 import PacketView from './PacketView';
@@ -21,11 +21,9 @@ import ToggleChannelModeView from './ToggleChannelModeView';
 import TransmitSetupView from './TransmitSetupView';
 
 const AppSidePanelView = () => {
-    const selectedTestMode = useSelector(paneName);
-    const isRunning = useSelector(getIsRunning);
-
     const isTransmitter = useSelector(isTransmitterPane);
     const isReceiver = useSelector(isReceiverPane);
+    const isRunning = useSelector(getIsRunning);
 
     return (
         <SidePanel className="sidepanel">
@@ -37,7 +35,7 @@ const AppSidePanelView = () => {
                         <ToggleChannelModeView isRunning={isRunning} />
                     </Group>
                     <Group heading="Channel Settings" gap={4}>
-                        <ChannelView paneName={selectedTestMode} />
+                        <ChannelView />
                         {isTransmitter && <TransmitSetupView />}
                         <PhyTypeView />
                         {isTransmitter && <PacketView />}

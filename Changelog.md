@@ -2,7 +2,8 @@
 
 ### Fixed
 
--   Side panel is now properly hidden when the About page is opened.
+-   Issue with the side panel actions being visible the About tab is selected.
+    The actions are now hidden on the About tab.
 
 ## 2.5.2 - 2025-07-14
 

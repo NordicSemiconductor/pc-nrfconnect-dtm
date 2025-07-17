@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { Group, SidePanel } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { getIsRunning } from '../reducers/testReducer';
-import { paneName } from '../utils/panes';
+import { isReceiverPane, isTransmitterPane, paneName } from '../utils/panes';
 import BaudRate from './BaudRate';
 import ChannelView from './ChannelView';
 import PacketView from './PacketView';
@@ -24,21 +24,28 @@ const AppSidePanelView = () => {
     const selectedTestMode = useSelector(paneName);
     const isRunning = useSelector(getIsRunning);
 
+    const isTransmitter = useSelector(isTransmitterPane);
+    const isReceiver = useSelector(isReceiverPane);
+
     return (
         <SidePanel className="sidepanel">
-            <Serialports />
-            <BaudRate />
-            <Group heading="Channel mode" gap={4}>
-                <ToggleChannelModeView isRunning={isRunning} />
-            </Group>
-            <Group heading="Channel Settings" gap={4}>
-                <ChannelView paneName={selectedTestMode} />
-                {selectedTestMode === 'transmitter' && <TransmitSetupView />}
-                <PhyTypeView />
-                {selectedTestMode === 'transmitter' && <PacketView />}
-                <TimeoutView />
-            </Group>
-            <RunTestView />
+            {(isTransmitter || isReceiver) && (
+                <>
+                    <Serialports />
+                    <BaudRate />
+                    <Group heading="Channel mode" gap={4}>
+                        <ToggleChannelModeView isRunning={isRunning} />
+                    </Group>
+                    <Group heading="Channel Settings" gap={4}>
+                        <ChannelView paneName={selectedTestMode} />
+                        {isTransmitter && <TransmitSetupView />}
+                        <PhyTypeView />
+                        {isTransmitter && <PacketView />}
+                        <TimeoutView />
+                    </Group>
+                    <RunTestView />
+                </>
+            )}
         </SidePanel>
     );
 };

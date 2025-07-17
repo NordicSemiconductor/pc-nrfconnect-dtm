@@ -17,5 +17,8 @@ export enum Panes {
 export const isTransmitterPane = (state: RootState) =>
     currentPane(state) === Panes.TRANSMITTER;
 
+export const isReceiverPane = (state: RootState) =>
+    currentPane(state) === Panes.RECEIVER;
+
 export const paneName = (state: RootState) =>
     isTransmitterPane(state) ? 'transmitter' : 'receiver';

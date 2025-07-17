@@ -15,7 +15,7 @@ describe('Initial state', () => {
     test('should have single channel selected', () => {
         render(
             <>
-                <ChannelView paneName="transmitter" />
+                <ChannelView />
                 <ToggleChannelModeView isRunning={false} />
             </>
         );
@@ -28,7 +28,7 @@ describe('Initial state', () => {
     test('should have sweep channel not selected', () => {
         render(
             <>
-                <ChannelView paneName="transmitter" />
+                <ChannelView />
                 <ToggleChannelModeView isRunning={false} />
             </>
         );
@@ -43,7 +43,7 @@ describe('Select sweep', () => {
     test('should have sweep channel selected', () => {
         render(
             <>
-                <ChannelView paneName="transmitter" />
+                <ChannelView />
                 <ToggleChannelModeView isRunning={false} />
             </>
         );
@@ -57,7 +57,7 @@ describe('Select sweep', () => {
     test('should render two channel sliders', async () => {
         render(
             <>
-                <ChannelView paneName="transmitter" />
+                <ChannelView />
                 <ToggleChannelModeView isRunning={false} />
             </>
         );

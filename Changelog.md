@@ -1,3 +1,9 @@
+## 2.5.3 - UNRELEASED
+
+### Fixed
+
+-   Side panel is now properly hidden when the About page is opened.
+
 ## 2.5.2 - 2025-07-14
 
 ### Fixed

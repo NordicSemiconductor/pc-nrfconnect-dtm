@@ -14,7 +14,7 @@ import { getIsRunning } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 
 const TxPowerView = () => {
-    const txPowerIdx = useSelector(getTxPower);
+    const txPower = useSelector(getTxPower);
     const boardType = useSelector(getBoard);
     const isRunning = useSelector(getIsRunning);
     const dispatch = useDispatch();
@@ -22,10 +22,14 @@ const TxPowerView = () => {
     const dBmValues = fromPCA(boardType).txPower;
 
     useEffect(() => {
-        if (txPowerIdx === -1) {
-            dispatch(txPowerChanged(dBmValues.length - 1));
+        if (!dBmValues.includes(txPower)) {
+            dispatch(
+                txPowerChanged(
+                    dBmValues.includes(0) ? 0 : dBmValues[dBmValues.length / 2]
+                )
+            );
         }
-    }, [dispatch, dBmValues, txPowerIdx]);
+    }, [dispatch, dBmValues, txPower]);
 
     return (
         <NumberInput
@@ -33,14 +37,14 @@ const TxPowerView = () => {
             minWidth
             unit="dBm"
             label="Transmit power"
-            value={dBmValues[txPowerIdx]}
+            value={txPower}
             range={dBmValues}
             disabled={isRunning}
             onChange={value => {
-                dispatch(txPowerChanged(dBmValues.indexOf(value)));
+                dispatch(txPowerChanged(value));
             }}
             onChangeComplete={value => {
-                dispatch(txPowerChanged(dBmValues.indexOf(value)));
+                dispatch(txPowerChanged(value));
             }}
         />
     );

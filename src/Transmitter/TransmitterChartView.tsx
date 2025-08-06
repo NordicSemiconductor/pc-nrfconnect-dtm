@@ -18,6 +18,7 @@ import {
 } from '../reducers/testReducer';
 import { fromPCA } from '../utils/boards';
 import chartColors from '../utils/chartColors';
+import { dbmValues } from '../utils/constants';
 import WrongMode from '../utils/WrongMode';
 
 const FREQUENCY_BASE = 2402;
@@ -29,7 +30,7 @@ const chartDataTransmit = (
 ) => {
     const active = Array.from(Array(bleChannels.length), () => 0);
     if (currentChannel !== undefined) {
-        active[currentChannel] = txPower;
+        active[currentChannel] = dbmValues.indexOf(txPower) + 1;
     }
 
     const bleChannelsUpdated = bleChannels.map(
@@ -80,7 +81,7 @@ const TransmitterChartView = () => {
         <Bar
             data={chartDataTransmit(
                 isRunning ? currentChannel : undefined,
-                txPower + 1
+                txPower
             )}
             options={{
                 maintainAspectRatio: false,

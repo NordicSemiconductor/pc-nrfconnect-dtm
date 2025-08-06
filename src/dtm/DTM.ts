@@ -238,7 +238,7 @@ export class DTM {
             return validateResult(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error(
-                `DTM setup tx power command failed with ${Constants.dbmValues[dbm]} dbm`
+                `DTM setup tx power command failed with ${dbm} dbm`
             );
         }
     }

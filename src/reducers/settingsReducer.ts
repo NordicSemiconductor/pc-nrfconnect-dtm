@@ -13,7 +13,6 @@ import {
     DtmPacketType,
     DtmPhysicalLayer,
 } from '../dtm/types';
-import * as Constants from '../utils/constants';
 import { RootState, SettingsState } from './types';
 
 const initialState: SettingsState = {
@@ -23,7 +22,7 @@ const initialState: SettingsState = {
     sweepTime: 0,
     bitpattern: 0,
     length: 37,
-    txPower: Math.max(0, Constants.dbmValues.indexOf(0)),
+    txPower: 0,
     phy: DtmPhysicalLayer['LE 1Mbps'],
     modulationMode: DtmModulationMode.Standard,
     timeoutms: 0,

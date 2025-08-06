@@ -24,6 +24,7 @@ const deviceSlice = createSlice({
             state.selectedSerialport = null;
             state.serialports = [];
             state.isReady = initialState.isReady;
+            state.board = initialState.board;
         },
         setDeviceReady(state, action) {
             state.isReady = action.payload;

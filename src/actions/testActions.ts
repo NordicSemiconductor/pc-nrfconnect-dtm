@@ -29,7 +29,6 @@ import {
 import { RootState } from '../reducers/types';
 import { communicationError } from '../reducers/warningReducer';
 import { bleChannelsValues } from '../SidePanel/ChannelView';
-import * as Constants from '../utils/constants';
 import { paneName } from '../utils/panes';
 import { getDTM } from './dtm';
 import { clearCommunicationErrorWarning } from './warningActions';
@@ -51,7 +50,7 @@ const setupTest = async ({
     dtm: DTM;
 }) => {
     await dtm.setupReset();
-    await dtm.setTxPower(Constants.dbmValues[txPower]);
+    await dtm.setTxPower(txPower);
     await dtm.setupLength(length);
     await dtm.setupModulation(modulationMode);
     await dtm.setupPhy(phy);

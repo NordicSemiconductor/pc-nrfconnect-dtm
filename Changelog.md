@@ -4,6 +4,9 @@
 
 -   Issue with the side panel actions being visible when the About tab is
     selected. The actions are now hidden on the About tab.
+-   Issue with incorrect transmit power communicated to the nRF54L15 DK.
+-   Issue with incorrect transmit power values for the nRF54L15 DK. These values
+    can now be set from -40 to +8 dBm for this DK.
 
 ## 2.5.2 - 2025-07-14
 

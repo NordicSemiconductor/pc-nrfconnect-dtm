@@ -23,6 +23,7 @@ const TxPowerView = () => {
 
     useEffect(() => {
         if (!dBmValues.includes(txPower)) {
+            // Currently the dBmValues will always contain a 0
             dispatch(
                 txPowerChanged(
                     dBmValues.includes(0) ? 0 : dBmValues[dBmValues.length / 2]

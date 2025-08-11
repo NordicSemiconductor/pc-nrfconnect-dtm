@@ -189,12 +189,7 @@ class DTMTransport {
      *
      * @returns {DTM_CMD_FORMAT} formatted command
      */
-    static #createCMD(
-        cmdType: string,
-        arg2: string,
-        arg3: string,
-        arg4: string
-    ) {
+    static #createCMD(cmdType: string, arg2: string, arg3: string, arg4 = '') {
         return DTM_CMD_FORMAT(cmdType + arg2 + arg3 + arg4);
     }
 
@@ -296,14 +291,13 @@ class DTMTransport {
 
     static createTxPowerCMD(dbm: number) {
         DTMTransport.#debug(`Create tx power CMD: ${dbm}`);
-        const dtmDbm = toBitString(dbm);
-        const dtmLength = toBitString(2);
-        const dtmPkt = toBitString(DtmPacketType['Constant carrier'], 2);
+        // Extra 128 to add the sign bit for negative values
+        const dtmDbm = toBitString(dbm < 0 ? 128 + 128 + dbm : dbm, 8);
+
         return DTMTransport.#createCMD(
-            DTM_CMD.TRANSMITTER_TEST,
-            dtmDbm,
-            dtmLength,
-            dtmPkt
+            DTM_CMD.TEST_SETUP,
+            toBitString(9, 6),
+            dtmDbm
         );
     }
 

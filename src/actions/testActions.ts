@@ -20,6 +20,7 @@ import {
     getSweepTime,
     getTimeout,
     getTxPower,
+    receivedTxPowerChanged,
 } from '../reducers/settingsReducer';
 import {
     actionStopped,
@@ -36,25 +37,27 @@ import { clearCommunicationErrorWarning } from './warningActions';
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
 export const DTM_TEST_DONE = 'DTM_TEST_DONE';
 
-const setupTest = async ({
-    txPower,
-    length,
-    modulationMode,
-    phy,
-    dtm,
-}: {
-    txPower: number;
-    length: number;
-    modulationMode: number;
-    phy: number;
-    dtm: DTM;
-}) => {
-    await dtm.setupReset();
-    await dtm.setTxPower(txPower);
-    await dtm.setupLength(length);
-    await dtm.setupModulation(modulationMode);
-    await dtm.setupPhy(phy);
-};
+const setupTest =
+    ({
+        txPower,
+        length,
+        modulationMode,
+        phy,
+        dtm,
+    }: {
+        txPower: number;
+        length: number;
+        modulationMode: number;
+        phy: number;
+        dtm: DTM;
+    }): AppThunk<RootState, Promise<void>> =>
+    async dispatch => {
+        await dtm.setupReset();
+        dispatch(receivedTxPowerChanged(await dtm.setTxPower(txPower)));
+        await dtm.setupLength(length);
+        await dtm.setupModulation(modulationMode);
+        await dtm.setupPhy(phy);
+    };
 
 export const startTests =
     (): AppThunk<RootState, Promise<void>> => async (dispatch, getState) => {
@@ -92,13 +95,15 @@ export const startTests =
             const testMode = paneName(getState());
 
             logger.info('Running device setup');
-            await setupTest({
-                txPower,
-                length,
-                modulationMode,
-                phy,
-                dtm,
-            });
+            await dispatch(
+                setupTest({
+                    txPower,
+                    length,
+                    modulationMode,
+                    phy,
+                    dtm,
+                })
+            );
 
             dispatch(clearCommunicationErrorWarning());
             logger.info('Starting test');

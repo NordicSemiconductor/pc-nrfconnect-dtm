@@ -29,6 +29,7 @@ export interface SettingsState {
     bitpattern: DtmPacketType;
     length: number;
     txPower: number;
+    receivedTxPower: number;
     phy: DtmPhysicalLayer;
     modulationMode: DtmModulationMode;
     timeoutms: number;

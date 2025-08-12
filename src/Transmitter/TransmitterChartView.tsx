@@ -9,16 +9,14 @@ import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import { bleChannels } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import { getBoard } from '../reducers/deviceReducer';
 import { getReceivedTxPower } from '../reducers/settingsReducer';
 import {
     getCurrentChannel,
     getIsInReceiverMode,
     getIsRunning,
 } from '../reducers/testReducer';
-import { fromPCA } from '../utils/boards';
 import chartColors from '../utils/chartColors';
-import { dbmValues } from '../utils/constants';
+import dbmValues from '../utils/dbmValues';
 import WrongMode from '../utils/WrongMode';
 
 const FREQUENCY_BASE = 2402;
@@ -70,8 +68,7 @@ const TransmitterChartView = () => {
     const isRunning = useSelector(getIsRunning);
     const isInReceiverMode = useSelector(getIsInReceiverMode);
     const txPower = useSelector(getReceivedTxPower);
-    const boardType = useSelector(getBoard);
-    const dBmValues = [-1, ...fromPCA(boardType).txPower];
+    const dBmValues = [-1, dbmValues];
 
     if (isInReceiverMode) {
         return <WrongMode />;

@@ -1,3 +1,9 @@
+## 2.6.0 - Unreleased
+
+### Changed
+
+-   Use of `TEST_SETUP` command instead of `TRANSMITTER_TEST` to set TX value.
+
 ## 2.5.3 - 2025-08-11
 
 ### Fixed

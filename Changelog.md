@@ -1,3 +1,20 @@
+## 3.0.0 - Unreleased
+
+### Added
+
+-   Allow selection of all values within transmit power range.
+
+### Changed
+
+-   Backend command used for setting transmit value.
+-   Application chart now shows values linearly.
+
+### Removed
+
+-   Prebuilt firmware provided as HEX files for the nRF52840 DK and the nRF52 DK
+    (the nRF52833 DK). The app no longer provides prebuilt firmware.
+-   Feature for filtering available dBm values per device.
+
 ## 2.5.3 - 2025-08-11
 
 ### Fixed

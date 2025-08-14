@@ -71,6 +71,13 @@ const DTM_CMD_FORMAT = (cmd: string) => {
     return Buffer.from([firstByte, secondByte]);
 };
 
+export const toTwosComplementBitString = (data: number) => {
+    // 128 + (-x) = Math.abs(-128 + x)
+    const absTwosComplemtentValue = (data < 0 ? 128 : 0) + data;
+    const negativeBit = data < 0 ? 128 : 0;
+    return (negativeBit + absTwosComplemtentValue).toString(2).padStart(8, '0');
+};
+
 const toBitString = (data: number, length = 6) =>
     data.toString(2).padStart(length, '0');
 
@@ -291,8 +298,7 @@ class DTMTransport {
 
     static createTxPowerCMD(dbm: number) {
         DTMTransport.#debug(`Create tx power CMD: ${dbm}`);
-        // Extra 128 to add the sign bit for negative values
-        const dtmDbm = toBitString(dbm < 0 ? 128 + 128 + dbm : dbm, 8);
+        const dtmDbm = toTwosComplementBitString(dbm);
 
         return DTMTransport.#createCMD(
             DTM_CMD.TEST_SETUP,

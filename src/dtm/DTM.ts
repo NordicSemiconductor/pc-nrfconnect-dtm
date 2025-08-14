@@ -19,14 +19,17 @@ import {
 } from './DTM_transport';
 import { DtmModulationMode, DtmPacketType, DtmPhysicalLayer } from './types';
 
-const validate0x09Command = (res: number[] | undefined) => {
+export const validate0x09Command = (res: number[] | undefined) => {
     if (!Array.isArray(res) || res.length !== 2 || (res[1] & 0x01) !== 0) {
-        throw new Error('Invalid result');
+        throw new Error(`Invalid result: ${JSON.stringify(res)}`);
     }
+    // Least significant bit is the status
     const rawDbmValue = (res[1] & 0xfe) >> 1;
+    // This bit would be the most significant bit of the signed value
     const modifier = res[0] & 0x01 ? -128 : 0;
 
-    return rawDbmValue + modifier;
+    // For negative values: -128 + value
+    return modifier + rawDbmValue;
 };
 
 const validateResult = (res: number[] | undefined) => {

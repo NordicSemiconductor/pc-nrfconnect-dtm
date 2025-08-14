@@ -7,6 +7,7 @@
 ### Changed
 
 -   Use of `TEST_SETUP` command instead of `TRANSMITTER_TEST` to set TX value.
+-   Graph display shows values linearly.
 
 ### Removed
 

@@ -1,5 +1,9 @@
 ## 2.6.0 - Unreleased
 
+### Added
+
+-   Allow selection of all values within tx power range.
+
 ### Changed
 
 -   Use of `TEST_SETUP` command instead of `TRANSMITTER_TEST` to set TX value.

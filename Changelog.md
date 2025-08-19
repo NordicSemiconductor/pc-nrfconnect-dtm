@@ -14,6 +14,11 @@
 -   Prebuilt firmware.
 -   Removed filtering available dBm values per device.
 
+### Fixed
+
+-   Issue where the value set in the **Channel Range** slider in the sweep mode
+    would not be correctly communicated to the device.
+
 ## 2.5.3 - 2025-08-11
 
 ### Fixed

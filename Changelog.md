@@ -1,3 +1,9 @@
+## 2.5.4 - Unreleased
+
+### Fixed
+
+-   Channel range in sweep mode sets correct channels.
+
 ## 2.5.3 - 2025-08-11
 
 ### Fixed

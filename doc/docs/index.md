@@ -25,8 +25,8 @@ The {{app_name}} can be used with devices programmed with firmware compatible wi
 
 * The {{app_name}} provides HEX files with firmware compatible with Direct Test Mode for the following devices:
 
-    - nRF52840 DK
-    - nRF52833 DK (nRF52 DK)
+    - nRF52840 DK (PCA10056)
+    - nRF52 DK (nRF52832 DK; PCA10040)
 
     When using these devices, the {{app_name}} will automatically detect when started if the connected device has the right firmware programmed and will offer to program it.
 

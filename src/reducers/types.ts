@@ -29,6 +29,7 @@ export interface SettingsState {
     bitpattern: DtmPacketType;
     length: number;
     txPower: number;
+    receivedTxPower: number;
     phy: DtmPhysicalLayer;
     modulationMode: DtmModulationMode;
     timeoutms: number;
@@ -47,7 +48,6 @@ export interface TestState {
 }
 
 export interface WarningState {
-    compatibleDeviceWarning: string;
     communicationError: string;
 }
 

@@ -71,6 +71,13 @@ const DTM_CMD_FORMAT = (cmd: string) => {
     return Buffer.from([firstByte, secondByte]);
 };
 
+export const toTwosComplementBitString = (data: number) => {
+    // 128 + (-x) = Math.abs(-128 + x)
+    const absTwosComplemtentValue = (data < 0 ? 128 : 0) + data;
+    const negativeBit = data < 0 ? 128 : 0;
+    return (negativeBit + absTwosComplemtentValue).toString(2).padStart(8, '0');
+};
+
 const toBitString = (data: number, length = 6) =>
     data.toString(2).padStart(length, '0');
 
@@ -189,12 +196,7 @@ class DTMTransport {
      *
      * @returns {DTM_CMD_FORMAT} formatted command
      */
-    static #createCMD(
-        cmdType: string,
-        arg2: string,
-        arg3: string,
-        arg4: string
-    ) {
+    static #createCMD(cmdType: string, arg2: string, arg3: string, arg4 = '') {
         return DTM_CMD_FORMAT(cmdType + arg2 + arg3 + arg4);
     }
 
@@ -296,14 +298,12 @@ class DTMTransport {
 
     static createTxPowerCMD(dbm: number) {
         DTMTransport.#debug(`Create tx power CMD: ${dbm}`);
-        const dtmDbm = toBitString(dbm);
-        const dtmLength = toBitString(2);
-        const dtmPkt = toBitString(DtmPacketType['Constant carrier'], 2);
+        const dtmDbm = toTwosComplementBitString(dbm);
+
         return DTMTransport.#createCMD(
-            DTM_CMD.TRANSMITTER_TEST,
-            dtmDbm,
-            dtmLength,
-            dtmPkt
+            DTM_CMD.TEST_SETUP,
+            toBitString(9, 6),
+            dtmDbm
         );
     }
 

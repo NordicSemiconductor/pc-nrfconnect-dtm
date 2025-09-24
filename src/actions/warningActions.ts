@@ -4,11 +4,6 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import {
-    communicationError,
-    incompatibleDevice,
-} from '../reducers/warningReducer';
-
-export const clearIncompatibleWarning = () => incompatibleDevice('');
+import { communicationError } from '../reducers/warningReducer';
 
 export const clearCommunicationErrorWarning = () => communicationError('');

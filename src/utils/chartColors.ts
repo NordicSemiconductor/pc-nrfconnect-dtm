@@ -10,6 +10,7 @@ const chartColors = {
     bar: colors.nordicBlue,
     background: colors.gray50,
     label: colors.gray300,
+    labelWhite: colors.white,
 };
 
 export default chartColors;

@@ -39,7 +39,7 @@ The available settings are related to the DTM specification.
 | **Channel mode**     | Single              | Transmit on the specified channel only.                                                                     |
 |                      | Sweep               | Transmit in the specified channel range.                                                                    |
 | **Channel settings** | Transmit on channel | Channel on which to transmit test packets.                                                                  |
-|                      | Transmit power      | Power of the transmission.                                                                                  |
+|                      | Transmit power      | Power of the transmission, from -40 dBm to 8 dBm.                                                                                  |
 |                      | Transmit period     | Time during which to transmit. Only available for the Sweep mode.                                           |
 |                      | Physical layer      | Select the PHY layers on which to transmit test packets.                                                    |
 |                      | Packet type         | Select the test pattern for the test packets. `Constant carrier` uses [vendor-specific packet payload](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/samples/bluetooth/direct_test_mode/README.html#vendor-specific_packet_payload).                                                               |

@@ -1,3 +1,19 @@
+## 3.0.0 - Unreleased
+
+### Added
+
+-   Allow selection of all values within tx power range.
+
+### Changed
+
+-   Use of `TEST_SETUP` command instead of `TRANSMITTER_TEST` to set TX value.
+-   Graph display shows values linearly.
+
+### Removed
+
+-   Prebuilt firmware.
+-   Removed filtering available dBm values per device.
+
 ## 2.5.3 - 2025-08-11
 
 ### Fixed

@@ -9,20 +9,22 @@ import { Bar } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import { bleChannels } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import { getBoard } from '../reducers/deviceReducer';
-import { getTxPower } from '../reducers/settingsReducer';
+import { getReceivedTxPower } from '../reducers/settingsReducer';
 import {
     getCurrentChannel,
     getIsInReceiverMode,
     getIsRunning,
 } from '../reducers/testReducer';
-import { fromPCA } from '../utils/boards';
 import chartColors from '../utils/chartColors';
-import { dbmValues } from '../utils/constants';
+import dbmValues from '../utils/dbmValues';
 import WrongMode from '../utils/WrongMode';
 
 const FREQUENCY_BASE = 2402;
 const FREQUENCY_INTERVAL = 2;
+
+const bottomChartOffset = 5;
+const topChartOffset = 2;
+const shiftValue = Math.abs(Math.min(...dbmValues)) + bottomChartOffset;
 
 const chartDataTransmit = (
     currentChannel: number | undefined,
@@ -30,7 +32,7 @@ const chartDataTransmit = (
 ) => {
     const active = Array.from(Array(bleChannels.length), () => 0);
     if (currentChannel !== undefined) {
-        active[currentChannel] = dbmValues.indexOf(txPower) + 1;
+        active[currentChannel] = txPower + shiftValue;
     }
 
     const bleChannelsUpdated = bleChannels.map(
@@ -47,13 +49,21 @@ const chartDataTransmit = (
             borderWidth: 1,
             hoverBackgroundColor: chartColors.bar,
             hoverBorderColor: chartColors.bar,
-            datalabels: { display: false },
+            datalabels: {
+                color: chartColors.bar,
+                anchor: 'end' as const,
+                align: 'end' as const,
+                formatter: (value: number) =>
+                    value === 0 ? '' : value - shiftValue,
+                offset: -3,
+                font: { size: 9 },
+            },
         },
         {
             label: 'bgBars',
             backgroundColor: chartColors.background,
             borderWidth: 0,
-            data: Array(bleChannelsUpdated.length).fill(active.length),
+            data: Array(bleChannelsUpdated.length).fill(100),
             display: false,
             datalabels: { display: false },
         },
@@ -69,9 +79,7 @@ const TransmitterChartView = () => {
     const currentChannel = useSelector(getCurrentChannel);
     const isRunning = useSelector(getIsRunning);
     const isInReceiverMode = useSelector(getIsInReceiverMode);
-    const txPower = useSelector(getTxPower);
-    const boardType = useSelector(getBoard);
-    const dBmValues = [-1, ...fromPCA(boardType).txPower];
+    const txPower = useSelector(getReceivedTxPower);
 
     if (isInReceiverMode) {
         return <WrongMode />;
@@ -96,21 +104,31 @@ const TransmitterChartView = () => {
                 scales: {
                     y: {
                         min: 0,
-                        max: dBmValues.length - 1,
+                        // Offset bottom and top to make sure bars and labels are fully visible
+                        max:
+                            shiftValue +
+                            Math.max(...dbmValues) +
+                            topChartOffset,
                         suggestedMin: undefined,
                         suggestedMax: undefined,
                         ticks: {
                             display: true,
                             stepSize: 1,
-                            callback: dBmIndex =>
-                                dBmIndex in dBmValues && dBmIndex !== 0
-                                    ? dBmValues[
-                                          Number.parseInt(
-                                              dBmIndex.toString(),
-                                              10
-                                          )
-                                      ]
-                                    : '',
+                            callback: dBmValue => {
+                                const shiftedValue =
+                                    Number(dBmValue) - shiftValue;
+
+                                if (dBmValue === 0) return '';
+                                // Show value for every 5 dBm and the maximum value
+                                if (
+                                    (Number(dBmValue) + bottomChartOffset) %
+                                        5 ===
+                                        0 ||
+                                    shiftedValue === Math.max(...dbmValues)
+                                )
+                                    return shiftedValue;
+                                return '';
+                            },
                             color: chartColors.label,
                         },
                         title: {

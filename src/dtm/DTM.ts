@@ -10,7 +10,6 @@
 import { logger } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import EventEmitter from 'events';
 
-import * as Constants from '../utils/constants';
 import {
     DTM_CONTROL,
     DTM_DC,
@@ -19,6 +18,16 @@ import {
     DTMTransport,
 } from './DTM_transport';
 import { DtmModulationMode, DtmPacketType, DtmPhysicalLayer } from './types';
+
+const validate0x09Command = (res: number[] | undefined) => {
+    if (!Array.isArray(res) || res.length !== 2 || (res[1] & 0x01) !== 0) {
+        throw new Error('Invalid result');
+    }
+    const rawDbmValue = (res[1] & 0xfe) >> 1;
+    const modifier = res[0] & 0x01 ? -128 : 0;
+
+    return rawDbmValue + modifier;
+};
 
 const validateResult = (res: number[] | undefined) => {
     if (
@@ -232,10 +241,9 @@ export class DTM {
      */
     async setTxPower(dbm = this.#dbmPayload) {
         this.#dbmPayload = dbm;
-        const value = dbm & 0x3f;
-        const cmd = DTMTransport.createTxPowerCMD(value);
+        const cmd = DTMTransport.createTxPowerCMD(dbm);
         try {
-            return validateResult(await this.#dtmTransport.sendCMD(cmd));
+            return validate0x09Command(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error(
                 `DTM setup tx power command failed with ${dbm} dbm`

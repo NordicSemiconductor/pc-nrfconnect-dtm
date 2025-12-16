@@ -50,8 +50,8 @@ const chartDataTransmit = (
             hoverBorderColor: chartColors.bar,
             datalabels: {
                 color: chartColors.bar,
-                anchor: 'end',
-                align: 'end',
+                anchor: 'end' as const,
+                align: 'end' as const,
                 formatter: (value: number) =>
                     value === 0 ? '' : value - shiftValue,
                 offset: -3,

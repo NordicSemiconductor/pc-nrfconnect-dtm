@@ -5,7 +5,7 @@
  */
 
 import { DtmPhysicalLayer } from '../dtm/types';
-import * as Constants from './constants';
+import dbmValues from './dbmValues';
 
 const defaultDevice = {
     phy: {
@@ -14,7 +14,7 @@ const defaultDevice = {
         PHY_LE_CODED_S8: DtmPhysicalLayer['LE Coded S8'],
         PHY_LE_CODED_S2: DtmPhysicalLayer['LE Coded S2'],
     },
-    txPower: Constants.dbmValues,
+    txPower: dbmValues,
 };
 
 const nRF52832 = {
@@ -22,20 +22,13 @@ const nRF52832 = {
         PHY_LE_1M: DtmPhysicalLayer['LE 1Mbps'],
         PHY_LE_2M: DtmPhysicalLayer['LE 2Mbps'],
     },
-    txPower: Constants.dbmValues.filter(tx => tx <= 4),
 };
 
-const nRF52840 = { ...defaultDevice };
-
-function fromPCA(board: string | null) {
+export function fromPCA(board: string | null) {
     switch (board) {
-        case 'PCA10056':
-            return nRF52840;
         case 'PCA10040':
             return nRF52832;
         default:
             return defaultDevice;
     }
 }
-
-export { nRF52832, nRF52840, fromPCA };

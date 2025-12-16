@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { bleChannels } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { getBoard } from '../reducers/deviceReducer';
-import { getTxPower } from '../reducers/settingsReducer';
+import { getReceivedTxPower } from '../reducers/settingsReducer';
 import {
     getCurrentChannel,
     getIsInReceiverMode,
@@ -69,7 +69,7 @@ const TransmitterChartView = () => {
     const currentChannel = useSelector(getCurrentChannel);
     const isRunning = useSelector(getIsRunning);
     const isInReceiverMode = useSelector(getIsInReceiverMode);
-    const txPower = useSelector(getTxPower);
+    const txPower = useSelector(getReceivedTxPower);
     const boardType = useSelector(getBoard);
     const dBmValues = [-1, ...fromPCA(boardType).txPower];
 

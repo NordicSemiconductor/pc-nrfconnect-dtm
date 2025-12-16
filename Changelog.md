@@ -8,6 +8,7 @@
 
 -   Use of `TEST_SETUP` command instead of `TRANSMITTER_TEST` to set TX value.
 -   Graph display shows values linearly.
+-   Extended the TX power range to values between -100 and +10.
 
 ### Removed
 

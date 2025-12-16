@@ -22,13 +22,16 @@ import WrongMode from '../utils/WrongMode';
 const FREQUENCY_BASE = 2402;
 const FREQUENCY_INTERVAL = 2;
 
+const bottomChartOffset = 5;
+const shiftValue = Math.abs(Math.min(...dbmValues)) + bottomChartOffset;
+
 const chartDataTransmit = (
     currentChannel: number | undefined,
     txPower: number
 ) => {
     const active = Array.from(Array(bleChannels.length), () => 0);
     if (currentChannel !== undefined) {
-        active[currentChannel] = dbmValues.indexOf(txPower) + 1;
+        active[currentChannel] = txPower + shiftValue;
     }
 
     const bleChannelsUpdated = bleChannels.map(
@@ -45,13 +48,21 @@ const chartDataTransmit = (
             borderWidth: 1,
             hoverBackgroundColor: chartColors.bar,
             hoverBorderColor: chartColors.bar,
-            datalabels: { display: false },
+            datalabels: {
+                color: chartColors.bar,
+                anchor: 'end',
+                align: 'end',
+                formatter: (value: number) =>
+                    value === 0 ? '' : value - shiftValue,
+                offset: -3,
+                font: { size: 9 },
+            },
         },
         {
             label: 'bgBars',
             backgroundColor: chartColors.background,
             borderWidth: 0,
-            data: Array(bleChannelsUpdated.length).fill(active.length),
+            data: Array(bleChannelsUpdated.length).fill(100),
             display: false,
             datalabels: { display: false },
         },
@@ -68,7 +79,6 @@ const TransmitterChartView = () => {
     const isRunning = useSelector(getIsRunning);
     const isInReceiverMode = useSelector(getIsInReceiverMode);
     const txPower = useSelector(getReceivedTxPower);
-    const dBmValues = [-1, dbmValues];
 
     if (isInReceiverMode) {
         return <WrongMode />;
@@ -93,21 +103,27 @@ const TransmitterChartView = () => {
                 scales: {
                     y: {
                         min: 0,
-                        max: dBmValues.length - 1,
+                        max: shiftValue + Math.max(...dbmValues),
                         suggestedMin: undefined,
                         suggestedMax: undefined,
                         ticks: {
                             display: true,
                             stepSize: 1,
-                            callback: dBmIndex =>
-                                dBmIndex in dBmValues && dBmIndex !== 0
-                                    ? dBmValues[
-                                          Number.parseInt(
-                                              dBmIndex.toString(),
-                                              10
-                                          )
-                                      ]
-                                    : '',
+                            callback: dBmValue => {
+                                const shiftedValue =
+                                    Number(dBmValue) - shiftValue;
+
+                                if (dBmValue === 0) return '';
+                                // Show value for every 5 dBm and the maximum value
+                                if (
+                                    (Number(dBmValue) + bottomChartOffset) %
+                                        5 ===
+                                        0 ||
+                                    shiftedValue === Math.max(...dbmValues)
+                                )
+                                    return shiftedValue;
+                                return '';
+                            },
                             color: chartColors.label,
                         },
                         title: {

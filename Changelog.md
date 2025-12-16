@@ -4,6 +4,10 @@
 
 -   Use of `TEST_SETUP` command instead of `TRANSMITTER_TEST` to set TX value.
 
+### Removed
+
+-   Removed filtering available dBm values per device.
+
 ## 2.5.3 - 2025-08-11
 
 ### Fixed

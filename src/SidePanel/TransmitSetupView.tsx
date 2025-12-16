@@ -25,8 +25,8 @@ const TxPowerView = () => {
             label="Transmit power"
             value={txPower}
             range={{
-                min: Math.min(...dbmValues),
-                max: Math.max(...dbmValues),
+                min: dbmValues.min,
+                max: dbmValues.max,
                 step: 1,
             }}
             disabled={isRunning}

@@ -6,6 +6,7 @@
 
 ### Removed
 
+-   Prebuilt firmware.
 -   Removed filtering available dBm values per device.
 
 ## 2.5.3 - 2025-08-11

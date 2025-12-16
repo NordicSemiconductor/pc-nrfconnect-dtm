@@ -48,7 +48,6 @@ export interface TestState {
 }
 
 export interface WarningState {
-    compatibleDeviceWarning: string;
     communicationError: string;
 }
 

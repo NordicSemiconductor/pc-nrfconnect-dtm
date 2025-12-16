@@ -14,6 +14,7 @@ import {
     DtmPhysicalLayer,
 } from '../dtm/types';
 import { deviceDeselected } from './deviceReducer';
+import { actionStopped } from './testReducer';
 import { RootState, SettingsState } from './types';
 
 const initialState: SettingsState = {
@@ -24,6 +25,7 @@ const initialState: SettingsState = {
     bitpattern: 0,
     length: 37,
     txPower: 0,
+    receivedTxPower: 0,
     phy: DtmPhysicalLayer['LE 1Mbps'],
     modulationMode: DtmModulationMode.Standard,
     timeoutms: 0,
@@ -63,9 +65,16 @@ const settingsSlice = createSlice({
         modulationChanged(state, action: PayloadAction<DtmModulationMode>) {
             state.modulationMode = action.payload;
         },
+        receivedTxPowerChanged(state, action: PayloadAction<number>) {
+            state.receivedTxPower = action.payload;
+        },
     },
     extraReducers: builder => {
-        builder.addCase(deviceDeselected, () => initialState);
+        builder
+            .addCase(deviceDeselected, () => initialState)
+            .addCase(actionStopped, state => {
+                state.receivedTxPower = initialState.receivedTxPower;
+            });
     },
 });
 
@@ -82,6 +91,7 @@ const {
     timeoutChanged,
     phyChanged,
     modulationChanged,
+    receivedTxPowerChanged,
 } = settingsSlice.actions;
 
 const getChannelMode = (state: RootState) => state.app.settings.channelMode;
@@ -94,6 +104,8 @@ const getTxPower = (state: RootState) => state.app.settings.txPower;
 const getPhy = (state: RootState) => state.app.settings.phy;
 const getModulation = (state: RootState) => state.app.settings.modulationMode;
 const getTimeout = (state: RootState) => state.app.settings.timeoutms;
+const getReceivedTxPower = (state: RootState) =>
+    state.app.settings.receivedTxPower;
 
 export {
     dtmChannelModeChanged,
@@ -106,6 +118,7 @@ export {
     timeoutChanged,
     phyChanged,
     modulationChanged,
+    receivedTxPowerChanged,
     getChannelMode,
     getSingleChannel,
     getChannelRange,
@@ -116,4 +129,5 @@ export {
     getPhy,
     getModulation,
     getTimeout,
+    getReceivedTxPower,
 };

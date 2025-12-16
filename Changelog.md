@@ -1,4 +1,8 @@
-## 2.6.0 - Unreleased
+## 3.0.0 - Unreleased
+
+### Added
+
+-   Allow selection of all values within tx power range.
 
 ### Changed
 

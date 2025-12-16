@@ -17,17 +17,6 @@ const TxPowerView = () => {
     const isRunning = useSelector(getIsRunning);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (!dbmValues.includes(txPower)) {
-            // Currently the dBmValues will always contain a 0
-            dispatch(
-                txPowerChanged(
-                    dbmValues.includes(0) ? 0 : dbmValues[dbmValues.length / 2]
-                )
-            );
-        }
-    }, [dispatch, txPower]);
-
     return (
         <NumberInput
             showSlider
@@ -35,7 +24,11 @@ const TxPowerView = () => {
             unit="dBm"
             label="Transmit power"
             value={txPower}
-            range={dbmValues}
+            range={{
+                min: Math.min(...dbmValues),
+                max: Math.max(...dbmValues),
+                step: 1,
+            }}
             disabled={isRunning}
             onChange={value => {
                 dispatch(txPowerChanged(value));

@@ -3,6 +3,7 @@
 ### Added
 
 -   Allow selection of all values within tx power range.
+-   Tooltip for the transmit power input.
 
 ### Changed
 

@@ -29,14 +29,22 @@ const TxPowerView = () => {
                 <Overlay
                     tooltipId="tx-power-tooltip"
                     tooltipChildren={
-                        <>
-                            The official 0x09 DTM command sets the SoC TX output
-                            power closest to the requested one when the exact
-                            power level is not supported.
-                        </>
+                        <div className="tw-preflight tw-flex tw-flex-col tw-gap-4 tw-bg-gray-900 tw-px-4 tw-py-2 tw-text-left tw-text-gray-100">
+                            <p>
+                                Value of the SoC transmitter output power level,
+                                set by the 0x09 DTM command.
+                            </p>
+                            <p>
+                                When the selected output power level is not
+                                supported, the DTM command sets a power level
+                                that is nearest to the requested one, as per the
+                                Bluetooth®️ specification.
+                            </p>
+                        </div>
                     }
                 >
-                    Transmit power
+                    Transmit power{' '}
+                    <span className="mdi mdi-help-circle-outline tw-px-1" />
                 </Overlay>
             }
             value={txPower}

@@ -3,6 +3,9 @@
 ### Added
 
 -   Documentation section in the About tab.
+
+### Changed
+
 -   Extended the TX power range to values between -100 and +10.
 
 ## 3.0.0 - 2025-12-18

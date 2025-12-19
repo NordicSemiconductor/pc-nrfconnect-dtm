@@ -108,6 +108,7 @@ export const startTests =
             dispatch(clearCommunicationErrorWarning());
             logger.info('Starting test');
 
+            const indexes = channelRange.map(v => bleChannelsValues.indexOf(v));
             let testPromise;
             if (
                 testMode === 'transmitter' &&
@@ -126,8 +127,8 @@ export const startTests =
                 testPromise = dtm.sweepTransmitterTest(
                     bitpattern,
                     length,
-                    bleChannelsValues.indexOf(Math.min(...channelRange)),
-                    bleChannelsValues.indexOf(Math.max(...channelRange)),
+                    Math.min(...indexes),
+                    Math.max(...indexes),
                     sweepTime,
                     timeoutms
                 );
@@ -155,8 +156,8 @@ export const startTests =
                 testPromise = dtm.sweepReceiverTest(
                     bitpattern,
                     length,
-                    bleChannelsValues.indexOf(Math.min(...channelRange)),
-                    bleChannelsValues.indexOf(Math.max(...channelRange)),
+                    Math.min(...indexes),
+                    Math.max(...indexes),
                     sweepTime,
                     timeoutms
                 );

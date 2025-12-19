@@ -1,8 +1,15 @@
-## 3.0.0 - Unreleased
+## 3.1.0 - Unreleased
+
+### Added
+
+-   Documentation section in the About tab.
+
+## 3.0.0 - 2025-12-18
 
 ### Added
 
 -   Allow selection of all values within tx power range.
+-   Tooltip for the transmit power level.
 
 ### Changed
 
@@ -14,6 +21,11 @@
 
 -   Prebuilt firmware.
 -   Removed filtering available dBm values per device.
+
+### Fixed
+
+-   Issue where the value set in the **Channel Range** slider in the sweep mode
+    would not be correctly communicated to the device.
 
 ## 2.5.3 - 2025-08-11
 

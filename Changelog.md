@@ -3,6 +3,7 @@
 ### Added
 
 -   Documentation section in the About tab.
+-   Extended the TX power range to values between -100 and +10.
 
 ## 3.0.0 - 2025-12-18
 
@@ -15,7 +16,6 @@
 
 -   Use of `TEST_SETUP` command instead of `TRANSMITTER_TEST` to set TX value.
 -   Graph display shows values linearly.
--   Extended the TX power range to values between -100 and +10.
 
 ### Removed
 

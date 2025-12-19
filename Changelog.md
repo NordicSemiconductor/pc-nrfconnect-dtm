@@ -1,3 +1,9 @@
+## Unreleased
+
+### Added
+
+- Documentation section in the About tab.
+
 ## 3.0.0 - 2025-12-18
 
 ### Added

@@ -12,6 +12,7 @@ import {
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import DeviceSelector from './DeviceSelector';
+import DocumentationSections from './DocumentationSection';
 import Receiver from './Receiver';
 import appReducer from './reducers';
 import SidePanel from './SidePanel';
@@ -26,6 +27,7 @@ render(
     <App
         appReducer={appReducer}
         deviceSelect={<DeviceSelector />}
+        documentation={DocumentationSections}
         sidePanel={<SidePanel />}
         panes={[
             {

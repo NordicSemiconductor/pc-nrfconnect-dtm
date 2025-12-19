@@ -24,7 +24,7 @@ const FREQUENCY_INTERVAL = 2;
 
 const bottomChartOffset = 5;
 const topChartOffset = 2;
-const shiftValue = Math.abs(Math.min(...dbmValues)) + bottomChartOffset;
+const shiftValue = Math.abs(dbmValues.min) + bottomChartOffset;
 
 const chartDataTransmit = (
     currentChannel: number | undefined,
@@ -105,10 +105,7 @@ const TransmitterChartView = () => {
                     y: {
                         min: 0,
                         // Offset bottom and top to make sure bars and labels are fully visible
-                        max:
-                            shiftValue +
-                            Math.max(...dbmValues) +
-                            topChartOffset,
+                        max: shiftValue + dbmValues.max + topChartOffset,
                         suggestedMin: undefined,
                         suggestedMax: undefined,
                         ticks: {
@@ -124,7 +121,7 @@ const TransmitterChartView = () => {
                                     (Number(dBmValue) + bottomChartOffset) %
                                         5 ===
                                         0 ||
-                                    shiftedValue === Math.max(...dbmValues)
+                                    shiftedValue === dbmValues.max
                                 )
                                     return shiftedValue;
                                 return '';

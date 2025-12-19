@@ -5,7 +5,6 @@
  */
 
 import { DtmPhysicalLayer } from '../dtm/types';
-import dbmValues from './dbmValues';
 
 const defaultDevice = {
     phy: {
@@ -14,7 +13,6 @@ const defaultDevice = {
         PHY_LE_CODED_S8: DtmPhysicalLayer['LE Coded S8'],
         PHY_LE_CODED_S2: DtmPhysicalLayer['LE Coded S2'],
     },
-    txPower: dbmValues,
 };
 
 const nRF52832 = {

@@ -10,11 +10,10 @@ import { DocumentationSection } from '@nordicsemiconductor/pc-nrfconnect-shared'
 const DocumentationSections = [
     <DocumentationSection
         key="techdocs"
-        linkLabel="Go to TechDocs"
+        linkLabel="Open documentation"
         link="https://docs.nordicsemi.com/bundle/nrf-connect-direct-test-mode/page/index.html"
     >
-        Visit our Technical Documentation for more documentation about using the
-        app.
+        Visit TechDocs for official documentation of the app.
     </DocumentationSection>,
 ];
 

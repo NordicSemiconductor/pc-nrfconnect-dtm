@@ -2,9 +2,6 @@
 
 In the {{app_name}}, you can control the reception and transmission characteristics of the Bluetooth® connection through 2-wire UART, in accordance with the [Bluetooth Core specification, volume 6, part F](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-61/out/en/low-energy-controller/direct-test-mode.html).
 
-!!! info "Tip"
-     If you are using an nRF52840 DK or an nRF52833 DK, the {{app_name}} will automatically detect when started if the connected device has the right firmware programmed and will offer to program it.
-
 It is recommended to use two devices for both scenarios:
 
 * **Device 1**: One device programmed with firmware compatible with Direct Test Mode.</br>

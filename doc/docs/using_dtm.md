@@ -1,6 +1,6 @@
 # Configuring and using the application
 
-In the {{app_name}}, you can control the reception and transmission characteristics of the Bluetooth® connection through 2-wire UART, in accordance with the [Bluetooth Core specification, volume 6, part F](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-61/out/en/low-energy-controller/direct-test-mode.html).
+In the Direct Test Mode app, you can control the reception and transmission characteristics of the Bluetooth® connection through 2-wire UART, in accordance with the [Bluetooth Core specification, volume 6, part F](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-61/out/en/low-energy-controller/direct-test-mode.html).
 
 It is recommended to use two devices for both scenarios:
 

@@ -1,8 +1,8 @@
 # Overview and user interface
 
-After starting the {{app_name}}, the main application window is displayed.
+After starting the Direct Test Mode app, the main application window is displayed.
 
-![{{app_name}} window](./screenshots/dtm_overview.png "{{app_name}} window")
+![Direct Test Mode app window](./screenshots/dtm_overview.png "Direct Test Mode app window")
 
 The available options and information change after you **Select Device**.
 

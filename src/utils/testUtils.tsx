@@ -32,14 +32,14 @@ const createPreparedStore = (actions: AnyAction[]) => {
 };
 
 window.ResizeObserver = class {
-    observe() {}
-    disconnect() {}
-    unobserve() {}
+    observe = jest.fn();
+    disconnect = jest.fn();
+    unobserve = jest.fn();
 };
 
 window.MutationObserver = class {
-    observe() {}
-    disconnect() {}
+    observe = jest.fn();
+    disconnect = jest.fn();
     takeRecords() {
         return [];
     }

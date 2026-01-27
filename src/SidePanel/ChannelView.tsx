@@ -73,7 +73,7 @@ export default () => {
     const dispatch = useDispatch();
 
     const changeRangesIndexes = channelRange.map(v =>
-        bleChannelsValues.indexOf(v)
+        bleChannelsValues.indexOf(v),
     );
     const lowChannel = bleChannelsValues[Math.min(...changeRangesIndexes)];
     const highChannel = bleChannelsValues[Math.max(...changeRangesIndexes)];
@@ -106,7 +106,7 @@ export default () => {
                                 value={lowChannel}
                                 range={bleChannelsValues.slice(
                                     0,
-                                    bleChannelsValues.indexOf(highChannel) + 1
+                                    bleChannelsValues.indexOf(highChannel) + 1,
                                 )}
                                 disabled={isRunning}
                                 onChange={newMinValue => {
@@ -114,7 +114,7 @@ export default () => {
                                         channelRangeChanged([
                                             newMinValue,
                                             channelRange[1],
-                                        ])
+                                        ]),
                                     );
                                 }}
                             />
@@ -122,7 +122,7 @@ export default () => {
                             <NumberInlineInput
                                 value={highChannel}
                                 range={bleChannelsValues.slice(
-                                    bleChannelsValues.indexOf(lowChannel)
+                                    bleChannelsValues.indexOf(lowChannel),
                                 )}
                                 disabled={isRunning}
                                 onChange={newMaxValue => {
@@ -130,7 +130,7 @@ export default () => {
                                         channelRangeChanged([
                                             channelRange[0],
                                             newMaxValue,
-                                        ])
+                                        ]),
                                     );
                                 }}
                             />
@@ -145,7 +145,7 @@ export default () => {
                                         channelRangeChanged([
                                             newValue,
                                             channelRange[1],
-                                        ])
+                                        ]),
                                     );
                                 },
                                 newValue => {
@@ -153,7 +153,7 @@ export default () => {
                                         channelRangeChanged([
                                             channelRange[0],
                                             newValue,
-                                        ])
+                                        ]),
                                     );
                                 },
                             ]}

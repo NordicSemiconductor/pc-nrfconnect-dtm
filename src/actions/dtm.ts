@@ -5,7 +5,7 @@
  */
 
 import {
-    AppThunk,
+    type AppThunk,
     persistSerialPortOptions,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
@@ -16,7 +16,7 @@ import {
     resetChannel,
     startedChannel,
 } from '../reducers/testReducer';
-import { RootState } from '../reducers/types';
+import { type RootState } from '../reducers/types';
 
 let dtm: DTM | undefined;
 
@@ -42,15 +42,15 @@ export const getDTM =
             dtm = new DTM(port, baudRate);
             dtm.onReset(() => dispatch(resetChannel()));
             dtm.onStarted(event =>
-                dispatch(dispatch(startedChannel(event.channel)))
+                dispatch(dispatch(startedChannel(event.channel))),
             );
             dtm.onEnded(event =>
                 dispatch(
                     endedChannel({
                         channel: event.channel,
                         received: event.packets,
-                    })
-                )
+                    }),
+                ),
             );
 
             dispatch(persistSerialPortOptions({ path: port, baudRate }));

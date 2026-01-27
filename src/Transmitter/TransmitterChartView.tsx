@@ -28,7 +28,7 @@ const shiftValue = Math.abs(Math.min(...dbmValues)) + bottomChartOffset;
 
 const chartDataTransmit = (
     currentChannel: number | undefined,
-    txPower: number
+    txPower: number,
 ) => {
     const active = Array.from(Array(bleChannels.length), () => 0);
     if (currentChannel !== undefined) {
@@ -37,7 +37,7 @@ const chartDataTransmit = (
 
     const bleChannelsUpdated = bleChannels.map(
         (channel, index) =>
-            `${channel} | ${FREQUENCY_BASE + index * FREQUENCY_INTERVAL} MHz`
+            `${channel} | ${FREQUENCY_BASE + index * FREQUENCY_INTERVAL} MHz`,
     );
 
     const datasets = [
@@ -89,7 +89,7 @@ const TransmitterChartView = () => {
         <Bar
             data={chartDataTransmit(
                 isRunning ? currentChannel : undefined,
-                txPower
+                txPower,
             )}
             options={{
                 maintainAspectRatio: false,

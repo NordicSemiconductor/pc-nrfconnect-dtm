@@ -101,7 +101,7 @@ export class DTM {
         listiner: (event: {
             type: 'transmitter' | 'receiver';
             channel: number;
-        }) => void
+        }) => void,
     ) {
         this.#eventEmiter.on('started', listiner);
         return () => {
@@ -114,7 +114,7 @@ export class DTM {
             type: 'transmitter' | 'receiver';
             channel: number;
             packets?: number;
-        }) => void
+        }) => void,
     ) {
         this.#eventEmiter.on('ended', listiner);
         return () => {
@@ -206,7 +206,7 @@ export class DTM {
     static carrierTestCMD(
         frequency: number,
         length: number,
-        bitpattern: number
+        bitpattern: number,
     ) {
         let lengthParam = length & 0x3f;
         if (bitpattern === DtmPacketType['Constant carrier']) {
@@ -215,14 +215,14 @@ export class DTM {
         return DTMTransport.createTransmitterCMD(
             frequency,
             lengthParam,
-            bitpattern
+            bitpattern,
         );
     }
 
     static carrierTestStudioCMD(
         frequency: number,
         length: number,
-        bitpattern: number
+        bitpattern: number,
     ) {
         let lengthParam = length & 0x3f;
         if (bitpattern === DtmPacketType['Constant carrier']) {
@@ -231,7 +231,7 @@ export class DTM {
         return DTMTransport.createTransmitterCMD(
             frequency,
             lengthParam,
-            bitpattern
+            bitpattern,
         );
     }
 
@@ -249,7 +249,7 @@ export class DTM {
             return validate0x09Command(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error(
-                `DTM setup tx power command failed with ${dbm} dbm`
+                `DTM setup tx power command failed with ${dbm} dbm`,
             );
         }
     }
@@ -277,7 +277,7 @@ export class DTM {
         const cmd = DTMTransport.createSetupCMD(
             DTM_CONTROL.RESET,
             DTM_PARAMETER.DEFAULT,
-            DTM_DC.DEFAULT
+            DTM_DC.DEFAULT,
         );
         try {
             return validateResult(await this.#dtmTransport.sendCMD(cmd));
@@ -299,13 +299,13 @@ export class DTM {
         const cmd = DTMTransport.createSetupCMD(
             DTM_CONTROL.ENABLE_LENGTH,
             lengthBits,
-            DTM_DC.DEFAULT
+            DTM_DC.DEFAULT,
         );
         try {
             return validateResult(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error(
-                `DTM setup length command failed with length ${length}`
+                `DTM setup length command failed with length ${length}`,
             );
         }
     }
@@ -323,13 +323,13 @@ export class DTM {
         const cmd = DTMTransport.createSetupCMD(
             DTM_CONTROL.PHY,
             phy,
-            DTM_DC.DEFAULT
+            DTM_DC.DEFAULT,
         );
         try {
             return validateResult(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error(
-                `DTM setup physical command failed with parameter ${DtmPhysicalLayer[phy]}`
+                `DTM setup physical command failed with parameter ${DtmPhysicalLayer[phy]}`,
             );
         }
     }
@@ -347,14 +347,14 @@ export class DTM {
         const cmd = DTMTransport.createSetupCMD(
             DTM_CONTROL.MODULATION,
             modulation,
-            DTM_DC.DEFAULT
+            DTM_DC.DEFAULT,
         );
         try {
             return validateResult(await this.#dtmTransport.sendCMD(cmd));
         } catch {
             throw new Error(
                 'DTM setup modulation command failed with parameter ' +
-                    `${DtmModulationMode[modulation]}`
+                    `${DtmModulationMode[modulation]}`,
             );
         }
     }
@@ -368,7 +368,7 @@ export class DTM {
         const cmd = DTMTransport.createSetupCMD(
             DTM_CONTROL.FEATURES,
             0,
-            DTM_DC.DEFAULT
+            DTM_DC.DEFAULT,
         );
         const response = await this.#dtmTransport.sendCMD(cmd);
         return response;
@@ -389,7 +389,7 @@ export class DTM {
         const cmd = DTMTransport.createSetupCMD(
             DTM_CONTROL.TXRX,
             parameter,
-            DTM_DC.DEFAULT
+            DTM_DC.DEFAULT,
         );
         const response = await this.#dtmTransport.sendCMD(cmd);
         return response;
@@ -409,7 +409,7 @@ export class DTM {
         bitpattern: number,
         length: number,
         channel: number,
-        timeout = 0
+        timeout = 0,
     ): Promise<TransmitterTestStatus | ErrorTestStatus> {
         this.#resetEvent();
         if (this.#isTransmitting) {
@@ -418,7 +418,7 @@ export class DTM {
         this.#isTransmitting = true;
         this.#timeoutEvent = this.startTimeoutEvent(
             () => this.#isTransmitting,
-            timeout
+            timeout,
         );
         this.#sweepTimedOut = false;
         this.#timedOut = false;
@@ -465,7 +465,7 @@ export class DTM {
         channelHigh: number,
         sweepTime = 1000,
         timeout = 0,
-        randomPattern = false
+        randomPattern = false,
     ): Promise<TestStatus> {
         this.#resetEvent();
         if (this.#isTransmitting) {
@@ -474,12 +474,12 @@ export class DTM {
         this.#isTransmitting = true;
         this.#timeoutEvent = this.startTimeoutEvent(
             () => this.#isTransmitting,
-            timeout
+            timeout,
         );
         let currentChannelIdx = 0;
         do {
             const frequency = channelToFrequency(
-                channelLow + currentChannelIdx
+                channelLow + currentChannelIdx,
             );
             this.#sweepTimedOut = false;
             this.#isTransmitting = false;
@@ -511,11 +511,11 @@ export class DTM {
                 };
             }
             const endEvent = this.#startedTransmitterEvent(
-                channelLow + currentChannelIdx
+                channelLow + currentChannelIdx,
             );
             const sweepTimeoutEvent = this.startSweepTimeoutEvent(
                 () => this.#isTransmitting,
-                sweepTime
+                sweepTime,
             );
             this.#sweepTimedOut = false;
             if (this.#timedOut) {
@@ -529,7 +529,7 @@ export class DTM {
 
             if (randomPattern) {
                 currentChannelIdx = Math.floor(
-                    Math.random() * (channelHigh - channelLow)
+                    Math.random() * (channelHigh - channelLow),
                 );
             } else {
                 currentChannelIdx =
@@ -555,7 +555,7 @@ export class DTM {
         bitpattern: number,
         length: number,
         channel: number,
-        timeout = 0
+        timeout = 0,
     ): Promise<ReceiverTestStatus | ErrorTestStatus> {
         this.#resetEvent();
         if (this.#isReceiving) {
@@ -564,7 +564,7 @@ export class DTM {
         this.#isReceiving = true;
         this.#timeoutEvent = this.startTimeoutEvent(
             () => this.#isReceiving,
-            timeout
+            timeout,
         );
         this.#timedOut = false;
         this.#sweepTimedOut = false;
@@ -573,7 +573,7 @@ export class DTM {
         const cmd = DTMTransport.createReceiverCMD(
             frequency,
             length,
-            bitpattern
+            bitpattern,
         );
         const endEventDataReceivedEvt = this.endEventDataReceived();
         const response = await this.#dtmTransport
@@ -623,7 +623,7 @@ export class DTM {
         channelHigh: number,
         sweepTime = 1000,
         timeout = 0,
-        randomPattern = false
+        randomPattern = false,
     ): Promise<TestStatus> {
         this.#resetEvent();
         if (this.#isReceiving) {
@@ -633,12 +633,12 @@ export class DTM {
         const packetsReceivedForChannel = new Array(40).fill(0);
         this.#timeoutEvent = this.startTimeoutEvent(
             () => this.#isReceiving,
-            timeout
+            timeout,
         );
         let currentChannelIdx = 0;
         do {
             const frequency = channelToFrequency(
-                channelLow + currentChannelIdx
+                channelLow + currentChannelIdx,
             );
             this.#sweepTimedOut = false;
             this.#isReceiving = false;
@@ -650,7 +650,7 @@ export class DTM {
             const cmd = DTMTransport.createReceiverCMD(
                 frequency,
                 length,
-                bitpattern
+                bitpattern,
             );
             const endEventDataReceivedEvt = this.endEventDataReceived();
             const responseEvent = this.#dtmTransport
@@ -674,12 +674,12 @@ export class DTM {
             }
 
             const endEvent = this.#startedReceiverEvent(
-                channelLow + currentChannelIdx
+                channelLow + currentChannelIdx,
             );
 
             const sweepTimeoutEvent = this.startSweepTimeoutEvent(
                 () => this.#isReceiving,
-                sweepTime
+                sweepTime,
             );
             this.#sweepTimedOut = false;
             if (this.#dbmPayloadtimedOut) {
@@ -696,7 +696,7 @@ export class DTM {
 
             if (randomPattern) {
                 currentChannelIdx = Math.ceil(
-                    Math.random() * (channelHigh - channelLow)
+                    Math.random() * (channelHigh - channelLow),
                 );
             } else {
                 currentChannelIdx =

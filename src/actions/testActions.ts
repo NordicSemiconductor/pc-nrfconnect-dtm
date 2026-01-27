@@ -4,9 +4,12 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { AppThunk, logger } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import {
+    type AppThunk,
+    logger,
+} from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import { DTM } from '../dtm/DTM';
+import { type DTM } from '../dtm/DTM';
 import { ChannelMode } from '../dtm/types';
 import { getSerialports } from '../reducers/deviceReducer';
 import {
@@ -27,7 +30,7 @@ import {
     actionSucceeded,
     startedAction,
 } from '../reducers/testReducer';
-import { RootState } from '../reducers/types';
+import { type RootState } from '../reducers/types';
 import { communicationError } from '../reducers/warningReducer';
 import { bleChannelsValues } from '../SidePanel/ChannelView';
 import { paneName } from '../utils/panes';
@@ -102,7 +105,7 @@ export const startTests =
                     modulationMode,
                     phy,
                     dtm,
-                })
+                }),
             );
 
             dispatch(clearCommunicationErrorWarning());
@@ -118,7 +121,7 @@ export const startTests =
                     bitpattern,
                     length,
                     singleChannelIndexed,
-                    timeoutms
+                    timeoutms,
                 );
             } else if (
                 testMode === 'transmitter' &&
@@ -130,7 +133,7 @@ export const startTests =
                     Math.min(...indexes),
                     Math.max(...indexes),
                     sweepTime,
-                    timeoutms
+                    timeoutms,
                 );
             } else if (
                 testMode === 'receiver' &&
@@ -150,7 +153,7 @@ export const startTests =
                     singleChannelIndexed,
                     singleChannelIndexed,
                     sweepTime,
-                    timeoutms
+                    timeoutms,
                 );
             } else {
                 testPromise = dtm.sweepReceiverTest(
@@ -159,7 +162,7 @@ export const startTests =
                     Math.min(...indexes),
                     Math.max(...indexes),
                     sweepTime,
-                    timeoutms
+                    timeoutms,
                 );
             }
 
@@ -175,14 +178,14 @@ export const startTests =
                     logger.info(
                         `Transmitter test finished successfully. Received ${status.receivedPerChannel.reduce(
                             (a, b) => a + b,
-                            0
-                        )} packets.`
+                            0,
+                        )} packets.`,
                     );
                 }
             });
 
             dispatch(startedAction(testMode));
-        } catch (e) {
+        } catch {
             dtm?.endTest().catch(() => undefined);
             logger.info(errorMessage);
             dispatch(communicationError(errorMessage));

@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { deviceDeselected } from './deviceReducer';
-import { Mode, RootState, TestState } from './types';
+import { type Mode, type RootState, type TestState } from './types';
 
 const initialState: TestState = {
     lastReceived: new Array(40).fill(0),

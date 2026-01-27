@@ -26,7 +26,7 @@ const FREQUENCY_INTERVAL = 2;
 
 const bleChannelsUpdated = bleChannels.map(
     (channel, index) =>
-        `${channel} | ${FREQUENCY_BASE + index * FREQUENCY_INTERVAL} MHz`
+        `${channel} | ${FREQUENCY_BASE + index * FREQUENCY_INTERVAL} MHz`,
 );
 
 const ChartView = () => {

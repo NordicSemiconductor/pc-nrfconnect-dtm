@@ -37,7 +37,7 @@ describe('TX power return events', () => {
         valuesEv.forEach(([value, shouldSucceed]) => {
             try {
                 mock(value);
-            } catch (e) {
+            } catch {
                 // Ignore the error, we just want to check if it was thrown
             }
             if (shouldSucceed) {

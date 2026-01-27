@@ -17,7 +17,7 @@ describe('Initial state', () => {
             <>
                 <ChannelView />
                 <ToggleChannelModeView isRunning={false} />
-            </>
+            </>,
         );
 
         const singleBtn = screen.getByRole(`button`, { name: /single/i });
@@ -30,7 +30,7 @@ describe('Initial state', () => {
             <>
                 <ChannelView />
                 <ToggleChannelModeView isRunning={false} />
-            </>
+            </>,
         );
 
         const sweepBtn = screen.getByRole(`button`, { name: /sweep/i });
@@ -45,7 +45,7 @@ describe('Select sweep', () => {
             <>
                 <ChannelView />
                 <ToggleChannelModeView isRunning={false} />
-            </>
+            </>,
         );
 
         const sweepBtn = screen.getByRole('button', { name: /sweep/i });
@@ -59,7 +59,7 @@ describe('Select sweep', () => {
             <>
                 <ChannelView />
                 <ToggleChannelModeView isRunning={false} />
-            </>
+            </>,
         );
 
         userEvent.click(screen.getByRole('button', { name: /sweep/i }));

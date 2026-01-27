@@ -6,7 +6,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-import { RootState, WarningState } from './types';
+import { type RootState, type WarningState } from './types';
 
 const initialState: WarningState = {
     communicationError: '',

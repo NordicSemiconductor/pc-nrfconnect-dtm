@@ -2,228 +2,228 @@
 
 ### Added
 
--   Documentation section in the About tab.
+- Documentation section in the About tab.
 
 ## 3.0.0 - 2025-12-18
 
 ### Added
 
--   Allow selection of all values within tx power range.
--   Tooltip for the transmit power level.
+- Allow selection of all values within tx power range.
+- Tooltip for the transmit power level.
 
 ### Changed
 
--   Use of `TEST_SETUP` command instead of `TRANSMITTER_TEST` to set TX value.
--   Graph display shows values linearly.
+- Use of `TEST_SETUP` command instead of `TRANSMITTER_TEST` to set TX value.
+- Graph display shows values linearly.
 
 ### Removed
 
--   Prebuilt firmware.
--   Removed filtering available dBm values per device.
+- Prebuilt firmware.
+- Removed filtering available dBm values per device.
 
 ### Fixed
 
--   Issue where the value set in the **Channel Range** slider in the sweep mode
-    would not be correctly communicated to the device.
+- Issue where the value set in the **Channel Range** slider in the sweep mode
+  would not be correctly communicated to the device.
 
 ## 2.5.3 - 2025-08-11
 
 ### Fixed
 
--   Issue with the side panel actions being visible when the About tab is
-    selected. The actions are now hidden on the About tab.
--   Issue with incorrect transmit power communicated to the nRF54L15 DK.
--   Issue with incorrect transmit power values for the nRF54L15 DK. These values
-    can now be set from -40 to +8 dBm for this DK.
+- Issue with the side panel actions being visible when the About tab is
+  selected. The actions are now hidden on the About tab.
+- Issue with incorrect transmit power communicated to the nRF54L15 DK.
+- Issue with incorrect transmit power values for the nRF54L15 DK. These values
+  can now be set from -40 to +8 dBm for this DK.
 
 ## 2.5.2 - 2025-07-14
 
 ### Fixed
 
--   Issue with selecting devices when logging is set to verbose.
+- Issue with selecting devices when logging is set to verbose.
 
 ## 2.5.1 - 2025-07-08
 
 ### Changed
 
--   Maintenance release to update the dependencies.
+- Maintenance release to update the dependencies.
 
 ## 2.5.0 - 2025-06-19
 
 ### Added
 
--   Drop-down menu for changing the baud rate in order to use custom firmwares.
+- Drop-down menu for changing the baud rate in order to use custom firmwares.
 
 ### Changed
 
--   Update dependencies to support the nRF Connect for Desktop v5.2.0 release.
--   nRF54L15 DK: Only valid Transmit Power values (-8 dBm to 8 dBm) are now
-    displayed.
+- Update dependencies to support the nRF Connect for Desktop v5.2.0 release.
+- nRF54L15 DK: Only valid Transmit Power values (-8 dBm to 8 dBm) are now
+  displayed.
 
 ### Fixed
 
--   Issue where the Transmit Power slider would disallow setting valid values.
+- Issue where the Transmit Power slider would disallow setting valid values.
 
 ## 2.4.2 - 2024-11-11
 
 ### Changed
 
--   Updated `nrfutil device` to v2.6.4.
+- Updated `nrfutil device` to v2.6.4.
 
 ## 2.4.1 - 2024-05-21
 
 ### Added
 
--   Support for Apple silicon.
+- Support for Apple silicon.
 
 ### Fixed
 
--   Sweep mode in some cases wasn't using the selected channels.
--   Transmit power was sometimes set to an invalid value when selecting the
-    nRF52 DK.
+- Sweep mode in some cases wasn't using the selected channels.
+- Transmit power was sometimes set to an invalid value when selecting the nRF52
+  DK.
 
 ## 2.4.0 - 2024-04-09
 
 ### Changed
 
--   Integrated the functionality of the Feedback tab in the **Give Feedback**
-    dialog in the About tab.
+- Integrated the functionality of the Feedback tab in the **Give Feedback**
+  dialog in the About tab.
 
 ## 2.3.1 - 2024-03-25
 
 ### Fixed
 
--   Channel selection on the side panel did not match the chart.
+- Channel selection on the side panel did not match the chart.
 
 ## 2.3.0 - 2024-03-13
 
 ### Added
 
--   Persist state of the Show Log panel.
--   Feedback tab.
+- Persist state of the Show Log panel.
+- Feedback tab.
 
 ### Changed
 
--   Updated `nrfutil device` to v2.1.1.
+- Updated `nrfutil device` to v2.1.1.
 
 ### Fixed
 
--   Number input controls using `Up` and `Down` keyboard keys now work as
-    expected.
--   The Transmit channel range on Sweep Mode no longer affects the validation of
-    the Transmit channel on the Single mode.
+- Number input controls using `Up` and `Down` keyboard keys now work as
+  expected.
+- The Transmit channel range on Sweep Mode no longer affects the validation of
+  the Transmit channel on the Single mode.
 
 ## 2.2.0 - 2023-12-07
 
 ### Changed
 
--   From **nrf-device-lib-js** to **nrfutil device**, as a backend for
-    interacting with devices.
+- From **nrf-device-lib-js** to **nrfutil device**, as a backend for interacting
+  with devices.
 
 ## 2.1.0 - 2023-04-03
 
 ### Added
 
--   Port selection for devices with multiple serial ports.
--   Selected ports are persisted per device.
+- Port selection for devices with multiple serial ports.
+- Selected ports are persisted per device.
 
 ### Fixed
 
--   While receiving in sweep mode, the transmitter tab wrongly showed a sweep
-    pattern. Now the tab of the non-active mode states that only the other tab
-    shows results.
--   Devices were sometimes mistakenly detected as having readback protection.
+- While receiving in sweep mode, the transmitter tab wrongly showed a sweep
+  pattern. Now the tab of the non-active mode states that only the other tab
+  shows results.
+- Devices were sometimes mistakenly detected as having readback protection.
 
 ## 2.0.4 - 2023-02-13
 
 ### Changed
 
--   Increased required nRF Connect for Desktop version to v4.0.0.
--   If the firmware is wrong and the device is readback protected, offer a
-    solution that recovers the device.
+- Increased required nRF Connect for Desktop version to v4.0.0.
+- If the firmware is wrong and the device is readback protected, offer a
+  solution that recovers the device.
 
 ## 2.0.3 - 2022-09-05
 
 ### Changed
 
--   Increased required nRF Connect for Desktop version to 3.12.
+- Increased required nRF Connect for Desktop version to 3.12.
 
 ## 2.0.2 - 2022-21-04
 
 ### Fixed
 
--   DTM did not display all serial port devices.
+- DTM did not display all serial port devices.
 
 ## 2.0.1 - 2022-01-04
 
 ### Fixed
 
--   Device busy error after de- and reselecting a device.
+- Device busy error after de- and reselecting a device.
 
 ### Changed
 
--   New icon.
+- New icon.
 
 ## 2.0.0 - 2021-11-01
 
 ### Changed
 
--   Establish compatibility with nRF Connect for Desktop 3.8
--   New UI design.
--   Split Transmitter and Receiver into seperate panes.
--   Timeout updates UI after completion.
+- Establish compatibility with nRF Connect for Desktop 3.8
+- New UI design.
+- Split Transmitter and Receiver into seperate panes.
+- Timeout updates UI after completion.
 
 ## 1.1.7 - 2021-02-22
 
 ### Removed
 
--   Live view of captured packets in receive mode. Packets are only displayed in
-    the UI after sampling has stopped.
+- Live view of captured packets in receive mode. Packets are only displayed in
+  the UI after sampling has stopped.
 
 ## 1.1.6 - 2020-11-27
 
 ### Fixed
 
--   Constant carrier for transmitter.
+- Constant carrier for transmitter.
 
 ## 1.1.5 - 2020-09-16
 
 ### Changed
 
--   Enable constant carrier for transmitter.
+- Enable constant carrier for transmitter.
 
 ## 1.1.4 - 2020-07-08
 
 ### Fixed
 
--   Not showing a graph when selecting -40 dBm output.
--   Tooltip value when hovering over the TX bar.
+- Not showing a graph when selecting -40 dBm output.
+- Tooltip value when hovering over the TX bar.
 
 ## 1.1.3 - 2020-06-09
 
 ### Added
 
--   Support for custom firmware with Nordic device.
+- Support for custom firmware with Nordic device.
 
 ## 1.1.2 - 2020-05-04
 
 ### Changed
 
--   Allow 2Mb phy for unknown devices.
+- Allow 2Mb phy for unknown devices.
 
 ## 1.1.1
 
 ### Fixed
 
--   Avoid programming custom devices.
+- Avoid programming custom devices.
 
 ## 1.1.0 - 2020-01-15
 
 ### Added
 
--   Support custom devices and custom firmware.
--   Support for physical serial port on Windows.
+- Support custom devices and custom firmware.
+- Support for physical serial port on Windows.
 
 ## 1.0.0 - 2020-01-08
 
--   Initial public release.
+- Initial public release.

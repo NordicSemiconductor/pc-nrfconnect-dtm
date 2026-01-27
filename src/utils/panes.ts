@@ -6,7 +6,7 @@
 
 import { currentPane } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
-import { RootState } from '../reducers/types';
+import { type RootState } from '../reducers/types';
 
 // todo: sync with Mode type from 'src/reducers/types.ts'
 export enum Panes {

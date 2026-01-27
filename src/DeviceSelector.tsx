@@ -7,12 +7,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
-    AppThunk,
-    Device,
+    type AppThunk,
+    type Device,
     DeviceSelector,
     logger,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { DeviceTraits } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/device';
+import { type DeviceTraits } from '@nordicsemiconductor/pc-nrfconnect-shared/nrfutil/device';
 
 import { disposeDTM } from './actions/dtm';
 import {
@@ -22,7 +22,7 @@ import {
     serialportSelected,
     setDeviceReady,
 } from './reducers/deviceReducer';
-import { RootState } from './reducers/types';
+import { type RootState } from './reducers/types';
 import { clearAllWarnings } from './reducers/warningReducer';
 
 const deviceListing: DeviceTraits = {
@@ -64,15 +64,15 @@ export const onDeviceIsReady =
             dtmBoardSelected({
                 board: device.devkit?.boardVersion,
                 serialports: device.serialPorts.map(port => port.comName ?? ''),
-            })
+            }),
         );
 
         if (device.persistedSerialPortOptions) {
             dispatch(
-                serialportSelected(device.persistedSerialPortOptions.path)
+                serialportSelected(device.persistedSerialPortOptions.path),
             );
             dispatch(
-                baudRateSelected(device.persistedSerialPortOptions.baudRate)
+                baudRateSelected(device.persistedSerialPortOptions.baudRate),
             );
         }
 

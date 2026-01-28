@@ -63,7 +63,12 @@ const chartDataTransmit = (
             label: 'bgBars',
             backgroundColor: chartColors.background,
             borderWidth: 0,
-            data: Array(bleChannelsUpdated.length).fill(100),
+            data: Array(bleChannelsUpdated.length).fill(
+                bottomChartOffset +
+                    Math.abs(dbmValues.min) +
+                    dbmValues.max +
+                    topChartOffset
+            ),
             display: false,
             datalabels: { display: false },
         },

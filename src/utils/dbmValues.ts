@@ -4,4 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-export default [-40, -20, -16, -12, -8, -4, 0, 2, 3, 4, 5, 6, 7, 8];
+export default {
+    min: -100,
+    max: 10,
+};

@@ -6,7 +6,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-import { DeviceState, RootState } from './types';
+import { type DeviceState, type RootState } from './types';
 
 const initialState: DeviceState = {
     board: null,

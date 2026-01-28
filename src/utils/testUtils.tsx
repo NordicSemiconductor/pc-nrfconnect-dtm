@@ -7,12 +7,12 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
 
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { Provider } from 'react-redux';
 import { currentPane } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { render, RenderOptions } from '@testing-library/react';
+import { render, type RenderOptions } from '@testing-library/react';
 import {
-    AnyAction,
+    type AnyAction,
     applyMiddleware,
     combineReducers,
     createStore,
@@ -24,7 +24,7 @@ import reducer from '../reducers';
 const createPreparedStore = (actions: AnyAction[]) => {
     const store = createStore(
         combineReducers({ app: reducer }),
-        applyMiddleware(thunk)
+        applyMiddleware(thunk),
     );
     actions.forEach(store.dispatch);
 
@@ -32,14 +32,14 @@ const createPreparedStore = (actions: AnyAction[]) => {
 };
 
 window.ResizeObserver = class {
-    observe() {}
-    disconnect() {}
-    unobserve() {}
+    observe = jest.fn();
+    disconnect = jest.fn();
+    unobserve = jest.fn();
 };
 
 window.MutationObserver = class {
-    observe() {}
-    disconnect() {}
+    observe = jest.fn();
+    disconnect = jest.fn();
     takeRecords() {
         return [];
     }
@@ -48,7 +48,7 @@ window.MutationObserver = class {
 const customRender = (
     element: React.ReactElement,
     actions: AnyAction[] = [],
-    options: RenderOptions = {}
+    options: RenderOptions = {},
 ) => {
     const Wrapper: FC = props => (
         <Provider store={createPreparedStore(actions)} {...props} />

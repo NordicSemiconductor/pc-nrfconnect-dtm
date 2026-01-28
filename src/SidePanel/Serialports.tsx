@@ -40,7 +40,7 @@ export default () => {
                 items={dropdownItems}
                 selectedItem={
                     dropdownItems.find(
-                        e => e.value === (selectedSerialport as string)
+                        e => e.value === (selectedSerialport as string),
                     ) ?? dropdownItems[0]
                 }
             />

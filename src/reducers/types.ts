@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { NrfConnectState } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { type NrfConnectState } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import {
-    ChannelMode,
-    DtmModulationMode,
-    DtmPacketType,
-    DtmPhysicalLayer,
+    type ChannelMode,
+    type DtmModulationMode,
+    type DtmPacketType,
+    type DtmPhysicalLayer,
 } from '../dtm/types';
 
 export interface DeviceState {

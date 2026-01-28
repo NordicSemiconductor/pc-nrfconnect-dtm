@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-4-Clause
  */
 
-import { AppThunk } from '@nordicsemiconductor/pc-nrfconnect-shared';
+import { type AppThunk } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
 import { ChannelMode } from '../dtm/types';
 import {

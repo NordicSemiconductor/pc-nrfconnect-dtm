@@ -5,17 +5,17 @@
  */
 
 import { bleChannels } from '@nordicsemiconductor/pc-nrfconnect-shared';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import {
     ChannelMode,
     DtmModulationMode,
-    DtmPacketType,
+    type DtmPacketType,
     DtmPhysicalLayer,
 } from '../dtm/types';
 import { deviceDeselected } from './deviceReducer';
 import { actionStopped } from './testReducer';
-import { RootState, SettingsState } from './types';
+import { type RootState, type SettingsState } from './types';
 
 const initialState: SettingsState = {
     channelMode: ChannelMode.single,

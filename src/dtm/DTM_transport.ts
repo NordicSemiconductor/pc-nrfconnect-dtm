@@ -157,7 +157,7 @@ class DTMTransport {
             this.#port.open(err => {
                 if (err) {
                     DTMTransport.#debug(
-                        `Failed to open serialport with error: ${err}`
+                        `Failed to open serialport with error: ${err}`,
                     );
                     reject(err);
                     return;
@@ -174,8 +174,8 @@ class DTMTransport {
                 if (err) {
                     DTMTransport.#debug(
                         `Failed to close serialport with error: ${describeError(
-                            err
-                        )}`
+                            err,
+                        )}`,
                     );
                     reject(err);
                     return;
@@ -212,7 +212,7 @@ class DTMTransport {
     static createSetupCMD(
         control = DTM_CONTROL.RESET,
         parameter = DTM_PARAMETER.DEFAULT,
-        dc = DTM_DC.DEFAULT
+        dc = DTM_DC.DEFAULT,
     ) {
         DTMTransport.#debug(`Create setup CMD with control: ${control}`);
         DTMTransport.#debug(`Create setup CMD with parameter: ${parameter}`);
@@ -223,7 +223,7 @@ class DTMTransport {
             DTM_CMD.TEST_SETUP,
             controlBits,
             parameterBits,
-            dc
+            dc,
         );
     }
 
@@ -233,7 +233,7 @@ class DTMTransport {
             DTM_CMD.TEST_END,
             toBitString(DTM_CONTROL.END),
             toBitString(DTM_PARAMETER.DEFAULT),
-            DTM_DC.DEFAULT
+            DTM_DC.DEFAULT,
         );
     }
 
@@ -249,10 +249,10 @@ class DTMTransport {
     static createTransmitterCMD(
         frequency = 2402,
         length = 0,
-        pkt = DtmPacketType.PRBS9
+        pkt = DtmPacketType.PRBS9,
     ) {
         DTMTransport.#debug(
-            `Create transmitter CMD with frequency: ${frequency}`
+            `Create transmitter CMD with frequency: ${frequency}`,
         );
         DTMTransport.#debug(`Create transmitter CMD with length: ${length}`);
         DTMTransport.#debug(`Create transmitter CMD with packet type: ${pkt}`);
@@ -264,7 +264,7 @@ class DTMTransport {
             DTM_CMD.TRANSMITTER_TEST,
             dtmFrequency,
             dtmLength,
-            dtmPkt
+            dtmPkt,
         );
     }
 
@@ -280,7 +280,7 @@ class DTMTransport {
     static createReceiverCMD(
         frequency = 2402,
         length = 0,
-        pkt = DtmPacketType.PRBS9
+        pkt = DtmPacketType.PRBS9,
     ) {
         DTMTransport.#debug(`Create receiver CMD with frequency: ${frequency}`);
         DTMTransport.#debug(`Create receiver CMD with length: ${length}`);
@@ -292,7 +292,7 @@ class DTMTransport {
             DTM_CMD.RECEIVER_TEST,
             dtmFrequency,
             dtmLength,
-            dtmPkt
+            dtmPkt,
         );
     }
 
@@ -303,7 +303,7 @@ class DTMTransport {
         return DTMTransport.#createCMD(
             DTM_CMD.TEST_SETUP,
             toBitString(9, 6),
-            dtmDbm
+            dtmDbm,
         );
     }
 
@@ -316,7 +316,7 @@ class DTMTransport {
             DTM_CMD.TRANSMITTER_TEST,
             dtmTimer,
             dtmLength,
-            dtmPkt
+            dtmPkt,
         );
     }
 

@@ -39,5 +39,5 @@ render(
                 Main: Receiver,
             },
         ]}
-    />
+    />,
 );

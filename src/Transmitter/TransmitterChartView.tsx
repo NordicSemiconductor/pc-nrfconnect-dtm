@@ -67,7 +67,7 @@ const chartDataTransmit = (
                 bottomChartOffset +
                     Math.abs(dbmValues.min) +
                     dbmValues.max +
-                    topChartOffset
+                    topChartOffset,
             ),
             display: false,
             datalabels: { display: false },

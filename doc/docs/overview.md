@@ -4,13 +4,11 @@ After starting the Direct Test Mode app, the main application window is displaye
 
 ![Direct Test Mode app window](./screenshots/dtm_overview.png "Direct Test Mode app window")
 
-The available options and information change after you **Select Device**.
+## Common interface
 
-## Select Device
+This app uses the nRF Connect for Desktop UI framework. Shared UI elements such as **Select device**, **About** tab, and **Log** panel are described in the [Common user interface](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/common_interface.html) documentation.
 
-Once you connect a device to the system, it becomes visible and available when you click on the **Select device** drop-down list. You can choose a device from the list of connected devices to perform further actions on the device.
-
-When you select a device:
+The available options and information change after you select a device. When you select a device:
 
 * The **Serial port** menu appears, where you can select the port for testing, if you do not want to use the default one.
 
@@ -64,16 +62,3 @@ The available settings are related to the DTM specification.
 |                      | Receive period     | Time during which to receive packets. Only available for the Sweep mode.                                    |
 |                      | Physical layer     | Select the PHY layers on which to receive test packets.                                                     |
 |                      | Timeout            | Select the duration of time for which the device under test (DUT) waits for a response from another device. |
-
-## Log
-
-The Log panel allows you to view the most important log events, tagged with a timestamp. Each time you open the app, a new session log file is created. You can find the Log panel and its controls, below the main application Window.
-
-- When troubleshooting, to view more detailed information than shown in the Log panel, use **Open log file** to open the current log file in a text editor.
-- To clear the information currently displayed in the Log panel, use **Clear Log**. The contents of the log file are not affected.
-- To hide or display the Log panel in the user interface, use **Show Log**.
-- To freeze Log panel scrolling, use **Autoscroll Log**.
-
-## About tab
-
-You can view application information, restore defaults, access source code and documentation. You also can find information on the selected device, access support tools, send feedback, and enable verbose logging.

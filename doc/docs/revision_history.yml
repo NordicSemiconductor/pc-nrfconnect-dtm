@@ -12,7 +12,7 @@ sections:
   - "Removed information about the prebuilt firmware for the nRF52 DK (nRF52833 DK) and nRF52840 DK from the [Supported devices](index.md#supported-devices) section."
 - name: May 2025
   entries:
-  - "Added the information about the [Baud rate menu](./overview.md#baud-rate) on the [Overview and user interface](./overview.md#select-device) page."
+  - "Added the information about the [Baud rate menu](./overview.md#baud-rate) on the [Overview and user interface](./overview.md) page."
   - "Updated the [Supported devices](index.md#supported-devices) section with more detailed information."
 - name: January 2025
   entries:

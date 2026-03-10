@@ -1,3 +1,9 @@
+## 3.1.1 - 2026-03-10
+
+### Changed
+
+- Updated the bundled `nrfutil device` to v2.17.5.
+
 ## 3.1.0 - 2026-02-02
 
 ### Added

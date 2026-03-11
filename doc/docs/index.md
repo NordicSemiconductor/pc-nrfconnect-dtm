@@ -1,4 +1,4 @@
-# Direct Test Mode app
+# Get started
 
 The Direct Test Mode app in nRF Connect for Desktop provides a graphical UI for the Direct Test Mode (DTM) commands through 2-wire UART. The DTM is a Bluetooth® test framework used for performing RF PHY testing of Bluetooth Low Energy devices and ensuring interoperability of the Bluetooth devices.
 
@@ -17,11 +17,9 @@ See the [Bluetooth Core specification](https://www.bluetooth.com/specifications/
 
       ![Testing setup for the Direct Test Mode Bluetooth sample](./screenshots/bt_dtm_dut.svg "Testing setup for the Direct Test Mode Bluetooth sample")
 
-The Direct Test Mode app is installed and updated using [nRF Connect for Desktop](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/index.html) (v4.4.1 or later).
-
 ## Installing the Direct Test Mode app
 
-For installation instructions, see [Installing nRF Connect for Desktop apps](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/installing_apps.html) in the nRF Connect for Desktop documentation.
+For installation instructions, see [Installing nRF Connect for Desktop apps](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/installing_apps.html).
 
 ## Supported devices
 

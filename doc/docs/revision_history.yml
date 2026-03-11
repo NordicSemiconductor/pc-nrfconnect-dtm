@@ -1,0 +1,22 @@
+tool:
+- name: Direct Test Mode app
+  link: true
+sections:
+- name: January 2026
+  entries:
+  - "Renamed the Home page to [Get started](./index.md)."
+  - "Removed the separate Installing the Direct Test Mode app page. This page is now a section of the Get started page."
+- name: December 2025
+  entries:
+  - "Updated the [Transmitter tab settings](./overview.md#transmitter-tab) section with transmit power range values."
+  - "Removed information about the prebuilt firmware for the nRF52 DK (nRF52833 DK) and nRF52840 DK from the [Supported devices](index.md#supported-devices) section."
+- name: May 2025
+  entries:
+  - "Added the information about the [Baud rate menu](./overview.md#baud-rate) on the [Overview and user interface](./overview.md) page."
+  - "Updated the [Supported devices](index.md#supported-devices) section with more detailed information."
+- name: January 2025
+  entries:
+  - "Added the [Application source code](./index.md#application-source-code) section on the [Home](./index.md) page."
+- name: April 2024
+  entries:
+  - "First release, for the [v2.3.1](https://github.com/NordicSemiconductor/pc-nrfconnect-dtm/blob/main/Changelog.md) of the application."

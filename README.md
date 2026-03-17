@@ -16,13 +16,13 @@ specification.
 
 The Direct Test Mode app is installed from nRF Connect from Desktop. For
 detailed steps, see
-[Installing nRF Connect for Desktop apps](https://docs.nordicsemi.com/bundle/nrf-connect-desktop/page/installing_apps.html)
+[Installing nRF Connect for Desktop apps](https://docs.nordicsemi.com/bundle/swtools_docs/page/app/nrf-connect-desktop/installing_apps.html)
 in the nRF Connect from Desktop documentation.
 
 ## Documentation
 
 Read the
-[Direct Test Mode app](https://docs.nordicsemi.com/bundle/nrf-connect-direct-test-mode/page/index.html)
+[Direct Test Mode app](https://docs.nordicsemi.com/bundle/swtools_docs/page/app/pc-nrfconnect-dtm/index.html)
 official documentation.
 
 ## Development

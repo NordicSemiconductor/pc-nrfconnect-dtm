@@ -19,4 +19,4 @@ sections:
   - "Added the [Application source code](./index.md#application-source-code) section on the [Home](./index.md) page."
 - name: April 2024
   entries:
-  - "First release, for the [v2.3.1](https://github.com/NordicSemiconductor/pc-nrfconnect-dtm/blob/main/Changelog.md) of the application."
+  - "First release, for the [v2.3.1](https://github.com/nordicsemi/pc-nrfconnect-dtm/blob/main/Changelog.md) of the application."

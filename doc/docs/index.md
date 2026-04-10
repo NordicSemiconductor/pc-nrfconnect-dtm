@@ -34,5 +34,5 @@ The Direct Test Mode app can be used with devices programmed with firmware compa
 
 ## Application source code
 
-The code of the application is open source and [available on GitHub](https://github.com/NordicSemiconductor/pc-nrfconnect-dtm).
+The code of the application is open source and [available on GitHub](https://github.com/nordicsemi/pc-nrfconnect-dtm).
 Feel free to fork the repository and clone it for secondary development or feature contributions.

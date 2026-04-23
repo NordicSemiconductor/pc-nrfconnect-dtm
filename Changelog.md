@@ -1,8 +1,8 @@
 ## 3.1.2 - 2026-04-23
 
-### Changed
+### Added
 
-- Maintenance release to update the dependencies.
+- The nRF54LS05 DK to the list of known devices.
 
 ## 3.1.1 - 2026-03-10
 

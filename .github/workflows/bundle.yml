@@ -1,14 +1,22 @@
 name: Bundle
 
-# Produces a drag-and-drop installable app bundle (*.tgz) for
-# nRF Connect for Desktop. Run manually, then download the artifact.
+# Builds, checks, tests and packs a drag-and-drop installable app bundle
+# (*.tgz) for nRF Connect for Desktop. Download the artifact from the run.
 
 on:
+    push:
+    pull_request:
+        types: [opened, reopened, synchronize]
     workflow_dispatch:
         inputs:
             ref:
                 description: 'Branch, tag or commit SHA to bundle'
                 type: string
+
+# Cancel superseded runs on the same ref (e.g. push + its PR).
+concurrency:
+    group: bundle-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
     bundle:

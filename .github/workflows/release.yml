@@ -1,4 +1,4 @@
-name: Release
+﻿name: Release
 
 on:
     workflow_dispatch:
@@ -22,5 +22,5 @@ jobs:
         with:
             source: ${{ inputs.source }}
             ref: ${{ inputs.ref }}
-            doc_bundle_name: nrf-connect-direct-test-mode
+            unified_doc_project_name: pc-nrfconnect-dtm
         secrets: inherit

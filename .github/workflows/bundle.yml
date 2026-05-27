@@ -1,0 +1,18 @@
+name: Bundle
+
+# Produces a drag-and-drop installable app bundle (*.tgz) for
+# nRF Connect for Desktop. Run manually, then download the artifact.
+
+on:
+    workflow_dispatch:
+        inputs:
+            ref:
+                description: 'Branch, tag or commit SHA to bundle'
+                type: string
+
+jobs:
+    bundle:
+        uses: nordicsemi/pc-nrfconnect-shared/.github/workflows/build-app.yml@main
+        with:
+            ref: ${{ inputs.ref }}
+            force_pack: true

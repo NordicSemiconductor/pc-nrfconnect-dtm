@@ -12,6 +12,8 @@ const defaultDevice = {
         PHY_LE_2M: DtmPhysicalLayer['LE 2Mbps'],
         PHY_LE_CODED_S8: DtmPhysicalLayer['LE Coded S8'],
         PHY_LE_CODED_S2: DtmPhysicalLayer['LE Coded S2'],
+        PHY_4MBPS_BT06: DtmPhysicalLayer['4 Mbps BT=0.6'],
+        PHY_4MBPS_BT04: DtmPhysicalLayer['4 Mbps BT=0.4'],
     },
 };
 

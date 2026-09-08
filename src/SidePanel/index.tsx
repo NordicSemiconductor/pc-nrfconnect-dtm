@@ -11,6 +11,7 @@ import { Group, SidePanel } from '@nordicsemiconductor/pc-nrfconnect-shared';
 import { getIsRunning } from '../reducers/testReducer';
 import { isReceiverPane, isTransmitterPane } from '../utils/panes';
 import BaudRate from './BaudRate';
+import BootloaderView from './BootloaderView';
 import ChannelView from './ChannelView';
 import PacketView from './PacketView';
 import PhyTypeView from './PhyTypeView';
@@ -42,6 +43,9 @@ const AppSidePanelView = () => {
                         <TimeoutView />
                     </Group>
                     <RunTestView />
+                    <Group heading="Firmware" gap={4}>
+                        <BootloaderView />
+                    </Group>
                 </>
             )}
         </SidePanel>

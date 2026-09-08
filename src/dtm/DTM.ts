@@ -255,6 +255,22 @@ export class DTM {
     }
 
     /**
+     * Reboot the device into the MCUboot bootloader (USB DFU).
+     * The device acknowledges first, then resets ~100 ms later, so the
+     * serial port disappears right after this resolves.
+     *
+     * @returns {object} response from device
+     */
+    async enterBootloader() {
+        const cmd = DTMTransport.createEnterBootloaderCMD();
+        try {
+            return validateResult(await this.#dtmTransport.sendCMD(cmd));
+        } catch {
+            throw new Error('DTM enter bootloader command failed');
+        }
+    }
+
+    /**
      * Select timer to use
      *
      * @param {number} timer to use

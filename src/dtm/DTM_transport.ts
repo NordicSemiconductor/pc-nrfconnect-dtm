@@ -307,6 +307,23 @@ class DTMTransport {
         );
     }
 
+    /**
+     * Finalmouse vendor subcommand 7 (slx_dtm ENTER_BOOTLOADER): reboot the
+     * device into MCUboot serial recovery (USB DFU). Encoded as a transmitter
+     * test with the vendor packet type; the length field carries the subcommand.
+     *
+     * @returns {createCMD} created command
+     */
+    static createEnterBootloaderCMD() {
+        DTMTransport.#debug('Create enter bootloader CMD');
+        return DTMTransport.#createCMD(
+            DTM_CMD.TRANSMITTER_TEST,
+            toBitString(0),
+            toBitString(7),
+            toBitString(DtmPacketType['Constant carrier'], 2),
+        );
+    }
+
     static createSelectTimerCMD(value: number) {
         DTMTransport.#debug(`Create select timer CMD: ${value}`);
         const dtmTimer = toBitString(value);

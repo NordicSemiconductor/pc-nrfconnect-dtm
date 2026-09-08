@@ -1,3 +1,11 @@
+## 3.2.0 - Unreleased
+
+### Added
+
+- **Enter bootloader** button (Firmware group): reboots the connected device
+  into MCUboot serial recovery for a USB firmware update. Requires slx_dtm
+  firmware with the `ENTER_BOOTLOADER` vendor subcommand.
+
 ## 3.1.2 - 2026-04-23
 
 ### Added

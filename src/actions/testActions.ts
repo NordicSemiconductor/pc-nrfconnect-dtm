@@ -6,6 +6,7 @@
 
 import {
     type AppThunk,
+    describeError,
     logger,
 } from '@nordicsemiconductor/pc-nrfconnect-shared';
 
@@ -34,7 +35,7 @@ import { type RootState } from '../reducers/types';
 import { communicationError } from '../reducers/warningReducer';
 import { bleChannelsValues } from '../SidePanel/ChannelView';
 import { paneName } from '../utils/panes';
-import { getDTM } from './dtm';
+import { disposeDTM, getDTM } from './dtm';
 import { clearCommunicationErrorWarning } from './warningActions';
 
 export const DTM_BOARD_SELECTED_ACTION = 'DTM_BOARD_SELECTED_ACTION';
@@ -189,6 +190,27 @@ export const startTests =
             dtm?.endTest().catch(() => undefined);
             logger.info(errorMessage);
             dispatch(communicationError(errorMessage));
+        }
+    };
+
+export const enterBootloader =
+    (): AppThunk<RootState, Promise<void>> => async dispatch => {
+        logger.info('Rebooting device into bootloader');
+        try {
+            const dtm = await dispatch(getDTM());
+            await dtm.setupReset();
+            await dtm.enterBootloader();
+            logger.info(
+                'Device is rebooting into MCUboot serial recovery (USB DFU)',
+            );
+        } catch (error) {
+            const message = `Could not enter bootloader: ${describeError(
+                error,
+            )}`;
+            logger.error(message);
+            dispatch(communicationError(message));
+        } finally {
+            await disposeDTM();
         }
     };
 
